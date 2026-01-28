@@ -57,14 +57,15 @@ const CartItemRow = ({ item, removeFromCart, updateQuantity, toggleWishlist, isI
                 style={{ x, touchAction: "pan-y" }}
                 drag="x"
                 dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={0.6} // Slightly stiffer
+                dragElastic={0.9} // Lighter feel
+                dragTransition={{ bounceStiffness: 400, bounceDamping: 40 }} // Snappy return
                 onDragEnd={() => {
                     const currentX = x.get();
-                    if (currentX > 100) {
+                    if (currentX > 80) {
                         // Swipe Right Action
                         if (!isInWishlist(item.id)) toggleWishlist(item);
                         removeFromCart(item.id, item.selectedSize, item.selectedColor);
-                    } else if (currentX < -100) {
+                    } else if (currentX < -80) {
                         // Swipe Left Action
                         removeFromCart(item.id, item.selectedSize, item.selectedColor);
                     }
