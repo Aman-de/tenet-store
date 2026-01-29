@@ -163,7 +163,7 @@ export default function CartDrawer() {
                         animate={{ x: 0 }}
                         exit={{ x: "100%" }}
                         transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                        className="fixed top-0 right-0 h-full w-full md:w-[450px] bg-[#FDFBF7] shadow-2xl z-[70] flex flex-col border-l border-neutral-200"
+                        className="fixed top-0 right-0 h-full w-full md:w-[450px] bg-[#FDFBF7] shadow-2xl z-[70] flex flex-col border-l border-neutral-200 md:rounded-l-2xl"
                     >
                         {/* Header */}
                         <div className="flex items-center justify-between p-6 border-b border-neutral-200 bg-white">
@@ -254,7 +254,7 @@ export default function CartDrawer() {
                             </div>
                             <p className="text-xs text-neutral-400 text-center font-sans">Shipping and taxes calculated at checkout.</p>
                             <button
-                                className="w-full bg-[#1A1A1A] text-white py-4 font-sans text-sm uppercase tracking-widest hover:bg-black transition-colors disabled:opacity-50"
+                                className="w-full bg-[#1A1A1A] text-white py-4 font-sans text-sm uppercase tracking-widest hover:bg-black transition-colors disabled:opacity-50 rounded-full"
                                 disabled={cart.length === 0}
                                 onClick={() => checkout(cart)}
                             >

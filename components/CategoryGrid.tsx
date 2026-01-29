@@ -31,7 +31,7 @@ export default function CategoryGrid({ collections }: { collections: Collection[
                 {collections.map((collection, idx) => (
                     <Link href={`/collection/${collection.handle}`} key={collection.id}>
                         <motion.div
-                            className="relative aspect-square overflow-hidden group cursor-pointer"
+                            className="relative aspect-square overflow-hidden group cursor-pointer rounded-xl"
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}

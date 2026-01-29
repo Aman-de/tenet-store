@@ -91,7 +91,7 @@ const WishlistItemRow = ({ item, removeFromWishlist, addToCart }: any) => {
 
                     <button
                         onClick={handleMoveToCart}
-                        className="flex items-center justify-center gap-2 w-full bg-white border border-[#1A1A1A] text-[#1A1A1A] py-2 text-xs uppercase tracking-widest hover:bg-[#1A1A1A] hover:text-white transition-colors"
+                        className="flex items-center justify-center gap-2 w-full bg-white border border-[#1A1A1A] text-[#1A1A1A] py-2 text-xs uppercase tracking-widest hover:bg-[#1A1A1A] hover:text-white transition-colors rounded-full"
                     >
                         <ShoppingBag className="w-3 h-3" />
                         Move to Bag
@@ -143,7 +143,7 @@ export default function WishlistDrawer() {
                         animate={{ x: 0 }}
                         exit={{ x: "100%" }}
                         transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                        className="fixed top-0 right-0 h-full w-full md:w-[450px] bg-[#FDFBF7] shadow-2xl z-[70] flex flex-col border-l border-neutral-200"
+                        className="fixed top-0 right-0 h-full w-full md:w-[450px] bg-[#FDFBF7] shadow-2xl z-[70] flex flex-col border-l border-neutral-200 md:rounded-l-2xl"
                     >
                         {/* Header */}
                         <div className="flex items-center justify-between p-6 border-b border-neutral-200 bg-white">
@@ -187,7 +187,7 @@ export default function WishlistDrawer() {
                             <div className="p-6 border-t border-neutral-200 bg-white">
                                 <button
                                     onClick={closeWishlist}
-                                    className="w-full bg-[#1A1A1A] text-white py-4 font-sans text-sm uppercase tracking-widest hover:bg-black transition-colors"
+                                    className="w-full bg-[#1A1A1A] text-white py-4 font-sans text-sm uppercase tracking-widest hover:bg-black transition-colors rounded-full"
                                 >
                                     Continue Shopping
                                 </button>

@@ -2,8 +2,6 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SortedProductGrid from "@/components/SortedProductGrid";
 import { getCollection } from "@/lib/sanity";
-import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
 export default async function CollectionPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -18,37 +16,16 @@ export default async function CollectionPage({ params }: { params: Promise<{ slu
         <main className="bg-[#FDFBF7] min-h-screen">
             <Navbar />
 
-            {/* Concise Premium Header */}
-            <div className="relative h-80 w-full">
-                <Image
-                    src={collection.imageUrl}
-                    alt={collection.title}
-                    fill
-                    className="object-cover object-center"
-                    priority
-                />
-                <div className="absolute inset-0 bg-black/40" />
-
-                {/* Breadcrumbs - Absolute Top Left */}
-                <div className="absolute top-6 left-6 md:left-10 z-20">
-                    <nav className="text-[10px] uppercase tracking-[0.2em] text-white/80 font-medium">
-                        <Link href="/" className="hover:text-white transition-colors">Home</Link>
-                        <span className="mx-2">/</span>
-                        <span className="text-white">{collection.title}</span>
-                    </nav>
+            {/* Compact Header with Sort */}
+            <section className="max-w-7xl mx-auto px-4 md:px-6 pt-4">
+                {/* Title Row with Sort */}
+                <div className="flex items-baseline justify-between mb-1">
+                    <h1 className="text-2xl md:text-3xl font-serif text-[#1A1A1A] tracking-tight">{collection.title}</h1>
                 </div>
+                {collection.description && (
+                    <p className="text-[#1A1A1A]/70 text-sm font-sans max-w-lg leading-relaxed mb-3">{collection.description}</p>
+                )}
 
-                <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-10 z-10">
-                    <div className="max-w-4xl">
-                        <h1 className="text-white text-4xl font-serif mb-2">{collection.title}</h1>
-                        {collection.description && (
-                            <p className="text-white/80 text-sm font-sans max-w-lg leading-relaxed">{collection.description}</p>
-                        )}
-                    </div>
-                </div>
-            </div>
-
-            <section className="max-w-7xl mx-auto px-4 md:px-6 py-12">
                 {/* Sorted Product Grid with dynamic Size Filter */}
                 <SortedProductGrid
                     products={collection.products}

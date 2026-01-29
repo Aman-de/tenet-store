@@ -20,7 +20,7 @@ export default function Hero() {
                     src="/images/hero-main.webp"
                     alt="The Winter Heritage Collection"
                     fill
-                    className="object-cover object-[60%_center] md:object-center" // Mobile: Slightly right. Desktop: Centered.
+                    className="object-cover object-[60%_80%] scale-110 md:scale-100 md:object-center" // Mobile: Scaled up & focused lower to crop top. Desktop: Centered.
                     priority
                     quality={100}
                 />
@@ -29,8 +29,8 @@ export default function Hero() {
             </div>
 
             {/* Content Container */}
-            {/* Mobile: Bottom Stacked (Magazine Style). Desktop: Left Aligned. */}
-            <div className="absolute inset-0 z-10 w-full h-full max-w-7xl mx-auto px-6 pointer-events-none md:pointer-events-auto flex flex-col justify-end pb-24 md:justify-center md:pb-0 md:items-start text-center md:text-left">
+            {/* Mobile: Bottom positioned just above Discover. Desktop: Left Aligned. */}
+            <div className="absolute inset-0 z-10 w-full h-full max-w-7xl mx-auto px-6 pointer-events-none md:pointer-events-auto flex flex-col justify-end pb-48 md:justify-center md:pb-0 md:items-start text-center md:text-left">
 
                 <div className="pointer-events-auto w-full md:w-auto"> {/* Wrapper for button clicks & width control */}
                     <motion.p

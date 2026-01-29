@@ -13,7 +13,7 @@ export default function ScrollIndicator() {
     return (
         <button
             onClick={scrollToContent}
-            className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-4 group"
+            className="absolute bottom-20 md:bottom-10 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-4 group"
             aria-label="Scroll to content"
         >
             <span className="text-white text-[10px] uppercase tracking-[0.2em] font-medium opacity-80 group-hover:opacity-100 transition-opacity">

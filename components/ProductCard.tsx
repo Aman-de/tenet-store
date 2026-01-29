@@ -39,7 +39,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
     return (
         <div
-            className="group relative cursor-pointer border border-neutral-200 transition-shadow duration-300 hover:shadow-sm"
+            className="group relative cursor-pointer rounded-xl overflow-hidden bg-white border border-neutral-100 transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
@@ -123,7 +123,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                             }}
                             className={`
                                 hidden md:block pointer-events-auto
-                                w-full bg-white text-[#1A1A1A] py-3 text-xs font-bold uppercase tracking-widest shadow-lg transition-all duration-300 ease-out
+                                w-full bg-white text-[#1A1A1A] py-3 text-xs font-bold uppercase tracking-widest shadow-lg transition-all duration-300 ease-out rounded-full
                                 hover:bg-black hover:text-white
                                 transform ${addingState !== 'idle' ? 'translate-y-0' : 'translate-y-[120%] group-hover:translate-y-0'}
                             `}

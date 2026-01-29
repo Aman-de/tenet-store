@@ -1,8 +1,9 @@
 "use client";
 
-import { ShoppingBag, Search, Menu, X, Heart } from "lucide-react";
+import { ShoppingBag, Search, Menu, X, Heart, User } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { UserButton, SignInButton, useUser } from "@clerk/nextjs";
 
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -11,6 +12,7 @@ import { useStore } from "@/lib/store";
 export default function Navbar() {
     const { openCart, openWishlist, cart, wishlist } = useStore();
     const [mounted, setMounted] = useState(false);
+    const { isSignedIn } = useUser();
 
     useEffect(() => {
         useStore.persist.rehydrate();
@@ -42,8 +44,8 @@ export default function Navbar() {
         }
     };
 
-    // Fixed Style: Always Glass/White with Dark Text for readability
-    const navBackground = "bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm";
+    // Glassmorphism Style: Translucent with blur for premium feel
+    const navBackground = "bg-white/80 backdrop-blur-md border-b border-white/20 shadow-sm";
     const textColor = "text-[#1A1A1A]";
     const logoColor = "text-[#1A1A1A]";
 
@@ -53,7 +55,7 @@ export default function Navbar() {
                 className={`sticky top-0 left-0 w-full z-50 transition-all duration-300 ${navBackground}`}
             >
                 <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between relative z-50">
-                    {/* Mobile Menu & Search (Left) */}
+                    {/* Mobile Menu & Search (Left) -> Now mostly Desktop Left Section including Account */}
                     <div className="flex items-center gap-4 md:gap-6 w-full md:w-auto">
                         <button className="md:hidden" onClick={() => setIsMobileMenuOpen(true)}>
                             <Menu className={`w-6 h-6 transition-colors ${textColor}`} />
@@ -64,17 +66,31 @@ export default function Navbar() {
                             <Search className={`w-6 h-6 hover:opacity-70 transition-all ${textColor}`} />
                         </button>
 
-                        {/* Desktop Inline Search Bar */}
-                        <form onSubmit={handleSearch} className="hidden md:flex items-center border-b border-gray-300 pb-2 group focus-within:border-black transition-colors w-96">
-                            <Search className={`w-5 h-5 mr-3 text-gray-400 group-focus-within:text-black transition-colors`} strokeWidth={1.5} />
-                            <input
-                                type="text"
-                                placeholder="SEARCH"
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                className={`bg-transparent outline-none text-sm font-medium tracking-wide w-full placeholder:text-gray-400 ${textColor}`}
-                            />
-                        </form>
+                        {/* Desktop: Account & Search */}
+                        <div className="hidden md:flex items-center gap-4">
+                            {/* Account Icon */}
+                            {isSignedIn ? (
+                                <UserButton afterSignOutUrl="/" />
+                            ) : (
+                                <SignInButton mode="modal">
+                                    <button className="group">
+                                        <User className={`w-5 h-5 text-gray-400 group-hover:text-black transition-colors`} />
+                                    </button>
+                                </SignInButton>
+                            )}
+
+                            {/* Search Bar */}
+                            <form onSubmit={handleSearch} className="flex items-center bg-neutral-50 rounded-full px-4 py-2 group focus-within:bg-white focus-within:ring-1 focus-within:ring-neutral-300 transition-all w-64 lg:w-96">
+                                <Search className={`w-5 h-5 mr-3 text-gray-400 group-focus-within:text-black transition-colors`} strokeWidth={1.5} />
+                                <input
+                                    type="text"
+                                    placeholder="SEARCH"
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    className={`bg-transparent outline-none text-sm font-medium tracking-wide w-full placeholder:text-gray-400 ${textColor}`}
+                                />
+                            </form>
+                        </div>
                     </div>
 
                     {/* Logo (Center) */}

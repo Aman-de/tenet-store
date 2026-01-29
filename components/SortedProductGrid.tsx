@@ -54,23 +54,23 @@ export default function SortedProductGrid({ products, sizeType = "clothing" }: S
     }
 
     return (
-        <div className="space-y-8">
-            {/* Clean Utility Bar */}
-            <div className="flex justify-between items-center h-14 border-b border-gray-100 mb-8 sticky top-0 bg-white z-20">
+        <div>
+            {/* Compact Utility Bar - Size & Sort on same row */}
+            <div className="flex items-center justify-between py-2 border-b border-gray-100 mb-4">
 
                 {/* Left: Size Filter */}
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-3 overflow-x-auto no-scrollbar">
                     {sizes.length > 0 ? (
                         <>
-                            <span className="text-xs font-bold uppercase tracking-widest text-[#1A1A1A]">Size</span>
-                            <div className="flex items-center gap-2">
+                            <span className="text-xs font-bold uppercase tracking-widest text-[#1A1A1A] shrink-0">Size</span>
+                            <div className="flex items-center gap-1.5">
                                 {sizes.map((size) => (
                                     <button
                                         key={size}
                                         onClick={() => setSelectedSize(selectedSize === size ? null : size)}
-                                        className={`w-8 h-8 flex items-center justify-center rounded-sm text-[10px] font-bold transition-all border ${selectedSize === size
-                                                ? "bg-[#1A1A1A] text-white border-[#1A1A1A]"
-                                                : "bg-white text-neutral-500 border-gray-200 hover:border-[#1A1A1A]"
+                                        className={`w-7 h-7 flex items-center justify-center rounded-sm text-[10px] font-bold transition-all border shrink-0 ${selectedSize === size
+                                            ? "bg-[#1A1A1A] text-white border-[#1A1A1A]"
+                                            : "bg-white text-neutral-500 border-gray-200 hover:border-[#1A1A1A]"
                                             }`}
                                     >
                                         {size}
@@ -79,7 +79,7 @@ export default function SortedProductGrid({ products, sizeType = "clothing" }: S
                                 {selectedSize && (
                                     <button
                                         onClick={() => setSelectedSize(null)}
-                                        className="text-[10px] uppercase font-bold text-neutral-400 hover:text-[#1A1A1A] ml-2"
+                                        className="text-[10px] uppercase font-bold text-neutral-400 hover:text-[#1A1A1A] ml-1 shrink-0"
                                     >
                                         Clear
                                     </button>
@@ -90,7 +90,7 @@ export default function SortedProductGrid({ products, sizeType = "clothing" }: S
                 </div>
 
                 {/* Right: Sort Dropdown */}
-                <div className="relative">
+                <div className="relative shrink-0 ml-4">
                     <button
                         onClick={() => setIsSortOpen(!isSortOpen)}
                         className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#1A1A1A] hover:opacity-70 transition-opacity"
@@ -126,7 +126,7 @@ export default function SortedProductGrid({ products, sizeType = "clothing" }: S
             {/* Grid */}
             <motion.div
                 layout
-                className="grid grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-10"
+                className="grid grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-8"
             >
                 <AnimatePresence mode="popLayout">
                     {sortedProducts.map((product) => (
