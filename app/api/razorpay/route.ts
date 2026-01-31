@@ -2,13 +2,18 @@ import { NextResponse } from "next/server";
 import Razorpay from "razorpay";
 import shortid from "shortid";
 
-const instance = new Razorpay({
-    key_id: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
-    key_secret: process.env.RAZORPAY_KEY_SECRET!,
-});
 
 export async function POST(req: Request) {
     const { amount } = await req.json(); // Amount in INR (e.g., 500 for ₹500)
+
+    if (!process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
+        return NextResponse.json({ error: "Razorpay credentials missing" }, { status: 500 });
+    }
+
+    const instance = new Razorpay({
+        key_id: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+        key_secret: process.env.RAZORPAY_KEY_SECRET,
+    });
 
     const options = {
         amount: amount * 100, // Razorpay works in paise
