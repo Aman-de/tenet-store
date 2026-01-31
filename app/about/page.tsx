@@ -1,12 +1,10 @@
 "use client";
 
-import Navbar from "@/components/Navbar";
 import { motion } from "framer-motion";
 
 export default function AboutPage() {
     return (
         <main className="bg-[#FDFBF7] min-h-screen">
-            <Navbar />
             <div className="max-w-3xl mx-auto px-6 py-32 text-center">
                 <motion.h1
                     initial={{ opacity: 0, y: 20 }}

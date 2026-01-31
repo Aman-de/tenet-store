@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Grid, Sparkles, User } from "lucide-react";
+import { Home, Grid, Heart, Package, ShoppingBag, Sparkles, User } from "lucide-react";
 import { UserButton, SignInButton, useUser, SignedIn, SignedOut } from "@clerk/nextjs";
 
 export default function MobileBottomNav() {
@@ -18,16 +18,16 @@ export default function MobileBottomNav() {
             isActive: pathname === "/",
         },
         {
-            name: "Shop",
-            href: "/collection/all", // Assuming this maps to "Category" or general shop
-            icon: Grid,
-            isActive: pathname.startsWith("/collection") && pathname !== "/collection/new-arrivals",
-        },
-        {
             name: "New",
             href: "/#new-arrivals", // Logic: Anchors to specific section or page
             icon: Sparkles,
             isActive: pathname === "/collection/new-arrivals" || pathname.includes("#new-arrivals"),
+        },
+        {
+            name: "Orders",
+            href: "/orders",
+            icon: Package,
+            isActive: pathname === "/orders",
         },
     ];
 

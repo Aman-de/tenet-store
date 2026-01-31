@@ -88,16 +88,16 @@ const ReviewForm = ({ productId, onCancel }: { productId: string, onCancel: () =
 };
 
 export default function ProductDetails({ product, reviews = [] }: ProductDetailsProps) {
-    const { addToCart, openCart, toggleWishlist, isInWishlist } = useStore();
+    const { addToCart, openCart, toggleWishlist, isInWishlist, setCheckoutItem } = useStore();
 
     // Variant Logic
     const hasVariants = product.variants && product.variants.length > 0;
     const [selectedVariant, setSelectedVariant] = useState<Variant | undefined>(hasVariants ? product.variants![0] : undefined);
 
     // Derived State
-    const currentImages = selectedVariant ? selectedVariant.images : product.images;
+    const currentImages = (selectedVariant ? selectedVariant.images : product.images)?.filter(Boolean);
     // Fallback: If variant has no images, use product default images to prevent crash
-    const displayImages = currentImages && currentImages.length > 0 ? currentImages : product.images;
+    const displayImages = currentImages && currentImages.length > 0 ? currentImages : product.images.filter(Boolean);
 
     const [selectedSize, setSelectedSize] = useState<string | undefined>(undefined);
     // If variants exist, use variant color. Else fallback to product.colors
@@ -108,10 +108,10 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
     const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
     const [isReviewFormOpen, setIsReviewFormOpen] = useState(false);
 
-    // Reset image index when variant changes
+    // Reset image index when variant changes or images update
     useEffect(() => {
         setSelectedImageIndex(0);
-    }, [selectedVariant]);
+    }, [selectedVariant, displayImages.length]);
 
     const isWishlisted = isInWishlist(product.id);
     const averageRating = reviews.length > 0
@@ -156,11 +156,11 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
         )
     }
 
-    const validateAndAdd = () => {
+    const validateSelection = () => {
         // Size Check
         if (showSizeSelector && !selectedSize) {
             setError("Please select a size.");
-            return false;
+            return null;
         }
 
         setError(null);
@@ -168,13 +168,30 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
         // Construct selected attributes
         const colorToSave = selectedVariant ? selectedVariant.colorHex : product.colors?.[0]; // Fallback
 
-        addToCart(product, selectedSize || "One Size", colorToSave);
-        return true;
+        return {
+            size: selectedSize || "One Size",
+            color: colorToSave
+        };
     };
 
-    const handleBuyNow = () => {
-        if (validateAndAdd()) {
+    const handleAddToCart = () => {
+        const selection = validateSelection();
+        if (selection) {
+            addToCart(product, selection.size, selection.color);
             openCart();
+        }
+    }
+
+    const handleBuyNow = () => {
+        const selection = validateSelection();
+        if (selection) {
+            setCheckoutItem({
+                ...product,
+                quantity: 1,
+                selectedSize: selection.size,
+                selectedColor: selection.color
+            });
+            // setCheckoutItem automatically opens cart in store logic
         }
     };
 
@@ -204,13 +221,17 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 >
                     {displayImages.map((img, idx) => (
                         <div key={idx} className="min-w-full h-full relative">
-                            <Image
-                                src={img}
-                                alt={`View ${idx}`}
-                                fill
-                                className="object-cover"
-                                priority={idx === 0}
-                            />
+                            {img ? (
+                                <Image
+                                    src={img}
+                                    alt={`View ${idx}`}
+                                    fill
+                                    className="object-cover"
+                                    priority={idx === 0}
+                                />
+                            ) : (
+                                <div className="w-full h-full bg-neutral-100" />
+                            )}
                         </div>
                     ))}
                 </motion.div>
@@ -243,12 +264,16 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                 selectedImageIndex === idx ? "border-[#1A1A1A]" : "opacity-60 hover:opacity-100"
                             )}
                         >
-                            <Image
-                                src={img}
-                                alt={`Thumbnail ${idx}`}
-                                fill
-                                className="object-cover"
-                            />
+                            {img ? (
+                                <Image
+                                    src={img}
+                                    alt={`Thumbnail ${idx}`}
+                                    fill
+                                    className="object-cover"
+                                />
+                            ) : (
+                                <div className="w-full h-full bg-neutral-100" />
+                            )}
                         </button>
                     ))}
                 </div>
@@ -262,13 +287,19 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         transition={{ duration: 0.3 }}
                         className="w-full h-full relative"
                     >
-                        <Image
-                            src={displayImages[selectedImageIndex]}
-                            alt={product.title}
-                            fill
-                            className="object-cover"
-                            priority
-                        />
+                        {displayImages[selectedImageIndex] ? (
+                            <Image
+                                src={displayImages[selectedImageIndex]}
+                                alt={product.title}
+                                fill
+                                className="object-cover"
+                                priority
+                            />
+                        ) : (
+                            <div className="w-full h-full bg-neutral-100 flex items-center justify-center">
+                                <span className="text-neutral-400 text-xs uppercase tracking-widest">No Image</span>
+                            </div>
+                        )}
                     </motion.div>
                 </div>
             </div>
@@ -395,9 +426,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 <div className="flex gap-3 mb-10">
                     <div className="flex-1 flex flex-col gap-3">
                         <button
-                            onClick={() => {
-                                if (validateAndAdd()) openCart();
-                            }}
+                            onClick={handleAddToCart}
                             className="w-full bg-white text-[#1A1A1A] border border-[#1A1A1A] py-4 font-sans uppercase tracking-widest hover:bg-neutral-50 transition-all text-sm font-bold active:scale-[0.99]"
                         >
                             Add to Cart

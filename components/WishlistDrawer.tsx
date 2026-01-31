@@ -68,12 +68,18 @@ const WishlistItemRow = ({ item, removeFromWishlist, addToCart }: any) => {
                 className="relative bg-[#FDFBF7] flex gap-4 transition-transform z-10"
             >
                 <Link href={`/product/${item.handle}`} className="relative w-24 h-32 bg-neutral-100 shrink-0 block overflow-hidden group">
-                    <Image
-                        src={item.images[0]}
-                        alt={item.title}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
+                    {item.images?.[0] && typeof item.images[0] === 'string' && item.images[0].length > 0 ? (
+                        <Image
+                            src={item.images[0]}
+                            alt={item.title}
+                            fill
+                            className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                    ) : (
+                        <div className="w-full h-full bg-neutral-200 flex items-center justify-center text-neutral-400 text-[10px] text-center p-1">
+                            No Image
+                        </div>
+                    )}
                 </Link>
                 <div className="flex-1 flex flex-col justify-between py-1">
                     <div className="space-y-1">

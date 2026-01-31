@@ -73,13 +73,19 @@ export default function ProductCard({ product }: ProductCardProps) {
                                 exit={{ opacity: 0 }}
                                 transition={{ duration: 0.4 }}
                             >
-                                <Image
-                                    src={product.images[0]}
-                                    alt={product.title}
-                                    fill
-                                    className="object-cover"
-                                    sizes="(max-width: 768px) 50vw, 33vw"
-                                />
+                                {product.images?.[0] ? (
+                                    <Image
+                                        src={product.images[0]}
+                                        alt={product.title}
+                                        fill
+                                        className="object-cover"
+                                        sizes="(max-width: 768px) 50vw, 33vw"
+                                    />
+                                ) : (
+                                    <div className="w-full h-full bg-neutral-200 flex items-center justify-center text-neutral-400 text-xs">
+                                        No Image
+                                    </div>
+                                )}
                             </motion.div>
                         )}
                     </AnimatePresence>

@@ -1,7 +1,8 @@
 "use client";
 
-import { ShoppingBag, Search, Menu, X, Heart, User } from "lucide-react";
+import { ShoppingBag, Search, Menu, X, Heart, User, Package } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { UserButton, SignInButton, useUser } from "@clerk/nextjs";
 
@@ -10,6 +11,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useStore } from "@/lib/store";
 
 export default function Navbar() {
+    const router = useRouter();
     const { openCart, openWishlist, cart, wishlist } = useStore();
     const [mounted, setMounted] = useState(false);
     const { isSignedIn } = useUser();
@@ -27,20 +29,20 @@ export default function Navbar() {
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
 
-    // Lock body scroll when mobile menu is open
-    useEffect(() => {
-        if (isMobileMenuOpen) {
-            document.body.style.overflow = "hidden";
-        } else {
-            document.body.style.overflow = "unset";
-        }
-    }, [isMobileMenuOpen]);
+    // Lock body scroll - REMOVED for small menu
+    // useEffect(() => {
+    //     if (isMobileMenuOpen) {
+    //         document.body.style.overflow = "hidden";
+    //     } else {
+    //         document.body.style.overflow = "unset";
+    //     }
+    // }, [isMobileMenuOpen]);
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
         if (searchQuery.trim()) {
-            console.log("Searching for:", searchQuery);
             setIsSearchOpen(false);
+            router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
         }
     };
 
@@ -56,18 +58,22 @@ export default function Navbar() {
             >
                 <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between relative z-50">
                     {/* Mobile Menu & Search (Left) -> Now mostly Desktop Left Section including Account */}
-                    <div className="flex items-center gap-4 md:gap-6 w-full md:w-auto">
-                        <button className="md:hidden" onClick={() => setIsMobileMenuOpen(true)}>
-                            <Menu className={`w-6 h-6 transition-colors ${textColor}`} />
+                    <div className="flex items-center gap-4 lg:gap-6 w-full lg:w-auto">
+                        <button className="lg:hidden" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                            {isMobileMenuOpen ? (
+                                <X className={`w-6 h-6 transition-colors ${textColor}`} />
+                            ) : (
+                                <Menu className={`w-6 h-6 transition-colors ${textColor}`} />
+                            )}
                         </button>
 
                         {/* Mobile Search Icon Trigger */}
-                        <button className="md:hidden" onClick={() => setIsSearchOpen(!isSearchOpen)}>
+                        <button className="lg:hidden" onClick={() => setIsSearchOpen(!isSearchOpen)}>
                             <Search className={`w-6 h-6 hover:opacity-70 transition-all ${textColor}`} />
                         </button>
 
                         {/* Desktop: Account & Search */}
-                        <div className="hidden md:flex items-center gap-4">
+                        <div className="hidden lg:flex items-center gap-4">
                             {/* Account Icon */}
                             {isSignedIn ? (
                                 <UserButton afterSignOutUrl="/" />
@@ -77,6 +83,13 @@ export default function Navbar() {
                                         <User className={`w-5 h-5 text-gray-400 group-hover:text-black transition-colors`} />
                                     </button>
                                 </SignInButton>
+                            )}
+
+                            {/* Orders Icon */}
+                            {isSignedIn && (
+                                <Link href="/orders" className="group" title="My Orders">
+                                    <Package className={`w-5 h-5 text-gray-400 group-hover:text-black transition-colors`} />
+                                </Link>
                             )}
 
                             {/* Search Bar */}
@@ -96,15 +109,15 @@ export default function Navbar() {
                     {/* Logo (Center) */}
                     <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
                         <Link href="/" className="block group">
-                            <span className={`text-3xl md:text-4xl font-serif font-medium tracking-[0.2em] uppercase group-hover:opacity-80 transition-colors ${logoColor}`}>
+                            <span className={`text-3xl lg:text-4xl font-serif font-medium tracking-[0.2em] uppercase group-hover:opacity-80 transition-colors ${logoColor}`}>
                                 TENET
                             </span>
                         </Link>
                     </div>
 
                     {/* Navigation & Cart (Right) */}
-                    <div className="flex items-center gap-6 md:gap-8">
-                        <div className={`hidden md:flex items-center gap-8 text-sm font-medium tracking-wide transition-colors ${textColor}`}>
+                    <div className="flex items-center gap-6 lg:gap-8">
+                        <div className={`hidden lg:flex items-center gap-8 text-sm font-medium tracking-wide transition-colors ${textColor}`}>
                             <Link href="/support" className="hover:underline underline-offset-4 decoration-current transition-all decoration-1">
                                 SUPPORT
                             </Link>
@@ -174,49 +187,44 @@ export default function Navbar() {
                         </motion.div>
                     )}
                 </AnimatePresence>
+
+                {/* Mobile Menu Dropdown */}
+                <AnimatePresence>
+                    {isMobileMenuOpen && (
+                        <motion.div
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            transition={{ duration: 0.2 }}
+                            className="absolute top-full left-4 w-48 bg-white/95 backdrop-blur-md border border-neutral-100 shadow-xl rounded-xl overflow-hidden py-2"
+                        >
+                            <div className="flex flex-col">
+                                <Link
+                                    href="/support"
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                    className="px-6 py-3 text-sm font-medium text-[#1A1A1A] hover:bg-neutral-50 transition-colors text-left"
+                                >
+                                    SUPPORT
+                                </Link>
+                                <Link
+                                    href="/#new-arrivals"
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                    className="px-6 py-3 text-sm font-medium text-[#1A1A1A] hover:bg-neutral-50 transition-colors text-left"
+                                >
+                                    COLLECTIONS
+                                </Link>
+                                <Link
+                                    href="/about"
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                    className="px-6 py-3 text-sm font-medium text-[#1A1A1A] hover:bg-neutral-50 transition-colors text-left"
+                                >
+                                    ABOUT
+                                </Link>
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </nav>
-
-            {/* Mobile Menu Overlay */}
-            <AnimatePresence>
-                {isMobileMenuOpen && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-[60] bg-[#FDFBF7] flex flex-col"
-                    >
-                        <div className="flex justify-end p-6">
-                            <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 bg-neutral-100 rounded-full">
-                                <X className="w-6 h-6 text-[#1A1A1A]" />
-                            </button>
-                        </div>
-
-                        <div className="flex flex-col items-center justify-center flex-1 space-y-8">
-                            <Link
-                                href="/support"
-                                onClick={() => setIsMobileMenuOpen(false)}
-                                className="font-serif text-3xl text-[#1A1A1A] hover:text-neutral-500 transition-colors"
-                            >
-                                Support
-                            </Link>
-                            <Link
-                                href="/#new-arrivals"
-                                onClick={() => setIsMobileMenuOpen(false)}
-                                className="font-serif text-3xl text-[#1A1A1A] hover:text-neutral-500 transition-colors"
-                            >
-                                Collections
-                            </Link>
-                            <Link
-                                href="/about"
-                                onClick={() => setIsMobileMenuOpen(false)}
-                                className="font-serif text-3xl text-[#1A1A1A] hover:text-neutral-500 transition-colors"
-                            >
-                                About
-                            </Link>
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
         </>
     );
 }

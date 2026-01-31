@@ -28,6 +28,7 @@ export interface Product {
     sizeType?: 'clothing' | 'numeric' | 'onesize';
     sizes?: string[];
     variants?: Variant[];
+    imagePromptNote?: string;
 }
 
 export const products: Product[] = [

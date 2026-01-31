@@ -1,18 +1,14 @@
 "use client";
 
 import { useStore } from "@/lib/store";
-import { checkout } from "@/lib/checkout";
+import { getCartUpsells } from "@/lib/sanity";
+
 import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
 import { X, ShoppingBag, Plus, Minus, Heart, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { cn } from "@/lib/utils";
-
-// Mock Upsell Products
-const UPSELL_PRODUCTS = [
-    { id: "upsell_1", title: "Silk Pocket Square", price: 1200, image: "/images/product-placeholder.jpg" },
-    { id: "upsell_2", title: "Leather Belt", price: 2500, image: "/images/product-placeholder.jpg" }
-];
+import { useRouter } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
 
 // Helper Component for Swipeable logic with visual feedback
 const CartItemRow = ({ item, removeFromCart, updateQuantity, toggleWishlist, isInWishlist }: any) => {
@@ -73,12 +69,18 @@ const CartItemRow = ({ item, removeFromCart, updateQuantity, toggleWishlist, isI
                 className="relative bg-[#FDFBF7] flex gap-4 transition-transform z-10"
             >
                 <div className="relative w-20 h-24 bg-neutral-100 shrink-0">
-                    <Image
-                        src={item.images[0]}
-                        alt={item.title}
-                        fill
-                        className="object-cover"
-                    />
+                    {item.images?.[0] && typeof item.images[0] === 'string' && item.images[0].length > 0 ? (
+                        <Image
+                            src={item.images[0]}
+                            alt={item.title}
+                            fill
+                            className="object-cover"
+                        />
+                    ) : (
+                        <div className="w-full h-full bg-neutral-200 flex items-center justify-center text-neutral-400 text-[10px] text-center p-1">
+                            No Image
+                        </div>
+                    )}
                 </div>
                 <div className="flex-1 space-y-1">
                     <div className="flex justify-between items-start">
@@ -118,19 +120,105 @@ const CartItemRow = ({ item, removeFromCart, updateQuantity, toggleWishlist, isI
 };
 
 export default function CartDrawer() {
-    const { isCartOpen, closeCart, cart, removeFromCart, updateQuantity, getCartTotal, toggleWishlist, isInWishlist } = useStore();
+    const {
+        isCartOpen, closeCart, cart, removeFromCart, updateQuantity, getCartTotal,
+        toggleWishlist, isInWishlist, addToCart, clearCart,
+        checkoutItem, clearCheckoutItem, updateCheckoutItemQuantity
+    } = useStore();
     const [mounted, setMounted] = useState(false);
+    const router = useRouter();
+    const { user } = useUser();
+
+    const [checkoutStep, setCheckoutStep] = useState<'cart' | 'address'>('cart');
+    const [address, setAddress] = useState({
+        name: "",
+        street: "",
+        city: "",
+        zip: "",
+        phone: ""
+    });
+    const [paymentMethod, setPaymentMethod] = useState<'razorpay' | 'cod'>('razorpay');
+
+    const FREE_SHIPPING_THRESHOLD = 4999;
+    const SHIPPING_COST = 70;
+    const COD_MIN_THRESHOLD = 12000;
 
     useEffect(() => {
         setMounted(true);
     }, []);
 
-    const total = mounted ? getCartTotal() : 0;
-    const cartItems = mounted ? cart : [];
-    const FREE_SHIPPING_THRESHOLD = 5000;
-    const progress = Math.min((total / FREE_SHIPPING_THRESHOLD) * 100, 100);
-    const isFreeShipping = total >= FREE_SHIPPING_THRESHOLD;
-    const amountNeeded = FREE_SHIPPING_THRESHOLD - total;
+    useEffect(() => {
+        if (user) {
+            setAddress(prev => ({ ...prev, name: user.fullName || "" }));
+        }
+    }, [user]);
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const [upsellProducts, setUpsellProducts] = useState<any[]>([]);
+
+    // Fetch Upsell Products
+    useEffect(() => {
+        const fetchUpsells = async () => {
+            if (cart.length > 0) {
+                const cartIds = cart.map(item => item.id);
+                try {
+                    const products = await getCartUpsells(cartIds);
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    const filtered = products.filter((p: any) => !cartIds.includes(p.id));
+                    setUpsellProducts(filtered);
+                } catch (error) {
+                    console.error("Failed to fetch upsells:", error);
+                }
+            } else {
+                setUpsellProducts([]);
+            }
+        };
+
+        if (isCartOpen) {
+            fetchUpsells();
+        }
+    }, [cart, isCartOpen]);
+
+
+    // Logic to switch between Cart and Single Item Checkout
+    const cartItems = mounted ? (checkoutItem ? [checkoutItem] : cart) : [];
+
+    // Calculate total depending on mode
+    const subtotal = mounted ? (checkoutItem ? (checkoutItem.price * checkoutItem.quantity) : getCartTotal()) : 0;
+
+    // Local wrappers for actions to handle both modes transparently
+    const handleDelete = (id: string, size?: string, color?: string) => {
+        if (checkoutItem) {
+            clearCheckoutItem(); // Clearing the single item closes/resets the specific checkout
+            closeCart(); // And close drawer
+        } else {
+            removeFromCart(id, size, color);
+        }
+    };
+
+    const handleUpdateQuantity = (id: string, size: string | undefined, color: string | undefined, delta: number) => {
+        if (checkoutItem) {
+            updateCheckoutItemQuantity(delta);
+        } else {
+            updateQuantity(id, size, color, delta);
+        }
+    };
+
+    const handleClose = () => {
+        closeCart();
+        if (checkoutItem) {
+            // Delay clearing to avoid UI flicker during close animation
+            setTimeout(() => clearCheckoutItem(), 300);
+        }
+    };
+
+
+    const isFreeShipping = subtotal >= FREE_SHIPPING_THRESHOLD;
+    const shippingAmount = isFreeShipping ? 0 : SHIPPING_COST;
+    const finalTotal = subtotal + shippingAmount;
+
+    const progress = Math.min((subtotal / FREE_SHIPPING_THRESHOLD) * 100, 100);
+    const amountNeeded = FREE_SHIPPING_THRESHOLD - subtotal;
 
     // Prevent body scroll when cart is open
     useEffect(() => {
@@ -144,6 +232,144 @@ export default function CartDrawer() {
         };
     }, [isCartOpen]);
 
+    const handleCheckout = async () => {
+        // Validation
+        if (!address.name || !address.street || !address.city || !address.zip || !address.phone) {
+            alert("Please fill in all address fields.");
+            return;
+        }
+
+        const fullAddress = `${address.name}, ${address.street}, ${address.city} - ${address.zip}. Phone: ${address.phone}`;
+
+        // Handle Cash on Delivery
+        if (paymentMethod === 'cod') {
+            if (finalTotal < COD_MIN_THRESHOLD) {
+                alert(`Cash on Delivery is only available for orders above ₹${COD_MIN_THRESHOLD.toLocaleString('en-IN')}`);
+                return;
+            }
+
+            try {
+                const orderRes = await fetch("/api/create-order", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        cart: cartItems,
+                        paymentId: "COD_PENDING",
+                        email: user?.primaryEmailAddress?.emailAddress || "guest@tenet.com",
+                        totalAmount: finalTotal,
+                        shippingAddress: fullAddress
+                    }),
+                });
+
+                if (orderRes.ok) {
+                    if (checkoutItem) {
+                        clearCheckoutItem();
+                    } else {
+                        clearCart();
+                    }
+                    closeCart();
+                    setCheckoutStep('cart');
+                    setAddress({ name: "", street: "", city: "", zip: "", phone: "" });
+                    setPaymentMethod('razorpay');
+                    router.push("/orders");
+                } else {
+                    alert("Order creation failed. Please contact support.");
+                }
+            } catch (error) {
+                console.error("Order creation error:", error);
+                alert("Order creation error. Please contact support.");
+            }
+            return;
+        }
+
+        // Handle Razorpay
+        // 1. Load Razorpay Script
+        const loadScript = (src: string) => {
+            return new Promise((resolve) => {
+                const script = document.createElement("script");
+                script.src = src;
+                script.onload = () => resolve(true);
+                script.onerror = () => resolve(false);
+                document.body.appendChild(script);
+            });
+        };
+
+        const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
+
+        if (!res) {
+            alert("Razorpay SDK failed to load. Are you online?");
+            return;
+        }
+
+        // 2. Create Order
+        const response = await fetch("/api/razorpay", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ amount: finalTotal }),
+        });
+
+        const data = await response.json();
+
+        if (!data.id) {
+            alert("Server error. Please try again.");
+            console.error(data);
+            return;
+        }
+
+        // 3. Initialize Razorpay
+        const options = {
+            key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+            amount: data.amount,
+            currency: data.currency,
+            name: "TENET ARCHIVES",
+            description: "Luxury Transaction",
+            order_id: data.id,
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            handler: async function (response: any) {
+                // Payment Successful
+                try {
+                    const orderRes = await fetch("/api/create-order", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            cart: cartItems,
+                            paymentId: response.razorpay_payment_id,
+                            email: user?.primaryEmailAddress?.emailAddress || "guest@tenet.com",
+                            totalAmount: finalTotal,
+                            shippingAddress: fullAddress
+                        }),
+                    });
+
+                    if (orderRes.ok) {
+                        clearCart();
+                        closeCart();
+                        setCheckoutStep('cart'); // Reset step
+                        setAddress({ name: "", street: "", city: "", zip: "", phone: "" }); // Reset form
+                        router.push("/orders");
+                    } else {
+                        alert("Payment successful but order creation failed. Please contact support.");
+                    }
+
+                } catch (error) {
+                    console.error("Order creation error:", error);
+                    alert("Order creation error. Please contact support.");
+                }
+            },
+            prefill: {
+                name: address.name || user?.fullName || "Tenet Client",
+                email: user?.primaryEmailAddress?.emailAddress || "client@tenet.com",
+                contact: address.phone || "9999999999",
+            },
+            theme: {
+                color: "#000000",
+            },
+        };
+
+        // @ts-ignore
+        const rzp1 = new window.Razorpay(options);
+        rzp1.open();
+    };
+
     return (
         <AnimatePresence>
             {isCartOpen && (
@@ -153,7 +379,7 @@ export default function CartDrawer() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        onClick={closeCart}
+                        onClick={handleClose}
                         className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[60]"
                     />
 
@@ -167,100 +393,263 @@ export default function CartDrawer() {
                     >
                         {/* Header */}
                         <div className="flex items-center justify-between p-6 border-b border-neutral-200 bg-white">
-                            <h2 className="font-serif text-xl text-[#1A1A1A]">Shopping Bag ({cart.length})</h2>
-                            <button onClick={closeCart} className="p-2 hover:bg-neutral-100 rounded-full transition-colors">
+                            <div className="flex items-center gap-3">
+                                {checkoutStep === 'address' && (
+                                    <button onClick={() => setCheckoutStep('cart')} className="p-1 hover:bg-neutral-100 rounded-full transition-colors mr-1">
+                                        <X className="w-4 h-4 text-[#1A1A1A] rotate-45" /> {/* Using X rotated as back or just arrow if preferred, but keeping simple */}
+                                    </button>
+                                )}
+                                <h2 className="font-serif text-xl text-[#1A1A1A]">
+                                    {checkoutStep === 'cart'
+                                        ? (checkoutItem ? 'Buy Now' : `Shopping Bag (${cart.length})`)
+                                        : 'Shipping Details'
+                                    }
+                                </h2>
+                            </div>
+                            <button onClick={handleClose} className="p-2 hover:bg-neutral-100 rounded-full transition-colors">
                                 <X className="w-5 h-5 text-[#1A1A1A]" />
                             </button>
                         </div>
 
-                        {/* Smart Progress Bar */}
-                        <div className="p-4 bg-neutral-50 border-b border-neutral-200">
-                            <div className="mb-2 text-xs font-medium text-center uppercase tracking-wide text-[#1A1A1A]">
-                                {isFreeShipping ? (
-                                    <span className="text-green-800">You&apos;ve unlocked Free Shipping</span>
-                                ) : (
-                                    <span>Spend ₹{amountNeeded.toLocaleString('en-IN')} more for Free Shipping</span>
-                                )}
-                            </div>
-                            <div className="h-1.5 w-full bg-neutral-200 rounded-full overflow-hidden">
-                                <motion.div
-                                    initial={{ width: 0 }}
-                                    animate={{ width: `${progress}%` }}
-                                    className={`h-full ${isFreeShipping ? 'bg-green-700' : 'bg-[#1A1A1A]'}`}
-                                />
-                            </div>
-                        </div>
-
-                        {/* Items */}
-                        <div className="flex-1 overflow-y-auto p-6 space-y-6">
-                            {cartItems.length === 0 ? (
-                                <div className="h-full flex flex-col items-center justify-center text-neutral-400 space-y-4">
-                                    <ShoppingBag className="w-12 h-12 opacity-20" />
-                                    <p className="font-sans text-sm">Your bag is empty.</p>
-                                </div>
-                            ) : (
-                                <AnimatePresence initial={false}>
-                                    {cartItems.map((item, index) => (
+                        {checkoutStep === 'cart' ? (
+                            <>
+                                {/* Smart Progress Bar */}
+                                <div className="p-4 bg-neutral-50 border-b border-neutral-200">
+                                    <div className="mb-2 text-xs font-medium text-center uppercase tracking-wide text-[#1A1A1A]">
+                                        {isFreeShipping ? (
+                                            <span className="text-green-800">You&apos;ve unlocked Free Shipping</span>
+                                        ) : (
+                                            <span>Spend ₹{amountNeeded.toLocaleString('en-IN')} more for Free Shipping</span>
+                                        )}
+                                    </div>
+                                    <div className="h-1.5 w-full bg-neutral-200 rounded-full overflow-hidden">
                                         <motion.div
-                                            key={`${item.id}-${item.selectedSize}-${item.selectedColor}`}
-                                            layout
-                                            initial={{ opacity: 0, height: 0 }}
-                                            animate={{ opacity: 1, height: "auto" }}
-                                            exit={{ opacity: 0, height: 0 }}
-                                            transition={{ duration: 0.2 }}
-                                        >
-                                            <CartItemRow
-                                                item={item}
-                                                removeFromCart={removeFromCart}
-                                                updateQuantity={updateQuantity}
-                                                toggleWishlist={toggleWishlist}
-                                                isInWishlist={isInWishlist}
-                                            />
-                                        </motion.div>
-                                    ))}
-                                </AnimatePresence>
-                            )}
-                        </div>
+                                            initial={{ width: 0 }}
+                                            animate={{ width: `${progress}%` }}
+                                            className={`h-full ${isFreeShipping ? 'bg-green-700' : 'bg-[#1A1A1A]'}`}
+                                        />
+                                    </div>
+                                </div>
 
-                        {/* Upsell Strip */}
-                        {cart.length > 0 && (
-                            <div className="p-4 bg-neutral-50 border-t border-neutral-200">
-                                <h4 className="text-xs font-bold uppercase tracking-widest text-neutral-500 mb-3">Pairs Well With</h4>
-                                <div className="flex gap-3 overflow-x-auto pb-2">
-                                    {UPSELL_PRODUCTS.map((prod) => (
-                                        <div key={prod.id} className="min-w-[200px] flex items-center gap-3 bg-white p-2 border border-neutral-100 rounded-sm">
-                                            <div className="relative w-12 h-14 bg-neutral-100 shrink-0">
-                                                {/* Placeholder for now since we don't have separate images */}
-                                                <div className="w-full h-full bg-neutral-200" />
-                                            </div>
-                                            <div className="flex-1">
-                                                <p className="text-xs font-serif text-[#1A1A1A] truncate">{prod.title}</p>
-                                                <p className="text-xs text-neutral-500">₹{prod.price.toLocaleString()}</p>
-                                            </div>
-                                            <button className="p-1 hover:bg-neutral-100 rounded-full transition-colors">
-                                                <Plus className="w-4 h-4 text-[#1A1A1A]" />
-                                            </button>
+                                {/* Items */}
+                                <div className="flex-1 overflow-y-auto p-6 space-y-6">
+                                    {cartItems.length === 0 ? (
+                                        <div className="h-full flex flex-col items-center justify-center text-neutral-400 space-y-4">
+                                            <ShoppingBag className="w-12 h-12 opacity-20" />
+                                            <p className="font-sans text-sm">Your bag is empty.</p>
                                         </div>
-                                    ))}
+                                    ) : (
+                                        <AnimatePresence initial={false}>
+                                            {cartItems.map((item) => (
+                                                <motion.div
+                                                    key={`${item.id}-${item.selectedSize}-${item.selectedColor}`}
+                                                    layout
+                                                    initial={{ opacity: 0, height: 0 }}
+                                                    animate={{ opacity: 1, height: "auto" }}
+                                                    exit={{ opacity: 0, height: 0 }}
+                                                    transition={{ duration: 0.2 }}
+                                                >
+                                                    <CartItemRow
+                                                        item={item}
+                                                        removeFromCart={handleDelete}
+                                                        updateQuantity={handleUpdateQuantity}
+                                                        toggleWishlist={toggleWishlist}
+                                                        isInWishlist={isInWishlist}
+                                                    />
+                                                </motion.div>
+                                            ))}
+                                        </AnimatePresence>
+                                    )}
+                                </div>
+
+                                {/* Upsell Strip - Hide during Buy Now? Or maybe suggest pairing? Let's hide to focus. */}
+                                {!checkoutItem && upsellProducts.length > 0 && (
+                                    <div className="p-4 bg-neutral-50 border-t border-neutral-200">
+                                        <h4 className="text-xs font-bold uppercase tracking-widest text-neutral-500 mb-3">Pairs Well With</h4>
+                                        <div className="flex gap-3 overflow-x-auto pb-2">
+                                            {upsellProducts.map((prod) => (
+                                                <div key={prod.id} className="min-w-[200px] flex items-center gap-3 bg-white p-2 border border-neutral-100 rounded-sm">
+                                                    <div className="relative w-12 h-14 bg-neutral-100 shrink-0">
+                                                        {prod.images?.[0] && typeof prod.images[0] === 'string' && prod.images[0].length > 0 ? (
+                                                            <Image
+                                                                src={prod.images[0]}
+                                                                alt={prod.title}
+                                                                fill
+                                                                className="object-cover"
+                                                            />
+                                                        ) : (
+                                                            <div className="w-full h-full bg-neutral-200" />
+                                                        )}
+                                                    </div>
+                                                    <div className="flex-1 min-w-0">
+                                                        <p className="text-xs font-serif text-[#1A1A1A] truncate">{prod.title}</p>
+                                                        <p className="text-xs text-neutral-500">₹{prod.price.toLocaleString()}</p>
+                                                    </div>
+                                                    <button
+                                                        onClick={() => {
+                                                            let defaultSize = "M";
+                                                            if (prod.sizeType === 'onesize') {
+                                                                defaultSize = "One Size";
+                                                            } else if (prod.sizes && prod.sizes.length > 0) {
+                                                                defaultSize = prod.sizes[0];
+                                                            }
+                                                            addToCart(prod, defaultSize, prod.colors?.[0]);
+                                                        }}
+                                                        className="p-1 hover:bg-neutral-100 rounded-full transition-colors"
+                                                    >
+                                                        <Plus className="w-4 h-4 text-[#1A1A1A]" />
+                                                    </button>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Footer */}
+                                <div className="p-6 border-t border-neutral-200 bg-white space-y-4 shadow-[0_-5px_20px_rgba(0,0,0,0.05)]">
+                                    <div className="flex items-center justify-between font-serif text-lg">
+                                        <span>Subtotal</span>
+                                        <span>₹{subtotal.toLocaleString('en-IN')}</span>
+                                    </div>
+                                    <div className="flex items-center justify-between text-xs font-sans text-neutral-500">
+                                        <span>Shipping</span>
+                                        <span className={isFreeShipping ? "text-green-700 font-bold" : ""}>
+                                            {isFreeShipping ? "FREE" : `₹${SHIPPING_COST}`}
+                                        </span>
+                                    </div>
+                                    <div className="flex items-center justify-between font-serif text-xl font-bold border-t border-dashed border-neutral-200 pt-4">
+                                        <span>Total</span>
+                                        <span>₹{finalTotal.toLocaleString('en-IN')}</span>
+                                    </div>
+                                    <button
+                                        className="w-full bg-[#1A1A1A] text-white py-4 font-sans text-sm uppercase tracking-widest hover:bg-black transition-colors disabled:opacity-50 rounded-full"
+                                        disabled={cartItems.length === 0}
+                                        onClick={() => setCheckoutStep('address')}
+                                    >
+                                        Proceed to Checkout
+                                    </button>
+                                </div>
+                            </>
+                        ) : (
+                            <div className="flex-1 flex flex-col p-6 overflow-y-auto">
+                                <div className="space-y-4 flex-1">
+                                    <div>
+                                        <label className="block text-xs font-bold uppercase tracking-widest text-[#1A1A1A] mb-2">Full Name</label>
+                                        <input
+                                            type="text"
+                                            value={address.name}
+                                            onChange={(e) => setAddress({ ...address, name: e.target.value })}
+                                            className="w-full border-b border-neutral-300 py-2 text-sm focus:border-black outline-none bg-transparent"
+                                            placeholder="John Doe"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-bold uppercase tracking-widest text-[#1A1A1A] mb-2">Street Address</label>
+                                        <input
+                                            type="text"
+                                            value={address.street}
+                                            onChange={(e) => setAddress({ ...address, street: e.target.value })}
+                                            className="w-full border-b border-neutral-300 py-2 text-sm focus:border-black outline-none bg-transparent"
+                                            placeholder="123 Fashion St"
+                                        />
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label className="block text-xs font-bold uppercase tracking-widest text-[#1A1A1A] mb-2">City</label>
+                                            <input
+                                                type="text"
+                                                value={address.city}
+                                                onChange={(e) => setAddress({ ...address, city: e.target.value })}
+                                                className="w-full border-b border-neutral-300 py-2 text-sm focus:border-black outline-none bg-transparent"
+                                                placeholder="New York"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-bold uppercase tracking-widest text-[#1A1A1A] mb-2">ZIP Code</label>
+                                            <input
+                                                type="text"
+                                                value={address.zip}
+                                                onChange={(e) => setAddress({ ...address, zip: e.target.value })}
+                                                className="w-full border-b border-neutral-300 py-2 text-sm focus:border-black outline-none bg-transparent"
+                                                placeholder="10001"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-xs font-bold uppercase tracking-widest text-[#1A1A1A] mb-2">Phone Number</label>
+                                        <input
+                                            type="tel"
+                                            value={address.phone}
+                                            onChange={(e) => setAddress({ ...address, phone: e.target.value })}
+                                            className="w-full border-b border-neutral-300 py-2 text-sm focus:border-black outline-none bg-transparent"
+                                            placeholder="+91 99999 99999"
+                                        />
+                                    </div>
+
+                                    {/* Payment Method Selection */}
+                                    <div className="mt-6">
+                                        <label className="block text-xs font-bold uppercase tracking-widest text-[#1A1A1A] mb-4">Payment Method</label>
+
+                                        <div className="space-y-3">
+                                            {/* Online Payment */}
+                                            <div
+                                                onClick={() => setPaymentMethod('razorpay')}
+                                                className={`flex items-center justify-between p-4 border rounded-xl cursor-pointer transition-all ${paymentMethod === 'razorpay' ? 'border-black bg-neutral-50' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}
+                                            >
+                                                <div className="flex items-center gap-3">
+                                                    <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${paymentMethod === 'razorpay' ? 'border-black' : 'border-neutral-300'}`}>
+                                                        {paymentMethod === 'razorpay' && <div className="w-2 h-2 rounded-full bg-black" />}
+                                                    </div>
+                                                    <span className="text-sm font-medium text-[#1A1A1A]">Online Payment</span>
+                                                </div>
+                                                <span className="text-[10px] font-bold uppercase tracking-widest text-green-700 bg-green-50 px-2 py-1 rounded-md">Fastest</span>
+                                            </div>
+
+                                            {/* Cash On Delivery */}
+                                            <div
+                                                onClick={() => setPaymentMethod('cod')}
+                                                className={`flex items-center justify-between p-4 border rounded-xl cursor-pointer transition-all ${paymentMethod === 'cod' ? 'border-black bg-neutral-50' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}
+                                            >
+                                                <div className="flex items-center gap-3">
+                                                    <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${paymentMethod === 'cod' ? 'border-black' : 'border-neutral-300'}`}>
+                                                        {paymentMethod === 'cod' && <div className="w-2 h-2 rounded-full bg-black" />}
+                                                    </div>
+                                                    <div className="flex flex-col">
+                                                        <span className="text-sm font-medium text-[#1A1A1A]">Cash on Delivery</span>
+                                                        {finalTotal < COD_MIN_THRESHOLD && (
+                                                            <span className="text-[10px] text-red-500 mt-1">
+                                                                Run purchase above ₹{COD_MIN_THRESHOLD.toLocaleString()} for COD
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="mt-8 pt-6 border-t border-neutral-200">
+                                    <div className="flex items-center justify-between font-serif text-lg mb-6 pt-4 border-t border-dashed border-neutral-200">
+                                        <span>Total Due</span>
+                                        <span>₹{finalTotal.toLocaleString('en-IN')}</span>
+                                    </div>
+                                    <button
+                                        className="w-full bg-[#1A1A1A] text-white py-4 font-sans text-sm uppercase tracking-widest hover:bg-black transition-colors rounded-full flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                                        onClick={handleCheckout}
+                                        disabled={paymentMethod === 'cod' && finalTotal < COD_MIN_THRESHOLD}
+                                    >
+                                        {paymentMethod === 'razorpay' ? 'Pay Securely Now' : 'Place Order (COD)'}
+                                    </button>
+                                    <button
+                                        onClick={() => setCheckoutStep('cart')}
+                                        className="w-full mt-3 text-xs text-neutral-500 hover:text-black py-2"
+                                    >
+                                        Back to Cart
+                                    </button>
                                 </div>
                             </div>
                         )}
-
-                        {/* Footer */}
-                        <div className="p-6 border-t border-neutral-200 bg-white space-y-4 shadow-[0_-5px_20px_rgba(0,0,0,0.05)]">
-                            <div className="flex items-center justify-between font-serif text-lg">
-                                <span>Subtotal</span>
-                                <span>₹{total.toLocaleString('en-IN')}</span>
-                            </div>
-                            <p className="text-xs text-neutral-400 text-center font-sans">Shipping and taxes calculated at checkout.</p>
-                            <button
-                                className="w-full bg-[#1A1A1A] text-white py-4 font-sans text-sm uppercase tracking-widest hover:bg-black transition-colors disabled:opacity-50 rounded-full"
-                                disabled={cart.length === 0}
-                                onClick={() => checkout(cart)}
-                            >
-                                Checkout
-                            </button>
-                        </div>
                     </motion.div>
                 </>
             )}

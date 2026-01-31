@@ -221,3 +221,82 @@ export async function getCollection(slug: string) {
     };
 }
 
+export async function getCartUpsells(cartProductIds: string[]) {
+    if (!cartProductIds || cartProductIds.length === 0) return [];
+
+    const query = `*[_type == "product" && _id in $cartProductIds].pairsWellWith[]->{
+    _id,
+    title,
+    "slug": slug.current,
+    price,
+    originalPrice,
+    "imageUrl": variants[0].images[0].asset->url,
+    "hoverImageUrl": variants[0].images[1].asset->url,
+    category,
+    "colors": variants[].colorHex,
+    "discountLabel": "SAVE RS. " + (originalPrice - price),
+    sizeType,
+    sizes
+  }`;
+
+    const products = await client.fetch(query, { cartProductIds });
+
+    // Filter out nulls and deduplicate
+    const validProducts = products.filter((p: any) => p && p._id);
+    const uniqueProducts = Array.from(new Map(validProducts.map((p: any) => [p._id, p])).values());
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return uniqueProducts.map((p: any) => ({
+        id: p._id,
+        title: p.title,
+        handle: p.slug,
+        price: p.price,
+        originalPrice: p.originalPrice,
+        category: p.category,
+        images: [p.imageUrl, p.hoverImageUrl].filter(Boolean),
+        colors: p.colors || [],
+        discountLabel: p.discountLabel || (p.originalPrice && p.price ? `SAVE RS. ${p.originalPrice - p.price}` : null),
+        sizeType: p.sizeType,
+        sizes: p.sizes
+    }));
+}
+
+export async function searchProducts(searchTerm: string) {
+    const query = `*[_type == "product" && (
+    title match $searchTerm + "*" ||
+    category match $searchTerm + "*" ||
+    description match $searchTerm + "*" ||
+    filterTag match $searchTerm + "*" ||
+    variants[].colorName match $searchTerm + "*"
+  )] | order(_score desc) {
+    _id,
+    title,
+    "slug": slug.current,
+    price,
+    originalPrice,
+    "imageUrl": variants[0].images[0].asset->url,
+    "hoverImageUrl": variants[0].images[1].asset->url,
+    category,
+    "colors": variants[].colorHex,
+    "discountLabel": "SAVE RS. " + (originalPrice - price),
+    sizeType,
+    sizes
+  }`;
+
+    const products = await client.fetch(query, { searchTerm });
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return products.map((p: any) => ({
+        id: p._id,
+        title: p.title,
+        handle: p.slug,
+        price: p.price,
+        originalPrice: p.originalPrice,
+        category: p.category,
+        images: [p.imageUrl, p.hoverImageUrl].filter(Boolean),
+        colors: p.colors || [],
+        discountLabel: p.discountLabel || (p.originalPrice && p.price ? `SAVE RS. ${p.originalPrice - p.price}` : null),
+        sizeType: p.sizeType,
+        sizes: p.sizes
+    }));
+}

@@ -1,6 +1,5 @@
 import { getProduct, getRecommendedProducts, getReviews } from "@/lib/sanity";
 import { notFound } from "next/navigation";
-import Navbar from "@/components/Navbar";
 import ProductDetails from "@/components/ProductDetails";
 import RecommendedProducts from "@/components/RecommendedProducts";
 
@@ -26,7 +25,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
     return (
 
         <main className="bg-[#FDFBF7] min-h-screen pb-20">
-            <Navbar />
             <ProductDetails product={product} reviews={reviews} />
             <div className="max-w-7xl mx-auto px-4 md:px-6">
                 <RecommendedProducts products={recommendations} />

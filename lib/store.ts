@@ -24,6 +24,9 @@ interface StoreState {
     wishlist: WishlistItem[];
     isWishlistOpen: boolean;
 
+    // --- Direct Checkout State ---
+    checkoutItem: CartItem | null;
+
     // --- Actions ---
 
     // Cart Actions
@@ -34,6 +37,7 @@ interface StoreState {
     removeFromCart: (itemId: string, size?: string, color?: string) => void;
     updateQuantity: (itemId: string, size: string | undefined, color: string | undefined, delta: number) => void;
     getCartTotal: () => number;
+    clearCart: () => void;
 
     // Wishlist Actions
     openWishlist: () => void;
@@ -43,6 +47,11 @@ interface StoreState {
     isInWishlist: (productId: string) => boolean;
     clearWishlist: () => void;
     removeFromWishlist: (productId: string) => void;
+
+    // Direct Checkout Actions
+    setCheckoutItem: (item: CartItem) => void;
+    clearCheckoutItem: () => void;
+    updateCheckoutItemQuantity: (delta: number) => void;
 }
 
 export const useStore = create<StoreState>()(
@@ -53,6 +62,7 @@ export const useStore = create<StoreState>()(
             isCartOpen: false,
             wishlist: [],
             isWishlistOpen: false,
+            checkoutItem: null,
 
             // --- Cart Implementation ---
             openCart: () => set({ isCartOpen: true, isWishlistOpen: false }), // Close wishlist if opening cart
@@ -116,6 +126,8 @@ export const useStore = create<StoreState>()(
                 return get().cart.reduce((total, item) => total + (item.price * item.quantity), 0);
             },
 
+            clearCart: () => set({ cart: [] }),
+
             // --- Wishlist Implementation ---
             openWishlist: () => set({ isWishlistOpen: true, isCartOpen: false }),
             closeWishlist: () => set({ isWishlistOpen: false }),
@@ -148,11 +160,23 @@ export const useStore = create<StoreState>()(
             },
 
             clearWishlist: () => set({ wishlist: [] }),
+
+            // --- Direct Checkout Implementation ---
+            setCheckoutItem: (item) => set({ checkoutItem: item, isCartOpen: true, isWishlistOpen: false }), // Auto open cart/drawer
+            clearCheckoutItem: () => set({ checkoutItem: null }),
+            updateCheckoutItemQuantity: (delta) => {
+                set((state) => {
+                    if (!state.checkoutItem) return {};
+                    const newQuantity = Math.max(1, state.checkoutItem.quantity + delta);
+                    return { checkoutItem: { ...state.checkoutItem, quantity: newQuantity } };
+                });
+            },
         }),
         {
             name: 'tenet-storage',
             storage: createJSONStorage(() => localStorage),
             skipHydration: true,
+            partialize: (state) => ({ cart: state.cart, wishlist: state.wishlist }), // Don't persist checkoutItem
         }
     )
 );

@@ -1,8 +1,10 @@
-import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SortedProductGrid from "@/components/SortedProductGrid";
 import { getCollection } from "@/lib/sanity";
 import { notFound } from "next/navigation";
+import type { Metadata } from 'next';
+
+export const dynamic = 'force-dynamic';
 
 export default async function CollectionPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
@@ -14,7 +16,6 @@ export default async function CollectionPage({ params }: { params: Promise<{ slu
 
     return (
         <main className="bg-[#FDFBF7] min-h-screen">
-            <Navbar />
 
             {/* Compact Header with Sort */}
             <section className="max-w-7xl mx-auto px-4 md:px-6 pt-4">

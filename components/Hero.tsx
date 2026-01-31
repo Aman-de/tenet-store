@@ -20,19 +20,19 @@ export default function Hero() {
                     src="/images/hero-main.webp"
                     alt="The Winter Heritage Collection"
                     fill
-                    className="object-cover object-[60%_80%] scale-110 md:scale-100 md:object-center" // Mobile: Scaled up & focused lower to crop top. Desktop: Centered.
+                    className="object-cover object-[60%_80%] scale-110 lg:scale-100 lg:object-center" // Mobile/Tablet: Scaled up & focused lower. Desktop: Centered.
                     priority
                     quality={100}
                 />
                 {/* Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent md:bg-gradient-to-r md:from-black/60 md:via-black/10 md:to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent lg:bg-gradient-to-r lg:from-black/60 lg:via-black/10 lg:to-transparent" />
             </div>
 
             {/* Content Container */}
             {/* Mobile: Bottom positioned just above Discover. Desktop: Left Aligned. */}
-            <div className="absolute inset-0 z-10 w-full h-full max-w-7xl mx-auto px-6 pointer-events-none md:pointer-events-auto flex flex-col justify-end pb-48 md:justify-center md:pb-0 md:items-start text-center md:text-left">
+            <div className="absolute inset-0 z-10 w-full h-full max-w-7xl mx-auto px-6 pointer-events-none lg:pointer-events-auto flex flex-col justify-end pb-48 lg:justify-center lg:pb-0 lg:items-start text-center lg:text-left">
 
-                <div className="pointer-events-auto w-full md:w-auto"> {/* Wrapper for button clicks & width control */}
+                <div className="pointer-events-auto w-full lg:w-auto"> {/* Wrapper for button clicks & width control */}
                     <motion.p
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -46,9 +46,9 @@ export default function Hero() {
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.4 }}
-                        className="font-serif text-5xl md:text-8xl font-bold tracking-tight mb-6 leading-[0.9] text-white drop-shadow-lg"
+                        className="font-serif text-5xl lg:text-8xl font-bold tracking-tight mb-6 leading-[0.9] text-white drop-shadow-lg"
                     >
-                        SILENT <br className="hidden md:block" /> LUXURY
+                        SILENT <br className="hidden lg:block" /> LUXURY
                     </motion.h1>
 
                     <motion.div
@@ -59,7 +59,7 @@ export default function Hero() {
                         {/* Mobile Button: Solid White (Touch Optimized) */}
                         <button
                             onClick={scrollToCollection}
-                            className="md:hidden w-full max-w-xs bg-white text-black px-8 py-4 text-xs font-bold uppercase tracking-widest transition-transform hover:scale-105 active:scale-95 shadow-xl"
+                            className="lg:hidden w-full max-w-xs bg-white text-black px-8 py-4 text-xs font-bold uppercase tracking-widest transition-transform hover:scale-105 active:scale-95 shadow-xl"
                         >
                             Shop Collection
                         </button>
@@ -67,7 +67,7 @@ export default function Hero() {
                         {/* Desktop Button: Glass + Slide Animation (Mouse Optimized) */}
                         <button
                             onClick={scrollToCollection}
-                            className="hidden md:block group px-10 py-4 border border-white/80 text-white transition-all duration-300 tracking-[0.2em] text-sm font-bold uppercase backdrop-blur-sm relative overflow-hidden active:scale-95 shadow-lg"
+                            className="hidden lg:block group px-10 py-4 border border-white/80 text-white transition-all duration-300 tracking-[0.2em] text-sm font-bold uppercase backdrop-blur-sm relative overflow-hidden active:scale-95 shadow-lg"
                         >
                             <span className="relative z-10 group-hover:text-[#1A1A1A] transition-colors duration-300">Shop Collection</span>
                             <div className="absolute inset-0 bg-white transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-in-out z-0" />

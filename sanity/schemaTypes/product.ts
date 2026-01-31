@@ -33,6 +33,35 @@ export const product = {
             description: 'Optional label like "30% OFF"'
         },
         {
+            name: 'category',
+            title: 'Category',
+            type: 'string',
+            options: {
+                list: [
+                    { title: 'Knitwear', value: 'knitwear' },
+                    { title: 'Shirting', value: 'shirting' },
+                    { title: 'Trousers', value: 'trousers' },
+                    { title: 'Outerwear', value: 'outerwear' },
+                    { title: 'Footwear', value: 'footwear' },
+                    { title: 'Accessories', value: 'accessories' }
+                ]
+            },
+            validation: (Rule: any) => Rule.required()
+        },
+        {
+            name: 'description',
+            title: 'Description',
+            type: 'text',
+            rows: 3
+        },
+        {
+            name: 'imagePromptNote',
+            title: 'Image Prompt Note',
+            type: 'text',
+            rows: 2,
+            description: 'Internal note for image generation prompts'
+        },
+        {
             name: 'variants',
             title: 'Variants',
             type: 'array',
@@ -99,5 +128,12 @@ export const product = {
             of: [{ type: 'string' }],
             hidden: ({ document }: any) => document?.sizeType === 'onesize'
         },
+        {
+            name: 'pairsWellWith',
+            title: 'Pairs Well With',
+            type: 'array',
+            of: [{ type: 'reference', to: [{ type: 'product' }] }],
+            description: 'Select products that pair well with this item'
+        }
     ],
 }

@@ -2,37 +2,29 @@ import { NextResponse } from "next/server";
 import Razorpay from "razorpay";
 import shortid from "shortid";
 
+const instance = new Razorpay({
+    key_id: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
+    key_secret: process.env.RAZORPAY_KEY_SECRET!,
+});
+
 export async function POST(req: Request) {
-    const { amount } = await req.json();
+    const { amount } = await req.json(); // Amount in INR (e.g., 500 for ₹500)
 
-    // Initialize Razorpay
-    const razorpay = new Razorpay({
-        key_id: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
-        key_secret: process.env.RAZORPAY_KEY_SECRET!,
-    });
-
-    // Create Order Options
-    const payment_capture = 1;
-    const currency = "INR";
     const options = {
-        amount: (amount * 100).toString(), // Razorpay accepts smallest currency unit
-        currency,
+        amount: amount * 100, // Razorpay works in paise
+        currency: "INR",
         receipt: shortid.generate(),
-        payment_capture,
     };
 
     try {
-        const response = await razorpay.orders.create(options);
+        const order = await instance.orders.create(options);
         return NextResponse.json({
-            id: response.id,
-            currency: response.currency,
-            amount: response.amount,
+            id: order.id,
+            currency: order.currency,
+            amount: order.amount,
         });
     } catch (error) {
-        console.error("Razorpay Error:", error);
-        return NextResponse.json(
-            { message: "Unable to create order", error },
-            { status: 500 }
-        );
+        console.error(error);
+        return NextResponse.json({ error: "Order creation failed" }, { status: 500 });
     }
 }
