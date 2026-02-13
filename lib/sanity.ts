@@ -22,10 +22,11 @@ export async function getProducts() {
     "colors": variants[].colorHex,
     "discountLabel": "SAVE RS. " + (originalPrice - price),
     sizes,
-    sizeType
+    sizeType,
+    gender
   }`;
 
-    const products = await client.fetch(query);
+    const products = await client.fetch(query, {}, { cache: 'no-store' });
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return products.map((p: any) => ({
@@ -53,7 +54,9 @@ export async function getProduct(slug: string) {
     category,
     "discountLabel": "SAVE RS. " + (originalPrice - price),
     sizeType,
+    sizeType,
     sizes,
+    gender,
     variants[]{
         colorName,
         colorHex,
@@ -84,6 +87,7 @@ export async function getProduct(slug: string) {
         sizeType: product.sizeType || 'clothing',
         sizes: product.sizes || [],
         variants: product.variants || [],
+        gender: product.gender,
 
         // Legacy compatibility (optional, but good for grid components re-using type)
         images: defaultImages,

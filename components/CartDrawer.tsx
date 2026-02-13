@@ -53,8 +53,8 @@ const CartItemRow = ({ item, removeFromCart, updateQuantity, toggleWishlist, isI
                 style={{ x, touchAction: "pan-y" }}
                 drag="x"
                 dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={0.9} // Lighter feel
-                dragTransition={{ bounceStiffness: 400, bounceDamping: 40 }} // Snappy return
+                dragElastic={0.7} // Stiffer feel
+                dragTransition={{ bounceStiffness: 1000, bounceDamping: 100 }} // Near instant snap-back, no bounce
                 onDragEnd={() => {
                     const currentX = x.get();
                     if (currentX > 80) {
@@ -115,7 +115,7 @@ const CartItemRow = ({ item, removeFromCart, updateQuantity, toggleWishlist, isI
                     </div>
                 </div>
             </motion.div>
-        </div>
+        </div >
     );
 };
 
@@ -138,6 +138,13 @@ export default function CartDrawer() {
         phone: ""
     });
     const [paymentMethod, setPaymentMethod] = useState<'razorpay' | 'cod'>('razorpay');
+    const [errors, setErrors] = useState({
+        name: false,
+        street: false,
+        city: false,
+        zip: false,
+        phone: false
+    });
 
     const FREE_SHIPPING_THRESHOLD = 4999;
     const SHIPPING_COST = 70;
@@ -234,8 +241,17 @@ export default function CartDrawer() {
 
     const handleCheckout = async () => {
         // Validation
-        if (!address.name || !address.street || !address.city || !address.zip || !address.phone) {
-            alert("Please fill in all address fields.");
+        // Validation
+        const newErrors = {
+            name: !address.name,
+            street: !address.street,
+            city: !address.city,
+            zip: !address.zip,
+            phone: !address.phone
+        };
+
+        if (Object.values(newErrors).some(Boolean)) {
+            setErrors(newErrors);
             return;
         }
 
@@ -533,58 +549,143 @@ export default function CartDrawer() {
                         ) : (
                             <div className="flex-1 flex flex-col p-6 overflow-y-auto">
                                 <div className="space-y-4 flex-1">
-                                    <div>
-                                        <label className="block text-xs font-bold uppercase tracking-widest text-[#1A1A1A] mb-2">Full Name</label>
-                                        <input
-                                            type="text"
-                                            value={address.name}
-                                            onChange={(e) => setAddress({ ...address, name: e.target.value })}
-                                            className="w-full border-b border-neutral-300 py-2 text-sm focus:border-black outline-none bg-transparent"
-                                            placeholder="John Doe"
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-xs font-bold uppercase tracking-widest text-[#1A1A1A] mb-2">Street Address</label>
-                                        <input
-                                            type="text"
-                                            value={address.street}
-                                            onChange={(e) => setAddress({ ...address, street: e.target.value })}
-                                            className="w-full border-b border-neutral-300 py-2 text-sm focus:border-black outline-none bg-transparent"
-                                            placeholder="123 Fashion St"
-                                        />
-                                    </div>
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <div>
-                                            <label className="block text-xs font-bold uppercase tracking-widest text-[#1A1A1A] mb-2">City</label>
-                                            <input
+                                    <div className="space-y-6">
+                                        {/* Full Name */}
+                                        <div className="group">
+                                            <label className={`block text-xs font-bold uppercase tracking-widest mb-2 transition-colors ${errors.name ? 'text-red-600' : 'text-[#1A1A1A]'}`}>
+                                                Full Name
+                                            </label>
+                                            <motion.input
                                                 type="text"
-                                                value={address.city}
-                                                onChange={(e) => setAddress({ ...address, city: e.target.value })}
-                                                className="w-full border-b border-neutral-300 py-2 text-sm focus:border-black outline-none bg-transparent"
-                                                placeholder="New York"
+                                                value={address.name}
+                                                onChange={(e) => {
+                                                    setAddress({ ...address, name: e.target.value });
+                                                    if (errors.name) setErrors({ ...errors, name: false });
+                                                }}
+                                                animate={errors.name ? { x: [0, -10, 10, -5, 5, 0] } : {}}
+                                                transition={{ duration: 0.4 }}
+                                                className={`w-full border-b py-3 text-sm outline-none bg-transparent transition-all placeholder:text-neutral-400
+                                                    ${errors.name
+                                                        ? 'border-red-500 text-red-700 placeholder:text-red-300'
+                                                        : 'border-neutral-300 focus:border-black text-[#1A1A1A]'}`}
+                                                placeholder="John Doe"
                                             />
+                                            {errors.name && (
+                                                <span className="text-[10px] text-red-500 font-medium mt-1 block tracking-wide">
+                                                    Full Name is required
+                                                </span>
+                                            )}
                                         </div>
-                                        <div>
-                                            <label className="block text-xs font-bold uppercase tracking-widest text-[#1A1A1A] mb-2">ZIP Code</label>
-                                            <input
-                                                type="text"
-                                                value={address.zip}
-                                                onChange={(e) => setAddress({ ...address, zip: e.target.value })}
-                                                className="w-full border-b border-neutral-300 py-2 text-sm focus:border-black outline-none bg-transparent"
-                                                placeholder="10001"
-                                            />
-                                        </div>
-                                    </div>
 
-                                    <div>
-                                        <label className="block text-xs font-bold uppercase tracking-widest text-[#1A1A1A] mb-2">Phone Number</label>
-                                        <input
-                                            type="tel"
-                                            value={address.phone}
-                                            onChange={(e) => setAddress({ ...address, phone: e.target.value })}
-                                            className="w-full border-b border-neutral-300 py-2 text-sm focus:border-black outline-none bg-transparent"
-                                            placeholder="+91 99999 99999"
-                                        />
+                                        {/* Street Address */}
+                                        <div className="group">
+                                            <label className={`block text-xs font-bold uppercase tracking-widest mb-2 transition-colors ${errors.street ? 'text-red-600' : 'text-[#1A1A1A]'}`}>
+                                                Street Address
+                                            </label>
+                                            <motion.input
+                                                type="text"
+                                                value={address.street}
+                                                onChange={(e) => {
+                                                    setAddress({ ...address, street: e.target.value });
+                                                    if (errors.street) setErrors({ ...errors, street: false });
+                                                }}
+                                                animate={errors.street ? { x: [0, -10, 10, -5, 5, 0] } : {}}
+                                                transition={{ duration: 0.4 }}
+                                                className={`w-full border-b py-3 text-sm outline-none bg-transparent transition-all placeholder:text-neutral-400
+                                                    ${errors.street
+                                                        ? 'border-red-500 text-red-700 placeholder:text-red-300'
+                                                        : 'border-neutral-300 focus:border-black text-[#1A1A1A]'}`}
+                                                placeholder="123 Fashion St"
+                                            />
+                                            {errors.street && (
+                                                <span className="text-[10px] text-red-500 font-medium mt-1 block tracking-wide">
+                                                    Street address is required
+                                                </span>
+                                            )}
+                                        </div>
+
+                                        <div className="grid grid-cols-2 gap-6">
+                                            {/* City */}
+                                            <div className="group">
+                                                <label className={`block text-xs font-bold uppercase tracking-widest mb-2 transition-colors ${errors.city ? 'text-red-600' : 'text-[#1A1A1A]'}`}>
+                                                    City
+                                                </label>
+                                                <motion.input
+                                                    type="text"
+                                                    value={address.city}
+                                                    onChange={(e) => {
+                                                        setAddress({ ...address, city: e.target.value });
+                                                        if (errors.city) setErrors({ ...errors, city: false });
+                                                    }}
+                                                    animate={errors.city ? { x: [0, -10, 10, -5, 5, 0] } : {}}
+                                                    transition={{ duration: 0.4 }}
+                                                    className={`w-full border-b py-3 text-sm outline-none bg-transparent transition-all placeholder:text-neutral-400
+                                                        ${errors.city
+                                                            ? 'border-red-500 text-red-700 placeholder:text-red-300'
+                                                            : 'border-neutral-300 focus:border-black text-[#1A1A1A]'}`}
+                                                    placeholder="New York"
+                                                />
+                                                {errors.city && (
+                                                    <span className="text-[10px] text-red-500 font-medium mt-1 block tracking-wide">
+                                                        City is required
+                                                    </span>
+                                                )}
+                                            </div>
+
+                                            {/* ZIP Code */}
+                                            <div className="group">
+                                                <label className={`block text-xs font-bold uppercase tracking-widest mb-2 transition-colors ${errors.zip ? 'text-red-600' : 'text-[#1A1A1A]'}`}>
+                                                    ZIP Code
+                                                </label>
+                                                <motion.input
+                                                    type="text"
+                                                    value={address.zip}
+                                                    onChange={(e) => {
+                                                        setAddress({ ...address, zip: e.target.value });
+                                                        if (errors.zip) setErrors({ ...errors, zip: false });
+                                                    }}
+                                                    animate={errors.zip ? { x: [0, -10, 10, -5, 5, 0] } : {}}
+                                                    transition={{ duration: 0.4 }}
+                                                    className={`w-full border-b py-3 text-sm outline-none bg-transparent transition-all placeholder:text-neutral-400
+                                                        ${errors.zip
+                                                            ? 'border-red-500 text-red-700 placeholder:text-red-300'
+                                                            : 'border-neutral-300 focus:border-black text-[#1A1A1A]'}`}
+                                                    placeholder="10001"
+                                                />
+                                                {errors.zip && (
+                                                    <span className="text-[10px] text-red-500 font-medium mt-1 block tracking-wide">
+                                                        ZIP is required
+                                                    </span>
+                                                )}
+                                            </div>
+                                        </div>
+
+                                        {/* Phone Number */}
+                                        <div className="group">
+                                            <label className={`block text-xs font-bold uppercase tracking-widest mb-2 transition-colors ${errors.phone ? 'text-red-600' : 'text-[#1A1A1A]'}`}>
+                                                Phone Number
+                                            </label>
+                                            <motion.input
+                                                type="tel"
+                                                value={address.phone}
+                                                onChange={(e) => {
+                                                    setAddress({ ...address, phone: e.target.value });
+                                                    if (errors.phone) setErrors({ ...errors, phone: false });
+                                                }}
+                                                animate={errors.phone ? { x: [0, -10, 10, -5, 5, 0] } : {}}
+                                                transition={{ duration: 0.4 }}
+                                                className={`w-full border-b py-3 text-sm outline-none bg-transparent transition-all placeholder:text-neutral-400
+                                                    ${errors.phone
+                                                        ? 'border-red-500 text-red-700 placeholder:text-red-300'
+                                                        : 'border-neutral-300 focus:border-black text-[#1A1A1A]'}`}
+                                                placeholder="+91 99999 99999"
+                                            />
+                                            {errors.phone && (
+                                                <span className="text-[10px] text-red-500 font-medium mt-1 block tracking-wide">
+                                                    Phone is required
+                                                </span>
+                                            )}
+                                        </div>
                                     </div>
 
                                     {/* Payment Method Selection */}

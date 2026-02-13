@@ -53,8 +53,8 @@ const WishlistItemRow = ({ item, removeFromWishlist, addToCart }: any) => {
                 style={{ x, touchAction: "pan-y" }}
                 drag="x"
                 dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={0.9}
-                dragTransition={{ bounceStiffness: 400, bounceDamping: 40 }}
+                dragElastic={0.7}
+                dragTransition={{ bounceStiffness: 1000, bounceDamping: 100 }}
                 onDragEnd={() => {
                     const currentX = x.get();
                     if (currentX > 80) {

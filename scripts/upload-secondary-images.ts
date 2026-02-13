@@ -19,8 +19,12 @@ const client = createClient({
     useCdn: false,
 })
 
-// SECONDARY MAP: Product Only Images (Only the 6 success)
+// SECONDARY MAP: Product Only Images (Correction Phase)
 const secondaryImageMap: Record<string, string> = {
+    "The Pleated Chino": "flat_pleated_chino_navy_1770050721344.png",
+    "The Harrington": "flat_harrington_tan_1770050747796.png",
+    "The Diplomat Overcoat": "flat_diplomat_overcoat_black_1770050773729.png",
+    "The Weekender": "flat_weekender_cognac_1770050799646.png",
     "The Heritage Cable Knit": "flat_cable_knit_1769839631884.png",
     "The Noir Quarter-Zip": "flat_noir_zip_1769839651954.png",
     "The Cashmere Polo": "flat_cashmere_polo_1769839681001.png",
@@ -29,17 +33,28 @@ const secondaryImageMap: Record<string, string> = {
     "The Gurkha Trouser": "flat_gurkha_trouser_1769839784073.png",
 }
 
-const ARTIFACTS_DIR = "/Users/uditsharma/.gemini/antigravity/brain/60c7ea9b-3177-4b12-8a7c-956138ea2356"
+const ARTIFACT_DIRS = [
+    "/Users/uditsharma/.gemini/antigravity/brain/60c7ea9b-3177-4b12-8a7c-956138ea2356",
+    "/Users/uditsharma/.gemini/antigravity/brain/d39e1348-70d3-427e-a75b-a1f9a71e451b"
+]
 
 async function uploadSecondaryImages() {
     console.log('🚀 Starting secondary image upload...')
 
     for (const [title, filename] of Object.entries(secondaryImageMap)) {
         console.log(`\nProcessing: ${title}`)
-        const filePath = path.join(ARTIFACTS_DIR, filename)
 
-        if (!fs.existsSync(filePath)) {
-            console.warn(`⚠️ File not found: ${filePath}`)
+        let filePath = ''
+        for (const dir of ARTIFACT_DIRS) {
+            const attemptPath = path.join(dir, filename)
+            if (fs.existsSync(attemptPath)) {
+                filePath = attemptPath
+                break
+            }
+        }
+
+        if (!filePath) {
+            console.warn(`⚠️ File not found in any artifact dir: ${filename}`)
             continue
         }
 

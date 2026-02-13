@@ -1,0 +1,492 @@
+[
+  {
+    "_createdAt": "2026-02-11T22:29:28Z",
+    "_id": "bPN7Yv4qzoudhI02TyDOvw",
+    "_rev": "fNpjBg5NIy1MdZPKJ24PNc",
+    "_type": "product",
+    "_updatedAt": "2026-02-13T22:16:51Z",
+    "category": "knitwear",
+    "description": "Nautical sophistication for the modern gentleman. Features a classic Navy Double-Breasted Blazer, White Chinos, Oxford Shirt, and Boat Shoes.",
+    "gender": "man",
+    "imagePromptNote": "Navy blue double-breasted blazer, white chinos, light blue oxford shirt, brown leather boat shoes.",
+    "originalPrice": 52000,
+    "price": 45000,
+    "sizeType": "clothing",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "slug": {
+      "_type": "slug",
+      "current": "the-yacht-club-edit"
+    },
+    "title": "The Yacht Club Edit",
+    "variants": [
+      {
+        "_key": "var1",
+        "colorHex": "#000080",
+        "colorName": "Navy & White",
+        "images": [
+          {
+            "_type": "image",
+            "asset": {
+              "_ref": "image-cd40b22f48d27f8df56a4f2bbda78e9a1c27faee-1024x1024-jpg",
+              "_type": "reference"
+            }
+          },
+          {
+            "_type": "image",
+            "asset": {
+              "_ref": "image-6a58f46e62f401f19ca491891c1963eff2877bc7-640x640-jpg",
+              "_type": "reference"
+            }
+          }
+        ],
+        "stock": 5
+      }
+    ]
+  },
+  {
+    "_createdAt": "2026-02-11T22:31:08Z",
+    "_id": "bPN7Yv4qzoudhI02TyDcCW",
+    "_rev": "Ml9aFZ4Lpb2mA1nHQQAbO0",
+    "_type": "product",
+    "_updatedAt": "2026-02-13T22:16:59Z",
+    "category": "suits",
+    "description": "Grecian minimalism. Features a White Silk-Linen Suit and Grecian Leather Sandals.",
+    "gender": "man",
+    "imagePromptNote": "White silk-linen suit, grecian leather sandals.",
+    "originalPrice": 62400,
+    "price": 52000,
+    "sizeType": "clothing",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "slug": {
+      "_type": "slug",
+      "current": "the-aegean-odyssey-edit"
+    },
+    "title": "The Aegean Odyssey Edit",
+    "variants": [
+      {
+        "_key": "var1",
+        "colorHex": "#FFFFFF",
+        "colorName": "White Monochrome",
+        "images": [
+          {
+            "_type": "image",
+            "asset": {
+              "_ref": "image-ccc3fa8811bf1e6e1312652f046c4f2f683b257b-640x640-jpg",
+              "_type": "reference"
+            }
+          },
+          {
+            "_type": "image",
+            "asset": {
+              "_ref": "image-b58024436714064c5028ddf4c3bf7668e8e07d3a-640x640-jpg",
+              "_type": "reference"
+            }
+          }
+        ],
+        "stock": 8
+      }
+    ]
+  },
+  {
+    "_createdAt": "2026-02-11T22:29:37Z",
+    "_id": "tnEqnIY0cceklr76i67Xuz",
+    "_rev": "Ml9aFZ4Lpb2mA1nHQQAc4z",
+    "_type": "product",
+    "_updatedAt": "2026-02-13T22:17:16Z",
+    "category": "knitwear",
+    "description": "Quintessential British style. Features a Cream Cable-Knit Cricket Sweater, Grey Wool Trousers, White Shirt, and Suede Chakra Boots.",
+    "gender": "man",
+    "imagePromptNote": "Cream cable-knit cricket sweater, grey wool trousers, white shirt, suede chukka boots.",
+    "originalPrice": 45000,
+    "price": 38000,
+    "sizeType": "clothing",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "slug": {
+      "_type": "slug",
+      "current": "the-polo-ground-edit"
+    },
+    "title": "The Polo Ground Edit",
+    "variants": [
+      {
+        "_key": "var1",
+        "colorHex": "#F5F5DC",
+        "colorName": "Cream & Grey",
+        "images": [
+          {
+            "_type": "image",
+            "asset": {
+              "_ref": "image-2ef2caeef79c737a32820b5545b63dc3f45541e4-1024x1024-jpg",
+              "_type": "reference"
+            }
+          },
+          {
+            "_type": "image",
+            "asset": {
+              "_ref": "image-d5f2dc07ab210ecfb332a1edec24665ddf388e78-640x640-jpg",
+              "_type": "reference"
+            }
+          }
+        ],
+        "stock": 5
+      }
+    ]
+  },
+  {
+    "_createdAt": "2026-02-11T22:29:43Z",
+    "_id": "tnEqnIY0cceklr76i67YwD",
+    "_rev": "eazXQSmIxsJdwzJ4u2UoOF",
+    "_type": "product",
+    "_updatedAt": "2026-02-13T22:17:19Z",
+    "category": "sets",
+    "description": "Mediterranean luxury, yacht club casual. Features a white linen button-down shirt, navy blue tailored swim shorts, brown leather espadrilles, and designer sunglasses.",
+    "gender": "man",
+    "imagePromptNote": "Man relaxing on a vintage wooden boat in the Mediterranean, white linen shirt, navy swim shorts.",
+    "originalPrice": 48000,
+    "price": 42000,
+    "sizeType": "clothing",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "slug": {
+      "_type": "slug",
+      "current": "the-riviera-retreat"
+    },
+    "title": "The Riviera Retreat",
+    "variants": [
+      {
+        "_key": "var1",
+        "colorHex": "#FFFFFF",
+        "colorName": "White & Navy",
+        "images": [
+          {
+            "_type": "image",
+            "asset": {
+              "_ref": "image-a2dd412d419f9cd65e68c7d6b8fe7b980f6e1ac0-640x640-jpg",
+              "_type": "reference"
+            }
+          },
+          {
+            "_type": "image",
+            "asset": {
+              "_ref": "image-78b7e68b387a5935610c59ff84060d486550e78a-640x640-jpg",
+              "_type": "reference"
+            }
+          }
+        ],
+        "stock": 5
+      }
+    ]
+  },
+  {
+    "_createdAt": "2026-02-11T22:30:03Z",
+    "_id": "tnEqnIY0cceklr76i67gWS",
+    "_rev": "Ml9aFZ4Lpb2mA1nHQQAcOp",
+    "_type": "product",
+    "_updatedAt": "2026-02-13T22:17:24Z",
+    "category": "sets",
+    "description": "Italian summer evening, relaxed elegance. Features a light blue linen shirt, beige Gurkha shorts, brown suede loafers, and sunglasses.",
+    "gender": "man",
+    "imagePromptNote": "Man enjoying aperitivo on terrace in Positano, light blue linen shirt, beige Gurkha shorts.",
+    "originalPrice": 46000,
+    "price": 40000,
+    "sizeType": "clothing",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "slug": {
+      "_type": "slug",
+      "current": "the-amalfi-aperitivo"
+    },
+    "title": "The Amalfi Aperitivo",
+    "variants": [
+      {
+        "_key": "var1",
+        "colorHex": "#ADD8E6",
+        "colorName": "Light Blue & Beige",
+        "images": [
+          {
+            "_type": "image",
+            "asset": {
+              "_ref": "image-e767743b6502562362ee3b8ce095d3784e65a2cf-640x640-jpg",
+              "_type": "reference"
+            }
+          },
+          {
+            "_type": "image",
+            "asset": {
+              "_ref": "image-6f8e488ce2dc86111edf645c8033adb589f7357b-640x640-jpg",
+              "_type": "reference"
+            }
+          }
+        ],
+        "stock": 5
+      }
+    ]
+  },
+  {
+    "_createdAt": "2026-02-11T22:30:39Z",
+    "_id": "tnEqnIY0cceklr76i67pFp",
+    "_rev": "fNpjBg5NIy1MdZPKJ24URA",
+    "_type": "product",
+    "_updatedAt": "2026-02-13T22:17:27Z",
+    "category": "outerwear",
+    "description": "Rugged refinement for the countryside. Features a Green Tweed Jacket, Tattersall Check Shirt, Moleskin Trousers, and Leather Brogue Boots.",
+    "gender": "man",
+    "imagePromptNote": "Green tweed jacket, tattersall check shirt, moleskin trousers, leather brogue boots.",
+    "originalPrice": 65000,
+    "price": 52000,
+    "sizeType": "clothing",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "slug": {
+      "_type": "slug",
+      "current": "the-highland-estate-edit"
+    },
+    "title": "The Highland Estate Edit",
+    "variants": [
+      {
+        "_key": "var1",
+        "colorHex": "#556B2F",
+        "colorName": "Green & Brown",
+        "images": [
+          {
+            "_type": "image",
+            "asset": {
+              "_ref": "image-664c53d3e278704c9dd9948466977da1e4a1df41-1024x1024-jpg",
+              "_type": "reference"
+            }
+          },
+          {
+            "_type": "image",
+            "asset": {
+              "_ref": "image-e351bd1292c238be510f1f5975f4d12bd1c4467f-640x640-jpg",
+              "_type": "reference"
+            }
+          }
+        ],
+        "stock": 5
+      }
+    ]
+  },
+  {
+    "_createdAt": "2026-02-11T22:30:50Z",
+    "_id": "tnEqnIY0cceklr76i67qyW",
+    "_rev": "eazXQSmIxsJdwzJ4u2UqC0",
+    "_type": "product",
+    "_updatedAt": "2026-02-13T22:17:30Z",
+    "category": "outerwear",
+    "description": "Mountain luxury for the global jet-set. Features a Tan Shearling Coat, Grey Cashmere Sweater, Dark Wool Trousers.",
+    "gender": "man",
+    "imagePromptNote": "Tan shearling coat, grey cashmere sweater, dark wool trousers.",
+    "originalPrice": 102000,
+    "price": 85000,
+    "sizeType": "clothing",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "slug": {
+      "_type": "slug",
+      "current": "the-aspen-chalet-edit"
+    },
+    "title": "The Aspen Chalet Edit",
+    "variants": [
+      {
+        "_key": "var1",
+        "colorHex": "#D2B48C",
+        "colorName": "Tan & Grey",
+        "images": [
+          {
+            "_type": "image",
+            "asset": {
+              "_ref": "image-d4d1edd162daefb993f13b8924eef0ea011734e4-640x640-jpg",
+              "_type": "reference"
+            }
+          },
+          {
+            "_type": "image",
+            "asset": {
+              "_ref": "image-ed552f83840c4814bad856053053b8278b4c7b26-640x640-jpg",
+              "_type": "reference"
+            }
+          }
+        ],
+        "stock": 8
+      }
+    ]
+  },
+  {
+    "_createdAt": "2026-02-11T22:30:56Z",
+    "_id": "tnEqnIY0cceklr76i67s3h",
+    "_rev": "fNpjBg5NIy1MdZPKJ24VJM",
+    "_type": "product",
+    "_updatedAt": "2026-02-13T22:17:33Z",
+    "category": "blazers",
+    "description": "Intellectual charm. Features a Brown Corduroy Blazer, Fair Isle Knit Vest, and White Oxford Shirt.",
+    "gender": "man",
+    "imagePromptNote": "Brown corduroy blazer, fair isle vest, white oxford shirt.",
+    "originalPrice": 50400,
+    "price": 42000,
+    "sizeType": "clothing",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "slug": {
+      "_type": "slug",
+      "current": "the-oxford-scholar-edit"
+    },
+    "title": "The Oxford Scholar Edit",
+    "variants": [
+      {
+        "_key": "var1",
+        "colorHex": "#8B4513",
+        "colorName": "Brown & White",
+        "images": [
+          {
+            "_type": "image",
+            "asset": {
+              "_ref": "image-f86e08fbf8f562ede46c9be957f8658357354804-640x640-jpg",
+              "_type": "reference"
+            }
+          },
+          {
+            "_type": "image",
+            "asset": {
+              "_ref": "image-5f6b95d5efaee0aab29ee05a829f7cecc13c75d1-640x640-jpg",
+              "_type": "reference"
+            }
+          }
+        ],
+        "stock": 8
+      }
+    ]
+  },
+  {
+    "_createdAt": "2026-02-11T22:31:03Z",
+    "_id": "tnEqnIY0cceklr76i67tqL",
+    "_rev": "fNpjBg5NIy1MdZPKJ24Vga",
+    "_type": "product",
+    "_updatedAt": "2026-02-13T22:17:37Z",
+    "category": "shirts",
+    "description": "Evening in Venice. Features a Striped Linen Shirt, Cream Trousers, and Velvet Loafers.",
+    "gender": "man",
+    "imagePromptNote": "Striped linen shirt, cream trousers, velvet loafers.",
+    "originalPrice": 54000,
+    "price": 45000,
+    "sizeType": "clothing",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "slug": {
+      "_type": "slug",
+      "current": "the-venetian-gondola-edit"
+    },
+    "title": "The Venetian Gondola Edit",
+    "variants": [
+      {
+        "_key": "var1",
+        "colorHex": "#F5F5DC",
+        "colorName": "Striped & Cream",
+        "images": [
+          {
+            "_type": "image",
+            "asset": {
+              "_ref": "image-bbd94db552de23f7c5ba1818359ed56bc9d5f538-640x640-jpg",
+              "_type": "reference"
+            }
+          },
+          {
+            "_type": "image",
+            "asset": {
+              "_ref": "image-7d08a6d645aed5694face186e34a2a4b75d1ee6b-640x640-jpg",
+              "_type": "reference"
+            }
+          }
+        ],
+        "stock": 8
+      }
+    ]
+  },
+  {
+    "_createdAt": "2026-02-11T22:31:32Z",
+    "_id": "tnEqnIY0cceklr76i68AfZ",
+    "_rev": "eazXQSmIxsJdwzJ4u2Uqtc",
+    "_type": "product",
+    "_updatedAt": "2026-02-13T22:17:40Z",
+    "category": "knitwear",
+    "description": "The ultimate summer sophisticated look. Includes the Monte Carlo Knit Polo, Marrakech Linen Trousers, Suede Loafers, and Leather Belt.",
+    "gender": "man",
+    "imagePromptNote": "Professional fashion flat lay of a 4-piece summer outfit. Minimalist, high-end 'Old Money' aesthetic.",
+    "originalPrice": 35000,
+    "price": 28500,
+    "sizeType": "clothing",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "slug": {
+      "_type": "slug",
+      "current": "mediterranean-retreat-edit"
+    },
+    "title": "The Mediterranean Retreat Edit",
+    "variants": [
+      {
+        "_key": "var1",
+        "colorHex": "#F5F5DC",
+        "colorName": "Beige & Cream",
+        "images": [
+          {
+            "_type": "image",
+            "asset": {
+              "_ref": "image-a929e8a0b98140c9555bb3df77b3f3452ba7006a-1024x1024-jpg",
+              "_type": "reference"
+            }
+          },
+          {
+            "_type": "image",
+            "asset": {
+              "_ref": "image-42bc9bfb0ea58238d4e5774767396dcd895157af-640x640-jpg",
+              "_type": "reference"
+            }
+          }
+        ],
+        "stock": 5
+      }
+    ]
+  }
+]

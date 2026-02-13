@@ -177,18 +177,8 @@ async function seed() {
             slug: { _type: 'slug', current: p.name.toLowerCase().replace(/ /g, '-').replace(/[^\w-]/g, '') },
             price: p.price,
             originalPrice: p.price * 1.2, // Fake markup
-            description: p.description, // Note: Schema doesn't strictly adhere to description field in top level but usually it's good practice. Wait, checking schema... Schema HAS NO description field at top level, but some queries use it. I will add it to schema later if needed, but for now I will add it to the doc. Actually looking at schema types, it had 'title', 'slug', 'price' etc. No description. I should ADD description to schema first or just put it in. Sanity allows extra fields.
-            // Actually the user schema provided in previous turn DID NOT show description.
-            // But the Requirement says "Crucial: Each product must have a unique description".
-            // I will add 'description' to the document. It might not show in Studio unless schema is updated, but data will be there.
-
-            category: p.category, // Schema doesn't have category field? Wait.
-            // Reviewing schema/product.ts...
-            // It has: title, slug, price, originalPrice, discountLabel, variants, sizeType, sizes, pairsWellWith.
-            // IT DOES NOT HAVE 'category' or 'description'.
-            // I MUST UPDATE SCHEMA FIRST.
-            // For now, I will write this script to populate them, and then I will update the schema.
-
+            description: p.description,
+            category: p.category,
             sizeType,
             sizes,
             variants: [

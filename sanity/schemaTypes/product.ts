@@ -33,6 +33,20 @@ export const product = {
             description: 'Optional label like "30% OFF"'
         },
         {
+            name: 'gender',
+            title: 'Gender',
+            type: 'string',
+            options: {
+                list: [
+                    { title: 'Men', value: 'man' },
+                    { title: 'Women', value: 'woman' },
+                    { title: 'Unisex', value: 'unisex' }
+                ],
+                layout: 'radio'
+            },
+            initialValue: 'man'
+        },
+        {
             name: 'category',
             title: 'Category',
             type: 'string',
@@ -41,6 +55,8 @@ export const product = {
                     { title: 'Knitwear', value: 'knitwear' },
                     { title: 'Shirting', value: 'shirting' },
                     { title: 'Trousers', value: 'trousers' },
+                    { title: 'Shorts', value: 'shorts' },
+                    { title: 'Swimwear', value: 'swimwear' },
                     { title: 'Outerwear', value: 'outerwear' },
                     { title: 'Footwear', value: 'footwear' },
                     { title: 'Accessories', value: 'accessories' }

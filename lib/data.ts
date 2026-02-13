@@ -29,6 +29,7 @@ export interface Product {
     sizes?: string[];
     variants?: Variant[];
     imagePromptNote?: string;
+    gender?: 'man' | 'woman' | 'unisex';
 }
 
 export const products: Product[] = [
