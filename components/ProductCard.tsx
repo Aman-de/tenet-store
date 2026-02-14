@@ -93,51 +93,12 @@ export default function ProductCard({ product }: ProductCardProps) {
                     {/* Discount Badge - Minimalist */}
                     {product.discountLabel && (
                         <div className="absolute top-2 left-2 bg-white/90 backdrop-blur-sm text-black text-[10px] font-medium px-2 py-1 uppercase tracking-widest z-20">
-                            {product.discountLabel.replace("SAVE RS. ", "-").replace(" off", "")}
+                            {product.discountLabel.replace("SAVE RS. ", "-").replace("SAVE ₹", "-").replace(" off", "")}
                         </div>
                     )}
 
-                    {/* Quick Add Overlay Button - Responsive */}
-                    <div className="absolute bottom-4 left-4 right-4 z-30 flex justify-end md:justify-center overflow-hidden pointer-events-none">
-                        {/* Mobile: Small Icon Button */}
-                        <button
-                            onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                handleQuickAdd();
-                            }}
-                            className="
-                                md:hidden pointer-events-auto
-                                w-10 h-10 bg-white text-[#1A1A1A] rounded-full 
-                                flex items-center justify-center 
-                                active:scale-90 transition-all duration-200
-                            "
-                            aria-label="Add to cart"
-                            disabled={addingState !== 'idle'}
-                        >
-                            {addingState === 'idle' && <Plus size={20} strokeWidth={1.5} />}
-                            {addingState === 'adding' && <Loader2 size={18} className="animate-spin" />}
-                            {addingState === 'added' && <Check size={18} />}
-                        </button>
-
-                        {/* Desktop: Full Width Text Button */}
-                        <button
-                            onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                handleQuickAdd();
-                            }}
-                            className={`
-                                hidden md:block pointer-events-auto
-                                w-full bg-white text-[#1A1A1A] py-3 text-xs font-bold uppercase tracking-widest shadow-lg transition-all duration-300 ease-out rounded-full
-                                hover:bg-black hover:text-white
-                                transform ${addingState !== 'idle' ? 'translate-y-0' : 'translate-y-[120%] group-hover:translate-y-0'}
-                            `}
-                            disabled={addingState !== 'idle'}
-                        >
-                            {addingState === 'idle' ? "Quick Add +" : (addingState === 'adding' ? "Adding..." : "Added")}
-                        </button>
-                    </div>
+                    {/* Quick Add Overlay Button - REMOVED per user request */}
+                    {/* <div className="absolute bottom-4 left-4 right-4 z-30 flex justify-end md:justify-center overflow-hidden pointer-events-none">...</div> */}
 
                     {/* Share Button */}
                     <div
