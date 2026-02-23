@@ -40,7 +40,8 @@ export async function getProducts() {
         colors: p.colors || [],
         discountLabel: p.discountLabel || (p.originalPrice && p.price ? `SAVE RS. ${p.originalPrice - p.price}` : null),
         sizes: p.sizes || [],
-        sizeType: p.sizeType
+        sizeType: p.sizeType,
+        gender: p.gender
     }));
 }
 
@@ -106,7 +107,8 @@ export async function getRecommendedProducts(category: string, currentSlug: stri
     "hoverImageUrl": variants[0].images[1].asset->url,
     category,
     "colors": variants[].colorHex,
-    "discountLabel": "SAVE RS. " + (originalPrice - price)
+    "discountLabel": "SAVE RS. " + (originalPrice - price),
+    gender
   }`;
 
     const products = await client.fetch(query, { category, currentSlug });
@@ -121,7 +123,8 @@ export async function getRecommendedProducts(category: string, currentSlug: stri
         category: p.category,
         images: [p.imageUrl, p.hoverImageUrl].filter(Boolean),
         colors: p.colors || [],
-        discountLabel: p.discountLabel || (p.originalPrice && p.price ? `SAVE RS. ${p.originalPrice - p.price}` : null)
+        discountLabel: p.discountLabel || (p.originalPrice && p.price ? `SAVE RS. ${p.originalPrice - p.price}` : null),
+        gender: p.gender
     }));
 }
 
@@ -191,7 +194,8 @@ export async function getCollection(slug: string) {
         "colors": variants[].colorHex,
         "discountLabel": "SAVE RS. " + (originalPrice - price),
         sizes,
-        sizeType
+        sizeType,
+        gender
     }
   }`;
 
@@ -211,7 +215,8 @@ export async function getCollection(slug: string) {
         colors: p.colors || [],
         discountLabel: p.discountLabel || (p.originalPrice && p.price ? `SAVE RS. ${p.originalPrice - p.price}` : null),
         sizes: p.sizes || [],
-        sizeType: p.sizeType
+        sizeType: p.sizeType,
+        gender: p.gender
     }));
 
     return {
@@ -240,7 +245,8 @@ export async function getCartUpsells(cartProductIds: string[]) {
     "colors": variants[].colorHex,
     "discountLabel": "SAVE RS. " + (originalPrice - price),
     sizeType,
-    sizes
+    sizes,
+    gender
   }`;
 
     const products = await client.fetch(query, { cartProductIds });
@@ -261,7 +267,8 @@ export async function getCartUpsells(cartProductIds: string[]) {
         colors: p.colors || [],
         discountLabel: p.discountLabel || (p.originalPrice && p.price ? `SAVE RS. ${p.originalPrice - p.price}` : null),
         sizeType: p.sizeType,
-        sizes: p.sizes
+        sizes: p.sizes,
+        gender: p.gender
     }));
 }
 
@@ -284,7 +291,8 @@ export async function searchProducts(searchTerm: string) {
     "colors": variants[].colorHex,
     "discountLabel": "SAVE RS. " + (originalPrice - price),
     sizeType,
-    sizes
+    sizes,
+    gender
   }`;
 
     const products = await client.fetch(query, { searchTerm });
@@ -301,6 +309,7 @@ export async function searchProducts(searchTerm: string) {
         colors: p.colors || [],
         discountLabel: p.discountLabel || (p.originalPrice && p.price ? `SAVE RS. ${p.originalPrice - p.price}` : null),
         sizeType: p.sizeType,
-        sizes: p.sizes
+        sizes: p.sizes,
+        gender: p.gender
     }));
 }
