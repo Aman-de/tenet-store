@@ -85,11 +85,20 @@ export const useStore = create<StoreState>()(
                         newCart[existingIndex].quantity += 1;
                         return { cart: newCart };
                     } else {
+                        // Determine the correct image based on selected color
+                        let itemImages = product.images;
+                        if (color && product.variants) {
+                            const matchedVariant = product.variants.find(v => v.colorHex === color || v.colorName === color);
+                            if (matchedVariant && matchedVariant.images && matchedVariant.images.length > 0) {
+                                itemImages = matchedVariant.images;
+                            }
+                        }
+
                         // Add new item
                         return {
                             cart: [
                                 ...state.cart,
-                                { ...product, quantity: 1, selectedSize: size, selectedColor: color }
+                                { ...product, images: itemImages, quantity: 1, selectedSize: size, selectedColor: color }
                             ],
                             // isCartOpen: true  <-- Removed to prevent auto-open
                         };
@@ -162,7 +171,17 @@ export const useStore = create<StoreState>()(
             clearWishlist: () => set({ wishlist: [] }),
 
             // --- Direct Checkout Implementation ---
-            setCheckoutItem: (item) => set({ checkoutItem: item, isCartOpen: true, isWishlistOpen: false }), // Auto open cart/drawer
+            setCheckoutItem: (item) => {
+                // Determine the correct image based on selected color
+                let itemImages = item.images;
+                if (item.selectedColor && item.variants) {
+                    const matchedVariant = item.variants.find(v => v.colorHex === item.selectedColor || v.colorName === item.selectedColor);
+                    if (matchedVariant && matchedVariant.images && matchedVariant.images.length > 0) {
+                        itemImages = matchedVariant.images;
+                    }
+                }
+                set({ checkoutItem: { ...item, images: itemImages }, isCartOpen: true, isWishlistOpen: false });
+            },
             clearCheckoutItem: () => set({ checkoutItem: null }),
             updateCheckoutItemQuantity: (delta) => {
                 set((state) => {
