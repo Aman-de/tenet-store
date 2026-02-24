@@ -4,13 +4,20 @@ import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { ShoppingBag, Truck, CheckCircle, Clock, ChevronLeft } from "lucide-react";
+import { ShoppingBag, Truck, CheckCircle, Clock, ChevronLeft, XCircle } from "lucide-react";
 
 export const revalidate = 0; // Dynamic rendering
 
 // Helper for Status Badge
 const StatusBadge = ({ status }: { status: string }) => {
     switch (status.toLowerCase()) {
+        case 'cancelled':
+            return (
+                <span className="flex items-center gap-1.5 px-3 py-1 bg-red-50 text-red-700 text-[10px] font-bold uppercase tracking-wider rounded-full border border-red-100">
+                    <XCircle className="w-3 h-3" />
+                    Cancelled
+                </span>
+            );
         case 'delivered':
             return (
                 <span className="flex items-center gap-1.5 px-3 py-1 bg-green-50 text-green-700 text-[10px] font-bold uppercase tracking-wider rounded-full border border-green-100">
@@ -43,6 +50,8 @@ const StatusBadge = ({ status }: { status: string }) => {
 };
 
 const OrderStepper = ({ status }: { status: string }) => {
+    if (status.toLowerCase() === 'cancelled') return null;
+
     const steps = ['pending', 'processing', 'shipped', 'delivered'];
     const currentStepIndex = steps.indexOf(status.toLowerCase());
 
@@ -136,13 +145,14 @@ export default async function OrdersPage() {
                             const now = new Date();
                             const diffInHours = (now.getTime() - created.getTime()) / (1000 * 60 * 60);
 
-                            let derivedStatus = 'pending';
-                            if (diffInHours >= 48) derivedStatus = 'delivered';
-                            else if (diffInHours >= 24) derivedStatus = 'shipped';
-                            else if (diffInHours >= 12) derivedStatus = 'processing';
+                            let displayStatus = order.status || 'pending';
 
-                            // Override DB status for simulation (unless cancelled, if supported later)
-                            const displayStatus = derivedStatus;
+                            // Only simulate progression if the admin hasn't cancelled it
+                            if (displayStatus !== 'cancelled') {
+                                if (diffInHours >= 48) displayStatus = 'delivered';
+                                else if (diffInHours >= 24) displayStatus = 'shipped';
+                                else if (diffInHours >= 12) displayStatus = 'processing';
+                            }
 
                             return (
                                 <div key={order._id} className="bg-white border border-neutral-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">

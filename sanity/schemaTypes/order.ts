@@ -64,6 +64,7 @@ export const order = defineType({
                     { title: 'Processing', value: 'processing' },
                     { title: 'Shipped', value: 'shipped' },
                     { title: 'Delivered', value: 'delivered' },
+                    { title: 'Cancelled', value: 'cancelled' },
                 ],
                 layout: 'radio',
             },
