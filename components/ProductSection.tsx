@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Product } from "@/lib/data";
 import CategoryFilter from "./CategoryFilter";
 import SortedProductGrid from "./SortedProductGrid";
@@ -24,16 +24,30 @@ export default function ProductSection({ products }: ProductSectionProps) {
         // Get the top position of the section relative to viewport, plus scroll offset
         const sectionTop = sectionRef.current.offsetTop;
 
-        // We want it to become sticky when we scroll PAST the header area
-        // roughly 200px into the section
-        const stickyThreshold = sectionTop + 150;
+        // We want it to be sticky WHEN WE ARE ABOVE the section (e.g. in the Hero)
+        // And un-stick (become relative) once we scroll down INTO the New Arrivals section
+        // We'll unstick it shortly before the title hits the top to make it look like it docks
+        const stickyThreshold = sectionTop - 100;
 
-        if (latest > stickyThreshold && !isSticky) {
+        if (latest < stickyThreshold && !isSticky) {
             setIsSticky(true);
-        } else if (latest <= stickyThreshold && isSticky) {
+        } else if (latest >= stickyThreshold && isSticky) {
             setIsSticky(false);
         }
     });
+
+    // On initial mount, check if we should be sticky
+    // (In case they reload halfway down the page)
+    const [hasMounted, setHasMounted] = useState(false);
+
+    useEffect(() => {
+        setHasMounted(true);
+        if (sectionRef.current) {
+            const sectionTop = sectionRef.current.offsetTop;
+            const stickyThreshold = sectionTop - 100;
+            setIsSticky(window.scrollY < stickyThreshold);
+        }
+    }, []);
 
     // Filter products based on gender
     // Default to 'man' if gender is missing (legacy data safety)
@@ -41,9 +55,9 @@ export default function ProductSection({ products }: ProductSectionProps) {
 
     // Filter Toggle Component
     const FilterToggle = () => (
-        <div className={`flex items-center bg-white/80 backdrop-blur-md rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-neutral-200 p-1.5 transition-all duration-300 ${isSticky
-                ? 'fixed bottom-[85px] md:bottom-10 left-1/2 -translate-x-1/2 z-[100]'
-                : 'relative z-10 mx-auto w-fit mb-8'
+        <div className={`flex items-center bg-white/80 backdrop-blur-md rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-neutral-200 p-1.5 transition-all duration-300 ${(!hasMounted || isSticky)
+            ? 'fixed top-24 md:top-32 left-1/2 -translate-x-1/2 z-[100]'
+            : 'relative z-10 mx-auto w-fit mb-8'
             }`}>
             <button
                 onClick={() => setActiveGender('man')}
