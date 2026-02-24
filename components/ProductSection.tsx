@@ -27,35 +27,33 @@ export default function ProductSection({ products }: ProductSectionProps) {
                     New Arrivals
                 </h2>
 
-                {/* Gender Filter Tabs */}
-                <div className="flex items-center gap-8 mb-8 border-b border-neutral-200">
+                {/* Gender Filter Tabs - Now a fixed floating pill */}
+                <div className="fixed bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 z-[100] bg-white/80 backdrop-blur-md rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-neutral-200 p-1.5 flex items-center">
                     <button
                         onClick={() => setActiveGender('man')}
-                        className={`text-sm tracking-[0.2em] uppercase pb-4 transition-colors relative ${activeGender === 'man'
-                            ? 'text-[#1A1A1A] font-medium'
-                            : 'text-neutral-400 hover:text-neutral-600'
+                        className={`relative w-28 py-2.5 text-xs font-bold tracking-[0.2em] uppercase rounded-full transition-colors z-10 ${activeGender === 'man' ? 'text-white' : 'text-neutral-500 hover:text-[#1A1A1A]'
                             }`}
                     >
                         Men
                         {activeGender === 'man' && (
                             <motion.div
-                                layoutId="activeTab"
-                                className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#1A1A1A]"
+                                layoutId="activeTabBackground"
+                                className="absolute inset-0 bg-[#1A1A1A] rounded-full -z-10"
+                                transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                             />
                         )}
                     </button>
                     <button
                         onClick={() => setActiveGender('woman')}
-                        className={`text-sm tracking-[0.2em] uppercase pb-4 transition-colors relative ${activeGender === 'woman'
-                            ? 'text-[#1A1A1A] font-medium'
-                            : 'text-neutral-400 hover:text-neutral-600'
+                        className={`relative w-28 py-2.5 text-xs font-bold tracking-[0.2em] uppercase rounded-full transition-colors z-10 ${activeGender === 'woman' ? 'text-white' : 'text-neutral-500 hover:text-[#1A1A1A]'
                             }`}
                     >
                         Women
                         {activeGender === 'woman' && (
                             <motion.div
-                                layoutId="activeTab"
-                                className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#1A1A1A]"
+                                layoutId="activeTabBackground"
+                                className="absolute inset-0 bg-[#1A1A1A] rounded-full -z-10"
+                                transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                             />
                         )}
                     </button>
