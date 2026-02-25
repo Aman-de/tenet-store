@@ -111,7 +111,7 @@ export async function getRecommendedProducts(category: string, currentSlug: stri
     gender
   }`;
 
-    const products = await client.fetch(query, { category, currentSlug });
+    const products = await client.fetch(query, { category, currentSlug }, { cache: 'no-store' });
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return products.map((p: any) => ({
@@ -138,7 +138,7 @@ export async function getReviews(productId: string) {
     _createdAt
   }`;
 
-    const reviews = await client.fetch(query, { productId });
+    const reviews = await client.fetch(query, { productId }, { cache: 'no-store' });
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return reviews.map((r: any) => ({
@@ -160,7 +160,7 @@ export async function getCollections() {
     filterTag
   }`;
 
-    const collections = await client.fetch(query);
+    const collections = await client.fetch(query, {}, { cache: 'no-store' });
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return collections.map((c: any) => ({
@@ -182,7 +182,7 @@ export async function getCollection(slug: string) {
     "imageUrl": image.asset->url,
     description,
     sizeType,
-    "products": products[]->{
+    "products": *[_type == "product" && category == ^.filterTag]{
         _id,
         title,
         "slug": slug.current,
@@ -199,7 +199,7 @@ export async function getCollection(slug: string) {
     }
   }`;
 
-    const collection = await client.fetch(query, { slug });
+    const collection = await client.fetch(query, { slug }, { cache: 'no-store' });
 
     if (!collection) return null;
 
@@ -249,7 +249,7 @@ export async function getCartUpsells(cartProductIds: string[]) {
     gender
   }`;
 
-    const products = await client.fetch(query, { cartProductIds });
+    const products = await client.fetch(query, { cartProductIds }, { cache: 'no-store' });
 
     // Filter out nulls and deduplicate
     const validProducts = products.filter((p: any) => p && p._id);
@@ -295,7 +295,7 @@ export async function searchProducts(searchTerm: string) {
     gender
   }`;
 
-    const products = await client.fetch(query, { searchTerm });
+    const products = await client.fetch(query, { searchTerm }, { cache: 'no-store' });
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return products.map((p: any) => ({

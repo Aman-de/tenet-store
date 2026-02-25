@@ -42,10 +42,11 @@ export const collection = {
         },
         {
             name: 'products',
-            title: 'Curated Products',
+            title: 'Legacy Products',
             type: 'array',
             of: [{ type: 'reference', to: [{ type: 'product' }] }],
-            description: 'Select the products you want to show in this collection.'
+            hidden: true,
+            readOnly: true
         },
         {
             name: 'sizeType',
