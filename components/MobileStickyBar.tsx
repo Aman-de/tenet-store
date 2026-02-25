@@ -61,9 +61,13 @@ export default function MobileStickyBar({ product, selectedVariant }: MobileStic
                         </div>
                         <button
                             onClick={handleAddToCart}
-                            className="bg-[#1A1A1A] text-white px-6 py-3 text-xs font-bold uppercase tracking-widest hover:bg-black active:scale-95 transition-all"
+                            disabled={product.isOutOfStock}
+                            className={`px-6 py-3 text-xs font-bold uppercase tracking-widest transition-all ${product.isOutOfStock
+                                    ? "bg-neutral-300 text-neutral-500 cursor-not-allowed"
+                                    : "bg-[#1A1A1A] text-white hover:bg-black active:scale-95"
+                                }`}
                         >
-                            Add
+                            {product.isOutOfStock ? "Sold Out" : "Add"}
                         </button>
                     </div>
                 </motion.div>

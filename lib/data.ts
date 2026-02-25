@@ -30,6 +30,7 @@ export interface Product {
     variants?: Variant[];
     imagePromptNote?: string;
     gender?: 'man' | 'woman' | 'unisex';
+    isOutOfStock?: boolean;
 }
 
 export const products: Product[] = [

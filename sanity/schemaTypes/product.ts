@@ -68,6 +68,13 @@ export const product = {
             validation: (Rule: any) => Rule.required()
         },
         {
+            name: 'isOutOfStock',
+            title: 'Out of Stock',
+            type: 'boolean',
+            description: 'Enable to mark this product as out of stock',
+            initialValue: false
+        },
+        {
             name: 'description',
             title: 'Description',
             type: 'text',

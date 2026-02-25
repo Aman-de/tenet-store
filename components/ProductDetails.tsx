@@ -175,6 +175,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
     };
 
     const handleAddToCart = () => {
+        if (product.isOutOfStock) return;
         const selection = validateSelection();
         if (selection) {
             addToCart(product, selection.size, selection.color);
@@ -183,6 +184,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
     }
 
     const handleBuyNow = () => {
+        if (product.isOutOfStock) return;
         const selection = validateSelection();
         if (selection) {
             setCheckoutItem({
@@ -321,7 +323,8 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 <div className="flex items-center gap-4 mb-4">
                     {product.originalPrice && <span className="text-neutral-400 line-through text-lg">₹{product.originalPrice.toLocaleString('en-IN')}</span>}
                     <span className="text-2xl text-[#1A1A1A]">₹{product.price.toLocaleString('en-IN')}</span>
-                    {product.discountLabel && <span className="text-xs bg-black text-white px-2 py-1 uppercase">{product.discountLabel}</span>}
+                    {product.discountLabel && !product.isOutOfStock && <span className="text-xs bg-black text-white px-2 py-1 uppercase">{product.discountLabel}</span>}
+                    {product.isOutOfStock && <span className="text-xs bg-red-600 text-white px-2 py-1 uppercase font-bold tracking-widest">Out of Stock</span>}
                 </div>
 
                 {/* Rating Mini Summary */}
@@ -427,15 +430,27 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                     <div className="flex-1 flex flex-col gap-3">
                         <button
                             onClick={handleAddToCart}
-                            className="w-full bg-white text-[#1A1A1A] border border-[#1A1A1A] py-4 font-sans uppercase tracking-widest hover:bg-neutral-50 transition-all text-sm font-bold active:scale-[0.99]"
+                            disabled={product.isOutOfStock}
+                            className={cn(
+                                "w-full py-4 font-sans uppercase tracking-widest transition-all text-sm font-bold border",
+                                product.isOutOfStock
+                                    ? "bg-neutral-100 text-neutral-400 border-neutral-200 cursor-not-allowed"
+                                    : "bg-white text-[#1A1A1A] border-[#1A1A1A] hover:bg-neutral-50 active:scale-[0.99]"
+                            )}
                         >
-                            Add to Cart
+                            {product.isOutOfStock ? "Out of Stock" : "Add to Cart"}
                         </button>
                         <button
                             onClick={handleBuyNow}
-                            className="w-full bg-[#1A1A1A] text-white py-4 font-sans uppercase tracking-widest hover:bg-black transition-all text-sm font-bold shadow-md hover:shadow-lg active:scale-[0.99]"
+                            disabled={product.isOutOfStock}
+                            className={cn(
+                                "w-full py-4 font-sans uppercase tracking-widest transition-all text-sm font-bold shadow-md",
+                                product.isOutOfStock
+                                    ? "bg-neutral-300 text-neutral-500 cursor-not-allowed hidden" // Optionally hide Buy Now entirely
+                                    : "bg-[#1A1A1A] text-white hover:bg-black hover:shadow-lg active:scale-[0.99]"
+                            )}
                         >
-                            Buy Now
+                            {product.isOutOfStock ? "Unavailable" : "Buy Now"}
                         </button>
                     </div>
                     {/* Wishlist Button */}

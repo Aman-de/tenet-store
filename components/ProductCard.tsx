@@ -20,7 +20,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
 
     const handleQuickAdd = () => {
-        if (addingState !== 'idle') return;
+        if (addingState !== 'idle' || product.isOutOfStock) return;
 
         setAddingState('adding');
 
@@ -91,9 +91,16 @@ export default function ProductCard({ product }: ProductCardProps) {
                     </AnimatePresence>
 
                     {/* Discount Badge - Minimalist */}
-                    {product.discountLabel && (
+                    {product.discountLabel && !product.isOutOfStock && (
                         <div className="absolute top-2 left-2 bg-white/90 backdrop-blur-sm text-black text-[10px] font-medium px-2 py-1 uppercase tracking-widest z-20">
                             {product.discountLabel.replace("SAVE RS. ", "-").replace("SAVE ₹", "-").replace(" off", "")}
+                        </div>
+                    )}
+
+                    {/* Out of Stock Badge */}
+                    {product.isOutOfStock && (
+                        <div className="absolute top-2 left-2 bg-black/90 backdrop-blur-sm text-white text-[10px] font-medium px-2 py-1 uppercase tracking-widest z-20">
+                            Out of Stock
                         </div>
                     )}
 
@@ -113,11 +120,17 @@ export default function ProductCard({ product }: ProductCardProps) {
                                 active:scale-90 transition-all duration-200
                             "
                             aria-label="Add to cart"
-                            disabled={addingState !== 'idle'}
+                            disabled={addingState !== 'idle' || product.isOutOfStock}
                         >
-                            {addingState === 'idle' && <Plus size={20} strokeWidth={1.5} />}
-                            {addingState === 'adding' && <Loader2 size={18} className="animate-spin" />}
-                            {addingState === 'added' && <Check size={18} />}
+                            {product.isOutOfStock ? (
+                                <span className="text-[10px] font-bold">SOLD OUT</span>
+                            ) : (
+                                <>
+                                    {addingState === 'idle' && <Plus size={20} strokeWidth={1.5} />}
+                                    {addingState === 'adding' && <Loader2 size={18} className="animate-spin" />}
+                                    {addingState === 'added' && <Check size={18} />}
+                                </>
+                            )}
                         </button>
 
                         {/* Desktop: Full Width Text Button */}
@@ -131,11 +144,13 @@ export default function ProductCard({ product }: ProductCardProps) {
                                 hidden md:block pointer-events-auto
                                 w-full bg-white text-[#1A1A1A] py-3 text-xs font-bold uppercase tracking-widest shadow-lg transition-all duration-300 ease-out rounded-full
                                 hover:bg-black hover:text-white
-                                transform ${addingState !== 'idle' ? 'translate-y-0' : 'translate-y-[120%] group-hover:translate-y-0'}
+                                transform ${addingState !== 'idle' && !product.isOutOfStock ? 'translate-y-0' : 'translate-y-[120%] group-hover:translate-y-0'}
                             `}
-                            disabled={addingState !== 'idle'}
+                            disabled={addingState !== 'idle' || product.isOutOfStock}
                         >
-                            {addingState === 'idle' ? "Quick Add +" : (addingState === 'adding' ? "Adding..." : "Added")}
+                            {product.isOutOfStock
+                                ? "Sold Out"
+                                : (addingState === 'idle' ? "Quick Add +" : (addingState === 'adding' ? "Adding..." : "Added"))}
                         </button>
                     </div>
 

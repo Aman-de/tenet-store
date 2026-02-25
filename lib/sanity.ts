@@ -23,7 +23,8 @@ export async function getProducts() {
     "discountLabel": "SAVE RS. " + (originalPrice - price),
     sizes,
     sizeType,
-    gender
+    gender,
+    isOutOfStock
   }`;
 
     const products = await client.fetch(query, {}, { cache: 'no-store' });
@@ -41,7 +42,8 @@ export async function getProducts() {
         discountLabel: p.discountLabel || (p.originalPrice && p.price ? `SAVE RS. ${p.originalPrice - p.price}` : null),
         sizes: p.sizes || [],
         sizeType: p.sizeType,
-        gender: p.gender
+        gender: p.gender,
+        isOutOfStock: p.isOutOfStock || false
     }));
 }
 
@@ -58,6 +60,7 @@ export async function getProduct(slug: string) {
     sizeType,
     sizes,
     gender,
+    isOutOfStock,
     variants[]{
         colorName,
         colorHex,
@@ -89,6 +92,7 @@ export async function getProduct(slug: string) {
         sizes: product.sizes || [],
         variants: product.variants || [],
         gender: product.gender,
+        isOutOfStock: product.isOutOfStock || false,
 
         // Legacy compatibility (optional, but good for grid components re-using type)
         images: defaultImages,
@@ -108,7 +112,8 @@ export async function getRecommendedProducts(category: string, currentSlug: stri
     category,
     "colors": variants[].colorHex,
     "discountLabel": "SAVE RS. " + (originalPrice - price),
-    gender
+    gender,
+    isOutOfStock
   }`;
 
     const products = await client.fetch(query, { category, currentSlug }, { cache: 'no-store' });
@@ -124,7 +129,8 @@ export async function getRecommendedProducts(category: string, currentSlug: stri
         images: [p.imageUrl, p.hoverImageUrl].filter(Boolean),
         colors: p.colors || [],
         discountLabel: p.discountLabel || (p.originalPrice && p.price ? `SAVE RS. ${p.originalPrice - p.price}` : null),
-        gender: p.gender
+        gender: p.gender,
+        isOutOfStock: p.isOutOfStock || false
     }));
 }
 
@@ -195,7 +201,8 @@ export async function getCollection(slug: string) {
         "discountLabel": "SAVE RS. " + (originalPrice - price),
         sizes,
         sizeType,
-        gender
+        gender,
+        isOutOfStock
     }
   }`;
 
@@ -216,7 +223,8 @@ export async function getCollection(slug: string) {
         discountLabel: p.discountLabel || (p.originalPrice && p.price ? `SAVE RS. ${p.originalPrice - p.price}` : null),
         sizes: p.sizes || [],
         sizeType: p.sizeType,
-        gender: p.gender
+        gender: p.gender,
+        isOutOfStock: p.isOutOfStock || false
     }));
 
     return {
@@ -246,7 +254,8 @@ export async function getCartUpsells(cartProductIds: string[]) {
     "discountLabel": "SAVE RS. " + (originalPrice - price),
     sizeType,
     sizes,
-    gender
+    gender,
+    isOutOfStock
   }`;
 
     const products = await client.fetch(query, { cartProductIds }, { cache: 'no-store' });
@@ -268,7 +277,8 @@ export async function getCartUpsells(cartProductIds: string[]) {
         discountLabel: p.discountLabel || (p.originalPrice && p.price ? `SAVE RS. ${p.originalPrice - p.price}` : null),
         sizeType: p.sizeType,
         sizes: p.sizes,
-        gender: p.gender
+        gender: p.gender,
+        isOutOfStock: p.isOutOfStock || false
     }));
 }
 
@@ -292,7 +302,8 @@ export async function searchProducts(searchTerm: string) {
     "discountLabel": "SAVE RS. " + (originalPrice - price),
     sizeType,
     sizes,
-    gender
+    gender,
+    isOutOfStock
   }`;
 
     const products = await client.fetch(query, { searchTerm }, { cache: 'no-store' });
@@ -310,6 +321,7 @@ export async function searchProducts(searchTerm: string) {
         discountLabel: p.discountLabel || (p.originalPrice && p.price ? `SAVE RS. ${p.originalPrice - p.price}` : null),
         sizeType: p.sizeType,
         sizes: p.sizes,
-        gender: p.gender
+        gender: p.gender,
+        isOutOfStock: p.isOutOfStock || false
     }));
 }
