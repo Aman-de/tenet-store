@@ -16,6 +16,19 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  logging: {
+    fetches: {
+      fullUrl: true,
+    },
+  },
+  compiler: {
+    styledComponents: true,
+  },
+  // Suppress the React 19 / Next.js 15 disableTransition warning in development
+  onDemandEntries: {
+    maxInactiveAge: 25 * 1000,
+    pagesBufferLength: 5,
+  },
 };
 
 export default nextConfig;// Force restart

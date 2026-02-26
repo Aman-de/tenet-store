@@ -62,7 +62,8 @@ export const product = {
                     { title: 'Accessories', value: 'accessories' },
                     { title: 'Jackets', value: 'jackets' },
                     { title: 'Sets', value: 'sets' },
-                    { title: 'Shirts', value: 'shirts' }
+                    { title: 'Shirts', value: 'shirts' },
+                    { title: 'Exclusive', value: 'exclusive' }
                 ]
             },
             validation: (Rule: any) => Rule.required()
