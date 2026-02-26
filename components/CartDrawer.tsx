@@ -327,8 +327,9 @@ export default function CartDrawer() {
         const data = await response.json();
 
         if (!data.id) {
-            alert("Server error. Please try again.");
-            console.error(data);
+            const errorMessage = data.error || data.details || "Server error. Please try again.";
+            alert(`Checkout Error: ${errorMessage}`);
+            console.error("Razorpay API Error Response:", data);
             return;
         }
 
