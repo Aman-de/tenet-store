@@ -335,7 +335,7 @@ export default function CartDrawer() {
 
         // 3. Initialize Razorpay
         const options = {
-            key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+            key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_live_S9ipLearMTP7iI",
             amount: data.amount,
             currency: data.currency,
             name: "TENET ARCHIVES",

@@ -11,8 +11,8 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: "Invalid amount" }, { status: 400 });
         }
 
-        const keyId = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
-        const keySecret = process.env.RAZORPAY_KEY_SECRET;
+        const keyId = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_live_S9ipLearMTP7iI";
+        const keySecret = process.env.RAZORPAY_KEY_SECRET || "czWQScZA42r6K4DQnJcHi9Ot";
 
         if (!keyId || !keySecret) {
             console.error("Razorpay credentials missing:", {
