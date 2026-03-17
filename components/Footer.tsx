@@ -39,10 +39,10 @@ export default function Footer() {
                             <span className="font-serif text-2xl tracking-widest">TENET ARCHIVES</span>
                         </Link>
                         <div className="flex gap-4">
-                            <a href="#" className="p-2 border border-white/20 rounded-full hover:bg-white hover:text-black transition-colors">
+                            <a href="https://www.instagram.com/tenet_archives/" target="_blank" rel="noopener noreferrer" className="p-2 border border-white/20 rounded-full hover:bg-white hover:text-black transition-colors">
                                 <Instagram className="w-4 h-4" />
                             </a>
-                            <a href="#" className="p-2 border border-white/20 rounded-full hover:bg-white hover:text-black transition-colors">
+                            <a href="https://x.com/tenet_archives?s=11" target="_blank" rel="noopener noreferrer" className="p-2 border border-white/20 rounded-full hover:bg-white hover:text-black transition-colors">
                                 <Twitter className="w-4 h-4" />
                             </a>
                         </div>
@@ -76,8 +76,8 @@ export default function Footer() {
                             <h4 className="text-xs font-bold uppercase tracking-widest text-neutral-500">Support</h4>
                             <ul className="space-y-4 text-sm font-medium tracking-wide">
                                 <li><Link href="/support" className="hover:text-neutral-300 transition-colors">Contact Us</Link></li>
-                                <li><Link href="/support" className="hover:text-neutral-300 transition-colors">Shipping</Link></li>
-                                <li><Link href="/support" className="hover:text-neutral-300 transition-colors">Returns</Link></li>
+                                <li><Link href="/shipping" className="hover:text-neutral-300 transition-colors">Shipping</Link></li>
+                                <li><Link href="/refund-and-cancellation" className="hover:text-neutral-300 transition-colors">Returns & Refunds</Link></li>
                             </ul>
                         </div>
 
@@ -89,8 +89,8 @@ export default function Footer() {
                 <div className="mt-10 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-xs text-neutral-500 font-sans">
                     <p>© 2026 TENET. All rights reserved.</p>
                     <div className="flex gap-6 mt-4 md:mt-0">
-                        <Link href="#" className="hover:text-white transition-colors">Privacy Policy</Link>
-                        <Link href="#" className="hover:text-white transition-colors">Terms of Service</Link>
+                        <Link href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
+                        <Link href="/terms-and-conditions" className="hover:text-white transition-colors">Terms of Service</Link>
                     </div>
                 </div>
 
