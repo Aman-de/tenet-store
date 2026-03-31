@@ -18,6 +18,24 @@ export default function ProductCard({ product }: ProductCardProps) {
     const [addingState, setAddingState] = useState<'idle' | 'adding' | 'added'>('idle');
     const { addToCart, openCart, toggleWishlist, isInWishlist } = useStore();
 
+    const handleViewItem = () => {
+        if (typeof window !== "undefined") {
+            (window as any).dataLayer = (window as any).dataLayer || [];
+            (window as any).dataLayer.push({
+                event: "view_item",
+                ecommerce: {
+                    currency: "INR",
+                    value: product.price,
+                    items: [{
+                        item_id: product.id,
+                        item_name: product.title,
+                        price: product.price,
+                        item_category: product.category
+                    }]
+                }
+            });
+        }
+    };
 
     const handleQuickAdd = () => {
         if (addingState !== 'idle' || product.isOutOfStock) return;
@@ -44,7 +62,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             onMouseLeave={() => setIsHovered(false)}
         >
             {/* Image Container */}
-            <Link href={`/product/${product.handle}`}>
+            <Link href={`/product/${product.handle}`} onClick={handleViewItem}>
                 <div className="relative aspect-[3/4] w-full overflow-hidden bg-neutral-100 mb-4">
                     <AnimatePresence mode="wait">
                         {isHovered && product.images[1] ? (
@@ -209,7 +227,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
             {/* Product Info */}
             <div className="space-y-1 p-3 pt-2"> {/* Added pt-2 for spacing */}
-                <Link href={`/product/${product.handle}`}>
+                <Link href={`/product/${product.handle}`} onClick={handleViewItem}>
                     <h3 className="font-sans text-xs md:text-sm font-medium tracking-wide text-[#1A1A1A] uppercase truncate hover:underline underline-offset-4 decoration-1">
                         {product.title}
                     </h3>
