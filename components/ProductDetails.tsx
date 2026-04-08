@@ -11,6 +11,7 @@ import ShareButton from "./ShareButton";
 import MobileStickyBar from "./MobileStickyBar";
 import { Product, Review, Variant } from "@/lib/data";
 import { createReview } from "@/app/actions";
+import { trackViewItem, trackAddToCart } from "@/lib/analytics";
 
 interface ProductDetailsProps {
     product: Product;
@@ -113,6 +114,13 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
         setSelectedImageIndex(0);
     }, [selectedVariant, displayImages.length]);
 
+    // GA4 View Item Tracking
+    useEffect(() => {
+        if (product) {
+            trackViewItem(product);
+        }
+    }, [product.id]);
+
     const isWishlisted = isInWishlist(product.id);
     const averageRating = reviews.length > 0
         ? reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length
@@ -179,6 +187,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
         const selection = validateSelection();
         if (selection) {
             addToCart(product, selection.size, selection.color);
+            trackAddToCart(product, 1, selection.size, selection.color);
             openCart();
         }
     }
@@ -187,6 +196,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
         if (product.isOutOfStock) return;
         const selection = validateSelection();
         if (selection) {
+            trackAddToCart(product, 1, selection.size, selection.color);
             setCheckoutItem({
                 ...product,
                 quantity: 1,

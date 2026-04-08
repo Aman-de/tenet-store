@@ -2,6 +2,7 @@
 
 import { useStore } from "@/lib/store";
 import { getCartUpsells } from "@/lib/sanity";
+import { trackBeginCheckout, trackPurchase } from "@/lib/analytics";
 
 import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
 import { X, ShoppingBag, Plus, Minus, Heart, Trash2 } from "lucide-react";
@@ -278,6 +279,7 @@ export default function CartDrawer() {
                 });
 
                 if (orderRes.ok) {
+                    trackPurchase("COD_" + Date.now(), cartItems, finalTotal, 0, shippingAmount);
                     if (checkoutItem) {
                         clearCheckoutItem();
                     } else {
@@ -358,6 +360,7 @@ export default function CartDrawer() {
                     });
 
                     if (orderRes.ok) {
+                        trackPurchase(response.razorpay_payment_id, cartItems, finalTotal, 0, shippingAmount);
                         clearCart();
                         closeCart();
                         setCheckoutStep('cart'); // Reset step
@@ -541,7 +544,10 @@ export default function CartDrawer() {
                                     <button
                                         className="w-full bg-[#1A1A1A] text-white py-4 font-sans text-sm uppercase tracking-widest hover:bg-black transition-colors disabled:opacity-50 rounded-full"
                                         disabled={cartItems.length === 0}
-                                        onClick={() => setCheckoutStep('address')}
+                                        onClick={() => {
+                                            trackBeginCheckout(cartItems, finalTotal);
+                                            setCheckoutStep('address');
+                                        }}
                                     >
                                         Proceed to Checkout
                                     </button>

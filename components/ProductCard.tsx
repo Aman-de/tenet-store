@@ -7,6 +7,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useStore } from "@/lib/store";
 import { Plus, Heart, Loader2, Check } from "lucide-react";
+import { trackViewItem, trackAddToCart } from "@/lib/analytics";
 import ShareButton from "./ShareButton";
 
 interface ProductCardProps {
@@ -19,22 +20,7 @@ export default function ProductCard({ product }: ProductCardProps) {
     const { addToCart, openCart, toggleWishlist, isInWishlist } = useStore();
 
     const handleViewItem = () => {
-        if (typeof window !== "undefined") {
-            (window as any).dataLayer = (window as any).dataLayer || [];
-            (window as any).dataLayer.push({
-                event: "view_item",
-                ecommerce: {
-                    currency: "INR",
-                    value: product.price,
-                    items: [{
-                        item_id: product.id,
-                        item_name: product.title,
-                        price: product.price,
-                        item_category: product.category
-                    }]
-                }
-            });
-        }
+        trackViewItem(product);
     };
 
     const handleQuickAdd = () => {
@@ -44,6 +30,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         // Add item and open cart immediately for instant feedback
         addToCart(product, "M", product.colors?.[0]);
+        trackAddToCart(product, 1, "M", product.colors?.[0]);
         openCart();
 
         // Simulate processing state then success
