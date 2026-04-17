@@ -74,14 +74,21 @@ const OrderStepper = ({ status }: { status: string }) => {
     );
 }
 
-export default async function OrdersPage() {
+import GuestOrderForm from "./GuestOrderForm";
+
+export default async function OrdersPage(props: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
+    const searchParams = await props.searchParams;
     const user = await currentUser();
 
-    if (!user) {
-        redirect("/sign-in");
+    let email = user?.emailAddresses[0]?.emailAddress;
+
+    if (!email && searchParams.email && typeof searchParams.email === "string") {
+        email = searchParams.email;
     }
 
-    const email = user.emailAddresses[0]?.emailAddress;
+    if (!email) {
+        return <GuestOrderForm />;
+    }
 
     const query = `*[_type == "order" && email == $email] | order(createdAt desc) {
     _id,

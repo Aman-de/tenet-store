@@ -1,6 +1,7 @@
 "use client";
 
 import { useStore } from "@/lib/store";
+import { trackAddToCart } from "@/lib/analytics";
 import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
 import { X, Heart, ShoppingBag, Trash2 } from "lucide-react";
 import Image from "next/image";
@@ -21,6 +22,7 @@ const WishlistItemRow = ({ item, removeFromWishlist, addToCart }: any) => {
 
     const handleMoveToCart = () => {
         addToCart(item, undefined, undefined);
+        trackAddToCart(item, 1, undefined, undefined);
         removeFromWishlist(item.id);
     };
 

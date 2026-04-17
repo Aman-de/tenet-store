@@ -2,7 +2,7 @@
 
 import { useStore } from "@/lib/store";
 import { getCartUpsells } from "@/lib/sanity";
-import { trackBeginCheckout, trackPurchase } from "@/lib/analytics";
+import { trackBeginCheckout, trackPurchase, trackAddToCart } from "@/lib/analytics";
 
 import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
 import { X, ShoppingBag, Plus, Minus, Heart, Trash2 } from "lucide-react";
@@ -514,6 +514,7 @@ export default function CartDrawer() {
                                                                 defaultSize = prod.sizes[0];
                                                             }
                                                             addToCart(prod, defaultSize, prod.colors?.[0]);
+                                                            trackAddToCart(prod, 1, defaultSize, prod.colors?.[0]);
                                                         }}
                                                         className="p-1 hover:bg-neutral-100 rounded-full transition-colors"
                                                     >
@@ -545,6 +546,11 @@ export default function CartDrawer() {
                                         className="w-full bg-[#1A1A1A] text-white py-4 font-sans text-sm uppercase tracking-widest hover:bg-black transition-colors disabled:opacity-50 rounded-full"
                                         disabled={cartItems.length === 0}
                                         onClick={() => {
+                                            if (!user) {
+                                                closeCart();
+                                                router.push('/sign-in?redirect_url=/');
+                                                return;
+                                            }
                                             trackBeginCheckout(cartItems, finalTotal);
                                             setCheckoutStep('address');
                                         }}

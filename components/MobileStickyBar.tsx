@@ -2,6 +2,7 @@
 
 import { useStore } from "@/lib/store";
 import { Product, Variant } from "@/lib/data";
+import { trackAddToCart } from "@/lib/analytics";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import { useState } from "react";
 import Image from "next/image";
@@ -30,6 +31,7 @@ export default function MobileStickyBar({ product, selectedVariant }: MobileStic
         // Use selected variant or default
         const color = selectedVariant ? selectedVariant.colorHex : product.colors?.[0];
         addToCart(product, "M", color); // Default to M for quick add, or open modal in v2
+        trackAddToCart(product, 1, "M", color);
         openCart();
     };
 
