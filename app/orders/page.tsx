@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 import { client } from "@/lib/sanity";
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
@@ -196,7 +196,7 @@ export default async function OrdersPage(props: { searchParams: Promise<{ [key: 
 
                                     {/* Order Items */}
                                     <div className="p-4 md:p-6 space-y-4">
-                                        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                                        { }
                                         {order.products?.map((item: any, idx: number) => (
                                             <div key={idx} className="flex gap-4 items-start">
                                                 <div className="relative w-16 h-20 bg-neutral-100 rounded-sm overflow-hidden shrink-0 border border-neutral-100">

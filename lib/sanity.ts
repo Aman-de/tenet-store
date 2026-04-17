@@ -29,7 +29,7 @@ export async function getProducts() {
 
     const products = await client.fetch(query, {}, { cache: 'no-store' });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     return products.map((p: any) => ({
         id: p._id,
         title: p.title,
@@ -118,7 +118,7 @@ export async function getRecommendedProducts(category: string, currentSlug: stri
 
     const products = await client.fetch(query, { category, currentSlug }, { cache: 'no-store' });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     return products.map((p: any) => ({
         id: p._id,
         title: p.title,
@@ -146,7 +146,7 @@ export async function getReviews(productId: string) {
 
     const reviews = await client.fetch(query, { productId }, { cache: 'no-store' });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     return reviews.map((r: any) => ({
         id: r._id,
         name: r.author, // Map author -> name
@@ -168,7 +168,7 @@ export async function getCollections() {
 
     const collections = await client.fetch(query, {}, { cache: 'no-store' });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     return collections.map((c: any) => ({
         id: c._id,
         title: c.title,
@@ -210,7 +210,7 @@ export async function getCollection(slug: string) {
 
     if (!collection) return null;
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     const products = (collection.products || []).map((p: any) => ({
         id: p._id,
         title: p.title,
@@ -264,7 +264,7 @@ export async function getCartUpsells(cartProductIds: string[]) {
     const validProducts = products.filter((p: any) => p && p._id);
     const uniqueProducts = Array.from(new Map(validProducts.map((p: any) => [p._id, p])).values());
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     return uniqueProducts.map((p: any) => ({
         id: p._id,
         title: p.title,
@@ -308,7 +308,7 @@ export async function searchProducts(searchTerm: string) {
 
     const products = await client.fetch(query, { searchTerm }, { cache: 'no-store' });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     return products.map((p: any) => ({
         id: p._id,
         title: p.title,

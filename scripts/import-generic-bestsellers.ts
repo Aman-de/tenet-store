@@ -175,7 +175,7 @@ async function main() {
         console.log(`Processing ${productDef.title}...`);
 
         // 1. Process Variants
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+         
         const processedVariants: any[] = [];
         const allImages: string[] = []; // Collect all images for main product images
 

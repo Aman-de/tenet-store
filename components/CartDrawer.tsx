@@ -161,7 +161,7 @@ export default function CartDrawer() {
         }
     }, [user]);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     const [upsellProducts, setUpsellProducts] = useState<any[]>([]);
 
     // Fetch Upsell Products
@@ -171,7 +171,7 @@ export default function CartDrawer() {
                 const cartIds = cart.map(item => item.id);
                 try {
                     const products = await getCartUpsells(cartIds);
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                     
                     const filtered = products.filter((p: any) => !cartIds.includes(p.id));
                     setUpsellProducts(filtered);
                 } catch (error) {
@@ -343,7 +343,7 @@ export default function CartDrawer() {
             name: "TENET ARCHIVES",
             description: "Luxury Transaction",
             order_id: data.id,
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+             
             handler: async function (response: any) {
                 // Payment Successful
                 try {
