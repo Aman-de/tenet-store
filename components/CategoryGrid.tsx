@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+// Framer motion removed for instant rendering
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
@@ -17,8 +17,8 @@ export default function CategoryGrid({ collections }: { collections: Collection[
     if (!collections || collections.length === 0) return null;
 
     return (
-        <section className="max-w-7xl mx-auto px-4 md:px-6 py-4 md:py-8">
-            <div className="flex flex-col items-center mb-10 text-center">
+        <section className="max-w-7xl mx-auto px-4 md:px-6 py-2 md:py-4">
+            <div className="flex flex-col items-center mb-4 text-center">
                 <span className="text-[11px] font-medium tracking-[0.25em] text-neutral-500 uppercase mb-2">
                     The Edit
                 </span>
@@ -30,18 +30,12 @@ export default function CategoryGrid({ collections }: { collections: Collection[
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {collections.map((collection, idx) => (
                     <Link href={`/collection/${collection.handle}`} key={collection.id}>
-                        <motion.div
-                            className="relative aspect-square overflow-hidden group cursor-pointer rounded-xl"
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: idx * 0.1, duration: 0.5 }}
+                        <div
+                            className="relative aspect-[4/3] overflow-hidden group cursor-pointer rounded-xl"
                         >
 
-                            <motion.div
-                                className="w-full h-full relative"
-                                whileHover={{ scale: 1.05 }}
-                                transition={{ duration: 0.7, ease: "easeOut" }} // Duration 700ms
+                            <div
+                                className="w-full h-full relative transform transition-transform duration-300 ease-out group-hover:scale-105"
                             >
                                 <Image
                                     src={collection.imageUrl}
@@ -60,7 +54,8 @@ export default function CategoryGrid({ collections }: { collections: Collection[
                                 {/* Hover Reveal Arrow using Group Hover */}
                                 <ArrowRight className="w-5 h-5 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 ease-out" />
                             </div>
-                        </motion.div>
+                            </div>
+                        </div>
                     </Link>
                 ))}
             </div>

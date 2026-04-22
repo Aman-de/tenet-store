@@ -50,50 +50,29 @@ export default function ProductCard({ product }: ProductCardProps) {
         >
             {/* Image Container */}
             <Link href={`/product/${product.handle}`} onClick={handleViewItem}>
-                <div className="relative aspect-[3/4] w-full overflow-hidden bg-neutral-100 mb-4">
-                    <AnimatePresence mode="wait">
-                        {isHovered && product.images[1] ? (
-                            <motion.div
-                                key="back"
-                                className="absolute inset-0"
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                transition={{ duration: 0.4 }}
-                            >
-                                <Image
-                                    src={product.images[1]}
-                                    alt={product.title}
-                                    fill
-                                    className="object-cover"
-                                    sizes="(max-width: 768px) 50vw, 33vw"
-                                />
-                            </motion.div>
-                        ) : (
-                            <motion.div
-                                key="front"
-                                className="absolute inset-0"
-                                initial={{ opacity: 1 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                transition={{ duration: 0.4 }}
-                            >
-                                {product.images?.[0] ? (
-                                    <Image
-                                        src={product.images[0]}
-                                        alt={product.title}
-                                        fill
-                                        className="object-cover"
-                                        sizes="(max-width: 768px) 50vw, 33vw"
-                                    />
-                                ) : (
-                                    <div className="w-full h-full bg-neutral-200 flex items-center justify-center text-neutral-400 text-xs">
-                                        No Image
-                                    </div>
-                                )}
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
+                <div className="relative aspect-[3/4] w-full overflow-hidden bg-neutral-100 mb-2">
+                    {product.images?.[0] ? (
+                        <Image
+                            src={product.images[0]}
+                            alt={product.title}
+                            fill
+                            className="object-cover absolute inset-0 z-0 transition-opacity duration-200 ease-in-out group-hover:opacity-0"
+                            sizes="(max-width: 768px) 50vw, 33vw"
+                        />
+                    ) : (
+                        <div className="w-full h-full bg-neutral-200 flex items-center justify-center text-neutral-400 text-xs z-0 absolute inset-0 group-hover:opacity-0 transition-opacity duration-200">
+                            No Image
+                        </div>
+                    )}
+                    {product.images?.[1] && (
+                        <Image
+                            src={product.images[1]}
+                            alt={product.title}
+                            fill
+                            className="object-cover absolute inset-0 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-in-out"
+                            sizes="(max-width: 768px) 50vw, 33vw"
+                        />
+                    )}
 
                     {/* Discount Badge - Minimalist */}
                     {product.discountLabel && !product.isOutOfStock && (

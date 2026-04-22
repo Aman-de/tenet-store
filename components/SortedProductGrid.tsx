@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Product } from "@/lib/data";
 import ProductCard from "./ProductCard";
-import { motion, AnimatePresence } from "framer-motion";
+// Framer motion removed for instant rendering
 import { ChevronDown } from "lucide-react";
 
 interface SortedProductGridProps {
@@ -66,7 +66,7 @@ export default function SortedProductGrid({ products, sizeType = "clothing" }: S
     return (
         <div>
             {/* Utility Bar */}
-            <div className="flex flex-col gap-6 py-4 border-b border-neutral-100 mb-8">
+            <div className="flex flex-col gap-4 py-2 border-b border-neutral-100 mb-4">
 
                 {/* Header: Sort & Mobile Labels */}
                 <div className="flex items-center justify-between">
@@ -164,34 +164,22 @@ export default function SortedProductGrid({ products, sizeType = "clothing" }: S
             </div>
 
             {/* Grid */}
-            <motion.div
-                layout
-                className="grid grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-8"
+            <div
+                className="grid grid-cols-2 lg:grid-cols-4 gap-x-2 gap-y-6"
             >
-                <AnimatePresence mode="popLayout">
-                    {sortedProducts.map((product) => (
-                        <motion.div
-                            key={product.id}
-                            layout
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            transition={{ duration: 0.3 }}
-                        >
-                            <ProductCard product={product} />
-                        </motion.div>
-                    ))}
-                    {sortedProducts.length === 0 && (
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            className="col-span-full py-20 text-center text-neutral-400 font-sans text-sm"
-                        >
-                            No products found in this range.
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-            </motion.div>
+                {sortedProducts.map((product) => (
+                    <div key={product.id}>
+                        <ProductCard product={product} />
+                    </div>
+                ))}
+                {sortedProducts.length === 0 && (
+                    <div
+                        className="col-span-full py-10 text-center text-neutral-400 font-sans text-sm"
+                    >
+                        No products found in this range.
+                    </div>
+                )}
+            </div>
         </div>
     );
 }

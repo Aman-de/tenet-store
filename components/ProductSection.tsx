@@ -91,12 +91,12 @@ export default function ProductSection({ products }: ProductSectionProps) {
     );
 
     return (
-        <section ref={sectionRef} id="new-arrivals" className="max-w-7xl mx-auto px-4 md:px-6 py-6 md:py-10">
+        <section ref={sectionRef} id="new-arrivals" className="max-w-7xl mx-auto px-4 md:px-6 py-2 md:py-4">
             <div className="flex flex-col items-center text-center">
                 <span className="text-xs font-bold tracking-[0.2em] text-neutral-400 uppercase mb-2">
                     Curated Selection
                 </span>
-                <h2 className="font-serif text-3xl md:text-4xl text-[#1A1A1A] mb-8">
+                <h2 className="font-serif text-3xl md:text-4xl text-[#1A1A1A] mb-4">
                     New Arrivals
                 </h2>
 
@@ -106,26 +106,21 @@ export default function ProductSection({ products }: ProductSectionProps) {
                 </div>
             </div>
 
-            <motion.div layout className="min-h-[400px]">
-                <AnimatePresence mode="wait">
-                    {filteredProducts.length > 0 ? (
-                        <SortedProductGrid key={activeGender} products={filteredProducts} />
-                    ) : (
-                        <motion.div
-                            key="empty"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            className="flex flex-col items-center justify-center h-[400px] text-center"
-                        >
-                            <p className="font-serif text-2xl text-neutral-400 mb-2">Coming Soon</p>
-                            <p className="text-sm text-neutral-500 tracking-wide uppercase">
-                                {activeGender === 'woman' ? "Women's Collection Launching Fall 2025" : "New Styles Arriving Weekly"}
-                            </p>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-            </motion.div>
+            <div className="min-h-[100px]">
+                {filteredProducts.length > 0 ? (
+                    <SortedProductGrid key={activeGender} products={filteredProducts} />
+                ) : (
+                    <div
+                        key="empty"
+                        className="flex flex-col items-center justify-center h-[200px] text-center"
+                    >
+                        <p className="font-serif text-2xl text-neutral-400 mb-2">Coming Soon</p>
+                        <p className="text-sm text-neutral-500 tracking-wide uppercase">
+                            {activeGender === 'woman' ? "Women's Collection Launching Fall 2025" : "New Styles Arriving Weekly"}
+                        </p>
+                    </div>
+                )}
+            </div>
         </section >
     );
 }
