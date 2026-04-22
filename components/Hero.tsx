@@ -25,11 +25,12 @@ export default function Hero({ spotlightProducts = [] }: HeroProps) {
                 container.scrollTo({ left: 0, behavior: "smooth" });
             } else {
                 // Scroll by roughly the width of one vertical item
-                const scrollAmount = window.innerWidth > 1024 
+                const isPortrait = window.innerHeight > window.innerWidth;
+                const scrollAmount = window.innerWidth > 1024 && !isPortrait
                     ? window.innerWidth * 0.3 // desktop vertical width (30vw)
-                    : window.innerWidth > 768 
-                        ? window.innerWidth * 0.45 // iPad vertical width (45vw)
-                        : window.innerWidth; // mobile vertical width (100vw)
+                    : window.innerWidth > 768 && !isPortrait
+                        ? window.innerWidth * 0.45 // iPad Landscape vertical width (45vw)
+                        : window.innerWidth; // mobile/portrait vertical width (100vw)
                 
                 container.scrollBy({ left: scrollAmount, behavior: "smooth" });
             }
@@ -120,7 +121,7 @@ export default function Hero({ spotlightProducts = [] }: HeroProps) {
                     <Link
                         href={`/product/${product.handle}`}
                         key={product.id}
-                        className="relative h-full w-full md:w-[48vw] lg:w-[30vw] shrink-0 snap-start overflow-hidden lg:rounded-sm group block ml-0"
+                        className="relative h-full w-full md:w-[48vw] lg:w-[30vw] portrait:!w-full shrink-0 snap-start overflow-hidden lg:rounded-sm group block ml-0"
                     >
                         {(product.images[1] || product.images[0]) && (
                             <Image
