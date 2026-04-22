@@ -11,10 +11,15 @@ export default async function Home() {
   const products = await getProducts();
   const collections = await getCollections();
 
+  // Curate top "best" products for the Hero carousel
+  const spotlightProducts = [...products]
+    .filter(p => !p.isOutOfStock)
+    .sort((a, b) => b.price - a.price)
+    .slice(0, 4);
 
   return (
     <main className="bg-[#FDFBF7] min-h-screen">
-      <Hero />
+      <Hero spotlightProducts={spotlightProducts} />
 
       {/* Category Grid Section */}
       <CategoryGrid collections={collections} />
