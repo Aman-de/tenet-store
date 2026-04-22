@@ -11,9 +11,9 @@ export default async function Home() {
   const products = await getProducts();
   const collections = await getCollections();
 
-  // Curate top "best" products for the Hero carousel
+  // Curate top "best" products for the Hero carousel, ensuring apparel/models
   const spotlightProducts = [...products]
-    .filter(p => !p.isOutOfStock)
+    .filter(p => !p.isOutOfStock && p.category && !['accessories', 'fragrance', 'perfume', 'shoes'].includes(p.category.toLowerCase()))
     .sort((a, b) => b.price - a.price)
     .slice(0, 4);
 

@@ -26,8 +26,8 @@ export default function Hero({ spotlightProducts = [] }: HeroProps) {
             } else {
                 // Scroll by roughly the width of one vertical item
                 const scrollAmount = window.innerWidth > 1024 
-                    ? window.innerWidth * 0.25 // desktop vertical width
-                    : window.innerWidth * 0.85; // mobile vertical width
+                    ? window.innerWidth * 0.3 // desktop vertical width (30vw)
+                    : window.innerWidth; // mobile vertical width (100vw)
                 
                 container.scrollBy({ left: scrollAmount, behavior: "smooth" });
             }
@@ -59,10 +59,10 @@ export default function Hero({ spotlightProducts = [] }: HeroProps) {
             {/* Horizontal Scroll Layout */}
             <div 
                 ref={scrollContainerRef}
-                className="flex h-full w-full overflow-x-auto snap-x snap-mandatory scrollbar-none scroll-smooth items-center lg:gap-1 px-0 lg:px-1 py-0 lg:py-1"
+                className="flex h-full w-full overflow-x-auto snap-x snap-mandatory scrollbar-none scroll-smooth items-center lg:gap-1 px-0 py-0 lg:py-1"
             >
-                {/* 1. Original Horizontal Hero Image */}
-                <div className="relative h-full w-full lg:w-[70vw] shrink-0 snap-center overflow-hidden lg:rounded-sm group">
+                {/* 1. Original Horizontal Hero Image - Full Width Everywhere */}
+                <div className="relative h-full w-full lg:w-[100vw] shrink-0 snap-start overflow-hidden group">
                     <Image
                         src="/images/hero-main.webp"
                         alt="The Winter Heritage Collection"
@@ -118,7 +118,7 @@ export default function Hero({ spotlightProducts = [] }: HeroProps) {
                     <Link
                         href={`/product/${product.handle}`}
                         key={product.id}
-                        className="relative h-full w-[85vw] md:w-[40vw] lg:w-[30vw] shrink-0 snap-center overflow-hidden lg:rounded-sm group block ml-1 lg:ml-0"
+                        className="relative h-full w-full md:w-full lg:w-[30vw] shrink-0 snap-start overflow-hidden lg:rounded-sm group block ml-0"
                     >
                         {product.images[0] && (
                             <Image
