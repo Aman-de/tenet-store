@@ -17,20 +17,22 @@ export default function CategoryGrid({ collections }: { collections: Collection[
     if (!collections || collections.length === 0) return null;
 
     return (
-        <section className="max-w-7xl mx-auto px-4 md:px-6 py-2 md:py-4">
-            <div className="flex flex-col items-center mb-4 text-center">
-                <span className="text-[11px] font-medium tracking-[0.25em] text-neutral-500 uppercase mb-2">
-                    The Edit
-                </span>
-                <h2 className="font-serif text-3xl md:text-5xl text-[#1A1A1A] tracking-tighter">
-                    Shop by Category
-                </h2>
+        <section className="max-w-7xl mx-auto px-4 md:px-6 pt-6 pb-2">
+            <div className="flex flex-col md:flex-row items-baseline justify-between mb-4 border-b border-neutral-100 pb-2">
+                <div className="flex items-baseline gap-4">
+                    <h2 className="font-serif text-2xl md:text-3xl text-[#1A1A1A] tracking-tighter">
+                        Shop by Category
+                    </h2>
+                    <span className="hidden md:inline-block text-[10px] font-medium tracking-[0.2em] text-neutral-400 uppercase">
+                        The Edit
+                    </span>
+                </div>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 md:grid-cols-6 gap-2 md:gap-3">
                 {collections.map((collection, idx) => (
                     <Link href={`/collection/${collection.handle}`} key={collection.id}>
-                        <div className="relative aspect-[4/3] overflow-hidden group cursor-pointer rounded-xl">
+                        <div className="relative aspect-[4/5] overflow-hidden group cursor-pointer rounded-sm">
                             <div className="w-full h-full relative transform transition-transform duration-300 ease-out group-hover:scale-105">
                                 <Image
                                     src={collection.imageUrl}
@@ -42,8 +44,8 @@ export default function CategoryGrid({ collections }: { collections: Collection[
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                             </div>
 
-                            <div className="absolute bottom-6 left-6 z-10 text-white pointer-events-none flex items-center gap-2">
-                                <h3 className="font-serif italic text-lg md:text-2xl tracking-wider drop-shadow-md">
+                            <div className="absolute bottom-4 left-4 z-10 text-white pointer-events-none flex items-center gap-2">
+                                <h3 className="font-serif italic text-sm md:text-base tracking-wider drop-shadow-md">
                                     {collection.title}
                                 </h3>
                                 {/* Hover Reveal Arrow using Group Hover */}

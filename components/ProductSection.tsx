@@ -55,13 +55,13 @@ export default function ProductSection({ products }: ProductSectionProps) {
 
     // Filter Toggle Component
     const FilterToggle = () => (
-        <div className={`flex items-center bg-white/80 backdrop-blur-md rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-neutral-200 p-1.5 transition-all duration-300 ${(!hasMounted || isSticky)
-            ? 'fixed top-20 md:top-24 left-1/2 -translate-x-1/2 z-[100]'
-            : 'relative z-10 mx-auto w-fit mb-8'
+        <div className={`flex items-center bg-white/80 backdrop-blur-md rounded-full border border-neutral-200 p-1 transition-all duration-300 ${(!hasMounted || isSticky)
+            ? 'fixed top-20 md:top-24 left-1/2 -translate-x-1/2 z-[100] shadow-lg'
+            : 'relative z-10 w-fit'
             }`}>
             <button
                 onClick={() => setActiveGender('man')}
-                className={`relative w-28 py-2.5 text-xs font-bold tracking-[0.2em] uppercase rounded-full transition-colors z-10 ${activeGender === 'man' ? 'text-white' : 'text-neutral-500 hover:text-[#1A1A1A]'
+                className={`relative w-24 py-1.5 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase rounded-full transition-colors z-10 ${activeGender === 'man' ? 'text-white' : 'text-neutral-500 hover:text-[#1A1A1A]'
                     }`}
             >
                 Men
@@ -75,7 +75,7 @@ export default function ProductSection({ products }: ProductSectionProps) {
             </button>
             <button
                 onClick={() => setActiveGender('woman')}
-                className={`relative w-28 py-2.5 text-xs font-bold tracking-[0.2em] uppercase rounded-full transition-colors z-10 ${activeGender === 'woman' ? 'text-white' : 'text-neutral-500 hover:text-[#1A1A1A]'
+                className={`relative w-24 py-1.5 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase rounded-full transition-colors z-10 ${activeGender === 'woman' ? 'text-white' : 'text-neutral-500 hover:text-[#1A1A1A]'
                     }`}
             >
                 Women
@@ -92,16 +92,17 @@ export default function ProductSection({ products }: ProductSectionProps) {
 
     return (
         <section ref={sectionRef} id="new-arrivals" className="max-w-7xl mx-auto px-4 md:px-6 py-2 md:py-4">
-            <div className="flex flex-col items-center text-center">
-                <span className="text-xs font-bold tracking-[0.2em] text-neutral-400 uppercase mb-2">
-                    Curated Selection
-                </span>
-                <h2 className="font-serif text-3xl md:text-4xl text-[#1A1A1A] mb-4">
-                    New Arrivals
-                </h2>
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-4 border-b border-neutral-100 pb-2 gap-4">
+                <div className="flex items-baseline gap-4">
+                    <h2 className="font-serif text-2xl md:text-3xl text-[#1A1A1A]">
+                        New Arrivals
+                    </h2>
+                    <span className="hidden md:inline-block text-[10px] font-bold tracking-[0.2em] text-neutral-400 uppercase">
+                        Curated Selection
+                    </span>
+                </div>
 
-                {/* Regular Inline placement logic: render it here if NOT sticky, to hold space */}
-                <div className="min-h-[64px] w-full flex justify-center">
+                <div className="flex justify-start md:justify-end">
                     <FilterToggle />
                 </div>
             </div>
