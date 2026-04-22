@@ -20,7 +20,7 @@ export default async function Home() {
       <CategoryGrid collections={collections} />
 
       {/* Product Section with Category Filter */}
-      <div className="py-4 md:py-6">
+      <div className="py-8 md:py-16">
         <ProductSection products={products} />
       </div>
 

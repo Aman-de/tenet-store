@@ -30,7 +30,7 @@ export default function Hero() {
 
             {/* Content Container */}
             {/* Mobile: Bottom positioned just above Discover. Desktop: Left Aligned. */}
-            <div className="absolute inset-0 z-10 w-full h-full max-w-7xl mx-auto px-6 pointer-events-none lg:pointer-events-auto flex flex-col justify-end pb-48 lg:justify-center lg:pb-0 lg:items-start text-center lg:text-left">
+            <div className="absolute inset-0 z-10 w-full h-full max-w-[2000px] mx-auto px-6 xl:px-12 pointer-events-none lg:pointer-events-auto flex flex-col justify-end pb-48 lg:justify-center lg:pb-0 lg:items-start text-center lg:text-left">
 
                 <div className="pointer-events-auto w-full lg:w-auto"> {/* Wrapper for button clicks & width control */}
                     <motion.p

@@ -5,8 +5,8 @@ import { Instagram, Twitter } from "lucide-react";
 
 export default function Footer() {
     return (
-        <footer className="bg-[#1A1A1A] text-white pt-16 pb-8">
-            <div className="max-w-7xl mx-auto px-6">
+        <footer className="bg-[#1A1A1A] text-white pt-20 pb-12">
+            <div className="max-w-[2000px] w-full mx-auto px-6 xl:px-12">
 
                 {/* Top Section: Newsletter */}
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end border-b border-white/10 pb-10 mb-10 gap-12">

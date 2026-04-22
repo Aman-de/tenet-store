@@ -23,8 +23,8 @@ export default function TrustBar() {
     ];
 
     return (
-        <section className="bg-[#FAFAFA] py-8 border-y border-neutral-200"> {/* Compact Padding & Borders */}
-            <div className="max-w-7xl mx-auto px-6">
+        <section className="bg-[#FAFAFA] py-10 md:py-16 border-y border-neutral-200"> {/* Compact Padding & Borders */}
+            <div className="max-w-[2000px] w-full mx-auto px-6 xl:px-12">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-4 divide-y md:divide-y-0 md:divide-x divide-neutral-200"> {/* Added dividers for structure */}
                     {pillars.map((pillar, index) => (
                         <motion.div

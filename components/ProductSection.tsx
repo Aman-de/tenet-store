@@ -91,13 +91,13 @@ export default function ProductSection({ products }: ProductSectionProps) {
     );
 
     return (
-        <section ref={sectionRef} id="new-arrivals" className="max-w-7xl mx-auto px-4 md:px-6 py-2 md:py-4">
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-4 border-b border-neutral-100 pb-2 gap-4">
-                <div className="flex items-baseline gap-4">
-                    <h2 className="font-serif text-2xl md:text-3xl text-[#1A1A1A]">
+        <section ref={sectionRef} id="new-arrivals" className="max-w-[2000px] w-full mx-auto px-6 xl:px-12 py-8 lg:py-16">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 md:mb-12 border-b border-neutral-100 pb-4 gap-6">
+                <div className="flex items-baseline gap-4 md:gap-6">
+                    <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-[#1A1A1A]">
                         New Arrivals
                     </h2>
-                    <span className="hidden md:inline-block text-[10px] font-bold tracking-[0.2em] text-neutral-400 uppercase">
+                    <span className="hidden md:inline-block text-xs font-bold tracking-[0.2em] text-neutral-400 uppercase">
                         Curated Selection
                     </span>
                 </div>

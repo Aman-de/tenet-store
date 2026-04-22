@@ -56,7 +56,7 @@ export default function Navbar() {
             <nav
                 className={`sticky top-0 left-0 w-full z-50 transition-all duration-300 ${navBackground}`}
             >
-                <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between relative z-50">
+                <div className="max-w-[2000px] w-full mx-auto px-6 xl:px-12 py-4 flex items-center justify-between relative z-50">
                     {/* Mobile Menu & Search (Left) -> Now mostly Desktop Left Section including Account */}
                     <div className="flex items-center gap-4 lg:gap-6 w-full lg:w-auto">
                         <button className="lg:hidden" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
@@ -170,7 +170,7 @@ export default function Navbar() {
                             exit={{ height: 0, opacity: 0 }}
                             className="overflow-hidden border-t border-gray-100 bg-white"
                         >
-                            <form onSubmit={handleSearch} className="max-w-7xl mx-auto px-6 py-4 flex items-center">
+                            <form onSubmit={handleSearch} className="max-w-[2000px] w-full mx-auto px-6 xl:px-12 py-4 flex items-center">
                                 <Search className="w-4 h-4 text-gray-400 mr-3" />
                                 <input
                                     type="text"
