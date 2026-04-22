@@ -15,7 +15,7 @@ export default function RecommendedProducts({ products }: RecommendedProductsPro
             <h2 className="font-serif text-2xl md:text-3xl text-[#1A1A1A] mb-8 md:mb-12 text-center">
                 You May Also Like
             </h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 md:gap-x-8 gap-y-10">
+            <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-4 md:gap-x-8 gap-y-10 lg:gap-y-16">
                 {products.map((product) => (
                     <ProductCard key={product.id} product={product} />
                 ))}

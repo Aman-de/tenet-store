@@ -208,7 +208,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
     };
 
     return (
-        <div className="max-w-7xl mx-auto px-0 md:px-6 pt-0 md:pt-10 grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-20">
+        <div className="max-w-[2000px] w-full mx-auto px-0 md:px-6 xl:px-12 pt-0 md:pt-14 grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-12 lg:gap-24">
             <SizeGuide isOpen={isSizeGuideOpen} onClose={() => setIsSizeGuideOpen(false)} />
 
             {/* Left Column: Gallery */}

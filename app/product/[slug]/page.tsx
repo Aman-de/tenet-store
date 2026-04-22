@@ -26,7 +26,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
         <main className="bg-[#FDFBF7] min-h-screen pb-20">
             <ProductDetails product={product} reviews={reviews} />
-            <div className="max-w-7xl mx-auto px-4 md:px-6">
+            <div className="max-w-[2000px] w-full mx-auto px-4 md:px-6 xl:px-12">
                 <RecommendedProducts products={recommendations} />
             </div>
         </main>
