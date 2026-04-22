@@ -101,7 +101,8 @@ export async function getProduct(slug: string) {
 }
 
 export async function getRecommendedProducts(category: string, currentSlug: string) {
-    const query = `*[_type == "product" && slug.current != $currentSlug][0...3]{
+    // Better algorithm: First try to fetch 8 items from the exact same category
+    const query = `*[_type == "product" && category == $category && slug.current != $currentSlug][0...8]{
     _id,
     title,
     "slug": slug.current,
@@ -116,9 +117,29 @@ export async function getRecommendedProducts(category: string, currentSlug: stri
     isOutOfStock
   }`;
 
-    const products = await client.fetch(query, { category, currentSlug }, { cache: 'no-store' });
+    let products = await client.fetch(query, { category, currentSlug }, { cache: 'no-store' });
 
-     
+    // Fallback: If we couldn't find at least 4 items, pad with general products to keep the grid full
+    if (products.length < 4) {
+        const fallbackLimit = 8 - products.length;
+        const fallbackQuery = `*[_type == "product" && category != $category && slug.current != $currentSlug][0...${fallbackLimit}]{
+        _id,
+        title,
+        "slug": slug.current,
+        price,
+        originalPrice,
+        "imageUrl": variants[0].images[0].asset->url,
+        "hoverImageUrl": variants[0].images[1].asset->url,
+        category,
+        "colors": variants[].colorHex,
+        "discountLabel": "SAVE RS. " + (originalPrice - price),
+        gender,
+        isOutOfStock
+      }`;
+        const fallbackProducts = await client.fetch(fallbackQuery, { category, currentSlug }, { cache: 'no-store' });
+        products = [...products, ...fallbackProducts];
+    }
+
     return products.map((p: any) => ({
         id: p._id,
         title: p.title,

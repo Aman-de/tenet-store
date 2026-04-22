@@ -66,7 +66,7 @@ export default function SortedProductGrid({ products, sizeType = "clothing" }: S
     return (
         <div>
             {/* Utility Bar */}
-            <div className="flex flex-col gap-4 py-2 border-b border-neutral-100 mb-4">
+            <div className="flex flex-col gap-4 border-b border-neutral-100 mb-6 pb-2">
 
                 {/* Header: Sort & Mobile Labels */}
                 <div className="flex items-center justify-between">
