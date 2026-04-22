@@ -30,13 +30,8 @@ export default function CategoryGrid({ collections }: { collections: Collection[
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {collections.map((collection, idx) => (
                     <Link href={`/collection/${collection.handle}`} key={collection.id}>
-                        <div
-                            className="relative aspect-[4/3] overflow-hidden group cursor-pointer rounded-xl"
-                        >
-
-                            <div
-                                className="w-full h-full relative transform transition-transform duration-300 ease-out group-hover:scale-105"
-                            >
+                        <div className="relative aspect-[4/3] overflow-hidden group cursor-pointer rounded-xl">
+                            <div className="w-full h-full relative transform transition-transform duration-300 ease-out group-hover:scale-105">
                                 <Image
                                     src={collection.imageUrl}
                                     alt={collection.title}
@@ -45,7 +40,7 @@ export default function CategoryGrid({ collections }: { collections: Collection[
                                 />
                                 {/* Gradient Overlay - Minimalist Readability */}
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                            </motion.div>
+                            </div>
 
                             <div className="absolute bottom-6 left-6 z-10 text-white pointer-events-none flex items-center gap-2">
                                 <h3 className="font-serif italic text-lg md:text-2xl tracking-wider drop-shadow-md">
@@ -53,7 +48,6 @@ export default function CategoryGrid({ collections }: { collections: Collection[
                                 </h3>
                                 {/* Hover Reveal Arrow using Group Hover */}
                                 <ArrowRight className="w-5 h-5 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 ease-out" />
-                            </div>
                             </div>
                         </div>
                     </Link>
