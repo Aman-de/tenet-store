@@ -27,7 +27,9 @@ export default function Hero({ spotlightProducts = [] }: HeroProps) {
                 // Scroll by roughly the width of one vertical item
                 const scrollAmount = window.innerWidth > 1024 
                     ? window.innerWidth * 0.3 // desktop vertical width (30vw)
-                    : window.innerWidth; // mobile vertical width (100vw)
+                    : window.innerWidth > 768 
+                        ? window.innerWidth * 0.45 // iPad vertical width (45vw)
+                        : window.innerWidth; // mobile vertical width (100vw)
                 
                 container.scrollBy({ left: scrollAmount, behavior: "smooth" });
             }
@@ -62,7 +64,7 @@ export default function Hero({ spotlightProducts = [] }: HeroProps) {
                 className="flex h-full w-full overflow-x-auto snap-x snap-mandatory scrollbar-none scroll-smooth items-center lg:gap-1 px-0 py-0 lg:py-1"
             >
                 {/* 1. Original Horizontal Hero Image - Full Width Everywhere */}
-                <div className="relative h-full w-full lg:w-[100vw] shrink-0 snap-start overflow-hidden group">
+                <div className="relative h-full w-full md:w-[100vw] lg:w-[100vw] shrink-0 snap-start overflow-hidden group">
                     <Image
                         src="/images/hero-main.webp"
                         alt="The Winter Heritage Collection"
@@ -118,11 +120,11 @@ export default function Hero({ spotlightProducts = [] }: HeroProps) {
                     <Link
                         href={`/product/${product.handle}`}
                         key={product.id}
-                        className="relative h-full w-full md:w-full lg:w-[30vw] shrink-0 snap-start overflow-hidden lg:rounded-sm group block ml-0"
+                        className="relative h-full w-full md:w-[48vw] lg:w-[30vw] shrink-0 snap-start overflow-hidden lg:rounded-sm group block ml-0"
                     >
-                        {product.images[0] && (
+                        {(product.images[1] || product.images[0]) && (
                             <Image
-                                src={product.images[0]}
+                                src={product.images[1] || product.images[0]}
                                 alt={product.title}
                                 fill
                                 className="object-cover object-top transition-transform duration-[8s] ease-out group-hover:scale-105"
