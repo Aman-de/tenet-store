@@ -26,6 +26,8 @@ import { ClerkProvider } from "@clerk/nextjs";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import Navbar from "@/components/Navbar";
 import Script from "next/script";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/react";
 
 // ... existing imports
 
@@ -69,6 +71,8 @@ export default function RootLayout({
           </div>
           <CartDrawer />
           <WishlistDrawer />
+          <SpeedInsights />
+          <Analytics />
         </body>
       </html>
     </ClerkProvider>
