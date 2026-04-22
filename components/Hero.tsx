@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { useEffect, useRef } from "react";
 import ScrollIndicator from "./ScrollIndicator";
 import { Product } from "@/lib/data";
 
@@ -12,107 +12,140 @@ interface HeroProps {
 }
 
 export default function Hero({ spotlightProducts = [] }: HeroProps) {
-    if (!spotlightProducts || spotlightProducts.length === 0) return null;
+    const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+    // Smooth auto-scroll logic
+    useEffect(() => {
+        const container = scrollContainerRef.current;
+        if (!container) return;
+
+        const scrollInterval = setInterval(() => {
+            // Check if reached the end
+            if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 10) {
+                container.scrollTo({ left: 0, behavior: "smooth" });
+            } else {
+                // Scroll by roughly the width of one vertical item
+                const scrollAmount = window.innerWidth > 1024 
+                    ? window.innerWidth * 0.25 // desktop vertical width
+                    : window.innerWidth * 0.85; // mobile vertical width
+                
+                container.scrollBy({ left: scrollAmount, behavior: "smooth" });
+            }
+        }, 5000); // 5 seconds per slide
+
+        const pauseScroll = () => clearInterval(scrollInterval);
+        
+        container.addEventListener('mouseenter', pauseScroll);
+        container.addEventListener('touchstart', pauseScroll, { passive: true });
+
+        return () => {
+            clearInterval(scrollInterval);
+            if (container) {
+                container.removeEventListener('mouseenter', pauseScroll);
+                container.removeEventListener('touchstart', pauseScroll);
+            }
+        };
+    }, []);
+
+    const scrollToCollection = () => {
+        const section = document.getElementById("new-arrivals");
+        if (section) {
+            section.scrollIntoView({ behavior: "smooth" });
+        }
+    };
 
     return (
-        <section className="relative h-screen w-full overflow-hidden bg-neutral-900 group">
-            {/* Horizontal Snap Scroll Container */}
-            <div className="flex overflow-x-auto snap-x snap-mandatory h-screen w-full scrollbar-none scroll-smooth">
-                {spotlightProducts.map((product, idx) => (
-                    <div key={product.id} className="relative w-full h-screen shrink-0 snap-center flex flex-col overflow-hidden">
-                        
-                        {/* Background Image - Responsive Positioning */}
-                        <div className="absolute inset-0 z-0">
-                            {product.images[0] && (
-                                <Image
-                                    src={product.images[0]}
-                                    alt={product.title}
-                                    fill
-                                    className="object-cover object-[60%_80%] lg:object-center transform scale-105 transition-transform duration-[10s] hover:scale-100"
-                                    priority={idx === 0}
-                                    quality={100}
-                                />
-                            )}
-                            {/* Gradient Overlays for Readability */}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent lg:bg-gradient-to-r lg:from-black/80 lg:via-black/20 lg:to-transparent" />
-                        </div>
-
-                        {/* Content Container */}
-                        <div className="absolute inset-0 z-10 w-full h-full max-w-[2000px] mx-auto px-6 xl:px-12 pointer-events-none flex flex-col justify-end pb-48 lg:justify-center lg:pb-0 lg:items-start text-center lg:text-left">
-                            <div className="pointer-events-auto w-full lg:w-[600px] flex flex-col items-center lg:items-start">
-                                
-                                <motion.p
-                                    initial={{ opacity: 0, y: 20 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ duration: 0.8, delay: 0.2 }}
-                                    className="text-[10px] md:text-xs uppercase tracking-[0.3em] font-bold text-white/80 mb-4"
-                                >
-                                    The Essential • {product.category}
-                                </motion.p>
-                                
-                                <motion.h1
-                                    initial={{ opacity: 0, y: 30 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ duration: 0.8, delay: 0.4 }}
-                                    className="font-serif text-4xl lg:text-7xl xl:text-8xl font-bold tracking-tight mb-6 leading-[0.9] text-white drop-shadow-lg"
-                                >
-                                    {product.title}
-                                </motion.h1>
-
-                                <motion.div
-                                    initial={{ opacity: 0, y: 20 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ duration: 0.8, delay: 0.5 }}
-                                    className="text-neutral-200 mb-8 max-w-sm font-sans font-light tracking-wide leading-relaxed text-sm lg:text-base text-shadow-sm"
-                                >
-                                    Crafted for uncompromising quality. Experience the pinnacle of luxury with our signature {product.title.toLowerCase()}. Elevated design meets timeless aesthetics.
-                                </motion.div>
-
-                                <motion.div
-                                    initial={{ opacity: 0, y: 20 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ duration: 0.8, delay: 0.6 }}
-                                    className="flex w-full md:w-auto flex-col sm:flex-row gap-4"
-                                >
-                                    <Link
-                                        href={`/product/${product.handle}`}
-                                        className="w-full sm:w-auto px-10 py-4 bg-white text-[#1A1A1A] font-bold uppercase tracking-widest text-xs transition-transform hover:scale-105 active:scale-95 shadow-xl text-center"
-                                    >
-                                        Discover Now
-                                    </Link>
-                                    <Link
-                                        href={`/product/${product.handle}`}
-                                        className="w-full sm:w-auto px-10 py-4 border border-white/60 text-white font-bold uppercase tracking-widest text-xs backdrop-blur-sm transition-all hover:bg-white/10 active:scale-95 text-center flex items-center justify-center gap-2"
-                                    >
-                                        View Details <ArrowRight className="w-4 h-4" />
-                                    </Link>
-                                </motion.div>
-                            </div>
-                        </div>
-
-                        {/* Interactive Swipe Indicator (Visible on Desktop Right edge or Mobile Bottom) */}
-                        {idx < spotlightProducts.length - 1 && (
-                            <div className="absolute right-6 top-1/2 -translate-y-1/2 hidden lg:flex flex-col items-center gap-3 opacity-60 hover:opacity-100 transition-opacity animate-pulse pointer-events-none z-20">
-                                <span className="text-white text-[10px] uppercase tracking-widest rotate-90 mb-4 font-bold">Swipe</span>
-                                <ArrowRight className="w-6 h-6 text-white" />
-                            </div>
-                        )}
-                        {idx < spotlightProducts.length - 1 && (
-                            <div className="absolute bottom-32 left-1/2 -translate-x-1/2 lg:hidden flex gap-2 items-center opacity-70 animate-pulse pointer-events-none z-20">
-                                <span className="text-white text-[10px] uppercase tracking-widest font-bold">Swipe</span>
-                                <ArrowRight className="w-4 h-4 text-white" />
-                            </div>
-                        )}
+        <section className="relative h-[85vh] lg:h-[90vh] w-full overflow-hidden bg-[#FDFBF7]">
+            {/* Horizontal Scroll Layout */}
+            <div 
+                ref={scrollContainerRef}
+                className="flex h-full w-full overflow-x-auto snap-x snap-mandatory scrollbar-none scroll-smooth items-center lg:gap-1 px-0 lg:px-1 py-0 lg:py-1"
+            >
+                {/* 1. Original Horizontal Hero Image */}
+                <div className="relative h-full w-full lg:w-[70vw] shrink-0 snap-center overflow-hidden lg:rounded-sm group">
+                    <Image
+                        src="/images/hero-main.webp"
+                        alt="The Winter Heritage Collection"
+                        fill
+                        className="object-cover object-[60%_80%] lg:object-center transform scale-105 transition-transform duration-[10s] hover:scale-100"
+                        priority
+                        quality={100}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent lg:bg-gradient-to-r lg:from-black/60 lg:via-black/10 lg:to-transparent" />
+                    
+                    {/* Content Container (Original) */}
+                    <div className="absolute inset-0 z-10 w-full h-full p-6 lg:p-16 flex flex-col justify-end pb-32 lg:justify-center lg:pb-0 items-center lg:items-start text-center lg:text-left">
+                        <motion.p
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.2 }}
+                            className="text-xs uppercase tracking-[0.2em] text-gray-300 mb-2"
+                        >
+                            The Winter Heritage Collection
+                        </motion.p>
+                        <motion.h1
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.4 }}
+                            className="font-serif text-5xl lg:text-8xl font-bold tracking-tight mb-6 leading-[0.9] text-white drop-shadow-lg"
+                        >
+                            SILENT <br className="hidden lg:block" /> LUXURY
+                        </motion.h1>
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.6 }}
+                        >
+                            <button
+                                onClick={scrollToCollection}
+                                className="lg:hidden w-full max-w-xs bg-white text-black px-8 py-4 text-xs font-bold uppercase tracking-widest transition-transform hover:scale-105 active:scale-95 shadow-xl"
+                            >
+                                Shop Collection
+                            </button>
+                            <button
+                                onClick={scrollToCollection}
+                                className="hidden lg:block group/btn px-10 py-4 border border-white/80 text-white transition-all duration-300 tracking-[0.2em] text-sm font-bold uppercase backdrop-blur-sm relative overflow-hidden active:scale-95 shadow-lg"
+                            >
+                                <span className="relative z-10 group-hover/btn:text-[#1A1A1A] transition-colors duration-300">Shop Collection</span>
+                                <div className="absolute inset-0 bg-white transform -translate-x-full group-hover/btn:translate-x-0 transition-transform duration-300 ease-in-out z-0" />
+                            </button>
+                        </motion.div>
                     </div>
+                </div>
+
+                {/* 2. Vertical 9:16 Spotlight Products */}
+                {spotlightProducts.map((product) => (
+                    <Link
+                        href={`/product/${product.handle}`}
+                        key={product.id}
+                        className="relative h-full w-[85vw] md:w-[40vw] lg:w-[30vw] shrink-0 snap-center overflow-hidden lg:rounded-sm group block ml-1 lg:ml-0"
+                    >
+                        {product.images[0] && (
+                            <Image
+                                src={product.images[0]}
+                                alt={product.title}
+                                fill
+                                className="object-cover object-top transition-transform duration-[8s] ease-out group-hover:scale-105"
+                                quality={90}
+                            />
+                        )}
+                        {/* Subtle Gradient for text readability */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-90 transition-opacity group-hover:opacity-100" />
+                        
+                        {/* Simple Text Overlay (No massive buttons) */}
+                        <div className="absolute bottom-0 w-full p-8 flex flex-col justify-end text-center">
+                            <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-white/70 mb-3 transform translate-y-2 opacity-80 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+                                {product.category || 'Featured'}
+                            </span>
+                            <h3 className="font-serif text-3xl lg:text-4xl text-white tracking-tight drop-shadow-md transform transition-transform duration-300 group-hover:-translate-y-1">
+                                {product.title}
+                            </h3>
+                        </div>
+                    </Link>
                 ))}
             </div>
-            
-            {/* Scroll/Down Hint for leaving the Hero Section */}
-            <div className="absolute bottom-0 w-full flex justify-center pb-8 z-30 pointer-events-none">
+
+            <div className="absolute bottom-6 w-full flex justify-center z-30 pointer-events-none">
                 <ScrollIndicator />
             </div>
         </section>
