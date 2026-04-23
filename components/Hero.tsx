@@ -3,7 +3,8 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import ScrollIndicator from "./ScrollIndicator";
 import { Product } from "@/lib/data";
 
@@ -13,28 +14,78 @@ interface HeroProps {
 
 export default function Hero({ spotlightProducts = [] }: HeroProps) {
     const scrollContainerRef = useRef<HTMLDivElement>(null);
+    const [activeIndex, setActiveIndex] = useState(0);
+    const totalSlides = 1 + spotlightProducts.length;
 
-    // Smooth auto-scroll logic
+    // Handle scroll to update active dot
+    useEffect(() => {
+        const container = scrollContainerRef.current;
+        if (!container) return;
+
+        const handleScroll = () => {
+            const children = Array.from(container.children) as HTMLElement[];
+            const slides = children.filter(child => child.tagName === 'DIV' || child.tagName === 'A');
+            
+            const isAtEnd = Math.abs(container.scrollWidth - container.clientWidth - container.scrollLeft) < 5;
+            if (isAtEnd) {
+                setActiveIndex(slides.length - 1);
+                return;
+            }
+            
+            let closestIndex = 0;
+            let minDistance = Infinity;
+
+            slides.forEach((child, index) => {
+                const distance = Math.abs(container.scrollLeft - child.offsetLeft);
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    closestIndex = index;
+                }
+            });
+
+            setActiveIndex(closestIndex);
+        };
+
+        container.addEventListener('scroll', handleScroll, { passive: true });
+        // Initial check
+        handleScroll();
+
+        return () => container.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    // Auto-scroll logic
     useEffect(() => {
         const container = scrollContainerRef.current;
         if (!container) return;
 
         const scrollInterval = setInterval(() => {
-            // Check if reached the end
-            if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 10) {
-                container.scrollTo({ left: 0, behavior: "smooth" });
+            const children = Array.from(container.children) as HTMLElement[];
+            const slides = children.filter(child => child.tagName === 'DIV' || child.tagName === 'A');
+            
+            const isAtEnd = Math.abs(container.scrollWidth - container.clientWidth - container.scrollLeft) < 5;
+            let currentIndex = 0;
+            
+            if (isAtEnd) {
+                currentIndex = slides.length - 1;
             } else {
-                // Scroll by roughly the width of one vertical item
-                const isPortrait = window.innerHeight > window.innerWidth;
-                const scrollAmount = window.innerWidth > 1024 && !isPortrait
-                    ? window.innerWidth * 0.3 // desktop vertical width (30vw)
-                    : window.innerWidth > 768 && !isPortrait
-                        ? window.innerWidth * 0.45 // iPad Landscape vertical width (45vw)
-                        : window.innerWidth; // mobile/portrait vertical width (100vw)
-                
-                container.scrollBy({ left: scrollAmount, behavior: "smooth" });
+                let minDistance = Infinity;
+                slides.forEach((child, index) => {
+                    const distance = Math.abs(container.scrollLeft - child.offsetLeft);
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        currentIndex = index;
+                    }
+                });
             }
-        }, 5000); // 5 seconds per slide
+
+            const nextIndex = (currentIndex + 1) % totalSlides;
+            
+            if (nextIndex === slides.length - 1) {
+                container.scrollTo({ left: container.scrollWidth, behavior: 'smooth' });
+            } else if (slides[nextIndex]) {
+                container.scrollTo({ left: slides[nextIndex].offsetLeft, behavior: 'smooth' });
+            }
+        }, 5000);
 
         const pauseScroll = () => clearInterval(scrollInterval);
         
@@ -43,12 +94,24 @@ export default function Hero({ spotlightProducts = [] }: HeroProps) {
 
         return () => {
             clearInterval(scrollInterval);
-            if (container) {
-                container.removeEventListener('mouseenter', pauseScroll);
-                container.removeEventListener('touchstart', pauseScroll);
-            }
+            container.removeEventListener('mouseenter', pauseScroll);
+            container.removeEventListener('touchstart', pauseScroll);
         };
-    }, []);
+    }, [totalSlides]);
+
+    const scrollToIndex = (index: number) => {
+        const container = scrollContainerRef.current;
+        if (!container) return;
+        
+        const children = Array.from(container.children) as HTMLElement[];
+        const slides = children.filter(child => child.tagName === 'DIV' || child.tagName === 'A');
+        
+        if (index === slides.length - 1) {
+            container.scrollTo({ left: container.scrollWidth, behavior: 'smooth' });
+        } else if (slides[index]) {
+            container.scrollTo({ left: slides[index].offsetLeft, behavior: 'smooth' });
+        }
+    };
 
     const scrollToCollection = () => {
         const section = document.getElementById("new-arrivals");
@@ -58,11 +121,11 @@ export default function Hero({ spotlightProducts = [] }: HeroProps) {
     };
 
     return (
-        <section className="relative h-[85vh] lg:h-[90vh] w-full overflow-hidden bg-[#FDFBF7]">
+        <section className="relative h-[85vh] lg:h-[90vh] w-full overflow-hidden bg-[#FDFBF7] group/hero">
             {/* Horizontal Scroll Layout */}
             <div 
                 ref={scrollContainerRef}
-                className="flex h-full w-full overflow-x-auto snap-x snap-mandatory scrollbar-none scroll-smooth items-center lg:gap-1 px-0 py-0 lg:py-1"
+                className="flex h-full w-full overflow-x-auto snap-x snap-mandatory scrollbar-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] scroll-smooth items-center lg:gap-1 px-0 py-0 lg:py-1"
             >
                 {/* 1. Original Horizontal Hero Image - Full Width Everywhere */}
                 <div className="relative h-full w-full md:w-[100vw] lg:w-[100vw] shrink-0 snap-start overflow-hidden group">
@@ -145,6 +208,39 @@ export default function Hero({ spotlightProducts = [] }: HeroProps) {
                             </h3>
                         </div>
                     </Link>
+                ))}
+            </div>
+
+            {/* Navigation Arrows (PC only) */}
+            <button 
+                onClick={() => scrollToIndex(Math.max(0, activeIndex - 1))}
+                className={`hidden lg:flex absolute left-6 top-1/2 -translate-y-1/2 z-40 w-12 h-12 bg-black/20 hover:bg-black/40 backdrop-blur-md rounded-full items-center justify-center text-white transition-all duration-300 cursor-pointer border border-white/10 opacity-0 group-hover/hero:opacity-100 ${activeIndex === 0 ? '!opacity-0 pointer-events-none' : ''}`}
+                aria-label="Previous slide"
+            >
+                <ChevronLeft size={24} />
+            </button>
+
+            <button 
+                onClick={() => scrollToIndex(Math.min(totalSlides - 1, activeIndex + 1))}
+                className={`hidden lg:flex absolute right-6 top-1/2 -translate-y-1/2 z-40 w-12 h-12 bg-black/20 hover:bg-black/40 backdrop-blur-md rounded-full items-center justify-center text-white transition-all duration-300 cursor-pointer border border-white/10 opacity-0 group-hover/hero:opacity-100 ${activeIndex === totalSlides - 1 ? '!opacity-0 pointer-events-none' : ''}`}
+                aria-label="Next slide"
+            >
+                <ChevronRight size={24} />
+            </button>
+
+            {/* Pagination Dots (PC only) */}
+            <div className="hidden lg:flex absolute bottom-8 w-full justify-center gap-3 z-40 pointer-events-auto">
+                {Array.from({ length: totalSlides }).map((_, idx) => (
+                    <button
+                        key={idx}
+                        onClick={() => scrollToIndex(idx)}
+                        className={`transition-all duration-300 rounded-full ${
+                            activeIndex === idx 
+                            ? "bg-white w-8 h-2" 
+                            : "bg-white/50 hover:bg-white/80 w-2 h-2"
+                        }`}
+                        aria-label={`Go to slide ${idx + 1}`}
+                    />
                 ))}
             </div>
 
