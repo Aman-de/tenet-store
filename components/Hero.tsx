@@ -59,31 +59,18 @@ export default function Hero({ spotlightProducts = [] }: HeroProps) {
         if (!container) return;
 
         const scrollInterval = setInterval(() => {
-            const children = Array.from(container.children) as HTMLElement[];
-            const slides = children.filter(child => child.tagName === 'DIV' || child.tagName === 'A');
-            
             const isAtEnd = Math.abs(container.scrollWidth - container.clientWidth - container.scrollLeft) < 5;
-            let currentIndex = 0;
-            
             if (isAtEnd) {
-                currentIndex = slides.length - 1;
+                container.scrollTo({ left: 0, behavior: 'smooth' });
             } else {
-                let minDistance = Infinity;
-                slides.forEach((child, index) => {
-                    const distance = Math.abs(container.scrollLeft - child.offsetLeft);
-                    if (distance < minDistance) {
-                        minDistance = distance;
-                        currentIndex = index;
+                const children = Array.from(container.children) as HTMLElement[];
+                const slides = children.filter(child => child.tagName === 'DIV' || child.tagName === 'A');
+                for (let i = 0; i < slides.length; i++) {
+                    if (slides[i].offsetLeft > container.scrollLeft + 10) {
+                        container.scrollTo({ left: slides[i].offsetLeft, behavior: 'smooth' });
+                        break;
                     }
-                });
-            }
-
-            const nextIndex = (currentIndex + 1) % totalSlides;
-            
-            if (nextIndex === slides.length - 1) {
-                container.scrollTo({ left: container.scrollWidth, behavior: 'smooth' });
-            } else if (slides[nextIndex]) {
-                container.scrollTo({ left: slides[nextIndex].offsetLeft, behavior: 'smooth' });
+                }
             }
         }, 5000);
 
@@ -110,6 +97,46 @@ export default function Hero({ spotlightProducts = [] }: HeroProps) {
             container.scrollTo({ left: container.scrollWidth, behavior: 'smooth' });
         } else if (slides[index]) {
             container.scrollTo({ left: slides[index].offsetLeft, behavior: 'smooth' });
+        }
+    };
+
+    const scrollPrev = () => {
+        const container = scrollContainerRef.current;
+        if (!container) return;
+        const children = Array.from(container.children) as HTMLElement[];
+        const slides = children.filter(child => child.tagName === 'DIV' || child.tagName === 'A');
+        
+        if (container.scrollLeft <= 5) {
+            // We are at the start, loop to end
+            container.scrollTo({ left: container.scrollWidth, behavior: 'smooth' });
+            return;
+        }
+
+        for (let i = slides.length - 1; i >= 0; i--) {
+            if (slides[i].offsetLeft < container.scrollLeft - 10) {
+                container.scrollTo({ left: slides[i].offsetLeft, behavior: 'smooth' });
+                return;
+            }
+        }
+    };
+
+    const scrollNext = () => {
+        const container = scrollContainerRef.current;
+        if (!container) return;
+        
+        const isAtEnd = Math.abs(container.scrollWidth - container.clientWidth - container.scrollLeft) < 5;
+        if (isAtEnd) {
+            container.scrollTo({ left: 0, behavior: 'smooth' });
+            return;
+        }
+
+        const children = Array.from(container.children) as HTMLElement[];
+        const slides = children.filter(child => child.tagName === 'DIV' || child.tagName === 'A');
+        for (let i = 0; i < slides.length; i++) {
+            if (slides[i].offsetLeft > container.scrollLeft + 10) {
+                container.scrollTo({ left: slides[i].offsetLeft, behavior: 'smooth' });
+                break;
+            }
         }
     };
 
@@ -211,38 +238,42 @@ export default function Hero({ spotlightProducts = [] }: HeroProps) {
                 ))}
             </div>
 
-            {/* Navigation Arrows (PC only) */}
-            <button 
-                onClick={() => scrollToIndex(Math.max(0, activeIndex - 1))}
-                className={`hidden lg:flex absolute left-6 top-1/2 -translate-y-1/2 z-40 w-12 h-12 bg-black/20 hover:bg-black/40 backdrop-blur-md rounded-full items-center justify-center text-white transition-all duration-300 cursor-pointer border border-white/10 opacity-0 group-hover/hero:opacity-100 ${activeIndex === 0 ? '!opacity-0 pointer-events-none' : ''}`}
-                aria-label="Previous slide"
-            >
-                <ChevronLeft size={24} />
-            </button>
+            {/* Navigation Arrows & Dots (PC only) */}
+            {totalSlides > 1 && (
+                <>
+                    <button 
+                        onClick={scrollPrev}
+                        className="hidden lg:flex absolute left-6 top-1/2 -translate-y-1/2 z-40 w-12 h-12 bg-black/20 hover:bg-black/40 backdrop-blur-md rounded-full items-center justify-center text-white transition-all duration-300 cursor-pointer border border-white/10 opacity-0 group-hover/hero:opacity-100"
+                        aria-label="Previous slide"
+                    >
+                        <ChevronLeft size={24} />
+                    </button>
 
-            <button 
-                onClick={() => scrollToIndex(Math.min(totalSlides - 1, activeIndex + 1))}
-                className={`hidden lg:flex absolute right-6 top-1/2 -translate-y-1/2 z-40 w-12 h-12 bg-black/20 hover:bg-black/40 backdrop-blur-md rounded-full items-center justify-center text-white transition-all duration-300 cursor-pointer border border-white/10 opacity-0 group-hover/hero:opacity-100 ${activeIndex === totalSlides - 1 ? '!opacity-0 pointer-events-none' : ''}`}
-                aria-label="Next slide"
-            >
-                <ChevronRight size={24} />
-            </button>
+                    <button 
+                        onClick={scrollNext}
+                        className="hidden lg:flex absolute right-6 top-1/2 -translate-y-1/2 z-40 w-12 h-12 bg-black/20 hover:bg-black/40 backdrop-blur-md rounded-full items-center justify-center text-white transition-all duration-300 cursor-pointer border border-white/10 opacity-0 group-hover/hero:opacity-100"
+                        aria-label="Next slide"
+                    >
+                        <ChevronRight size={24} />
+                    </button>
 
-            {/* Pagination Dots (PC only) */}
-            <div className="hidden lg:flex absolute bottom-8 w-full justify-center gap-3 z-40 pointer-events-auto">
-                {Array.from({ length: totalSlides }).map((_, idx) => (
-                    <button
-                        key={idx}
-                        onClick={() => scrollToIndex(idx)}
-                        className={`transition-all duration-300 rounded-full ${
-                            activeIndex === idx 
-                            ? "bg-white w-8 h-2" 
-                            : "bg-white/50 hover:bg-white/80 w-2 h-2"
-                        }`}
-                        aria-label={`Go to slide ${idx + 1}`}
-                    />
-                ))}
-            </div>
+                    {/* Pagination Dots (PC only) */}
+                    <div className="hidden lg:flex absolute bottom-8 w-full justify-center gap-3 z-40 pointer-events-auto">
+                        {Array.from({ length: totalSlides }).map((_, idx) => (
+                            <button
+                                key={idx}
+                                onClick={() => scrollToIndex(idx)}
+                                className={`transition-all duration-300 rounded-full ${
+                                    activeIndex === idx 
+                                    ? "bg-white w-8 h-2" 
+                                    : "bg-white/50 hover:bg-white/80 w-2 h-2"
+                                }`}
+                                aria-label={`Go to slide ${idx + 1}`}
+                            />
+                        ))}
+                    </div>
+                </>
+            )}
 
             <div className="absolute bottom-6 w-full flex justify-center z-30 pointer-events-none">
                 <ScrollIndicator />
