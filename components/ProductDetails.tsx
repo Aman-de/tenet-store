@@ -4,7 +4,7 @@ import { useStore } from "@/lib/store";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, ChevronUp, AlertCircle, Heart, Ruler, Star, Loader2 } from "lucide-react";
+import { ChevronDown, ChevronUp, AlertCircle, Heart, Ruler, Star, Loader2, Truck, ShieldCheck, RefreshCw } from "lucide-react";
 import Image from "next/image";
 import SizeGuide from "./SizeGuide";
 import ShareButton from "./ShareButton";
@@ -478,19 +478,38 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                     </button>
                 </div>
 
+                {/* Micro-Trust Badges */}
+                <div className="grid grid-cols-3 gap-2 py-6 border-t border-neutral-100 mb-6 text-center">
+                    <div className="flex flex-col items-center gap-1.5">
+                        <Truck className="w-4 h-4 text-neutral-500 stroke-[1.5]" />
+                        <span className="font-sans text-[10px] uppercase font-bold tracking-widest text-[#1A1A1A]">Free Shipping</span>
+                        <span className="font-sans text-[9px] text-neutral-400 uppercase">Express across India</span>
+                    </div>
+                    <div className="flex flex-col items-center gap-1.5 border-x border-neutral-200">
+                        <ShieldCheck className="w-4 h-4 text-neutral-500 stroke-[1.5]" />
+                        <span className="font-sans text-[10px] uppercase font-bold tracking-widest text-[#1A1A1A]">Secure Payment</span>
+                        <span className="font-sans text-[9px] text-neutral-400 uppercase">UPI & Cards via Razorpay</span>
+                    </div>
+                    <div className="flex flex-col items-center gap-1.5">
+                        <RefreshCw className="w-4 h-4 text-neutral-500 stroke-[1.5]" />
+                        <span className="font-sans text-[10px] uppercase font-bold tracking-widest text-[#1A1A1A]">Easy Exchange</span>
+                        <span className="font-sans text-[9px] text-neutral-400 uppercase">Hassle-free 7-day returns</span>
+                    </div>
+                </div>
+
                 {/* Description Accordions */}
                 <div className="divide-y divide-neutral-200 border-t border-neutral-200">
                     <AccordionItem title="Description" defaultOpen>
-                        Crafted from the finest materials, this piece embodies the essence of silent luxury. Designed for the modern gentleman who values heritage and quality above all else. Perfect for layering in the cooler months.
+                        {product.description || "Crafted from the finest materials, this piece embodies the essence of silent luxury."}
                     </AccordionItem>
                     <AccordionItem title="Material & Care">
-                        100% Premium Cashmere blend.<br />
-                        Dry clean only. Do not bleach.<br />
+                        Premium natural fibers and luxury weaves.<br />
+                        Dry clean or gentle hand wash recommended.<br />
                         Store folded to maintain shape.
                     </AccordionItem>
                     <AccordionItem title="Delivery & Returns">
-                        Free standard shipping on all orders over ₹10,000.<br />
-                        Returns accepted within 14 days of delivery in original condition.
+                        Free express shipping across all major Indian pin codes.<br />
+                        Hassle-free 7-day exchanges and returns. Reverse pickup coordinated automatically.
                     </AccordionItem>
                     <AccordionItem title={`Reviews (${reviews.length})`}>
                         <div className="space-y-6">

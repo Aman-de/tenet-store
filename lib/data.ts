@@ -31,6 +31,7 @@ export interface Product {
     imagePromptNote?: string;
     gender?: 'man' | 'woman' | 'unisex';
     isOutOfStock?: boolean;
+    description?: string;
 }
 
 export const products: Product[] = [

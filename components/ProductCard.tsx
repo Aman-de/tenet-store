@@ -19,6 +19,11 @@ export default function ProductCard({ product }: ProductCardProps) {
     const [addingState, setAddingState] = useState<'idle' | 'adding' | 'added'>('idle');
     const { addToCart, openCart, toggleWishlist, isInWishlist } = useStore();
 
+    const hasDiscount = product.originalPrice && product.originalPrice > product.price;
+    const discountPercentage = hasDiscount
+        ? Math.round(((product.originalPrice! - product.price) / product.originalPrice!) * 100)
+        : 0;
+
     const handleViewItem = () => {
         trackViewItem(product);
     };
@@ -75,9 +80,9 @@ export default function ProductCard({ product }: ProductCardProps) {
                     )}
 
                     {/* Discount Badge - Minimalist */}
-                    {product.discountLabel && !product.isOutOfStock && (
-                        <div className="absolute top-2 left-2 bg-white/90 backdrop-blur-sm text-black text-[10px] font-medium px-2 py-1 uppercase tracking-widest z-20">
-                            {product.discountLabel.replace("SAVE RS. ", "-").replace("SAVE ₹", "-").replace(" off", "")}
+                    {hasDiscount && !product.isOutOfStock && (
+                        <div className="absolute top-2 left-2 bg-black text-white text-[9px] font-bold px-2.5 py-1 uppercase tracking-[0.15em] z-20 rounded-sm">
+                            {discountPercentage}% OFF
                         </div>
                     )}
 
