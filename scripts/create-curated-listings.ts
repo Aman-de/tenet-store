@@ -45,19 +45,29 @@ const IMAGES = {
     voyagerDuffel: path.join(CURRENT_BRAIN_DIR, 'voyager_duffel_flat_1779247010443.png'),
     voyagerDuffelInside: path.join(CURRENT_BRAIN_DIR, 'voyager_duffel_inside_1779289173569.png'),
 
-    // Old Collection (Preserved in previous cache)
+    // Old Collection (front) + new back/detail views
     cableKnitCream: path.join(PREV_BRAIN_DIR, 'cable_knit_cream_flat_1771028542886.png'),
+    cableKnitCreamBack: path.join(CURRENT_BRAIN_DIR, 'cable_knit_cream_back_1779290478632.png'),
     cableKnitNavy: path.join(PREV_BRAIN_DIR, 'cable_knit_navy_flat_v2_1771028568397.png'),
+    cableKnitNavyBack: path.join(CURRENT_BRAIN_DIR, 'cable_knit_navy_back_1779290514853.png'),
     quarterZipCharcoal: path.join(PREV_BRAIN_DIR, 'quarter_zip_charcoal_flat_v2_1771028582947.png'),
+    quarterZipBack: path.join(CURRENT_BRAIN_DIR, 'quarter_zip_back_1779290562573.png'),
     trouserSand: path.join(PREV_BRAIN_DIR, 'trouser_sand_flat_generic_1771028636473.png'),
+    gurkhaBack: path.join(CURRENT_BRAIN_DIR, 'gurkha_trouser_back_1779290599911.png'),
+    woolTrouserBack: path.join(CURRENT_BRAIN_DIR, 'wool_trouser_back_1779290652871.png'),
     harringtonNavy: path.join(PREV_BRAIN_DIR, 'harrington_navy_flat_generic_1771028651698.png'),
+    harringtonBack: path.join(CURRENT_BRAIN_DIR, 'harrington_back_1779290699671.png'),
     choreCoatOlive: path.join(PREV_BRAIN_DIR, 'chore_coat_olive_flat_generic_1771028667076.png'),
+    choreCoatBack: path.join(CURRENT_BRAIN_DIR, 'chore_coat_back_1779290738145.png'),
 
-    // Vintage items (local assets)
+    // Vintage items (local assets) + new back/detail views
     vintageWhite: path.join(LOCAL_PRODUCTS_DIR, 'white.jpeg'),
+    cashmereVestBack: path.join(CURRENT_BRAIN_DIR, 'cashmere_vest_back_1779290779631.png'),
     vintageCombo: path.join(LOCAL_PRODUCTS_DIR, 'combo.jpeg'),
+    cableZipBack: path.join(CURRENT_BRAIN_DIR, 'cable_zip_back_1779291191871.png'),
     vintageTurtleneck: path.join(LOCAL_PRODUCTS_DIR, 'turtelneck.jpg'),
-    vintageHoodie: path.join(LOCAL_PRODUCTS_DIR, 'hoodie.jpeg')
+    vintageHoodie: path.join(LOCAL_PRODUCTS_DIR, 'hoodie.jpeg'),
+    cashmereHoodieBack: path.join(CURRENT_BRAIN_DIR, 'cashmere_hoodie_back_1779291571486.png'),
 };
 
 const COLLECTIONS = [
@@ -123,8 +133,8 @@ const PRODUCTS = [
         sizes: ["S", "M", "L", "XL"],
         description: "A timeless classic inspired by Irish fisherman sweaters. Knit from thick, 5-gauge merino wool for warmth and durability. Feature intricate cable patterns and ribbed trims.",
         variants: [
-            { colorName: "Aran Cream", colorHex: "#F5F5DC", imagePaths: [IMAGES.cableKnitCream] },
-            { colorName: "Deep Navy", colorHex: "#000080", imagePaths: [IMAGES.cableKnitNavy] }
+            { colorName: "Aran Cream", colorHex: "#F5F5DC", imagePaths: [IMAGES.cableKnitCream, IMAGES.cableKnitCreamBack] },
+            { colorName: "Deep Navy", colorHex: "#000080", imagePaths: [IMAGES.cableKnitNavy, IMAGES.cableKnitNavyBack] }
         ]
     },
     {
@@ -137,8 +147,8 @@ const PRODUCTS = [
         sizes: ["S", "M", "L", "XL"],
         description: "The ultimate layering piece. Crafted from a dense cotton-cashmere blend. Features a polished metal YKK zipper and a stand collar that looks sharp over a tee or oxford.",
         variants: [
-            { colorName: "Charcoal Grey", colorHex: "#36454F", imagePaths: [IMAGES.quarterZipCharcoal] },
-            { colorName: "Jet Black", colorHex: "#000000", imagePaths: [IMAGES.quarterZipCharcoal] }
+            { colorName: "Charcoal Grey", colorHex: "#36454F", imagePaths: [IMAGES.quarterZipCharcoal, IMAGES.quarterZipBack] },
+            { colorName: "Jet Black", colorHex: "#000000", imagePaths: [IMAGES.quarterZipCharcoal, IMAGES.quarterZipBack] }
         ]
     },
     {
@@ -151,8 +161,8 @@ const PRODUCTS = [
         sizes: ["S", "M", "L", "XL"],
         description: "Indulge in absolute luxury with our 100% fine-gauge Mongolian cashmere vest. Clean silhouette, ribbed v-neck collar, and lightweight warmth designed for modern layering.",
         variants: [
-            { colorName: "Alabaster White", colorHex: "#FDFBF7", imagePaths: [IMAGES.vintageWhite] },
-            { colorName: "Off Black", colorHex: "#1A1A1A", imagePaths: [IMAGES.vintageWhite] }
+            { colorName: "Alabaster White", colorHex: "#FDFBF7", imagePaths: [IMAGES.vintageWhite, IMAGES.cashmereVestBack] },
+            { colorName: "Off Black", colorHex: "#1A1A1A", imagePaths: [IMAGES.vintageWhite, IMAGES.cashmereVestBack] }
         ]
     },
     {
@@ -165,8 +175,8 @@ const PRODUCTS = [
         sizes: ["S", "M", "L", "XL"],
         description: "A chunky cardigan styled with dynamic cabling and a heavy metal two-way zipper. Perfect for transitioning seasons with structural warmth and versatility.",
         variants: [
-            { colorName: "Forest Green", colorHex: "#355E3B", imagePaths: [IMAGES.vintageCombo] },
-            { colorName: "Dark Charcoal", colorHex: "#1A1A1A", imagePaths: [IMAGES.vintageCombo] }
+            { colorName: "Forest Green", colorHex: "#355E3B", imagePaths: [IMAGES.vintageCombo, IMAGES.cableZipBack] },
+            { colorName: "Dark Charcoal", colorHex: "#1A1A1A", imagePaths: [IMAGES.vintageCombo, IMAGES.cableZipBack] }
         ]
     },
     {
@@ -196,8 +206,8 @@ const PRODUCTS = [
         sizes: ["S", "M", "L", "XL"],
         description: "An ultra-soft cashmere-merino blend loungewear hoodie. Featuring double-lined hood, premium metal aglets on drawstrings, and a cozy front kangaroo pocket.",
         variants: [
-            { colorName: "Oatmeal Beige", colorHex: "#F5F5DC", imagePaths: [IMAGES.vintageHoodie] },
-            { colorName: "Deep Forest", colorHex: "#2F4F4F", imagePaths: [IMAGES.vintageHoodie] }
+            { colorName: "Oatmeal Beige", colorHex: "#F5F5DC", imagePaths: [IMAGES.vintageHoodie, IMAGES.cashmereHoodieBack] },
+            { colorName: "Deep Forest", colorHex: "#2F4F4F", imagePaths: [IMAGES.vintageHoodie, IMAGES.cashmereHoodieBack] }
         ]
     },
 
@@ -225,8 +235,8 @@ const PRODUCTS = [
         sizes: ["30", "32", "34", "36"],
         description: "Sartorial elegance meets military history. High-waisted with the signature double-buckle waistband closure. Cut from heavy cotton drill with single pleats for comfort and style.",
         variants: [
-            { colorName: "Sand Beige", colorHex: "#C2B280", imagePaths: [IMAGES.trouserSand] },
-            { colorName: "Olive Drab", colorHex: "#6B8E23", imagePaths: [IMAGES.trouserSand] }
+            { colorName: "Sand Beige", colorHex: "#C2B280", imagePaths: [IMAGES.trouserSand, IMAGES.gurkhaBack] },
+            { colorName: "Olive Drab", colorHex: "#6B8E23", imagePaths: [IMAGES.trouserSand, IMAGES.gurkhaBack] }
         ]
     },
     {
@@ -239,8 +249,8 @@ const PRODUCTS = [
         sizes: ["30", "32", "34", "36"],
         description: "Your go-to formal trouser. Made from Super 120s Italian wool flannel. Features a double-pleated front, side adjusters, and a tapered leg for a modern silhouette.",
         variants: [
-            { colorName: "Heather Grey", colorHex: "#808080", imagePaths: [IMAGES.trouserSand] },
-            { colorName: "Charcoal", colorHex: "#36454F", imagePaths: [IMAGES.trouserSand] }
+            { colorName: "Heather Grey", colorHex: "#808080", imagePaths: [IMAGES.trouserSand, IMAGES.woolTrouserBack] },
+            { colorName: "Charcoal", colorHex: "#36454F", imagePaths: [IMAGES.trouserSand, IMAGES.woolTrouserBack] }
         ]
     },
 
@@ -255,8 +265,8 @@ const PRODUCTS = [
         sizes: ["S", "M", "L", "XL"],
         description: "An icon of British style. Water-resistant cotton blend shell with the signature tartan lining. Features a double-button funnel neck, raglan sleeves, and umbrella yoke back.",
         variants: [
-            { colorName: "Midnight Navy", colorHex: "#000080", imagePaths: [IMAGES.harringtonNavy] },
-            { colorName: "Stone Beige", colorHex: "#CDC9C9", imagePaths: [IMAGES.harringtonNavy] }
+            { colorName: "Midnight Navy", colorHex: "#000080", imagePaths: [IMAGES.harringtonNavy, IMAGES.harringtonBack] },
+            { colorName: "Stone Beige", colorHex: "#CDC9C9", imagePaths: [IMAGES.harringtonNavy, IMAGES.harringtonBack] }
         ]
     },
     {
@@ -269,8 +279,8 @@ const PRODUCTS = [
         sizes: ["S", "M", "L", "XL"],
         description: "Workwear refined. Built from 12oz duck canvas that gets better with age. Features three patch pockets, reinforced elbows, and shank buttons. Unlined for year-round wear.",
         variants: [
-            { colorName: "Field Olive", colorHex: "#556B2F", imagePaths: [IMAGES.choreCoatOlive] },
-            { colorName: "Workwear Tan", colorHex: "#D2B48C", imagePaths: [IMAGES.choreCoatOlive] }
+            { colorName: "Field Olive", colorHex: "#556B2F", imagePaths: [IMAGES.choreCoatOlive, IMAGES.choreCoatBack] },
+            { colorName: "Workwear Tan", colorHex: "#D2B48C", imagePaths: [IMAGES.choreCoatOlive, IMAGES.choreCoatBack] }
         ]
     },
 
