@@ -6,9 +6,8 @@ const nextConfig: NextConfig = {
     unoptimized: true,
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-    // 4. Configure allowed image qualities to suppress warnings
-    // Default is 75, we explicitly allow 100 for high-fidelity hero images
-    qualities: [75, 100],
+    // Default is 75, we explicitly allow 90 and 100 for high-fidelity hero images
+    qualities: [75, 90, 100],
     remotePatterns: [
       {
         protocol: 'https',

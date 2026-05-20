@@ -13,18 +13,38 @@ interface SortedProductGridProps {
 
 type SortOption = "newest" | "price-asc" | "price-desc";
 
-const sizeMaps: Record<string, string[]> = {
-    clothing: ["XS", "S", "M", "L", "XL", "XXL"],
-    footwear: ["6", "7", "8", "9", "10", "11", "12"],
-    numeric: ["28", "30", "32", "34", "36"],
-    none: []
+const standardSizeOrder = ["XXS", "XS", "S", "M", "L", "XL", "XXL", "XXXL", "3XL", "4XL"];
+
+const sortSizes = (sizesList: string[]) => {
+    return [...sizesList].sort((a, b) => {
+        const indexA = standardSizeOrder.indexOf(a.toUpperCase());
+        const indexB = standardSizeOrder.indexOf(b.toUpperCase());
+        if (indexA !== -1 && indexB !== -1) return indexA - indexB;
+        if (indexA !== -1) return -1;
+        if (indexB !== -1) return 1;
+        const numA = parseFloat(a);
+        const numB = parseFloat(b);
+        if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
+        return a.localeCompare(b);
+    });
 };
 
-export default function SortedProductGrid({ products, sizeType = "clothing" }: SortedProductGridProps) {
+export default function SortedProductGrid({ products }: SortedProductGridProps) {
     const [sortOption, setSortOption] = useState<SortOption>("newest");
     const [isSortOpen, setIsSortOpen] = useState(false);
     const [selectedSize, setSelectedSize] = useState<string | null>(null);
     const [priceFilter, setPriceFilter] = useState<'all' | 'standard' | 'mid' | 'premium'>('all');
+
+    // Dynamically extract unique sizes from products
+    const dynamicSizes = Array.from(
+        new Set(
+            products
+                .flatMap(p => p.sizes || [])
+                .filter(Boolean)
+                .map(s => s.trim())
+        )
+    );
+    const sizes = sortSizes(dynamicSizes);
 
     // 1. Filter by Size first
     let filteredProducts = selectedSize
@@ -48,11 +68,8 @@ export default function SortedProductGrid({ products, sizeType = "clothing" }: S
         if (sortOption === "price-desc") {
             return b.price - a.price;
         }
-        // Newest (default) - assuming original order is roughly newest or we don't have a date field
         return 0;
     });
-
-    const sizes = sizeMaps[sizeType] || sizeMaps.clothing;
 
     if (products.length === 0) {
         return (

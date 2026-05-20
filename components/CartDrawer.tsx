@@ -5,7 +5,7 @@ import { getCartUpsells } from "@/lib/sanity";
 import { trackBeginCheckout, trackPurchase, trackAddToCart } from "@/lib/analytics";
 
 import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
-import { X, ShoppingBag, Plus, Minus, Heart, Trash2 } from "lucide-react";
+import { X, ShoppingBag, Plus, Minus, Heart, Trash2, ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -416,7 +416,7 @@ export default function CartDrawer() {
                             <div className="flex items-center gap-3">
                                 {checkoutStep === 'address' && (
                                     <button onClick={() => setCheckoutStep('cart')} className="p-1 hover:bg-neutral-100 rounded-full transition-colors mr-1">
-                                        <X className="w-4 h-4 text-[#1A1A1A] rotate-45" /> {/* Using X rotated as back or just arrow if preferred, but keeping simple */}
+                                        <ArrowLeft className="w-4 h-4 text-[#1A1A1A]" />
                                     </button>
                                 )}
                                 <h2 className="font-serif text-xl text-[#1A1A1A]">
@@ -722,18 +722,24 @@ export default function CartDrawer() {
 
                                             {/* Cash On Delivery */}
                                             <div
-                                                onClick={() => setPaymentMethod('cod')}
-                                                className={`flex items-center justify-between p-4 border rounded-xl cursor-pointer transition-all ${paymentMethod === 'cod' ? 'border-black bg-neutral-50' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}
+                                                onClick={() => finalTotal >= COD_MIN_THRESHOLD && setPaymentMethod('cod')}
+                                                className={`flex items-center justify-between p-4 border rounded-xl transition-all ${
+                                                    finalTotal < COD_MIN_THRESHOLD 
+                                                        ? 'border-neutral-100 bg-neutral-50/50 cursor-not-allowed opacity-50' 
+                                                        : paymentMethod === 'cod' 
+                                                            ? 'border-black bg-neutral-50 cursor-pointer' 
+                                                            : 'border-neutral-200 bg-white hover:border-neutral-300 cursor-pointer'
+                                                }`}
                                             >
                                                 <div className="flex items-center gap-3">
                                                     <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${paymentMethod === 'cod' ? 'border-black' : 'border-neutral-300'}`}>
-                                                        {paymentMethod === 'cod' && <div className="w-2 h-2 rounded-full bg-black" />}
+                                                        {paymentMethod === 'cod' && finalTotal >= COD_MIN_THRESHOLD && <div className="w-2 h-2 rounded-full bg-black" />}
                                                     </div>
                                                     <div className="flex flex-col">
                                                         <span className="text-sm font-medium text-[#1A1A1A]">Cash on Delivery</span>
                                                         {finalTotal < COD_MIN_THRESHOLD && (
-                                                            <span className="text-[10px] text-red-500 mt-1">
-                                                                Run purchase above ₹{COD_MIN_THRESHOLD.toLocaleString()} for COD
+                                                            <span className="text-[10px] text-red-500 mt-1 font-sans">
+                                                                Cash on Delivery is available on orders above ₹{COD_MIN_THRESHOLD.toLocaleString()}
                                                             </span>
                                                         )}
                                                     </div>
