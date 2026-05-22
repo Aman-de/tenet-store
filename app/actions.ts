@@ -6,12 +6,32 @@ import { revalidatePath } from "next/cache";
 
 const token = process.env.SANITY_API_TOKEN;
 
+const fetchWithRetry = async (url: string | URL, options?: RequestInit, retries = 3, delay = 1000): Promise<Response> => {
+    for (let i = 0; i < retries; i++) {
+        try {
+            const response = await fetch(url, options);
+            if (!response.ok && response.status >= 500 && i < retries - 1) {
+                console.warn(`⚠️ Fetch failed with status ${response.status}. Retrying in ${delay}ms...`);
+                await new Promise((resolve) => setTimeout(resolve, delay));
+                continue;
+            }
+            return response;
+        } catch (error) {
+            if (i === retries - 1) throw error;
+            console.warn(`⚠️ Fetch error: ${(error as Error).message}. Retrying in ${delay}ms...`);
+            await new Promise((resolve) => setTimeout(resolve, delay));
+        }
+    }
+    throw new Error("Fetch failed after all retries");
+};
+
 const client = createClient({
     projectId,
     dataset,
     apiVersion,
     token, // Must be a valid write token
     useCdn: false,
+    fetch: fetchWithRetry as any
 });
 
 export async function createReview(productId: string, formData: FormData) {
