@@ -66,6 +66,7 @@ const IMAGES = {
     vintageCombo: path.join(LOCAL_PRODUCTS_DIR, 'combo.jpeg'),
     cableZipBack: path.join(CURRENT_BRAIN_DIR, 'cable_zip_back_1779291191871.png'),
     vintageTurtleneck: path.join(LOCAL_PRODUCTS_DIR, 'turtelneck.jpg'),
+    turtleneckDetail: path.join(CURRENT_BRAIN_DIR, 'turtleneck_detail_1779308415542.png'),
     vintageHoodie: path.join(LOCAL_PRODUCTS_DIR, 'hoodie.jpeg'),
     cashmereHoodieBack: path.join(CURRENT_BRAIN_DIR, 'cashmere_hoodie_back_1779291571486.png'),
 };
@@ -189,9 +190,9 @@ const PRODUCTS = [
         sizes: ["S", "M", "L", "XL"],
         description: "A sophisticated turtleneck spun from a soft merino-cotton blend. Snug neck support, ribbed cuffs, and a slim, flattering profile that pairs perfectly under coats.",
         variants: [
-            { colorName: "Off Black", colorHex: "#1A1A1A", imagePaths: [IMAGES.vintageTurtleneck] },
-            { colorName: "Heather Grey", colorHex: "#808080", imagePaths: [IMAGES.vintageTurtleneck] },
-            { colorName: "Aran Cream", colorHex: "#FDFBF7", imagePaths: [IMAGES.vintageTurtleneck] }
+            { colorName: "Off Black", colorHex: "#1A1A1A", imagePaths: [IMAGES.vintageTurtleneck, IMAGES.turtleneckDetail] },
+            { colorName: "Heather Grey", colorHex: "#808080", imagePaths: [IMAGES.vintageTurtleneck, IMAGES.turtleneckDetail] },
+            { colorName: "Aran Cream", colorHex: "#FDFBF7", imagePaths: [IMAGES.vintageTurtleneck, IMAGES.turtleneckDetail] }
         ]
     },
 
