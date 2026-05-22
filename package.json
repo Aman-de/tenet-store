@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "dev": "NODE_OPTIONS='--dns-result-order=ipv4first' next dev",
+    "build": "NODE_OPTIONS='--dns-result-order=ipv4first' next build",
+    "start": "NODE_OPTIONS='--dns-result-order=ipv4first' next start",
     "lint": "eslint",
-    "seed": "npx tsx scripts/seed-sanity.ts"
+    "seed": "NODE_OPTIONS='--dns-result-order=ipv4first' npx tsx scripts/seed-sanity.ts"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.37.0",
