@@ -57,6 +57,28 @@ async function main() {
                         }
                     }
                 ]
+            },
+            {
+                _key: 'variant-classic-silver',
+                colorName: 'Classic Silver',
+                colorHex: '#C0C0C0',
+                stock: 10,
+                images: [
+                    {
+                        _type: 'image',
+                        asset: {
+                            _type: 'reference',
+                            _ref: 'image-fe843e85a79ae10ce7e72e4e6322353f1e28c61e-700x700-jpg'
+                        }
+                    },
+                    {
+                        _type: 'image',
+                        asset: {
+                            _type: 'reference',
+                            _ref: 'image-fe843e85a79ae10ce7e72e4e6322353f1e28c61e-700x700-jpg'
+                        }
+                    }
+                ]
             }
         ]
     }

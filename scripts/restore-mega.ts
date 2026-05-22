@@ -1037,14 +1037,24 @@ export const ALL_PRODUCTS: ProductDef[] = [
         sizeType: "onesize",
         sizes: [],
         description: "Crafted from the finest materials, this piece embodies the essence of silent luxury. Designed for the modern gentleman who values heritage and quality above all else.",
-        variants: [{
-            colorName: "Emerald Green",
-            colorHex: "#124530",
-            images: [
-                { ref: "image-b29be6ea4b4333bf30d5244a7785ca7004af3e4f-375x469-jpg" },
-                { ref: "image-b29be6ea4b4333bf30d5244a7785ca7004af3e4f-375x469-jpg" }
-            ]
-        }]
+        variants: [
+            {
+                colorName: "Emerald Green",
+                colorHex: "#124530",
+                images: [
+                    { ref: "image-b29be6ea4b4333bf30d5244a7785ca7004af3e4f-375x469-jpg" },
+                    { ref: "image-b29be6ea4b4333bf30d5244a7785ca7004af3e4f-375x469-jpg" }
+                ]
+            },
+            {
+                colorName: "Classic Silver",
+                colorHex: "#C0C0C0",
+                images: [
+                    { ref: "image-fe843e85a79ae10ce7e72e4e6322353f1e28c61e-700x700-jpg" },
+                    { ref: "image-fe843e85a79ae10ce7e72e4e6322353f1e28c61e-700x700-jpg" }
+                ]
+            }
+        ]
     },
 ]
 
