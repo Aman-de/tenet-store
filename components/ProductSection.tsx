@@ -51,7 +51,10 @@ export default function ProductSection({ products }: ProductSectionProps) {
 
     // Filter products based on gender
     // Default to 'man' if gender is missing (legacy data safety)
-    const filteredProducts = products.filter(p => (p.gender || 'man') === activeGender);
+    const filteredProducts = products.filter(p => {
+        const g = p.gender ? p.gender.toLowerCase() : 'man';
+        return g === activeGender || g === 'unisex';
+    });
 
     // Filter Toggle Component
     const FilterToggle = () => (
