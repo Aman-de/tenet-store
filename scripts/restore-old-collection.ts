@@ -23,14 +23,11 @@ function mapCategory(originalCategory: string): string {
     const category = originalCategory.toLowerCase();
     switch (category) {
         case 'suits':
-        case 'sets':
-        case 'shirts':
-            return 'shirting';
-        case 'outerwear':
+            return 'sets';
         case 'blazers':
             return 'jackets';
         default:
-            return originalCategory; // e.g. knitwear remains knitwear
+            return category; // e.g. knitwear remains knitwear, sets remains sets, outerwear remains outerwear
     }
 }
 
