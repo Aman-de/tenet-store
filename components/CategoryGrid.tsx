@@ -34,7 +34,7 @@ const CATEGORY_IMAGES: Record<string, { man: string; woman: string }> = {
     },
     footwear: {
         man: "https://cdn.sanity.io/images/9zyx0aef/production/f05210eb953a188ea5420e576752b600ca7ad7eb-1024x1024.jpg",
-        woman: "https://cdn.sanity.io/images/9zyx0aef/production/f05210eb953a188ea5420e576752b600ca7ad7eb-1024x1024.jpg"
+        woman: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&q=80&w=1024"
     },
     outerwear: {
         man: "https://cdn.sanity.io/images/9zyx0aef/production/bdd03160a087d30ab522041b736083861500586a-1024x1024.jpg",
@@ -54,7 +54,7 @@ const CATEGORY_IMAGES: Record<string, { man: string; woman: string }> = {
     },
     sets: {
         man: "https://cdn.sanity.io/images/9zyx0aef/production/7e056f1f0586bb44848798acf10950a070ce6c5e-640x640.jpg",
-        woman: "https://cdn.sanity.io/images/9zyx0aef/production/7e056f1f0586bb44848798acf10950a070ce6c5e-640x640.jpg"
+        woman: "https://cdn.sanity.io/images/9zyx0aef/production/93d81dc4b07d4bc9e8bc63578f20b670cc8bab8c-1024x1024.jpg"
     },
     shirting: {
         man: "https://cdn.sanity.io/images/9zyx0aef/production/6c09616307c89c67743c1c3d186fd2cda0e7371b-1024x1024.jpg",
