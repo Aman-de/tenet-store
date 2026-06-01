@@ -18,7 +18,7 @@ const client = createClient({
 })
 
 async function checkRef() {
-    const doc = await client.getDocument('d5xmUhbiMXacyyokfyhquB')
+    const doc = await client.getDocument('rEOZmN4kcNPtabRuAlNzRC')
     console.log(doc)
 }
 

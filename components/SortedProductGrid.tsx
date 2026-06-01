@@ -6,9 +6,13 @@ import ProductCard from "./ProductCard";
 // Framer motion removed for instant rendering
 import { ChevronDown } from "lucide-react";
 
+import { useGender } from "@/context/GenderContext";
+
 interface SortedProductGridProps {
     products: Product[];
     sizeType?: string;
+    showSizeFilter?: boolean;
+    alignFiltersWithTitle?: boolean;
 }
 
 type SortOption = "newest" | "price-asc" | "price-desc";
@@ -29,25 +33,35 @@ const sortSizes = (sizesList: string[]) => {
     });
 };
 
-export default function SortedProductGrid({ products }: SortedProductGridProps) {
+export default function SortedProductGrid({ products: rawProducts, showSizeFilter = true, alignFiltersWithTitle = false }: SortedProductGridProps) {
+    const { gender: activeGender } = useGender();
+
+    // Filter products dynamically by the active global gender
+    const products = rawProducts.filter(p => {
+        const g = p.gender ? p.gender.toLowerCase() : 'man';
+        return g === activeGender || g === 'unisex';
+    });
+
     const [sortOption, setSortOption] = useState<SortOption>("newest");
     const [isSortOpen, setIsSortOpen] = useState(false);
     const [selectedSize, setSelectedSize] = useState<string | null>(null);
     const [priceFilter, setPriceFilter] = useState<'all' | 'standard' | 'mid' | 'premium'>('all');
 
     // Dynamically extract unique sizes from products
-    const dynamicSizes = Array.from(
-        new Set(
-            products
-                .flatMap(p => p.sizes || [])
-                .filter(Boolean)
-                .map(s => s.trim())
+    const dynamicSizes = showSizeFilter
+        ? Array.from(
+            new Set(
+                products
+                    .flatMap(p => p.sizes || [])
+                    .filter(Boolean)
+                    .map(s => s.trim())
+            )
         )
-    );
+        : [];
     const sizes = sortSizes(dynamicSizes);
 
     // 1. Filter by Size first
-    let filteredProducts = selectedSize
+    let filteredProducts = (showSizeFilter && selectedSize)
         ? products.filter(p => p.sizes?.some(s => s.trim().toLowerCase() === selectedSize.toLowerCase()))
         : products;
 
@@ -83,56 +97,16 @@ export default function SortedProductGrid({ products }: SortedProductGridProps) 
     return (
         <div>
             {/* Utility Bar */}
-            <div className="flex flex-col gap-4 border-b border-neutral-100 mb-6 pb-2">
-
-                {/* Header: Sort & Mobile Labels */}
-                <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold tracking-widest text-neutral-400 uppercase">
+            <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 border-b border-neutral-100 mb-4 pb-2.5">
+                {/* Left side: Results Count and Size Filter */}
+                <div className="flex flex-wrap items-center gap-4">
+                    <span className="hidden md:flex text-xs font-bold tracking-widest text-neutral-400 uppercase items-center h-9">
                         {sortedProducts.length} Results
                     </span>
-
-                    {/* Sort Dropdown */}
-                    <div className="relative">
-                        <button
-                            onClick={() => setIsSortOpen(!isSortOpen)}
-                            className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#1A1A1A] hover:opacity-70 transition-opacity py-2"
-                        >
-                            Sort By
-                            <ChevronDown className={`w-3 h-3 transition-transform ${isSortOpen ? "rotate-180" : ""}`} />
-                        </button>
-                        {isSortOpen && (
-                            <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-neutral-100 shadow-xl z-20 py-2 rounded-sm origin-top-right animate-in fade-in zoom-in-95 duration-200">
-                                <button
-                                    onClick={() => { setSortOption("newest"); setIsSortOpen(false); }}
-                                    className={`w-full text-left px-4 py-3 text-xs uppercase tracking-wider hover:bg-neutral-50 ${sortOption === "newest" ? "font-bold text-black" : "text-neutral-500"}`}
-                                >
-                                    Newest
-                                </button>
-                                <button
-                                    onClick={() => { setSortOption("price-asc"); setIsSortOpen(false); }}
-                                    className={`w-full text-left px-4 py-3 text-xs uppercase tracking-wider hover:bg-neutral-50 ${sortOption === "price-asc" ? "font-bold text-black" : "text-neutral-500"}`}
-                                >
-                                    Price: Low to High
-                                </button>
-                                <button
-                                    onClick={() => { setSortOption("price-desc"); setIsSortOpen(false); }}
-                                    className={`w-full text-left px-4 py-3 text-xs uppercase tracking-wider hover:bg-neutral-50 ${sortOption === "price-desc" ? "font-bold text-black" : "text-neutral-500"}`}
-                                >
-                                    Price: High to Low
-                                </button>
-                            </div>
-                        )}
-                    </div>
-                </div>
-
-                {/* Filters Row */}
-                <div className="flex flex-col md:flex-row gap-6 md:items-center md:justify-between">
-
-                    {/* Size Filter */}
-                    {sizes.length > 0 && (
-                        <div className="flex flex-col gap-3">
-                            <span className="text-[10px] font-bold uppercase tracking-widest text-[#1A1A1A] opacity-60">Size</span>
-                            <div className="flex flex-wrap gap-2">
+                    {showSizeFilter && sizes.length > 0 && (
+                        <div className="flex items-center gap-3 border-l border-neutral-200 pl-4">
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-[#1A1A1A] opacity-60 flex items-center h-9">Size</span>
+                            <div className="flex items-center gap-1.5">
                                 {sizes.map((size) => (
                                     <button
                                         key={size}
@@ -156,18 +130,23 @@ export default function SortedProductGrid({ products }: SortedProductGridProps) 
                             </div>
                         </div>
                     )}
+                </div>
 
-                    {/* Divider for mobile visual separation if needed, or just gap */}
-
-                    {/* Price Tier Filter */}
-                    <div className="flex flex-col gap-3">
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-[#1A1A1A] opacity-60">Price Tier</span>
-                        <div className="flex flex-wrap gap-2">
+                {/* Right side: Price Tier and Sort By stacked on mobile, inline on desktop */}
+                <div className={`flex flex-col lg:flex-row lg:items-center gap-4 w-full lg:w-auto border-t border-neutral-100 pt-3.5 lg:border-t-0 lg:pt-0 ${
+                    alignFiltersWithTitle 
+                        ? "lg:absolute lg:top-[56px] lg:right-6 xl:right-12 lg:-translate-y-1/2 z-30" 
+                        : ""
+                }`}>
+                    {/* Price Tier */}
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-2 lg:gap-3 w-full lg:w-auto">
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-[#1A1A1A] opacity-60 flex items-center h-5 lg:h-9">Price Tier</span>
+                        <div className="flex flex-wrap lg:flex-nowrap gap-1.5 w-full lg:w-auto">
                             {(['all', 'standard', 'mid', 'premium'] as const).map((tier) => (
                                 <button
                                     key={tier}
                                     onClick={() => setPriceFilter(tier)}
-                                    className={`h-9 px-4 flex items-center justify-center rounded-sm text-xs font-bold uppercase transition-all border ${priceFilter === tier
+                                    className={`h-9 flex-1 lg:flex-none lg:px-4 flex items-center justify-center rounded-sm text-xs font-bold uppercase transition-all border ${priceFilter === tier
                                         ? "bg-[#1A1A1A] text-white border-[#1A1A1A]"
                                         : "bg-white text-neutral-600 border-gray-200 hover:border-[#1A1A1A]"
                                         }`}
@@ -176,6 +155,42 @@ export default function SortedProductGrid({ products }: SortedProductGridProps) 
                                 </button>
                             ))}
                         </div>
+                    </div>
+
+                    {/* Desktop Divider */}
+                    <span className="hidden lg:inline-block w-px h-4 bg-neutral-200" />
+
+                    {/* Sort Dropdown */}
+                    <div className="relative z-20 w-full lg:w-auto">
+                        <button
+                            onClick={() => setIsSortOpen(!isSortOpen)}
+                            className="h-9 px-4 flex items-center justify-between lg:justify-start gap-2 rounded-sm text-xs font-bold uppercase transition-all border bg-white text-neutral-600 border-gray-200 hover:border-[#1A1A1A] whitespace-nowrap w-full lg:w-auto"
+                        >
+                            <span>{sortOption === "newest" ? "Sort: Newest" : sortOption === "price-asc" ? "Sort: Low to High" : "Sort: High to Low"}</span>
+                            <ChevronDown className={`w-3.5 h-3.5 transition-transform ${isSortOpen ? "rotate-180" : ""}`} />
+                        </button>
+                        {isSortOpen && (
+                            <div className="absolute right-0 top-full mt-1 w-full lg:w-44 bg-white border border-neutral-100 shadow-xl py-1.5 rounded-sm origin-top-right z-50 animate-in fade-in zoom-in-95 duration-200">
+                                <button
+                                    onClick={() => { setSortOption("newest"); setIsSortOpen(false); }}
+                                    className={`w-full text-left px-4 py-2.5 text-xs uppercase tracking-wider hover:bg-neutral-50 ${sortOption === "newest" ? "font-bold text-black" : "text-neutral-500"}`}
+                                >
+                                    Newest
+                                </button>
+                                <button
+                                    onClick={() => { setSortOption("price-asc"); setIsSortOpen(false); }}
+                                    className={`w-full text-left px-4 py-2.5 text-xs uppercase tracking-wider hover:bg-neutral-50 ${sortOption === "price-asc" ? "font-bold text-black" : "text-neutral-500"}`}
+                                >
+                                    Price: Low to High
+                                </button>
+                                <button
+                                    onClick={() => { setSortOption("price-desc"); setIsSortOpen(false); }}
+                                    className={`w-full text-left px-4 py-2.5 text-xs uppercase tracking-wider hover:bg-neutral-50 ${sortOption === "price-desc" ? "font-bold text-black" : "text-neutral-500"}`}
+                                >
+                                    Price: High to Low
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

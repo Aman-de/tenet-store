@@ -5,13 +5,14 @@ import { Product } from "@/lib/data";
 import CategoryFilter from "./CategoryFilter";
 import SortedProductGrid from "./SortedProductGrid";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
+import { useGender } from "@/context/GenderContext";
 
 interface ProductSectionProps {
     products: Product[];
 }
 
 export default function ProductSection({ products }: ProductSectionProps) {
-    const [activeGender, setActiveGender] = useState<'man' | 'woman'>('man');
+    const { gender: activeGender, setGender: setActiveGender } = useGender();
     const [isSticky, setIsSticky] = useState(false);
 
     // Advanced Scroll tracking
@@ -94,25 +95,31 @@ export default function ProductSection({ products }: ProductSectionProps) {
     );
 
     return (
-        <section ref={sectionRef} id="new-arrivals" className="max-w-[2000px] w-full mx-auto px-6 xl:px-12 py-8 lg:py-12">
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-4 border-b border-neutral-100 pb-2 gap-6">
-                <div className="flex items-baseline gap-4 md:gap-6">
+        <section ref={sectionRef} id="new-arrivals" className="relative max-w-[2000px] w-full mx-auto px-6 xl:px-12 py-4 lg:py-8">
+            <div className="flex flex-col md:flex-row md:items-center justify-between mb-2 pb-0 gap-6">
+                <div className="flex items-baseline gap-3 md:gap-6 flex-1">
                     <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-[#1A1A1A]">
                         New Arrivals
                     </h2>
+                    {/* Results count shown inline on mobile only */}
+                    <span className="md:hidden text-[10px] font-bold tracking-widest text-neutral-400 uppercase self-end pb-1">
+                        {filteredProducts.length} Results
+                    </span>
                     <span className="hidden md:inline-block text-xs font-bold tracking-[0.2em] text-neutral-400 uppercase">
                         Curated Selection
                     </span>
                 </div>
 
-                <div className="flex justify-start md:justify-end">
+                <div className="flex justify-center flex-1 w-full md:w-auto">
                     <FilterToggle />
                 </div>
+
+                <div className="hidden md:block flex-1" />
             </div>
 
             <div className="min-h-[100px]">
                 {filteredProducts.length > 0 ? (
-                    <SortedProductGrid key={activeGender} products={filteredProducts} />
+                    <SortedProductGrid key={activeGender} products={filteredProducts} showSizeFilter={false} alignFiltersWithTitle={true} />
                 ) : (
                     <div
                         key="empty"

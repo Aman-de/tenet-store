@@ -1008,25 +1008,7 @@ export const ALL_PRODUCTS: ProductDef[] = [
             ]
         }]
     },
-    {
-        title: "The Savannah Sunset",
-        slug: "the-savannah-sunset",
-        price: 45000,
-        originalPrice: 52000,
-        category: "sets",
-        gender: "man",
-        sizeType: "clothing",
-        sizes: ["S","M","L","XL"],
-        description: "Luxury safari, warm evening wear. Features a lightweight khaki field jacket, cream linen trousers, white t-shirt, and leather sandals.",
-        variants: [{
-            colorName: "Khaki & Cream",
-            colorHex: "#F0E68C",
-            images: [
-                { dir: "e2ad", file: "hero_savannah_m_1_1770663312853.png" },
-                { dir: "e2ad", file: "flat_savannah_m_1_1770663328357.png" }
-            ]
-        }]
-    },
+
     {
         title: "watch",
         slug: "ghdi",
@@ -1172,4 +1154,8 @@ async function main() {
     console.log(`📊 Total products now in DB: ${total}`)
 }
 
-main().catch(console.error)
+const isDirectRun = process.argv[1] && (process.argv[1].includes('restore-mega.ts') || process.argv[1].includes('restore-mega'));
+if (isDirectRun) {
+    main().catch(console.error);
+}
+

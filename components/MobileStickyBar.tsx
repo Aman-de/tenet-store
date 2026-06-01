@@ -46,7 +46,7 @@ export default function MobileStickyBar({ product, selectedVariant }: MobileStic
                     animate={{ y: 0 }}
                     exit={{ y: "150%" }}
                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                    className="fixed bottom-16 left-4 right-4 z-40 bg-white/95 backdrop-blur-md border border-neutral-200 p-3 rounded-xl lg:hidden shadow-[0_4px_20px_rgba(0,0,0,0.12)]"
+                    className="fixed bottom-16 left-4 right-4 z-40 bg-white/95 backdrop-blur-md border border-neutral-200 p-3 rounded-xl lg:landscape:hidden xl:hidden shadow-[0_4px_20px_rgba(0,0,0,0.12)]"
                 >
                     <div className="flex items-center gap-4">
                         <div className="relative w-12 h-16 bg-neutral-100 shrink-0">

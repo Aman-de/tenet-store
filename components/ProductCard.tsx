@@ -17,6 +17,7 @@ interface ProductCardProps {
 export default function ProductCard({ product }: ProductCardProps) {
     const [isHovered, setIsHovered] = useState(false);
     const [addingState, setAddingState] = useState<'idle' | 'adding' | 'added'>('idle');
+    const [altImgError, setAltImgError] = useState(false);
     const { addToCart, openCart, toggleWishlist, isInWishlist } = useStore();
 
     const hasDiscount = product.originalPrice && product.originalPrice > product.price;
@@ -69,22 +70,17 @@ export default function ProductCard({ product }: ProductCardProps) {
                             No Image
                         </div>
                     )}
-                    {product.images?.[1] && (
+                    {product.images?.[1] && !altImgError && (
                         <Image
                             src={product.images[1]}
                             alt={product.title}
                             fill
                             className="object-cover absolute inset-0 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-in-out"
                             sizes="(max-width: 768px) 50vw, 33vw"
+                            onError={() => setAltImgError(true)}
                         />
                     )}
 
-                    {/* Discount Badge - Minimalist */}
-                    {hasDiscount && !product.isOutOfStock && (
-                        <div className="absolute top-2 left-2 bg-black text-white text-[9px] font-bold px-2.5 py-1 uppercase tracking-[0.15em] z-20 rounded-sm">
-                            {discountPercentage}% OFF
-                        </div>
-                    )}
 
                     {/* Out of Stock Badge */}
                     {product.isOutOfStock && (

@@ -7,14 +7,17 @@ import { useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import ScrollIndicator from "./ScrollIndicator";
 import { Product } from "@/lib/data";
+import { useGender } from "@/context/GenderContext";
 
 interface HeroProps {
     spotlightProducts?: Product[];
 }
 
 export default function Hero({ spotlightProducts = [] }: HeroProps) {
+    const { gender } = useGender();
     const scrollContainerRef = useRef<HTMLDivElement>(null);
     const [activeIndex, setActiveIndex] = useState(0);
+
     const totalSlides = 1 + spotlightProducts.length;
 
     // Handle scroll to update active dot
@@ -85,6 +88,14 @@ export default function Hero({ spotlightProducts = [] }: HeroProps) {
             container.removeEventListener('touchstart', pauseScroll);
         };
     }, [totalSlides]);
+
+    // Reset scroll position on gender change
+    useEffect(() => {
+        const container = scrollContainerRef.current;
+        if (container) {
+            container.scrollTo({ left: 0, behavior: 'smooth' });
+        }
+    }, [gender]);
 
     const scrollToIndex = (index: number) => {
         const container = scrollContainerRef.current;
@@ -157,8 +168,9 @@ export default function Hero({ spotlightProducts = [] }: HeroProps) {
                 {/* 1. Original Horizontal Hero Image - Full Width Everywhere */}
                 <div className="relative h-full w-full md:w-[100vw] lg:w-[100vw] shrink-0 snap-start overflow-hidden group">
                     <Image
-                        src="/images/hero-main.webp"
-                        alt="The Winter Heritage Collection"
+                        key={`hero-bg-${gender}`}
+                        src={gender === "man" ? "/images/hero-main.webp" : "/images/hero-women.webp"}
+                        alt={gender === "man" ? "The Winter Heritage Collection" : "The Spring Grace Collection"}
                         fill
                         className="object-cover object-[60%_80%] lg:object-center transform scale-105 transition-transform duration-[10s] hover:scale-100"
                         priority
@@ -167,14 +179,20 @@ export default function Hero({ spotlightProducts = [] }: HeroProps) {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent lg:bg-gradient-to-r lg:from-black/60 lg:via-black/10 lg:to-transparent" />
                     
                     {/* Content Container (Original) */}
-                    <div className="absolute inset-0 z-10 w-full h-full p-6 lg:p-16 flex flex-col justify-end pb-32 lg:justify-center lg:pb-0 items-center lg:items-start text-center lg:text-left">
+                    <motion.div 
+                        key={`hero-content-${gender}`}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5 }}
+                        className="absolute inset-0 z-10 w-full h-full p-6 lg:p-16 flex flex-col justify-end pb-32 lg:justify-center lg:pb-0 items-center lg:items-start text-center lg:text-left"
+                    >
                         <motion.p
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.2 }}
                             className="text-xs uppercase tracking-[0.2em] text-gray-300 mb-2"
                         >
-                            The Winter Heritage Collection
+                            {gender === "man" ? "The Winter Heritage Collection" : "The Spring Grace Collection"}
                         </motion.p>
                         <motion.h1
                             initial={{ opacity: 0, y: 30 }}
@@ -182,7 +200,11 @@ export default function Hero({ spotlightProducts = [] }: HeroProps) {
                             transition={{ duration: 0.8, delay: 0.4 }}
                             className="font-serif text-5xl lg:text-8xl font-bold tracking-tight mb-6 leading-[0.9] text-white drop-shadow-lg"
                         >
-                            SILENT <br className="hidden lg:block" /> LUXURY
+                            {gender === "man" ? (
+                                <>SILENT <br className="hidden lg:block" /> LUXURY</>
+                            ) : (
+                                <>SILENT <br className="hidden lg:block" /> ELEGANCE</>
+                            )}
                         </motion.h1>
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
@@ -203,7 +225,7 @@ export default function Hero({ spotlightProducts = [] }: HeroProps) {
                                 <div className="absolute inset-0 bg-white transform -translate-x-full group-hover/btn:translate-x-0 transition-transform duration-300 ease-in-out z-0" />
                             </button>
                         </motion.div>
-                    </div>
+                    </motion.div>
                 </div>
 
                 {/* 2. Vertical 9:16 Spotlight Products */}
@@ -211,14 +233,14 @@ export default function Hero({ spotlightProducts = [] }: HeroProps) {
                     <Link
                         href={`/product/${product.handle}`}
                         key={product.id}
-                        className="relative h-full w-full md:w-[48vw] lg:w-[30vw] portrait:!w-full shrink-0 snap-start overflow-hidden lg:rounded-sm group block ml-0"
+                        className="relative h-full w-full md:w-[50vw] lg:w-auto lg:aspect-square shrink-0 snap-start overflow-hidden lg:rounded-sm group block ml-0 bg-[#f4f4f4]"
                     >
                         {(product.images[1] || product.images[0]) && (
                             <Image
                                 src={product.images[1] || product.images[0]}
                                 alt={product.title}
                                 fill
-                                className="object-cover object-top transition-transform duration-[8s] ease-out group-hover:scale-105"
+                                className="object-cover object-center transition-transform duration-[8s] ease-out group-hover:scale-105"
                                 quality={90}
                             />
                         )}

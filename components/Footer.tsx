@@ -66,6 +66,7 @@ export default function Footer() {
                             <h4 className="text-xs font-bold uppercase tracking-widest text-neutral-500">Brand</h4>
                             <ul className="space-y-4 text-sm font-medium tracking-wide">
                                 <li><Link href="/about" className="hover:text-neutral-300 transition-colors">About Tenet</Link></li>
+                                <li><Link href="/editorial" className="hover:text-neutral-300 transition-colors">Editorial Campaign</Link></li>
                                 <li><Link href="/about" className="hover:text-neutral-300 transition-colors">Sustainability</Link></li>
                                 <li><Link href="/about" className="hover:text-neutral-300 transition-colors">Careers</Link></li>
                             </ul>

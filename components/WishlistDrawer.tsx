@@ -2,7 +2,7 @@
 
 import { useStore } from "@/lib/store";
 import { trackAddToCart } from "@/lib/analytics";
-import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
+import { motion, AnimatePresence, useMotionValue, useTransform, animate } from "framer-motion";
 import { X, Heart, ShoppingBag, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -11,42 +11,75 @@ import Link from "next/link";
 // Helper Component for Swipeable logic
 const WishlistItemRow = ({ item, removeFromWishlist, addToCart }: any) => {
     const x = useMotionValue(0);
+    const [swipeState, setSwipeState] = useState<'idle' | 'bag' | 'remove'>('idle');
 
     // Move to Bag Feedback (Swipe Right) - Values > 0
-    const bagOpacity = useTransform(x, [0, 50], [0, 1]);
-    const bagScale = useTransform(x, [0, 100], [0.8, 1.2]);
+    const bagOpacity = useTransform(x, [0, 50], [0, 1], { clamp: true });
+    const bagScale = useTransform(x, [0, 100], [0.8, 1.2], { clamp: true });
+    const bagPointerEvents = useTransform(x, (val) => (val > 10 ? "auto" : "none"));
 
     // Remove Feedback (Swipe Left) - Values < 0
-    const removeOpacity = useTransform(x, [-50, 0], [1, 0]);
-    const removeScale = useTransform(x, [-100, 0], [1.2, 0.8]);
+    const removeOpacity = useTransform(x, [-50, 0], [1, 0], { clamp: true });
+    const removeScale = useTransform(x, [-100, 0], [1.2, 0.8], { clamp: true });
+    const removePointerEvents = useTransform(x, (val) => (val < -10 ? "auto" : "none"));
 
-    const handleMoveToCart = () => {
+    const handleMoveToCart = async (e?: React.MouseEvent) => {
+        if (e) e.stopPropagation();
+        await animate(x, 400, { duration: 0.2 });
         addToCart(item, undefined, undefined);
         trackAddToCart(item, 1, undefined, undefined);
         removeFromWishlist(item.id);
     };
 
+    const handleRemoveAction = async (e?: React.MouseEvent) => {
+        if (e) e.stopPropagation();
+        await animate(x, -400, { duration: 0.2 });
+        removeFromWishlist(item.id);
+    };
+
+    // Smoothly snap to state bounds
+    useEffect(() => {
+        if (swipeState === 'remove') {
+            animate(x, -80, { type: "spring", stiffness: 350, damping: 30 });
+        } else if (swipeState === 'bag') {
+            animate(x, 80, { type: "spring", stiffness: 350, damping: 30 });
+        } else {
+            animate(x, 0, { type: "spring", stiffness: 350, damping: 30 });
+        }
+    }, [swipeState]);
+
+    const handleInteractiveClick = (e: React.MouseEvent, action: () => void) => {
+        e.stopPropagation();
+        if (swipeState !== 'idle') {
+            setSwipeState('idle');
+        } else {
+            action();
+        }
+    };
+
     return (
         <div className="relative group overflow-hidden bg-neutral-100">
-            {/* Left Background Layer (Visible when swiping RIGHT -> Move to Bag) */}
+            {/* Left Background Layer (Swipe Right -> Move to Bag) */}
             <motion.div
-                style={{ opacity: bagOpacity }}
-                className="absolute inset-y-0 left-0 w-full bg-black flex items-center justify-start px-6 z-0"
+                style={{ opacity: bagOpacity, pointerEvents: bagPointerEvents }}
+                onClick={handleMoveToCart}
+                className="absolute inset-y-0 left-0 w-1/2 bg-black flex items-center justify-start px-6 z-0 cursor-pointer select-none"
             >
-                <motion.div style={{ scale: bagScale }}>
-                    <ShoppingBag className="w-6 h-6 text-white" />
+                <motion.div style={{ scale: bagScale }} className="flex items-center gap-2">
+                    <ShoppingBag className="w-5 h-5 text-white" />
+                    <span className="text-white text-xs font-bold uppercase tracking-widest">Move to Bag</span>
                 </motion.div>
-                <span className="text-white text-xs font-bold uppercase tracking-widest ml-4">Move to Bag</span>
             </motion.div>
 
-            {/* Right Background Layer (Visible when swiping LEFT -> Remove) */}
+            {/* Right Background Layer (Swipe Left -> Remove) */}
             <motion.div
-                style={{ opacity: removeOpacity }}
-                className="absolute inset-y-0 right-0 w-full bg-red-600 flex items-center justify-end px-6 z-0"
+                style={{ opacity: removeOpacity, pointerEvents: removePointerEvents }}
+                onClick={handleRemoveAction}
+                className="absolute inset-y-0 right-0 w-1/2 bg-red-600 flex items-center justify-end px-6 z-0 cursor-pointer select-none"
             >
-                <span className="text-white text-xs font-bold uppercase tracking-widest mr-4">Remove</span>
-                <motion.div style={{ scale: removeScale }}>
-                    <Trash2 className="w-6 h-6 text-white" />
+                <motion.div style={{ scale: removeScale }} className="flex items-center gap-2">
+                    <span className="text-white text-xs font-bold uppercase tracking-widest">Remove</span>
+                    <Trash2 className="w-5 h-5 text-white" />
                 </motion.div>
             </motion.div>
 
@@ -54,28 +87,36 @@ const WishlistItemRow = ({ item, removeFromWishlist, addToCart }: any) => {
             <motion.div
                 style={{ x, touchAction: "pan-y" }}
                 drag="x"
-                dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={0.7}
-                dragTransition={{ bounceStiffness: 1000, bounceDamping: 100 }}
-                onDragEnd={() => {
-                    const currentX = x.get();
-                    if (currentX > 80) {
-                        // Swipe Right Action -> Move to Bag
-                        handleMoveToCart();
-                    } else if (currentX < -80) {
-                        // Swipe Left Action -> Remove
-                        removeFromWishlist(item.id);
+                dragDirectionLock={true}
+                dragConstraints={{ left: -100, right: 100 }}
+                dragElastic={0.15}
+                onDragEnd={(e, info) => {
+                    const threshold = 40;
+                    const offset = info.offset.x;
+                    const velocity = info.velocity.x;
+
+                    if (offset < -threshold || velocity < -300) {
+                        setSwipeState('remove');
+                    } else if (offset > threshold || velocity > 300) {
+                        setSwipeState('bag');
+                    } else {
+                        setSwipeState('idle');
                     }
                 }}
-                className="relative bg-[#FDFBF7] flex gap-4 transition-transform z-10"
+                onClick={() => {
+                    if (swipeState !== 'idle') {
+                        setSwipeState('idle');
+                    }
+                }}
+                className="relative bg-[#FDFBF7] flex gap-4 z-10 w-full cursor-grab active:cursor-grabbing"
             >
-                <Link href={`/product/${item.handle}`} className="relative w-24 h-32 bg-neutral-100 shrink-0 block overflow-hidden group">
+                <Link href={`/product/${item.handle}`} className="relative w-24 h-32 bg-neutral-100 shrink-0 block overflow-hidden group pointer-events-none">
                     {item.images?.[0] && typeof item.images[0] === 'string' && item.images[0].length > 0 ? (
                         <Image
                             src={item.images[0]}
                             alt={item.title}
                             fill
-                            className="object-cover group-hover:scale-105 transition-transform duration-500"
+                            className="object-cover group-hover:scale-105 transition-transform duration-500 pointer-events-none"
                         />
                     ) : (
                         <div className="w-full h-full bg-neutral-200 flex items-center justify-center text-neutral-400 text-[10px] text-center p-1">
@@ -83,23 +124,31 @@ const WishlistItemRow = ({ item, removeFromWishlist, addToCart }: any) => {
                         </div>
                     )}
                 </Link>
-                <div className="flex-1 flex flex-col justify-between py-1">
+                <div className="flex-1 flex flex-col justify-between py-1 pr-4">
                     <div className="space-y-1">
                         <div className="flex justify-between items-start">
-                            <Link href={`/product/${item.handle}`} className="font-serif text-sm text-[#1A1A1A] hover:underline hover:decoration-1 underline-offset-4 line-clamp-2">
+                            <Link 
+                                href={`/product/${item.handle}`} 
+                                onClick={(e) => {
+                                    if (swipeState !== 'idle') {
+                                        e.preventDefault();
+                                        setSwipeState('idle');
+                                    }
+                                }}
+                                className="font-serif text-sm text-[#1A1A1A] hover:underline hover:decoration-1 underline-offset-4 line-clamp-2 pointer-events-auto select-none"
+                            >
                                 {item.title}
                             </Link>
-                            {/* Desktop/Accessible Remove Button */}
-                            <button onClick={() => removeFromWishlist(item.id)} className="text-neutral-400 hover:text-red-800 p-1">
+                            <button onClick={(e) => handleInteractiveClick(e, () => removeFromWishlist(item.id))} className="text-neutral-400 hover:text-red-800 p-1 pointer-events-auto">
                                 <X className="w-4 h-4" />
                             </button>
                         </div>
-                        <p className="text-sm font-medium text-[#1A1A1A]">₹{item.price.toLocaleString('en-IN')}</p>
+                        <p className="text-sm font-medium text-[#1A1A1A] select-none">₹{item.price.toLocaleString('en-IN')}</p>
                     </div>
 
                     <button
-                        onClick={handleMoveToCart}
-                        className="flex items-center justify-center gap-2 w-full bg-white border border-[#1A1A1A] text-[#1A1A1A] py-2 text-xs uppercase tracking-widest hover:bg-[#1A1A1A] hover:text-white transition-colors rounded-full"
+                        onClick={(e) => handleInteractiveClick(e, handleMoveToCart)}
+                        className="flex items-center justify-center gap-2 w-full bg-white border border-[#1A1A1A] text-[#1A1A1A] py-2 text-xs uppercase tracking-widest hover:bg-[#1A1A1A] hover:text-white transition-colors rounded-full pointer-events-auto"
                     >
                         <ShoppingBag className="w-3 h-3" />
                         Move to Bag

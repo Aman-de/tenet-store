@@ -4,7 +4,7 @@ import { useStore } from "@/lib/store";
 import { getCartUpsells } from "@/lib/sanity";
 import { trackBeginCheckout, trackPurchase, trackAddToCart } from "@/lib/analytics";
 
-import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
+import { motion, AnimatePresence, useMotionValue, useTransform, animate } from "framer-motion";
 import { X, ShoppingBag, Plus, Minus, Heart, Trash2, ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -14,38 +14,74 @@ import { useUser } from "@clerk/nextjs";
 // Helper Component for Swipeable logic with visual feedback
 const CartItemRow = ({ item, removeFromCart, updateQuantity, toggleWishlist, isInWishlist }: any) => {
     const x = useMotionValue(0);
+    const [swipeState, setSwipeState] = useState<'idle' | 'wishlist' | 'remove'>('idle');
 
     // Wishlist Feedback (Swipe Right) - Values > 0
-    const wishlistOpacity = useTransform(x, [0, 50], [0, 1]);
-    const wishlistScale = useTransform(x, [0, 100], [0.8, 1.2]);
+    const wishlistOpacity = useTransform(x, [0, 50], [0, 1], { clamp: true });
+    const wishlistScale = useTransform(x, [0, 100], [0.8, 1.2], { clamp: true });
+    const wishlistPointerEvents = useTransform(x, (val) => (val > 10 ? "auto" : "none"));
 
     // Remove Feedback (Swipe Left) - Values < 0
-    // Maps -100 to -50 pixels drag to opacity 1 to 0.5? No.
-    // Standard: 0 -> -50: Opacity 0 -> 1.
-    const removeOpacity = useTransform(x, [-50, 0], [1, 0]);
-    const removeScale = useTransform(x, [-100, 0], [1.2, 0.8]);
+    const removeOpacity = useTransform(x, [-50, 0], [1, 0], { clamp: true });
+    const removeScale = useTransform(x, [-100, 0], [1.2, 0.8], { clamp: true });
+    const removePointerEvents = useTransform(x, (val) => (val < -10 ? "auto" : "none"));
+
+    // Smoothly snap to state bounds
+    useEffect(() => {
+        if (swipeState === 'remove') {
+            animate(x, -80, { type: "spring", stiffness: 350, damping: 30 });
+        } else if (swipeState === 'wishlist') {
+            animate(x, 80, { type: "spring", stiffness: 350, damping: 30 });
+        } else {
+            animate(x, 0, { type: "spring", stiffness: 350, damping: 30 });
+        }
+    }, [swipeState]);
+
+    const handleWishlistAction = async (e: React.MouseEvent) => {
+        e.stopPropagation();
+        await animate(x, 400, { duration: 0.2 });
+        if (!isInWishlist(item.id)) toggleWishlist(item);
+        removeFromCart(item.id, item.selectedSize, item.selectedColor);
+    };
+
+    const handleRemoveAction = async (e?: React.MouseEvent) => {
+        if (e) e.stopPropagation();
+        await animate(x, -400, { duration: 0.2 });
+        removeFromCart(item.id, item.selectedSize, item.selectedColor);
+    };
+
+    const handleInteractiveClick = (e: React.MouseEvent, action: () => void) => {
+        e.stopPropagation();
+        if (swipeState !== 'idle') {
+            setSwipeState('idle');
+        } else {
+            action();
+        }
+    };
 
     return (
-        <div className="relative group overflow-hidden bg-neutral-100"> {/* Logic: Bg color leaks if we don't cover it. */}
-            {/* Left Background Layer (Visible when swiping RIGHT -> Wishlist) */}
+        <div className="relative group overflow-hidden bg-neutral-100">
+            {/* Left Background Layer (Swipe Right -> Wishlist) */}
             <motion.div
-                style={{ opacity: wishlistOpacity }}
-                className="absolute inset-y-0 left-0 w-full bg-black flex items-center justify-start px-6 z-0"
+                style={{ opacity: wishlistOpacity, pointerEvents: wishlistPointerEvents }}
+                onClick={handleWishlistAction}
+                className="absolute inset-y-0 left-0 w-1/2 bg-black flex items-center justify-start px-6 z-0 cursor-pointer select-none"
             >
-                <motion.div style={{ scale: wishlistScale }}>
-                    <Heart className="w-6 h-6 text-white" fill="white" />
+                <motion.div style={{ scale: wishlistScale }} className="flex items-center gap-2">
+                    <Heart className="w-5 h-5 text-white" fill="white" />
+                    <span className="text-white text-xs font-bold uppercase tracking-widest">Wishlist</span>
                 </motion.div>
-                <span className="text-white text-xs font-bold uppercase tracking-widest ml-4">Wishlist</span>
             </motion.div>
 
-            {/* Right Background Layer (Visible when swiping LEFT -> Remove) */}
+            {/* Right Background Layer (Swipe Left -> Remove) */}
             <motion.div
-                style={{ opacity: removeOpacity }}
-                className="absolute inset-y-0 right-0 w-full bg-red-600 flex items-center justify-end px-6 z-0"
+                style={{ opacity: removeOpacity, pointerEvents: removePointerEvents }}
+                onClick={handleRemoveAction}
+                className="absolute inset-y-0 right-0 w-1/2 bg-red-600 flex items-center justify-end px-6 z-0 cursor-pointer select-none"
             >
-                <span className="text-white text-xs font-bold uppercase tracking-widest mr-4">Remove</span>
-                <motion.div style={{ scale: removeScale }}>
-                    <Trash2 className="w-6 h-6 text-white" />
+                <motion.div style={{ scale: removeScale }} className="flex items-center gap-2">
+                    <span className="text-white text-xs font-bold uppercase tracking-widest">Remove</span>
+                    <Trash2 className="w-5 h-5 text-white" />
                 </motion.div>
             </motion.div>
 
@@ -53,21 +89,28 @@ const CartItemRow = ({ item, removeFromCart, updateQuantity, toggleWishlist, isI
             <motion.div
                 style={{ x, touchAction: "pan-y" }}
                 drag="x"
-                dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={0.7} // Stiffer feel
-                dragTransition={{ bounceStiffness: 1000, bounceDamping: 100 }} // Near instant snap-back, no bounce
-                onDragEnd={() => {
-                    const currentX = x.get();
-                    if (currentX > 80) {
-                        // Swipe Right Action
-                        if (!isInWishlist(item.id)) toggleWishlist(item);
-                        removeFromCart(item.id, item.selectedSize, item.selectedColor);
-                    } else if (currentX < -80) {
-                        // Swipe Left Action
-                        removeFromCart(item.id, item.selectedSize, item.selectedColor);
+                dragDirectionLock={true}
+                dragConstraints={{ left: -100, right: 100 }}
+                dragElastic={0.15}
+                onDragEnd={(e, info) => {
+                    const threshold = 40;
+                    const offset = info.offset.x;
+                    const velocity = info.velocity.x;
+
+                    if (offset < -threshold || velocity < -300) {
+                        setSwipeState('remove');
+                    } else if (offset > threshold || velocity > 300) {
+                        setSwipeState('wishlist');
+                    } else {
+                        setSwipeState('idle');
                     }
                 }}
-                className="relative bg-[#FDFBF7] flex gap-4 transition-transform z-10"
+                onClick={() => {
+                    if (swipeState !== 'idle') {
+                        setSwipeState('idle');
+                    }
+                }}
+                className="relative bg-[#FDFBF7] flex gap-4 z-10 w-full cursor-grab active:cursor-grabbing"
             >
                 <div className="relative w-20 h-24 bg-neutral-100 shrink-0">
                     {item.images?.[0] && typeof item.images[0] === 'string' && item.images[0].length > 0 ? (
@@ -75,7 +118,7 @@ const CartItemRow = ({ item, removeFromCart, updateQuantity, toggleWishlist, isI
                             src={item.images[0]}
                             alt={item.title}
                             fill
-                            className="object-cover"
+                            className="object-cover pointer-events-none"
                         />
                     ) : (
                         <div className="w-full h-full bg-neutral-200 flex items-center justify-center text-neutral-400 text-[10px] text-center p-1">
@@ -85,32 +128,31 @@ const CartItemRow = ({ item, removeFromCart, updateQuantity, toggleWishlist, isI
                 </div>
                 <div className="flex-1 space-y-1">
                     <div className="flex justify-between items-start">
-                        <h3 className="font-serif text-sm text-[#1A1A1A]">{item.title}</h3>
-                        {/* Remove text button also exists, keeping it for accessibility/desktop */}
-                        <button onClick={() => removeFromCart(item.id, item.selectedSize, item.selectedColor)} className="text-xs text-neutral-400 hover:text-red-800">Remove</button>
+                        <h3 className="font-serif text-sm text-[#1A1A1A] select-none">{item.title}</h3>
+                        <button onClick={(e) => handleInteractiveClick(e, handleRemoveAction)} className="text-xs text-neutral-400 hover:text-red-800 pointer-events-auto">Remove</button>
                     </div>
-                    <p className="text-sm font-sans text-neutral-500">
+                    <p className="text-sm font-sans text-neutral-500 select-none">
                         {item.selectedSize && <span className="mr-2">Size: {item.selectedSize}</span>}
                         {item.selectedColor && <span className="block w-3 h-3 rounded-full border border-gray-300 inline-block align-middle" style={{ backgroundColor: item.selectedColor }}></span>}
                     </p>
                     <div className="flex items-center justify-between mt-2">
-                        <div className="flex items-center border border-neutral-200 rounded-sm">
+                        <div className="flex items-center border border-neutral-200 rounded-sm bg-white pointer-events-auto">
                             <button
-                                onClick={() => updateQuantity(item.id, item.selectedSize, item.selectedColor, -1)}
+                                onClick={(e) => handleInteractiveClick(e, () => updateQuantity(item.id, item.selectedSize, item.selectedColor, -1))}
                                 className="p-1 hover:bg-neutral-100 transition-colors"
                                 disabled={item.quantity <= 1}
                             >
                                 <Minus className="w-3 h-3 text-neutral-600" />
                             </button>
-                            <span className="px-2 text-xs font-sans text-[#1A1A1A] w-6 text-center">{item.quantity}</span>
+                            <span className="px-2 text-xs font-sans text-[#1A1A1A] w-6 text-center select-none">{item.quantity}</span>
                             <button
-                                onClick={() => updateQuantity(item.id, item.selectedSize, item.selectedColor, 1)}
+                                onClick={(e) => handleInteractiveClick(e, () => updateQuantity(item.id, item.selectedSize, item.selectedColor, 1))}
                                 className="p-1 hover:bg-neutral-100 transition-colors"
                             >
                                 <Plus className="w-3 h-3 text-neutral-600" />
                             </button>
                         </div>
-                        <p className="text-sm font-medium text-[#1A1A1A] ml-auto">
+                        <p className="text-sm font-medium text-[#1A1A1A] ml-auto select-none">
                             ₹{item.price.toLocaleString('en-IN')}
                         </p>
                     </div>

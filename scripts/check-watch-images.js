@@ -12,7 +12,7 @@ const client = createClient({
 
 async function main() {
     console.log("Fetching watch details...");
-    const res = await client.fetch('*[_type == "product" && slug.current == "ghdi"][0]{title, variants}');
+    const res = await client.fetch('*[_type == "product" && slug.current == "the-heritage-chronograph"][0]{title, variants}');
     console.log(JSON.stringify(res, null, 2));
     process.exit(0);
 }

@@ -17,7 +17,7 @@ export interface Product {
     id: string;
     title: string;
     handle: string;
-    originalPrice?: number;
+    originalPrice?: number | null;
     price: number;
     discountLabel?: string | null;
     category: string;
@@ -25,11 +25,11 @@ export interface Product {
     colors: string[];
 
     // New Fields
-    sizeType?: 'clothing' | 'numeric' | 'onesize';
+    sizeType?: string;
     sizes?: string[];
     variants?: Variant[];
     imagePromptNote?: string;
-    gender?: 'man' | 'woman' | 'unisex';
+    gender?: string;
     isOutOfStock?: boolean;
     description?: string;
 }
@@ -37,29 +37,29 @@ export interface Product {
 export const products: Product[] = [
     {
         id: "prod_01",
-        title: "The Sterling Cashmere Vest",
+        title: "Sterling Vest",
         handle: "sterling-cashmere-vest",
         originalPrice: 18600,
         price: 10600,
         discountLabel: "SAVE RS. 8,000",
         category: "Knitwear",
-        images: ["/images/products/white.jpeg", "/images/products/white.jpeg"],
+        images: ["/images/products/white.jpeg", "/images/products/white.jpeg", "/images/generated/the_sterling_cashmere_vest_third.png"],
         colors: ["#FDFBF7", "#1A1A1A"]
     },
     {
         id: "prod_02",
-        title: "The Archive Cable Knit Zip",
+        title: "Linen Combo",
         handle: "archive-cable-knit-zip",
         originalPrice: 8400,
         price: 4200,
         discountLabel: "SAVE RS. 4,200",
         category: "Knitwear",
-        images: ["/images/products/combo.jpeg", "/images/products/combo.jpeg"],
+        images: ["/images/products/combo.jpeg", "/images/generated/the_archive_cable_knit_zip_real_alt_matching.png", "/images/generated/the_archive_cable_knit_zip_third.png"],
         colors: ["#1A1A1A", "#355E3B"]
     },
     {
         id: "prod_03",
-        title: "The Haven Cashmere Hoodie",
+        title: "Cashmere Hoodie",
         handle: "haven-cashmere-hoodie",
         originalPrice: 12500,
         price: 8400,
@@ -70,13 +70,13 @@ export const products: Product[] = [
     },
     {
         id: "prod_04",
-        title: "The Scholar Turtleneck",
+        title: "Scholar Turtleneck",
         handle: "scholar-turtleneck",
         originalPrice: 6500,
         price: 4200,
         discountLabel: "SAVE RS. 2,300",
         category: "Knitwear",
-        images: ["/images/products/turtelneck.jpg", "/images/products/turtelneck.jpg"],
+        images: ["/images/products/turtelneck.jpg", "/images/products/turtelneck.jpg", "/images/generated/the_scholar_turtleneck_third.png"],
         colors: ["#1A1A1A", "#808080", "#FDFBF7"]
     }
 ];

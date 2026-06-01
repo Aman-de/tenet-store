@@ -1,7 +1,7 @@
 "use client";
 
 import { useStore } from "@/lib/store";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ChevronUp, AlertCircle, Heart, Ruler, Star, Loader2, Truck, ShieldCheck, RefreshCw } from "lucide-react";
@@ -95,6 +95,9 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
     const hasVariants = product.variants && product.variants.length > 0;
     const [selectedVariant, setSelectedVariant] = useState<Variant | undefined>(hasVariants ? product.variants![0] : undefined);
 
+    const isProgrammaticRef = useRef(false);
+    const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
     // Derived State
     const currentImages = (selectedVariant ? selectedVariant.images : product.images)?.filter(Boolean);
     // Fallback: If variant has no images, use product default images to prevent crash
@@ -111,8 +114,37 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
 
     // Reset image index when variant changes or images update
     useEffect(() => {
+        isProgrammaticRef.current = true;
         setSelectedImageIndex(0);
+        if (mobileContainerRef.current) {
+            mobileContainerRef.current.scrollLeft = 0;
+        }
+        const timer = setTimeout(() => {
+            isProgrammaticRef.current = false;
+        }, 50);
+        return () => clearTimeout(timer);
     }, [selectedVariant, displayImages.length]);
+
+    const scrollToIndex = (idx: number) => {
+        isProgrammaticRef.current = true;
+        setSelectedImageIndex(idx);
+        if (mobileContainerRef.current) {
+            mobileContainerRef.current.scrollTo({
+                left: idx * mobileContainerRef.current.clientWidth,
+                behavior: "smooth"
+            });
+        }
+        if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
+        scrollTimeoutRef.current = setTimeout(() => {
+            isProgrammaticRef.current = false;
+        }, 500);
+    };
+
+    useEffect(() => {
+        return () => {
+            if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
+        };
+    }, []);
 
     // GA4 View Item Tracking
     useEffect(() => {
@@ -129,10 +161,8 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
     const sizes = product.sizes && product.sizes.length > 0 ? product.sizes : ["S", "M", "L", "XL"];
     const showSizeSelector = product.sizeType !== 'onesize';
 
-    const swipeConfidenceThreshold = 10000;
-    const swipePower = (offset: number, velocity: number) => {
-        return Math.abs(offset) * velocity;
-    };
+    const mobileContainerRef = useRef<HTMLDivElement>(null);
+
 
     // Accordion Component
     const AccordionItem = ({ title, children, defaultOpen = false }: { title: string, children: React.ReactNode, defaultOpen?: boolean }) => {
@@ -208,31 +238,34 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
     };
 
     return (
-        <div className="max-w-[2000px] w-full mx-auto px-0 md:px-6 xl:px-12 pt-0 md:pt-14 grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-12 lg:gap-24">
+        <div className="max-w-[2000px] w-full mx-auto px-0 md:px-8 xl:px-12 pt-0 xl:pt-14 grid grid-cols-1 lg:landscape:grid-cols-[1.3fr_1fr] xl:grid-cols-[1.3fr_1fr] 2xl:grid-cols-[1.5fr_1fr] gap-0 lg:landscape:gap-16 xl:gap-20 2xl:gap-28">
             <SizeGuide isOpen={isSizeGuideOpen} onClose={() => setIsSizeGuideOpen(false)} />
 
             {/* Left Column: Gallery */}
-            {/* Mobile: Swipeable Carousel */}
-            <div className="block md:hidden relative w-full aspect-[3/4] overflow-hidden bg-neutral-100 mb-6">
-                <motion.div
-                    className="flex h-full"
-                    drag="x"
-                    dragConstraints={{ left: 0, right: 0 }}
-                    dragElastic={1}
-                    onDragEnd={(e, { offset, velocity }) => {
-                        const swipe = swipePower(offset.x, velocity.x);
-
-                        if (swipe < -swipeConfidenceThreshold) {
-                            setSelectedImageIndex((prev) => (prev + 1) % displayImages.length);
-                        } else if (swipe > swipeConfidenceThreshold) {
-                            setSelectedImageIndex((prev) => (prev - 1 + displayImages.length) % displayImages.length);
+            {/* Mobile/Tablet: Swipeable Carousel using native scroll-snap */}
+            <div className="block lg:landscape:hidden xl:hidden relative w-full aspect-[3/4] mb-6">
+                <div 
+                    ref={mobileContainerRef} 
+                    className="w-full h-full overflow-x-auto scroll-snap-x scrollbar-none bg-neutral-100 flex"
+                    style={{ scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch" }}
+                    onScroll={(e) => {
+                        if (isProgrammaticRef.current) return;
+                        const container = e.currentTarget;
+                        const width = container.clientWidth;
+                        if (width > 0) {
+                            const newIndex = Math.round(container.scrollLeft / width);
+                            if (newIndex !== selectedImageIndex && newIndex >= 0 && newIndex < displayImages.length) {
+                                setSelectedImageIndex(newIndex);
+                            }
                         }
                     }}
-                    animate={{ x: `-${selectedImageIndex * 100}%` }}
-                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 >
                     {displayImages.map((img, idx) => (
-                        <div key={idx} className="min-w-full h-full relative">
+                        <div 
+                            key={idx} 
+                            className="w-full h-full shrink-0 relative"
+                            style={{ scrollSnapAlign: "start" }}
+                        >
                             {img ? (
                                 <Image
                                     src={img}
@@ -246,14 +279,14 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                             )}
                         </div>
                     ))}
-                </motion.div>
+                </div>
 
                 {/* Mobile Dots */}
                 <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
                     {displayImages.map((_, idx) => (
                         <button
                             key={idx}
-                            onClick={() => setSelectedImageIndex(idx)}
+                            onClick={() => scrollToIndex(idx)}
                             className={cn(
                                 "w-2 h-2 rounded-full transition-all shadow-sm",
                                 selectedImageIndex === idx ? "bg-white scale-125" : "bg-white/50"
@@ -264,16 +297,16 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
             </div>
 
             {/* Desktop: Vertical Stack & Thumbnails */}
-            <div className="hidden md:flex gap-6 sticky top-24 h-fit">
+            <div className="hidden lg:landscape:flex xl:flex gap-6 xl:gap-8 sticky top-24 h-fit max-h-[85vh]">
                 {/* Thumbnails */}
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-4 overflow-y-auto no-scrollbar pb-4 pr-1">
                     {displayImages.map((img, idx) => (
                         <button
                             key={idx}
-                            onClick={() => setSelectedImageIndex(idx)}
+                            onClick={() => scrollToIndex(idx)}
                             className={cn(
-                                "relative w-20 h-24 shrink-0 border border-transparent transition-all",
-                                selectedImageIndex === idx ? "border-[#1A1A1A]" : "opacity-60 hover:opacity-100"
+                                "relative w-20 h-28 lg:w-28 lg:h-36 xl:w-32 xl:h-44 shrink-0 border transition-all",
+                                selectedImageIndex === idx ? "border-[#1A1A1A] opacity-100 ring-1 ring-[#1A1A1A] ring-offset-1" : "border-transparent opacity-60 hover:opacity-100"
                             )}
                         >
                             {img ? (
