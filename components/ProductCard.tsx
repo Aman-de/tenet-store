@@ -150,7 +150,6 @@ export default function ProductCard({ product }: ProductCardProps) {
                                 w-10 h-10 md:w-12 md:h-12 bg-white text-[#1A1A1A] rounded-full 
                                 flex items-center justify-center shadow-lg
                                 active:scale-90 transition-all duration-300 ease-out
-                                transform ${addingState !== 'idle' && !product.isOutOfStock ? 'translate-y-0' : 'translate-y-[120%] group-hover:translate-y-0'}
                             `}
                             aria-label="Wishlist"
                         >
