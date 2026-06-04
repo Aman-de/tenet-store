@@ -5,7 +5,7 @@ import { getCartUpsells } from "@/lib/sanity";
 import { trackBeginCheckout, trackPurchase, trackAddToCart } from "@/lib/analytics";
 
 import { motion, AnimatePresence, useMotionValue, useTransform, animate } from "framer-motion";
-import { X, ShoppingBag, Plus, Minus, Heart, Trash2, ArrowLeft } from "lucide-react";
+import { X, ShoppingBag, Plus, Minus, Heart, Trash2, ArrowLeft, MapPin } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -189,6 +189,46 @@ export default function CartDrawer() {
         zip: false,
         phone: false
     });
+
+    const [isLocating, setIsLocating] = useState(false);
+
+    const handleUseCurrentLocation = () => {
+        if (!navigator.geolocation) {
+            alert("Geolocation is not supported by your browser");
+            return;
+        }
+
+        setIsLocating(true);
+        navigator.geolocation.getCurrentPosition(async (position) => {
+            try {
+                const { latitude, longitude } = position.coords;
+                const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
+                const data = await res.json();
+
+                if (data && data.address) {
+                    const street = data.address.road || data.address.pedestrian || data.address.suburb || "";
+                    const city = data.address.city || data.address.town || data.address.village || data.address.county || "";
+                    const zip = data.address.postcode || "";
+
+                    setAddress(prev => ({
+                        ...prev,
+                        street: street,
+                        city: city,
+                        zip: zip
+                    }));
+                }
+            } catch (error) {
+                console.error("Error fetching address:", error);
+                alert("Could not fetch address from your location.");
+            } finally {
+                setIsLocating(false);
+            }
+        }, (error) => {
+            console.error("Geolocation error:", error);
+            alert("Unable to retrieve your location.");
+            setIsLocating(false);
+        });
+    };
 
     const FREE_SHIPPING_THRESHOLD = 4999;
     const SHIPPING_COST = 70;
@@ -669,9 +709,20 @@ export default function CartDrawer() {
 
                                         {/* Street Address */}
                                         <div className="group">
-                                            <label className={`block text-xs font-bold uppercase tracking-widest mb-2 transition-colors ${errors.street ? 'text-red-600' : 'text-[#1A1A1A]'}`}>
-                                                Street Address
-                                            </label>
+                                            <div className="flex items-center justify-between mb-2">
+                                                <label className={`block text-xs font-bold uppercase tracking-widest transition-colors ${errors.street ? 'text-red-600' : 'text-[#1A1A1A]'}`}>
+                                                    Street Address
+                                                </label>
+                                                <button
+                                                    type="button"
+                                                    onClick={handleUseCurrentLocation}
+                                                    disabled={isLocating}
+                                                    className="flex items-center gap-1.5 text-[10px] uppercase font-bold tracking-widest text-[#1A1A1A] hover:text-black transition-colors"
+                                                >
+                                                    <MapPin className="w-3 h-3" />
+                                                    {isLocating ? "Locating..." : "Use Current Location"}
+                                                </button>
+                                            </div>
                                             <motion.input
                                                 type="text"
                                                 value={address.street}

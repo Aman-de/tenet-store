@@ -60,7 +60,7 @@ export default function ProductSection({ products }: ProductSectionProps) {
     // Filter Toggle Component
     const FilterToggle = () => (
         <div className={`flex items-center bg-white/80 backdrop-blur-md rounded-full border border-neutral-200 p-1 transition-all duration-300 ${(!hasMounted || isSticky)
-            ? 'fixed top-20 md:top-24 left-1/2 -translate-x-1/2 z-[100] shadow-lg'
+            ? 'fixed top-[100px] md:top-[120px] left-1/2 -translate-x-1/2 z-[100] shadow-lg'
             : 'relative z-10 w-fit'
             }`}>
             <button
