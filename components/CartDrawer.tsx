@@ -184,6 +184,7 @@ export default function CartDrawer() {
     }, [searchParams, openCart, router]);
 
     const [checkoutStep, setCheckoutStep] = useState<'cart' | 'address'>('cart');
+    const [hasAutoLocated, setHasAutoLocated] = useState(false);
     const [address, setAddress] = useState({
         name: "",
         street: "",
@@ -259,6 +260,14 @@ export default function CartDrawer() {
     const COD_MIN_THRESHOLD = 12000;
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        if (checkoutStep === 'address' && !address.street && !hasAutoLocated) {
+            handleUseCurrentLocation();
+            setHasAutoLocated(true);
+        }
+    }, [checkoutStep, address.street, hasAutoLocated]);
+
+    useEffect(() => {
         setMounted(true);
     }, []);
 
@@ -267,6 +276,7 @@ export default function CartDrawer() {
             setAddress(prev => ({ 
                 ...prev, 
                 name: user.fullName || "",
+                phone: user.primaryPhoneNumber?.phoneNumber || "",
                 ...(user.unsafeMetadata?.address as any)
             }));
         }
@@ -850,6 +860,7 @@ export default function CartDrawer() {
                                             </label>
                                             <motion.input
                                                 type="tel"
+                                                autoComplete="tel"
                                                 value={address.phone}
                                                 onChange={(e) => {
                                                     setAddress({ ...address, phone: e.target.value });
