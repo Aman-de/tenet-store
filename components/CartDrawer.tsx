@@ -165,7 +165,7 @@ const CartItemRow = ({ item, removeFromCart, updateQuantity, toggleWishlist, isI
 export default function CartDrawer() {
     const { openSignIn } = useClerk();
     const {
-        isCartOpen, closeCart, cart, removeFromCart, updateQuantity, getCartTotal,
+        isCartOpen, closeCart, openCart, cart, removeFromCart, updateQuantity, getCartTotal,
         toggleWishlist, isInWishlist, addToCart, clearCart,
         checkoutItem, clearCheckoutItem, updateCheckoutItemQuantity
     } = useStore();
