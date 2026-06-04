@@ -9,7 +9,7 @@ import { X, ShoppingBag, Plus, Minus, Heart, Trash2, ArrowLeft } from "lucide-re
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useUser } from "@clerk/nextjs";
+import { useUser, useClerk } from "@clerk/nextjs";
 
 // Helper Component for Swipeable logic with visual feedback
 const CartItemRow = ({ item, removeFromCart, updateQuantity, toggleWishlist, isInWishlist }: any) => {
@@ -163,6 +163,8 @@ const CartItemRow = ({ item, removeFromCart, updateQuantity, toggleWishlist, isI
 };
 
 export default function CartDrawer() {
+    const { user } = useUser();
+    const { openSignIn } = useClerk();
     const {
         isCartOpen, closeCart, cart, removeFromCart, updateQuantity, getCartTotal,
         toggleWishlist, isInWishlist, addToCart, clearCart,
@@ -234,7 +236,28 @@ export default function CartDrawer() {
     const cartItems = mounted ? (checkoutItem ? [checkoutItem] : cart) : [];
 
     // Calculate total depending on mode
-    const subtotal = mounted ? (checkoutItem ? (checkoutItem.price * checkoutItem.quantity) : getCartTotal()) : 0;
+    const rawSubtotal = mounted ? (checkoutItem ? (checkoutItem.price * checkoutItem.quantity) : getCartTotal()) : 0;
+    
+    // Calculate Offers
+    let b2g1Discount = 0;
+    const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+    if (totalQuantity >= 3) {
+        const allItemPrices: number[] = [];
+        cartItems.forEach(item => {
+            for (let i = 0; i < item.quantity; i++) allItemPrices.push(item.price);
+        });
+        allItemPrices.sort((a, b) => a - b);
+        const freeItems = Math.floor(totalQuantity / 3);
+        for (let i = 0; i < freeItems; i++) {
+            b2g1Discount += allItemPrices[i];
+        }
+    }
+
+    const afterB2G1 = rawSubtotal - b2g1Discount;
+    const first20Discount = afterB2G1 * 0.20;
+    const totalDiscount = b2g1Discount + first20Discount;
+    
+    const subtotal = Math.max(0, rawSubtotal - totalDiscount);
 
     // Local wrappers for actions to handle both modes transparently
     const handleDelete = (id: string, size?: string, color?: string) => {
@@ -572,8 +595,21 @@ export default function CartDrawer() {
                                 <div className="p-6 border-t border-neutral-200 bg-white space-y-4 shadow-[0_-5px_20px_rgba(0,0,0,0.05)]">
                                     <div className="flex items-center justify-between font-serif text-lg">
                                         <span>Subtotal</span>
+                                        <span className="line-through text-neutral-400 mr-2 text-sm">₹{rawSubtotal.toLocaleString('en-IN')}</span>
                                         <span>₹{subtotal.toLocaleString('en-IN')}</span>
                                     </div>
+                                    {b2g1Discount > 0 && (
+                                        <div className="flex items-center justify-between text-xs font-sans text-green-600 font-bold">
+                                            <span>Buy 2 Get 1 Free</span>
+                                            <span>-₹{b2g1Discount.toLocaleString('en-IN')}</span>
+                                        </div>
+                                    )}
+                                    {first20Discount > 0 && (
+                                        <div className="flex items-center justify-between text-xs font-sans text-green-600 font-bold">
+                                            <span>FIRST20 (20% Off)</span>
+                                            <span>-₹{first20Discount.toLocaleString('en-IN')}</span>
+                                        </div>
+                                    )}
                                     <div className="flex items-center justify-between text-xs font-sans text-neutral-500">
                                         <span>Shipping</span>
                                         <span className={isFreeShipping ? "text-green-700 font-bold" : ""}>
@@ -590,7 +626,7 @@ export default function CartDrawer() {
                                         onClick={() => {
                                             if (!user) {
                                                 closeCart();
-                                                router.push('/sign-in?redirect_url=/');
+                                                openSignIn({ forceRedirectUrl: '/' });
                                                 return;
                                             }
                                             trackBeginCheckout(cartItems, finalTotal);

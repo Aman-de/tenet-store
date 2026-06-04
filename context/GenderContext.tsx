@@ -12,7 +12,7 @@ interface GenderContextType {
 const GenderContext = createContext<GenderContextType | undefined>(undefined);
 
 export function GenderProvider({ children }: { children: React.ReactNode }) {
-    const [gender, setGenderState] = useState<Gender>("man");
+    const [gender, setGenderState] = useState<Gender>("woman");
 
     useEffect(() => {
         // Read from localStorage only after component mounts in the browser

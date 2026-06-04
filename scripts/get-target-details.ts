@@ -17,13 +17,18 @@ const client = createClient({
 })
 
 const targetTitles = [
-    "The Sterling Cashmere Vest",
-    "The Scholar Turtleneck",
-    "The Amalfi Stripe",
-    "The Heritage Chronograph",
-    "The Canvas Chore Coat",
-    "The Tailored Gurkha Trouser",
-    "The Archive Cable Knit Zip"
+    "Premium Designer Kurti 1",
+    "Premium Designer Kurti 2",
+    "Premium Designer Kurti 3",
+    "Premium Designer Kurti 4",
+    "Premium Designer Kurti 5",
+    "Premium Designer Kurti 6",
+    "Premium Designer Kurti 7",
+    "Premium Designer Kurti 8",
+    "Premium Designer Kurti 9",
+    "Premium Designer Kurti 10",
+    "Elegant Evening Heels",
+    "Royal Gold Necklace Set"
 ]
 
 async function fetchDetails() {

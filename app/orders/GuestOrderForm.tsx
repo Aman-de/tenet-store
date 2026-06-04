@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
+import { SignInButton } from "@clerk/nextjs";
 
 export default function GuestOrderForm() {
     const [email, setEmail] = useState("");
@@ -39,7 +40,7 @@ export default function GuestOrderForm() {
                     </button>
                     <div className="text-center pt-4 border-t border-neutral-100 mt-6">
                         <p className="text-xs text-neutral-500">
-                            Have an account? <Link href="/sign-in?redirect_url=/orders" className="text-[#1A1A1A] font-bold underline">Sign In</Link>
+                            Have an account? <SignInButton mode="modal" forceRedirectUrl="/orders"><button type="button" className="text-[#1A1A1A] font-bold underline">Sign In</button></SignInButton>
                         </p>
                     </div>
                 </form>

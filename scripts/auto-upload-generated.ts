@@ -18,7 +18,7 @@ const client = createClient({
     useCdn: false,
 })
 
-const BRAIN_DIR = "/Users/uditsharma/.gemini/antigravity/brain/6ef23873-1c9d-40ce-86f6-144a4eb32a72"
+const BRAIN_DIR = process.env.BRAIN_DIR || "/Users/uditsharma/.gemini/antigravity/brain/0dfa3795-7979-4ed8-9872-d3e3f9efcfe3"
 
 const genKey = () => Math.random().toString(36).slice(2, 9)
 

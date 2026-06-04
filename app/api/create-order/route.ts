@@ -17,7 +17,7 @@ export async function POST(req: Request) {
             email: email,
             products: cart.map((item: any) => ({
                 _type: 'object', // This might just be key in array, but for sanity object in array
-                _key: item.id + item.selectedSize + item.selectedColor, // Unique key
+                _key: (item.id + item.selectedSize + item.selectedColor).replace(/[^a-zA-Z0-9]/g, ''), // Unique key
                 product: {
                     _type: 'reference',
                     _ref: item.id
