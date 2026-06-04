@@ -1,14 +1,23 @@
 import Footer from "@/components/Footer";
 import SortedProductGrid from "@/components/SortedProductGrid";
 import { getCollection } from "@/lib/sanity";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
 
 export default async function CollectionPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
-    const collection = await getCollection(slug);
+
+    const decodedSlug = decodeURIComponent(slug);
+    const cleanSlug = decodedSlug.split(/\s+/)[0];
+    if (cleanSlug !== slug && cleanSlug !== decodedSlug) {
+        redirect(`/collection/${cleanSlug}`);
+    } else if (cleanSlug !== slug) {
+        redirect(`/collection/${cleanSlug}`);
+    }
+
+    const collection = await getCollection(cleanSlug);
 
     if (!collection) {
         notFound();

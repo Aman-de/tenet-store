@@ -1,5 +1,5 @@
 import { getProduct, getRecommendedProducts, getReviews } from "@/lib/sanity";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import ProductDetails from "@/components/ProductDetails";
 import RecommendedProducts from "@/components/RecommendedProducts";
 
@@ -13,7 +13,15 @@ export default async function ProductPage({ params }: ProductPageProps) {
     // Unwrap params using React.use() or await as recommended in Next.js 15
     const { slug } = await params;
 
-    const product = await getProduct(slug);
+    const decodedSlug = decodeURIComponent(slug);
+    const cleanSlug = decodedSlug.split(/\s+/)[0];
+    if (cleanSlug !== slug && cleanSlug !== decodedSlug) {
+        redirect(`/product/${cleanSlug}`);
+    } else if (cleanSlug !== slug) {
+        redirect(`/product/${cleanSlug}`);
+    }
+
+    const product = await getProduct(cleanSlug);
 
     if (!product) {
         notFound();
