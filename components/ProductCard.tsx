@@ -100,8 +100,8 @@ export default function ProductCard({ product }: ProductCardProps) {
                             }}
                             className="
                                 md:hidden pointer-events-auto
-                                w-10 h-10 bg-white text-[#1A1A1A] rounded-full 
-                                flex items-center justify-center 
+                                w-10 h-10 bg-white/90 backdrop-blur-sm text-[#1A1A1A] rounded-full 
+                                flex items-center justify-center shadow-md
                                 active:scale-90 transition-all duration-200
                             "
                             aria-label="Add to cart"
@@ -147,9 +147,10 @@ export default function ProductCard({ product }: ProductCardProps) {
                             }}
                             className={`
                                 pointer-events-auto
-                                w-10 h-10 md:w-12 md:h-12 bg-white text-[#1A1A1A] rounded-full 
-                                flex items-center justify-center shadow-lg
+                                w-10 h-10 md:w-12 md:h-12 bg-white/90 md:bg-white backdrop-blur-sm md:backdrop-blur-none text-[#1A1A1A] rounded-full 
+                                flex items-center justify-center shadow-md md:shadow-lg
                                 active:scale-90 transition-all duration-300 ease-out
+                                md:opacity-0 md:group-hover:opacity-100
                             `}
                             aria-label="Wishlist"
                         >
