@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
+import { Suspense } from "react";
 import "./globals.css";
 
 import CartDrawer from "@/components/CartDrawer";
@@ -69,7 +70,9 @@ export default function RootLayout({
             <div className="lg:hidden">
               <MobileBottomNav />
             </div>
-            <CartDrawer />
+            <Suspense fallback={null}>
+              <CartDrawer />
+            </Suspense>
             <WishlistDrawer />
             <SpeedInsights />
             <Analytics />
