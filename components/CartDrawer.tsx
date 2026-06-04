@@ -212,39 +212,38 @@ export default function CartDrawer() {
         navigator.geolocation.getCurrentPosition(async (position) => {
             try {
                 const { latitude, longitude } = position.coords;
-                const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
+                const res = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`);
+                if (!res.ok) throw new Error("Network response was not ok");
+                
                 const data = await res.json();
 
                 if (data) {
-                    const addr = data.address || {};
-                    let street = addr.road || addr.pedestrian || addr.residential || addr.neighbourhood || addr.suburb || addr.hamlet || "";
-                    let city = addr.city || addr.town || addr.village || addr.county || addr.state_district || addr.state || "";
-                    let zip = addr.postcode || "";
-
-                    if (!street && data.display_name) {
-                        const parts = data.display_name.split(',').map((s: any) => s.trim());
-                        street = parts.slice(0, 2).join(', ');
-                        if (!city && parts.length >= 3) {
-                            city = parts[parts.length - 3];
-                        }
+                    // BigDataCloud provides robust Locality and City info
+                    const city = data.city || data.principalSubdivision || "";
+                    let street = data.locality || data.countryName || "";
+                    
+                    // Fallback to detailed locality info if available
+                    if (data.localityInfo && data.localityInfo.administrative) {
+                        const adminParts = data.localityInfo.administrative.map((a: any) => a.name).slice(-3);
+                        street = adminParts.join(', ');
                     }
 
                     setAddress(prev => ({
                         ...prev,
-                        street: street || data.display_name || "",
+                        street: street,
                         city: city,
-                        zip: zip
+                        zip: data.postcode || ""
                     }));
                 }
-            } catch (error) {
+            } catch (error: any) {
                 console.error("Error fetching address:", error);
-                alert("Could not fetch address from your location.");
+                alert(`Could not fetch address: ${error?.message || "Unknown error"}`);
             } finally {
                 setIsLocating(false);
             }
         }, (error) => {
             console.error("Geolocation error:", error);
-            alert("Unable to retrieve your location.");
+            alert(`Unable to retrieve your location: ${error?.message}`);
             setIsLocating(false);
         });
     };
