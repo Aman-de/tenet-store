@@ -404,6 +404,7 @@ export default function CartDrawer() {
         // Validation
         const newErrors = {
             name: !address.name,
+            houseNumber: !address.houseNumber,
             street: !address.street,
             city: !address.city,
             zip: !address.zip,
@@ -415,7 +416,7 @@ export default function CartDrawer() {
             return;
         }
 
-        const fullAddress = `${address.name}, ${address.street}, ${address.city} - ${address.zip}. Phone: ${address.phone}`;
+        const fullAddress = `${address.name}, ${address.houseNumber}, ${address.street}, ${address.city} - ${address.zip}. Phone: ${address.phone}`;
 
         // Handle Cash on Delivery Rules
         if (paymentMethod === 'cod' && finalTotal < COD_MIN_THRESHOLD) {
