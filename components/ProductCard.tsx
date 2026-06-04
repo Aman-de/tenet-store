@@ -90,7 +90,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                     )}
 
                     {/* Quick Add and Wishlist Overlay - Responsive */}
-                    <div className="absolute bottom-4 left-4 right-4 z-30 flex gap-2 justify-end md:justify-center overflow-hidden pointer-events-none">
+                    <div className="absolute bottom-4 left-4 right-4 z-30 flex gap-2 justify-end md:justify-center pointer-events-none">
                         {/* Mobile: Small Icon Button */}
                         <button
                             onClick={(e) => {
