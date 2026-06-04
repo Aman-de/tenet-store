@@ -258,9 +258,9 @@ export default function CartDrawer() {
         });
     };
 
-    const FREE_SHIPPING_THRESHOLD = 4999;
+    const FREE_SHIPPING_THRESHOLD = 1200;
     const SHIPPING_COST = 70;
-    const COD_MIN_THRESHOLD = 8000;
+    const COD_MIN_THRESHOLD = 5000;
 
     useEffect(() => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
