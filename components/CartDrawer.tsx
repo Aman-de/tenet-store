@@ -212,28 +212,34 @@ export default function CartDrawer() {
         navigator.geolocation.getCurrentPosition(async (position) => {
             try {
                 const { latitude, longitude } = position.coords;
-                const res = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`);
+                const res = await fetch(`/api/geocode?lat=${latitude}&lon=${longitude}`);
                 if (!res.ok) throw new Error("Network response was not ok");
                 
                 const data = await res.json();
 
-                if (data) {
-                    // BigDataCloud provides robust Locality and City info
-                    const city = data.city || data.principalSubdivision || "";
-                    let street = data.locality || data.countryName || "";
+                if (data && !data.error) {
+                    const addr = data.address || {};
                     
-                    // Fallback to detailed locality info if available
-                    if (data.localityInfo && data.localityInfo.administrative) {
-                        const adminParts = data.localityInfo.administrative.map((a: any) => a.name).slice(-3);
-                        street = adminParts.join(', ');
+                    let street = addr.road || addr.pedestrian || addr.residential || addr.neighbourhood || addr.suburb || addr.hamlet || "";
+                    let city = addr.city || addr.town || addr.village || addr.county || addr.state_district || addr.state || "";
+                    let zip = addr.postcode || "";
+
+                    if (!street && data.display_name) {
+                        const parts = data.display_name.split(',').map((s: any) => s.trim());
+                        street = parts.slice(0, 2).join(', ');
+                        if (!city && parts.length >= 3) {
+                            city = parts[parts.length - 3];
+                        }
                     }
 
                     setAddress(prev => ({
                         ...prev,
-                        street: street,
+                        street: street || data.display_name || "",
                         city: city,
-                        zip: data.postcode || ""
+                        zip: zip
                     }));
+                } else {
+                    throw new Error(data.error || "No data returned");
                 }
             } catch (error: any) {
                 console.error("Error fetching address:", error);
