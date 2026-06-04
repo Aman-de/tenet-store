@@ -184,9 +184,11 @@ export default function CartDrawer() {
     }, [searchParams, openCart, router]);
 
     const [checkoutStep, setCheckoutStep] = useState<'cart' | 'address'>('cart');
+    const [isEditingAddress, setIsEditingAddress] = useState(false);
     const [hasAutoLocated, setHasAutoLocated] = useState(false);
     const [address, setAddress] = useState({
         name: "",
+        houseNumber: "",
         street: "",
         city: "",
         zip: "",
@@ -195,6 +197,7 @@ export default function CartDrawer() {
     const [paymentMethod, setPaymentMethod] = useState<'razorpay' | 'cod'>('razorpay');
     const [errors, setErrors] = useState({
         name: false,
+        houseNumber: false,
         street: false,
         city: false,
         zip: false,
@@ -273,12 +276,26 @@ export default function CartDrawer() {
 
     useEffect(() => {
         if (user) {
-            setAddress(prev => ({ 
-                ...prev, 
-                name: user.fullName || "",
-                phone: user.primaryPhoneNumber?.phoneNumber || "",
-                ...(user.unsafeMetadata?.address as any)
-            }));
+            const savedAddress = user.unsafeMetadata?.address as any;
+            if (savedAddress) {
+                setAddress(prev => ({ 
+                    ...prev, 
+                    name: user.fullName || "",
+                    phone: user.primaryPhoneNumber?.phoneNumber || "",
+                    ...savedAddress
+                }));
+                // If they have a saved address, don't show the form by default
+                if (savedAddress.street && savedAddress.city) {
+                    setIsEditingAddress(false);
+                }
+            } else {
+                setAddress(prev => ({
+                    ...prev,
+                    name: user.fullName || "",
+                    phone: user.primaryPhoneNumber?.phoneNumber || ""
+                }));
+                setIsEditingAddress(true);
+            }
         }
     }, [user]);
 
@@ -695,8 +712,30 @@ export default function CartDrawer() {
                         ) : (
                             <div className="flex-1 flex flex-col p-6 overflow-y-auto">
                                 <div className="space-y-4 flex-1">
-                                    <div className="space-y-6">
-                                        {/* Full Name */}
+                                    {(!isEditingAddress && address.street && address.city) ? (
+                                        <div className="space-y-6">
+                                            <div className="p-4 border border-neutral-200 rounded-2xl bg-neutral-50 relative group">
+                                                <div className="flex justify-between items-start mb-2">
+                                                    <span className="text-xs font-bold uppercase tracking-widest text-[#1A1A1A]">Main Address</span>
+                                                    <button 
+                                                        onClick={() => setIsEditingAddress(true)}
+                                                        className="text-[10px] uppercase tracking-widest font-bold text-neutral-500 hover:text-black transition-colors"
+                                                    >
+                                                        Edit / Change
+                                                    </button>
+                                                </div>
+                                                <div className="text-sm text-neutral-700 leading-relaxed font-sans">
+                                                    <p className="font-bold text-black">{address.name}</p>
+                                                    {address.houseNumber && <p>{address.houseNumber}</p>}
+                                                    <p>{address.street}</p>
+                                                    <p>{address.city} - {address.zip}</p>
+                                                    <p className="mt-2 text-neutral-500">{address.phone}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <div className="space-y-6">
+                                            {/* Full Name */}
                                         <div className="group">
                                             <label className={`block text-xs font-bold uppercase tracking-widest mb-2 transition-colors ${errors.name ? 'text-red-600' : 'text-[#1A1A1A]'}`}>
                                                 Full Name
@@ -721,6 +760,28 @@ export default function CartDrawer() {
                                                     Full Name is required
                                                 </span>
                                             )}
+                                        </div>
+
+                                        {/* House Number */}
+                                        <div className="group">
+                                            <label className={`block text-xs font-bold uppercase tracking-widest mb-2 transition-colors ${errors.houseNumber ? 'text-red-600' : 'text-[#1A1A1A]'}`}>
+                                                House No. / Building Name
+                                            </label>
+                                            <motion.input
+                                                type="text"
+                                                value={address.houseNumber}
+                                                onChange={(e) => {
+                                                    setAddress({ ...address, houseNumber: e.target.value });
+                                                    if (errors.houseNumber) setErrors({ ...errors, houseNumber: false });
+                                                }}
+                                                animate={errors.houseNumber ? { x: [0, -10, 10, -5, 5, 0] } : {}}
+                                                transition={{ duration: 0.4 }}
+                                                className={`w-full border-b py-3 text-sm outline-none bg-transparent transition-all placeholder:text-neutral-400
+                                                    ${errors.houseNumber
+                                                        ? 'border-red-500 text-red-700 placeholder:text-red-300'
+                                                        : 'border-neutral-300 focus:border-black text-[#1A1A1A]'}`}
+                                                placeholder="Flat 101, Luxury Towers"
+                                            />
                                         </div>
 
                                         {/* Street Address */}
@@ -844,7 +905,8 @@ export default function CartDrawer() {
                                                 </span>
                                             )}
                                         </div>
-                                    </div>
+                                        </div>
+                                    )}
 
                                     {/* Payment Method Selection */}
                                     <div className="mt-6">
