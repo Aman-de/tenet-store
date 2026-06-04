@@ -4,7 +4,7 @@ import { client } from "@/lib/sanity";
 export async function POST(req: Request) {
     try {
         const body = await req.json();
-        const { cart, paymentId, email, shippingAddress, totalAmount } = body;
+        const { cart, paymentId, email, shippingAddress, totalAmount, amountPaid, paymentMethod } = body;
 
         if (!cart || !email || !paymentId) {
             return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
@@ -14,6 +14,8 @@ export async function POST(req: Request) {
             _type: 'order',
             orderNumber: `ORD-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
             stripePaymentId: paymentId,
+            paymentMethod: paymentMethod || 'RAZORPAY',
+            amountPaid: amountPaid || totalAmount,
             email: email,
             products: cart.map((item: any) => ({
                 _type: 'object', // This might just be key in array, but for sanity object in array

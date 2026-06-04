@@ -257,7 +257,7 @@ export default function CartDrawer() {
 
     const FREE_SHIPPING_THRESHOLD = 4999;
     const SHIPPING_COST = 70;
-    const COD_MIN_THRESHOLD = 12000;
+    const COD_MIN_THRESHOLD = 8000;
 
     useEffect(() => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -400,56 +400,18 @@ export default function CartDrawer() {
 
         const fullAddress = `${address.name}, ${address.street}, ${address.city} - ${address.zip}. Phone: ${address.phone}`;
 
-        // Handle Cash on Delivery
-        if (paymentMethod === 'cod') {
-            if (finalTotal < COD_MIN_THRESHOLD) {
-                alert(`Cash on Delivery is only available for orders above ₹${COD_MIN_THRESHOLD.toLocaleString('en-IN')}`);
-                return;
-            }
-
-            try {
-                const orderRes = await fetch("/api/create-order", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        cart: cartItems,
-                        paymentId: "COD_PENDING",
-                        email: user?.primaryEmailAddress?.emailAddress || "guest@tenet.com",
-                        totalAmount: finalTotal,
-                        shippingAddress: fullAddress
-                    }),
-                });
-
-                if (orderRes.ok) {
-                    trackPurchase("COD_" + Date.now(), cartItems, finalTotal, 0, shippingAmount);
-                    if (checkoutItem) {
-                        clearCheckoutItem();
-                    } else {
-                        clearCart();
-                    }
-                    closeCart();
-                    setCheckoutStep('cart');
-                    setAddress({ name: "", street: "", city: "", zip: "", phone: "" });
-                    setPaymentMethod('razorpay');
-                    if (user) {
-                        try {
-                            await user.update({ unsafeMetadata: { address } });
-                        } catch (e) {
-                            console.error("Failed to save address to Clerk:", e);
-                        }
-                    }
-                    router.push("/orders");
-                } else {
-                    alert("Order creation failed. Please contact support.");
-                }
-            } catch (error) {
-                console.error("Order creation error:", error);
-                alert("Order creation error. Please contact support.");
-            }
+        // Handle Cash on Delivery Rules
+        if (paymentMethod === 'cod' && finalTotal < COD_MIN_THRESHOLD) {
+            alert(`Cash on Delivery is only available for orders above ₹${COD_MIN_THRESHOLD.toLocaleString('en-IN')}`);
             return;
         }
 
-        // Handle Razorpay
+        // Determine amount to charge via Razorpay
+        // For COD, charge 15% upfront
+        const amountToCharge = paymentMethod === 'cod' 
+            ? Math.round(finalTotal * 0.15) 
+            : finalTotal;
+
         // 1. Load Razorpay Script
         const loadScript = (src: string) => {
             return new Promise((resolve) => {
@@ -472,7 +434,7 @@ export default function CartDrawer() {
         const response = await fetch("/api/razorpay", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ amount: finalTotal }),
+            body: JSON.stringify({ amount: amountToCharge }),
         });
 
         const data = await response.json();
@@ -490,7 +452,7 @@ export default function CartDrawer() {
             amount: data.amount,
             currency: data.currency,
             name: "TENET ARCHIVES",
-            description: "Luxury Transaction",
+            description: paymentMethod === 'cod' ? "15% Advance (COD Confirmation)" : "Luxury Transaction",
             order_id: data.id,
              
             handler: async function (response: any) {
@@ -503,7 +465,9 @@ export default function CartDrawer() {
                             cart: cartItems,
                             paymentId: response.razorpay_payment_id,
                             email: user?.primaryEmailAddress?.emailAddress || "guest@tenet.com",
-                            totalAmount: finalTotal,
+                            totalAmount: finalTotal, // the full total
+                            amountPaid: amountToCharge, // 15% or 100%
+                            paymentMethod: paymentMethod === 'cod' ? 'PARTIAL_COD' : 'RAZORPAY',
                             shippingAddress: fullAddress
                         }),
                     });
@@ -940,7 +904,7 @@ export default function CartDrawer() {
                                         onClick={handleCheckout}
                                         disabled={paymentMethod === 'cod' && finalTotal < COD_MIN_THRESHOLD}
                                     >
-                                        {paymentMethod === 'razorpay' ? 'Pay Securely Now' : 'Place Order (COD)'}
+                                        {paymentMethod === 'razorpay' ? 'Pay Securely Now' : `Pay 15% Advance (₹${Math.round(finalTotal * 0.15).toLocaleString('en-IN')})`}
                                     </button>
                                     <button
                                         onClick={() => setCheckoutStep('cart')}

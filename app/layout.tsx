@@ -5,6 +5,7 @@ import "./globals.css";
 
 import CartDrawer from "@/components/CartDrawer";
 import WishlistDrawer from "@/components/WishlistDrawer";
+import OnboardingModal from "@/components/OnboardingModal";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -74,6 +75,7 @@ export default function RootLayout({
               <CartDrawer />
             </Suspense>
             <WishlistDrawer />
+            <OnboardingModal />
             <SpeedInsights />
             <Analytics />
           </body>
