@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ChevronUp, AlertCircle, Heart, Ruler, Star, Loader2, Truck, ShieldCheck, RefreshCw } from "lucide-react";
 import Image from "next/image";
 import SizeGuide from "./SizeGuide";
-import ShareButton from "./ShareButton";
+
 import MobileStickyBar from "./MobileStickyBar";
 import { Product, Review, Variant } from "@/lib/data";
 import { createReview } from "@/app/actions";
@@ -356,11 +356,6 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
 
                 <h1 className="font-serif text-3xl md:text-5xl text-[#1A1A1A] mb-4 flex justify-between items-start">
                     {product.title}
-                    <ShareButton
-                        title={product.title}
-                        className="text-neutral-400 hover:text-[#1A1A1A] mt-1"
-                        iconSize={20}
-                    />
                 </h1>
 
                 <div className="flex items-center gap-4 mb-4">

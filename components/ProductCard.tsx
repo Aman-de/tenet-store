@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useStore } from "@/lib/store";
 import { Plus, Heart, Loader2, Check } from "lucide-react";
 import { trackViewItem, trackAddToCart } from "@/lib/analytics";
-import ShareButton from "./ShareButton";
+
 
 interface ProductCardProps {
     product: Product;
@@ -89,8 +89,8 @@ export default function ProductCard({ product }: ProductCardProps) {
                         </div>
                     )}
 
-                    {/* Quick Add Overlay Button - Responsive */}
-                    <div className="absolute bottom-4 left-4 right-4 z-30 flex justify-end md:justify-center overflow-hidden pointer-events-none">
+                    {/* Quick Add and Wishlist Overlay - Responsive */}
+                    <div className="absolute bottom-4 left-4 right-4 z-30 flex gap-2 justify-end md:justify-center overflow-hidden pointer-events-none">
                         {/* Mobile: Small Icon Button */}
                         <button
                             onClick={(e) => {
@@ -137,57 +137,35 @@ export default function ProductCard({ product }: ProductCardProps) {
                                 ? "Sold Out"
                                 : (addingState === 'idle' ? "Quick Add +" : (addingState === 'adding' ? "Adding..." : "Added"))}
                         </button>
+                        {/* Wishlist Button - Desktop Next to Quick Add, Mobile Next to Quick Add */}
+                        <motion.button
+                            whileTap={{ scale: 1.2 }}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                toggleWishlist(product);
+                            }}
+                            className={`
+                                pointer-events-auto
+                                w-10 h-10 md:w-12 md:h-12 bg-white text-[#1A1A1A] rounded-full 
+                                flex items-center justify-center shadow-lg
+                                active:scale-90 transition-all duration-300 ease-out
+                                transform ${addingState !== 'idle' && !product.isOutOfStock ? 'translate-y-0' : 'translate-y-[120%] group-hover:translate-y-0'}
+                            `}
+                            aria-label="Wishlist"
+                        >
+                            <Heart
+                                size={20}
+                                className={`transition-all duration-300 ${isInWishlist(product.id)
+                                    ? "fill-black stroke-black"
+                                    : "stroke-black"
+                                    }`}
+                                strokeWidth={1.5}
+                            />
+                        </motion.button>
                     </div>
 
-                    {/* Share Button */}
-                    <div
-                        className="
-                            absolute top-2 right-12 z-10 
-                            transition-all duration-300 
-                            opacity-100 lg:opacity-0 lg:group-hover:opacity-100
-                        "
-                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
-                    >
-                        <ShareButton
-                            title={product.title}
-                            url={typeof window !== 'undefined' ? `${window.location.origin}/product/${product.handle}` : ''}
-                            className="
-                                text-[#1A1A1A] 
-                                w-8 h-8 lg:w-10 lg:h-10 flex items-center justify-center rounded-full
-                                bg-white/10 backdrop-blur-sm lg:bg-white/50
-                                hover:bg-white transition-colors
-                             "
-                            iconSize={18}
-                        />
-                    </div>
 
-                    {/* Wishlist Button */}
-                    <motion.button
-                        whileTap={{ scale: 1.2 }}
-                        onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            toggleWishlist(product);
-                        }}
-                        className="
-                            absolute top-2 right-2 z-10 
-                            flex items-center justify-center
-                            w-8 h-8 lg:w-10 lg:h-10 rounded-full
-                            bg-white/10 backdrop-blur-sm lg:bg-transparent
-                            lg:hover:scale-110
-                            transition-all duration-300 
-                            opacity-100 lg:opacity-0 lg:group-hover:opacity-100
-                        "
-                    >
-                        <Heart
-                            size={18}
-                            className={`transition-all duration-300 ${isInWishlist(product.id)
-                                ? "fill-black stroke-black"
-                                : "stroke-black"
-                                }`}
-                            strokeWidth={1.5}
-                        />
-                    </motion.button>
 
                 </div>
             </Link>
