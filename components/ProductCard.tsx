@@ -129,7 +129,8 @@ export default function ProductCard({ product }: ProductCardProps) {
                                 pointer-events-auto
                                 w-full bg-white text-[#1A1A1A] py-3 text-xs font-bold uppercase tracking-widest shadow-lg transition-all duration-300 ease-out rounded-full
                                 hover:bg-black hover:text-white
-                                transform ${addingState !== 'idle' && !product.isOutOfStock ? 'translate-y-0' : 'translate-y-[120%] group-hover:translate-y-0'}
+                                opacity-0 group-hover:opacity-100
+                                transform ${addingState !== 'idle' && !product.isOutOfStock ? 'translate-y-0 opacity-100' : 'translate-y-[120%] group-hover:translate-y-0'}
                             `}
                             disabled={addingState !== 'idle' || product.isOutOfStock}
                         >
