@@ -215,15 +215,23 @@ export default function CartDrawer() {
                 const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
                 const data = await res.json();
 
-                if (data && data.address) {
-                    const addr = data.address;
-                    const street = addr.road || addr.pedestrian || addr.residential || addr.neighbourhood || addr.suburb || addr.hamlet || "";
-                    const city = addr.city || addr.town || addr.village || addr.county || addr.state_district || "";
-                    const zip = addr.postcode || "";
+                if (data) {
+                    const addr = data.address || {};
+                    let street = addr.road || addr.pedestrian || addr.residential || addr.neighbourhood || addr.suburb || addr.hamlet || "";
+                    let city = addr.city || addr.town || addr.village || addr.county || addr.state_district || addr.state || "";
+                    let zip = addr.postcode || "";
+
+                    if (!street && data.display_name) {
+                        const parts = data.display_name.split(',').map((s: any) => s.trim());
+                        street = parts.slice(0, 2).join(', ');
+                        if (!city && parts.length >= 3) {
+                            city = parts[parts.length - 3];
+                        }
+                    }
 
                     setAddress(prev => ({
                         ...prev,
-                        street: street,
+                        street: street || data.display_name || "",
                         city: city,
                         zip: zip
                     }));
