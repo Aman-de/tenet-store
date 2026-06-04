@@ -8,7 +8,7 @@ import { motion, AnimatePresence, useMotionValue, useTransform, animate } from "
 import { X, ShoppingBag, Plus, Minus, Heart, Trash2, ArrowLeft, MapPin } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useUser, useClerk } from "@clerk/nextjs";
 
 // Helper Component for Swipeable logic with visual feedback
@@ -171,7 +171,17 @@ export default function CartDrawer() {
     } = useStore();
     const [mounted, setMounted] = useState(false);
     const router = useRouter();
+    const searchParams = useSearchParams();
     const { user } = useUser();
+
+    // Auto-open cart if redirected back from sign-in
+    useEffect(() => {
+        if (searchParams.get('cart') === 'open') {
+            openCart();
+            // Clean up URL so it doesn't reopen if they refresh
+            router.replace('/');
+        }
+    }, [searchParams, openCart, router]);
 
     const [checkoutStep, setCheckoutStep] = useState<'cart' | 'address'>('cart');
     const [address, setAddress] = useState({
@@ -206,9 +216,10 @@ export default function CartDrawer() {
                 const data = await res.json();
 
                 if (data && data.address) {
-                    const street = data.address.road || data.address.pedestrian || data.address.suburb || "";
-                    const city = data.address.city || data.address.town || data.address.village || data.address.county || "";
-                    const zip = data.address.postcode || "";
+                    const addr = data.address;
+                    const street = addr.road || addr.pedestrian || addr.residential || addr.neighbourhood || addr.suburb || addr.hamlet || "";
+                    const city = addr.city || addr.town || addr.village || addr.county || addr.state_district || "";
+                    const zip = addr.postcode || "";
 
                     setAddress(prev => ({
                         ...prev,
@@ -240,7 +251,11 @@ export default function CartDrawer() {
 
     useEffect(() => {
         if (user) {
-            setAddress(prev => ({ ...prev, name: user.fullName || "" }));
+            setAddress(prev => ({ 
+                ...prev, 
+                name: user.fullName || "",
+                ...(user.unsafeMetadata?.address as any)
+            }));
         }
     }, [user]);
 
@@ -393,6 +408,13 @@ export default function CartDrawer() {
                     setCheckoutStep('cart');
                     setAddress({ name: "", street: "", city: "", zip: "", phone: "" });
                     setPaymentMethod('razorpay');
+                    if (user) {
+                        try {
+                            await user.update({ unsafeMetadata: { address } });
+                        } catch (e) {
+                            console.error("Failed to save address to Clerk:", e);
+                        }
+                    }
                     router.push("/orders");
                 } else {
                     alert("Order creation failed. Please contact support.");
@@ -469,6 +491,13 @@ export default function CartDrawer() {
                         closeCart();
                         setCheckoutStep('cart'); // Reset step
                         setAddress({ name: "", street: "", city: "", zip: "", phone: "" }); // Reset form
+                        if (user) {
+                            try {
+                                await user.update({ unsafeMetadata: { address } });
+                            } catch (e) {
+                                console.error("Failed to save address to Clerk:", e);
+                            }
+                        }
                         router.push("/orders");
                     } else {
                         alert("Payment successful but order creation failed. Please contact support.");
@@ -665,7 +694,7 @@ export default function CartDrawer() {
                                         onClick={() => {
                                             if (!user) {
                                                 closeCart();
-                                                openSignIn({ forceRedirectUrl: '/' });
+                                                openSignIn({ forceRedirectUrl: '/?cart=open' });
                                                 return;
                                             }
                                             trackBeginCheckout(cartItems, finalTotal);
