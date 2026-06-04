@@ -495,7 +495,7 @@ export default function CartDrawer() {
                         clearCart();
                         closeCart();
                         setCheckoutStep('cart'); // Reset step
-                        setAddress({ name: "", street: "", city: "", zip: "", phone: "" }); // Reset form
+                        setAddress({ name: "", houseNumber: "", street: "", city: "", zip: "", phone: "" }); // Reset form
                         if (user) {
                             try {
                                 await user.update({ unsafeMetadata: { address } });
