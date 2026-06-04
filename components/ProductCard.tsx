@@ -89,35 +89,35 @@ export default function ProductCard({ product }: ProductCardProps) {
                         </div>
                     )}
 
-                    {/* Quick Add and Wishlist Overlay - Responsive */}
-                    <div className="absolute bottom-4 left-4 right-4 z-30 flex gap-2 justify-end md:justify-center pointer-events-none">
-                        {/* Mobile: Small Icon Button */}
-                        <button
-                            onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                handleQuickAdd();
-                            }}
-                            className="
-                                md:hidden pointer-events-auto
-                                w-10 h-10 bg-white/90 backdrop-blur-sm text-[#1A1A1A] rounded-full 
-                                flex items-center justify-center shadow-md
-                                active:scale-90 transition-all duration-200
-                            "
-                            aria-label="Add to cart"
-                            disabled={addingState !== 'idle' || product.isOutOfStock}
-                        >
-                            {product.isOutOfStock ? (
-                                <span className="text-[10px] font-bold">SOLD OUT</span>
-                            ) : (
-                                <>
-                                    {addingState === 'idle' && <Plus size={20} strokeWidth={1.5} />}
-                                    {addingState === 'adding' && <Loader2 size={18} className="animate-spin" />}
-                                    {addingState === 'added' && <Check size={18} />}
-                                </>
-                            )}
-                        </button>
+                    {/* Mobile Wishlist Button - Top Right */}
+                    <motion.button
+                        whileTap={{ scale: 1.2 }}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            toggleWishlist(product);
+                        }}
+                        className={`
+                            md:hidden absolute top-2 right-2 z-30
+                            pointer-events-auto
+                            w-8 h-8 bg-white/20 backdrop-blur-md text-[#1A1A1A] rounded-full 
+                            flex items-center justify-center
+                            active:scale-90 transition-all duration-200
+                        `}
+                        aria-label="Wishlist"
+                    >
+                        <Heart
+                            size={16}
+                            className={`transition-all duration-300 ${isInWishlist(product.id)
+                                ? "fill-white stroke-white"
+                                : "stroke-white"
+                                }`}
+                            strokeWidth={1.5}
+                        />
+                    </motion.button>
 
+                    {/* Quick Add and Wishlist Overlay - Desktop Only */}
+                    <div className="absolute bottom-4 left-4 right-4 z-30 hidden md:flex gap-2 justify-center pointer-events-none">
                         {/* Desktop: Full Width Text Button */}
                         <button
                             onClick={(e) => {
@@ -126,7 +126,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                                 handleQuickAdd();
                             }}
                             className={`
-                                hidden md:block pointer-events-auto
+                                pointer-events-auto
                                 w-full bg-white text-[#1A1A1A] py-3 text-xs font-bold uppercase tracking-widest shadow-lg transition-all duration-300 ease-out rounded-full
                                 hover:bg-black hover:text-white
                                 transform ${addingState !== 'idle' && !product.isOutOfStock ? 'translate-y-0' : 'translate-y-[120%] group-hover:translate-y-0'}
@@ -137,7 +137,8 @@ export default function ProductCard({ product }: ProductCardProps) {
                                 ? "Sold Out"
                                 : (addingState === 'idle' ? "Quick Add +" : (addingState === 'adding' ? "Adding..." : "Added"))}
                         </button>
-                        {/* Wishlist Button - Desktop Next to Quick Add, Mobile Next to Quick Add */}
+                        
+                        {/* Desktop: Wishlist Button */}
                         <motion.button
                             whileTap={{ scale: 1.2 }}
                             onClick={(e) => {
@@ -147,10 +148,10 @@ export default function ProductCard({ product }: ProductCardProps) {
                             }}
                             className={`
                                 pointer-events-auto
-                                w-10 h-10 md:w-12 md:h-12 bg-white/90 md:bg-white backdrop-blur-sm md:backdrop-blur-none text-[#1A1A1A] rounded-full 
-                                flex items-center justify-center shadow-md md:shadow-lg
+                                w-12 h-12 bg-white text-[#1A1A1A] rounded-full 
+                                flex items-center justify-center shadow-lg
                                 active:scale-90 transition-all duration-300 ease-out
-                                md:opacity-0 md:group-hover:opacity-100
+                                opacity-0 group-hover:opacity-100
                             `}
                             aria-label="Wishlist"
                         >
