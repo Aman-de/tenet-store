@@ -92,7 +92,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                             Out of Stock
                         </div>
                     ) : (
-                        hasDiscount && (
+                        hasDiscount && discountPercentage !== 16 && discountPercentage !== 17 && (
                             <div 
                                 className="absolute top-2 left-2 text-white text-[10px] font-bold px-2 py-1 uppercase tracking-wider z-20 shadow-sm rounded-sm"
                                 style={{ backgroundColor: accentColor }}

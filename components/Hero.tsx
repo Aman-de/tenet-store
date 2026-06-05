@@ -134,44 +134,50 @@ export default function Hero({ spotlightProducts = [] }: HeroProps) {
                 </div>
 
                 {/* 2. Vertical 9:16 Spotlight Products */}
-                {spotlightProducts.map((product) => (
-                    <Link
-                        href={`/product/${product.handle}`}
-                        key={product.id}
-                        className="relative h-full w-full md:w-[50vw] lg:w-[33.333vw] shrink-0 overflow-hidden lg:rounded-sm group block ml-0 bg-[#f4f4f4]"
-                    >
-                        {product.images[0] && (
-                            <Image
-                                src={product.images[0]}
-                                alt={product.title}
-                                fill
-                                className="object-cover object-center transition-transform duration-[8s] ease-out group-hover:scale-105"
-                                quality={90}
-                            />
-                        )}
-                        {/* Discount Badge */}
-                        {product.originalPrice && product.originalPrice > product.price && (
-                            <div 
-                                className="absolute top-4 left-4 text-white text-[10px] font-bold px-2.5 py-1 uppercase tracking-wider z-20 shadow-sm rounded-sm"
-                                style={{ backgroundColor: accentColor }}
-                            >
-                                {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF
+                {spotlightProducts.map((product) => {
+                    const hasDiscount = product.originalPrice && product.originalPrice > product.price;
+                    const pct = hasDiscount ? Math.round(((product.originalPrice! - product.price) / product.originalPrice!) * 100) : 0;
+                    const showBadge = hasDiscount && pct !== 16 && pct !== 17;
+
+                    return (
+                        <Link
+                            href={`/product/${product.handle}`}
+                            key={product.id}
+                            className="relative h-full w-full md:w-[50vw] lg:w-[33.333vw] shrink-0 overflow-hidden lg:rounded-sm group block ml-0 bg-[#f4f4f4]"
+                        >
+                            {product.images[0] && (
+                                <Image
+                                    src={product.images[0]}
+                                    alt={product.title}
+                                    fill
+                                    className="object-cover object-center transition-transform duration-[8s] ease-out group-hover:scale-105"
+                                    quality={90}
+                                />
+                            )}
+                            {/* Discount Badge */}
+                            {showBadge && (
+                                <div 
+                                    className="absolute top-4 left-4 text-white text-[10px] font-bold px-2.5 py-1 uppercase tracking-wider z-20 shadow-sm rounded-sm"
+                                    style={{ backgroundColor: accentColor }}
+                                >
+                                    {pct}% OFF
+                                </div>
+                            )}
+                            {/* Subtle Gradient for text readability */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-90 transition-opacity group-hover:opacity-100" />
+                            
+                            {/* Simple Text Overlay (No massive buttons) */}
+                            <div className="absolute bottom-0 w-full p-8 flex flex-col justify-end text-center">
+                                <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-white/70 mb-3 transform translate-y-2 opacity-80 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+                                    {product.category || 'Featured'}
+                                </span>
+                                <h3 className="font-serif text-3xl lg:text-4xl text-white tracking-tight drop-shadow-md transform transition-transform duration-300 group-hover:-translate-y-1">
+                                    {product.title}
+                                </h3>
                             </div>
-                        )}
-                        {/* Subtle Gradient for text readability */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-90 transition-opacity group-hover:opacity-100" />
-                        
-                        {/* Simple Text Overlay (No massive buttons) */}
-                        <div className="absolute bottom-0 w-full p-8 flex flex-col justify-end text-center">
-                            <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-white/70 mb-3 transform translate-y-2 opacity-80 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-                                {product.category || 'Featured'}
-                            </span>
-                            <h3 className="font-serif text-3xl lg:text-4xl text-white tracking-tight drop-shadow-md transform transition-transform duration-300 group-hover:-translate-y-1">
-                                {product.title}
-                            </h3>
-                        </div>
-                    </Link>
-                ))}
+                        </Link>
+                    );
+                })}
                 </div>
             </div>
 
