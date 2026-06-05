@@ -4,7 +4,7 @@ import { useStore } from "@/lib/store";
 import { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, ChevronUp, AlertCircle, Heart, Ruler, Star, Loader2, Truck, ShieldCheck, RefreshCw } from "lucide-react";
+import { ChevronDown, ChevronUp, AlertCircle, Heart, Ruler, Star, Loader2, Truck, ShieldCheck, RefreshCw, ShoppingBag } from "lucide-react";
 import Image from "next/image";
 import SizeGuide from "./SizeGuide";
 import ShareButton from "./ShareButton";
@@ -240,7 +240,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
             <div className="border-b border-neutral-200">
                 <button
                     onClick={() => setIsOpen(!isOpen)}
-                    className="w-full py-4 flex items-center justify-between text-left focus:outline-none group"
+                    className="w-full py-3 flex items-center justify-between text-left focus:outline-none group"
                 >
                     <span className="font-serif text-lg text-[#1A1A1A] group-hover:text-neutral-600 transition-colors">{title}</span>
                     {isOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
@@ -253,7 +253,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                             exit={{ height: 0, opacity: 0 }}
                             className="overflow-hidden"
                         >
-                            <div className="pb-4 text-sm font-sans text-neutral-600 leading-relaxed">
+                            <div className="pb-3 text-sm font-sans text-neutral-600 leading-relaxed">
                                 {children}
                             </div>
                         </motion.div>
@@ -335,6 +335,16 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                     ))}
                 </div>
 
+                {/* Floating Wishlist Button on Mobile */}
+                <button
+                    onClick={() => toggleWishlist(product as any)}
+                    className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-white/85 backdrop-blur-md flex items-center justify-center shadow-md active:scale-95 transition-all text-[#1A1A1A]"
+                    title="Add to Wishlist"
+                    aria-label="Wishlist"
+                >
+                    <Heart className={cn("w-5 h-5", isWishlisted ? "fill-current text-[#1A1A1A] stroke-[#1A1A1A]" : "text-neutral-600 stroke-neutral-600")} strokeWidth={2} />
+                </button>
+
                 {/* Mobile Dots */}
                 <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
                     {displayImages.map((_, idx) => (
@@ -400,15 +410,25 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                             </div>
                         )}
                     </motion.div>
+
+                    {/* Floating Wishlist Button on Desktop */}
+                    <button
+                        onClick={() => toggleWishlist(product as any)}
+                        className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-white/85 backdrop-blur-md flex items-center justify-center shadow-md hover:bg-white active:scale-95 transition-all text-[#1A1A1A]"
+                        title="Add to Wishlist"
+                        aria-label="Wishlist"
+                    >
+                        <Heart className={cn("w-5 h-5", isWishlisted ? "fill-current text-[#1A1A1A] stroke-[#1A1A1A]" : "text-neutral-600 stroke-neutral-600")} strokeWidth={2} />
+                    </button>
                 </div>
             </div>
 
             {/* Right Column: Details */}
             <div className="flex flex-col pt-4 px-4 md:px-0">
                 {/* Breadcrumb pseudo */}
-                <span className="text-xs uppercase tracking-widest text-neutral-400 mb-4">{product.category}</span>
+                <span className="text-xs uppercase tracking-widest text-neutral-400 mb-2">{product.category}</span>
 
-                <h1 className="font-serif text-3xl md:text-5xl text-[#1A1A1A] mb-4 flex justify-between items-start">
+                <h1 className="font-serif text-3xl md:text-5xl text-[#1A1A1A] mb-2 flex justify-between items-start">
                     {product.title}
                     <ShareButton
                         title={product.title}
@@ -417,7 +437,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                     />
                 </h1>
 
-                <div className="flex items-center gap-4 mb-4">
+                <div className="flex items-center gap-4 mb-2">
                     {product.originalPrice && <span className="text-neutral-400 line-through text-lg">₹{product.originalPrice.toLocaleString('en-IN')}</span>}
                     <span className="text-2xl text-[#1A1A1A]">₹{product.price.toLocaleString('en-IN')}</span>
                     {product.discountLabel && !product.isOutOfStock && <span className="text-xs bg-black text-white px-2 py-1 uppercase">{product.discountLabel}</span>}
@@ -426,7 +446,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
 
                 {/* Rating Mini Summary */}
                 {reviews.length > 0 && (
-                    <div className="flex items-center gap-1 mb-8">
+                    <div className="flex items-center gap-1 mb-4">
                         <div className="flex text-[#1A1A1A]">
                             {[...Array(5)].map((_, i) => (
                                 <Star key={i} className={cn("w-4 h-4", i < Math.round(averageRating) ? "fill-current" : "text-neutral-300")} />
@@ -435,13 +455,13 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         <span className="text-xs text-neutral-500 font-medium">({reviews.length} Reviews)</span>
                     </div>
                 )}
-                {reviews.length === 0 && <div className="mb-8" />}
+                {reviews.length === 0 && <div className="mb-4" />}
 
 
                 {/* Color Selector (Variants) */}
                 {hasVariants ? (
-                    <div className="mb-8">
-                        <div className="flex justify-between items-center mb-3">
+                    <div className="mb-4">
+                        <div className="flex justify-between items-center mb-2">
                             <span className="text-xs font-bold uppercase tracking-widest text-neutral-500">Color</span>
                             <span className="text-xs font-serif text-[#1A1A1A]">{selectedVariant?.colorName}</span>
                         </div>
@@ -462,8 +482,8 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                     </div>
                 ) : (
                     /* Legacy Colors Fallback */
-                    <div className="mb-8">
-                        <span className="text-xs font-bold uppercase tracking-widest text-neutral-500 block mb-3">Color</span>
+                    <div className="mb-4">
+                        <span className="text-xs font-bold uppercase tracking-widest text-neutral-500 block mb-2">Color</span>
                         <div className="flex gap-3">
                             {product.colors && product.colors.map((color) => (
                                 <div
@@ -478,8 +498,8 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
 
                 {/* Size Selector */}
                 {showSizeSelector && (
-                    <div className="mb-10">
-                        <div className="flex justify-between items-center mb-3">
+                    <div className="mb-6">
+                        <div className="flex justify-between items-center mb-2">
                             <span className="text-xs font-bold uppercase tracking-widest text-neutral-500">Size</span>
                             <div className="flex items-center gap-4">
                                 {error && (
@@ -520,7 +540,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                             ))}
                         </div>
                         {selectedSize && (
-                            <div className="mt-4 px-4 py-3 bg-[#F8F9FA] rounded-[24px] text-sm text-[#1A1A1A] font-medium flex items-center gap-2">
+                            <div className="mt-3 px-4 py-2.5 bg-[#F8F9FA] rounded-[24px] text-sm text-[#1A1A1A] font-medium flex items-center gap-2">
                                 {selectedSize === "S" && "Product Bust 36 in • Product Waist 34 in • Product Hip 40 in"}
                                 {selectedSize === "M" && "Product Bust 38 in • Product Waist 36 in • Product Hip 42 in"}
                                 {selectedSize === "L" && "Product Bust 40 in • Product Waist 38 in • Product Hip 44 in"}
@@ -534,52 +554,40 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 )}
 
                 {/* Action Buttons */}
-                <div className="flex gap-3 mb-10">
-                    <div className="flex-1 flex flex-col gap-3">
-                        <button
-                            onClick={handleAddToCart}
-                            disabled={product.isOutOfStock}
-                            className={cn(
-                                "w-full py-4 font-sans uppercase tracking-widest transition-all text-sm font-bold border",
-                                product.isOutOfStock
-                                    ? "bg-neutral-100 text-neutral-400 border-neutral-200 cursor-not-allowed"
-                                    : "bg-white text-[#1A1A1A] border-[#1A1A1A] hover:bg-neutral-50 active:scale-[0.99]"
-                            )}
-                        >
-                            {product.isOutOfStock ? "Out of Stock" : "Add to Cart"}
-                        </button>
-                        <button
-                            onClick={handleBuyNow}
-                            disabled={product.isOutOfStock}
-                            className={cn(
-                                "w-full py-4 font-sans uppercase tracking-widest transition-all text-sm font-bold shadow-md",
-                                product.isOutOfStock
-                                    ? "bg-neutral-300 text-neutral-500 cursor-not-allowed hidden" // Optionally hide Buy Now entirely
-                                    : "bg-[#1A1A1A] text-white hover:bg-black hover:shadow-lg active:scale-[0.99]"
-                            )}
-                        >
-                            {product.isOutOfStock ? "Unavailable" : "Buy Now"}
-                        </button>
-                    </div>
-                    {/* Wishlist Button */}
+                <div className="flex gap-3 mb-6">
                     <button
-                        onClick={() => toggleWishlist(product as any)}
+                        onClick={handleBuyNow}
+                        disabled={product.isOutOfStock}
                         className={cn(
-                            "w-[60px] flex items-center justify-center border transition-all",
-                            isWishlisted
-                                ? "bg-[#1A1A1A] border-[#1A1A1A] text-white"
-                                : "bg-white border-neutral-200 text-[#1A1A1A] hover:border-[#1A1A1A]"
+                            "flex-grow py-4 font-sans uppercase tracking-widest transition-all text-xs md:text-sm font-bold shadow-md",
+                            product.isOutOfStock
+                                ? "bg-neutral-300 text-neutral-500 cursor-not-allowed"
+                                : "bg-[#1A1A1A] text-white hover:bg-black hover:shadow-lg active:scale-[0.99]"
                         )}
-                        title="Add to Wishlist"
                     >
-                        <Heart className={cn("w-6 h-6", isWishlisted && "fill-current")} />
+                        {product.isOutOfStock ? "Out of Stock" : "Buy Now"}
+                    </button>
+                    
+                    <button
+                        onClick={handleAddToCart}
+                        disabled={product.isOutOfStock}
+                        className={cn(
+                            "w-[56px] h-[56px] flex items-center justify-center border transition-all shrink-0",
+                            product.isOutOfStock
+                                ? "bg-neutral-100 text-neutral-400 border-neutral-200 cursor-not-allowed"
+                                : "bg-white border-[#1A1A1A] text-[#1A1A1A] hover:bg-neutral-50 active:scale-[0.99]"
+                        )}
+                        title="Add to Cart"
+                        aria-label="Add to Cart"
+                    >
+                        <ShoppingBag className="w-5 h-5 stroke-[1.5]" />
                     </button>
                 </div>
 
                 {/* Pincode Check */}
-                <div className="mt-8 border-t border-neutral-200 pt-6 mb-8">
-                    <h4 className="text-sm font-bold text-[#1A1A1A] mb-3 font-sans">Check Delivery Details</h4>
-                    <div className="flex gap-2 mb-3">
+                <div className="mt-6 border-t border-neutral-200 pt-4 mb-4">
+                    <h4 className="text-sm font-bold text-[#1A1A1A] mb-2 font-sans">Check Delivery Details</h4>
+                    <div className="flex gap-2 mb-2">
                         <input 
                             type="text" 
                             placeholder="Enter 6-digit Pincode" 
@@ -609,7 +617,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 </div>
 
                 {/* Micro-Trust Badges */}
-                <div className="grid grid-cols-3 gap-2 py-6 border-t border-neutral-100 mb-6 text-center">
+                <div className="grid grid-cols-3 gap-2 py-4 border-t border-neutral-100 mb-4 text-center">
                     <div className="flex flex-col items-center gap-1.5">
                         <Truck className="w-4 h-4 text-neutral-500 stroke-[1.5]" />
                         <span className="font-sans text-[10px] uppercase font-bold tracking-widest text-[#1A1A1A]">Free Shipping</span>
