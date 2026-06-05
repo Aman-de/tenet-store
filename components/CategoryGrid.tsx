@@ -21,7 +21,7 @@ const CATEGORY_IMAGES: Record<string, { man?: string; woman?: string }> = {
 
     },
     accessories: {
-        man: "https://cdn.sanity.io/images/9zyx0aef/production/631cae490b81cba20ad3bde888e83f8a9437522a-1024x1024.webp",
+        man: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&q=80&w=1024",
         woman: "https://cdn.sanity.io/images/9zyx0aef/production/631cae490b81cba20ad3bde888e83f8a9437522a-1024x1024.webp"
     },
     shirts: {
@@ -41,11 +41,11 @@ const CATEGORY_IMAGES: Record<string, { man?: string; woman?: string }> = {
         woman: "https://cdn.sanity.io/images/9zyx0aef/production/5437d499c94607847f4aec1971df6cc28312d366-1125x1688.webp"
     },
     trousers: {
-
+        man: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&q=80&w=1024",
         woman: "https://cdn.sanity.io/images/9zyx0aef/production/86589d169a8de56c24f78ce765ceffc7eeba5419-1125x1688.webp"
     },
     pants: {
-
+        man: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&q=80&w=1024",
         woman: "https://cdn.sanity.io/images/9zyx0aef/production/86589d169a8de56c24f78ce765ceffc7eeba5419-1125x1688.webp"
     },
     swimwear: {
