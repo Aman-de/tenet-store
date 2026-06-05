@@ -575,10 +575,10 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         onClick={handleAddToCart}
                         disabled={product.isOutOfStock}
                         className={cn(
-                            "w-[53px] h-[56px] flex items-center justify-center border transition-all shrink-0",
+                            "w-[53px] h-[56px] flex items-center justify-center transition-all shrink-0",
                             product.isOutOfStock
-                                ? "bg-neutral-100 text-neutral-400 border-neutral-200 cursor-not-allowed"
-                                : "bg-[#FDFBF7] border-[#1A1A1A] text-[#1A1A1A] hover:bg-neutral-50 active:scale-[0.99]"
+                                ? "bg-neutral-100 text-neutral-400 cursor-not-allowed"
+                                : "bg-[#FDFBF7] text-[#1A1A1A] hover:bg-neutral-50 active:scale-[0.99]"
                         )}
                         title="Add to Cart"
                         aria-label="Add to Cart"
@@ -775,10 +775,10 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         onClick={handleAddToCart}
                         disabled={product.isOutOfStock}
                         className={cn(
-                            "w-[53px] h-[56px] flex items-center justify-center border transition-all shrink-0",
+                            "w-[53px] h-[56px] flex items-center justify-center transition-all shrink-0",
                             product.isOutOfStock
-                                ? "bg-neutral-100 text-[#A3A3A3] border-neutral-200 cursor-not-allowed"
-                                : "bg-[#FDFBF7] border-[#1A1A1A] text-[#1A1A1A] hover:bg-neutral-50 active:scale-[0.99]"
+                                ? "bg-neutral-100 text-[#A3A3A3] cursor-not-allowed"
+                                : "bg-[#FDFBF7] text-[#1A1A1A] hover:bg-neutral-50 active:scale-[0.99]"
                         )}
                         title="Add to Cart"
                         aria-label="Add to Cart"
