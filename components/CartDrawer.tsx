@@ -221,12 +221,7 @@ export default function CartDrawer() {
     const [couponError, setCouponError] = useState("");
 
     const VALID_COUPONS: Record<string, number> = {
-        'TENET5': 0.05,
         'CREATOR15': 0.15,
-        'TENET20': 0.20,
-        'TENET30': 0.30,
-        'TENET50': 0.50,
-        'TENET70': 0.70,
     };
 
     const handleApplyCoupon = () => {
