@@ -52,6 +52,10 @@ interface StoreState {
     setCheckoutItem: (item: CartItem) => void;
     clearCheckoutItem: () => void;
     updateCheckoutItemQuantity: (delta: number) => void;
+
+    // Referral Tracking
+    referralCode: string | null;
+    setReferralCode: (code: string | null) => void;
 }
 
 export const useStore = create<StoreState>()(
@@ -63,6 +67,10 @@ export const useStore = create<StoreState>()(
             wishlist: [],
             isWishlistOpen: false,
             checkoutItem: null,
+            referralCode: null,
+
+            // --- Referral Tracker ---
+            setReferralCode: (code) => set({ referralCode: code }),
 
             // --- Cart Implementation ---
             openCart: () => set({ isCartOpen: true, isWishlistOpen: false }), // Close wishlist if opening cart
@@ -195,7 +203,7 @@ export const useStore = create<StoreState>()(
             name: 'tenet-storage',
             storage: createJSONStorage(() => localStorage),
             skipHydration: true,
-            partialize: (state) => ({ cart: state.cart, wishlist: state.wishlist }), // Don't persist checkoutItem
+            partialize: (state) => ({ cart: state.cart, wishlist: state.wishlist, referralCode: state.referralCode }), // Don't persist checkoutItem
         }
     )
 );

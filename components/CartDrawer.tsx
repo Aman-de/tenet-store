@@ -167,7 +167,8 @@ export default function CartDrawer() {
     const {
         isCartOpen, closeCart, openCart, cart, removeFromCart, updateQuantity, getCartTotal,
         toggleWishlist, isInWishlist, addToCart, clearCart,
-        checkoutItem, clearCheckoutItem, updateCheckoutItemQuantity
+        checkoutItem, clearCheckoutItem, updateCheckoutItemQuantity,
+        referralCode, setReferralCode
     } = useStore();
     const [mounted, setMounted] = useState(false);
     const router = useRouter();
@@ -181,7 +182,15 @@ export default function CartDrawer() {
             // Clean up URL so it doesn't reopen if they refresh
             router.replace('/');
         }
-    }, [searchParams, openCart, router]);
+        
+        // Referral Tracking
+        const refParam = searchParams.get('ref');
+        if (refParam && typeof refParam === 'string') {
+            setReferralCode(refParam.toUpperCase());
+            // Optional: clean up URL
+            router.replace('/');
+        }
+    }, [searchParams, openCart, router, setReferralCode]);
 
     const [checkoutStep, setCheckoutStep] = useState<'cart' | 'address'>('cart');
     const [isEditingAddress, setIsEditingAddress] = useState(false);
@@ -380,10 +389,28 @@ export default function CartDrawer() {
     }
 
     const afterB2G1 = rawSubtotal - b2g1Discount;
-    const couponDiscount = appliedCoupon ? (afterB2G1 * appliedCoupon.percent) : 0;
-    const totalDiscount = b2g1Discount + couponDiscount;
+    let couponDiscount = appliedCoupon ? (afterB2G1 * appliedCoupon.percent) : 0;
     
+    // Auto-apply referral discount if present and no coupon is manually entered
+    let activeReferral = false;
+    if (referralCode && !appliedCoupon) {
+        couponDiscount = afterB2G1 * 0.15; // 15% for guest
+        activeReferral = true;
+    }
+
+    const totalDiscount = b2g1Discount + couponDiscount;
     const subtotal = Math.max(0, rawSubtotal - totalDiscount);
+    
+    // Wallet Logic
+    const walletBalance = user?.unsafeMetadata?.walletBalance as number || 0;
+    const [useWallet, setUseWallet] = useState(false);
+    
+    const isFreeShipping = subtotal >= FREE_SHIPPING_THRESHOLD;
+    const shippingAmount = isFreeShipping ? 0 : SHIPPING_COST;
+    const totalBeforeWallet = subtotal + shippingAmount;
+    
+    const walletDeduction = useWallet ? Math.min(walletBalance, totalBeforeWallet) : 0;
+    const finalTotal = totalBeforeWallet - walletDeduction;
 
     // Local wrappers for actions to handle both modes transparently
     const handleDelete = (id: string, size?: string, color?: string) => {
@@ -412,9 +439,7 @@ export default function CartDrawer() {
     };
 
 
-    const isFreeShipping = subtotal >= FREE_SHIPPING_THRESHOLD;
-    const shippingAmount = isFreeShipping ? 0 : SHIPPING_COST;
-    const finalTotal = subtotal + shippingAmount;
+    // Calculate Offers above has `const totalBeforeWallet` and `finalTotal`...
 
     const progress = Math.min((subtotal / FREE_SHIPPING_THRESHOLD) * 100, 100);
     const amountNeeded = FREE_SHIPPING_THRESHOLD - subtotal;
@@ -515,8 +540,11 @@ export default function CartDrawer() {
                             cart: cartItems,
                             paymentId: response.razorpay_payment_id,
                             email: user?.primaryEmailAddress?.emailAddress || "guest@tenet.com",
-                            totalAmount: finalTotal, // the full total
-                            amountPaid: amountToCharge, // 15% or 100%
+                            userId: user?.id || null,
+                            totalAmount: totalBeforeWallet, // before wallet
+                            amountPaid: amountToCharge,
+                            walletUsed: walletDeduction,
+                            referralCode: activeReferral ? referralCode : null,
                             paymentMethod: paymentMethod === 'cod' ? 'PARTIAL_COD' : 'RAZORPAY',
                             shippingAddress: fullAddress
                         }),
@@ -528,6 +556,10 @@ export default function CartDrawer() {
                         closeCart();
                         setCheckoutStep('cart'); // Reset step
                         setAddress({ name: "", houseNumber: "", street: "", city: "", zip: "", phone: "" }); // Reset form
+                        setUseWallet(false);
+                        if (activeReferral) {
+                            setReferralCode(null); // Clear referral after use
+                        }
                         if (user) {
                             try {
                                 await user.update({ unsafeMetadata: { address } });
@@ -720,9 +752,15 @@ export default function CartDrawer() {
                                             </div>
                                         </div>
                                     )}
+                                    {activeReferral && (
+                                        <div className="flex items-center justify-between text-xs font-sans text-green-600 font-bold">
+                                            <span>Inner Circle Invite (15% Off)</span>
+                                            <span>-₹{couponDiscount.toLocaleString('en-IN')}</span>
+                                        </div>
+                                    )}
                                     
                                     {/* Coupon Input Area */}
-                                    {!appliedCoupon && (
+                                    {!appliedCoupon && !activeReferral && (
                                         <div className="flex flex-col gap-1 mt-2 mb-2">
                                             <div className="flex gap-2">
                                                 <input 
@@ -755,7 +793,7 @@ export default function CartDrawer() {
                                     </div>
                                     <div className="flex items-center justify-between font-serif text-xl font-bold border-t border-dashed border-neutral-200 pt-4">
                                         <span>Total</span>
-                                        <span>₹{finalTotal.toLocaleString('en-IN')}</span>
+                                        <span>₹{totalBeforeWallet.toLocaleString('en-IN')}</span>
                                     </div>
                                     <button
                                         className="w-full bg-[#1A1A1A] text-white py-4 font-sans text-sm uppercase tracking-widest hover:bg-black transition-colors disabled:opacity-50 rounded-full"
@@ -1019,9 +1057,34 @@ export default function CartDrawer() {
                                             </div>
                                         </div>
                                     </div>
+                                    {/* Wallet Balance Usage */}
+                                    {walletBalance > 0 && (
+                                        <div className="mt-6 border border-black rounded-xl p-4 bg-black text-white flex items-center justify-between">
+                                            <div className="flex flex-col">
+                                                <span className="text-sm font-bold tracking-widest uppercase">Inner Circle Wallet</span>
+                                                <span className="text-xs text-neutral-400 mt-1">Available: ₹{walletBalance.toLocaleString('en-IN')}</span>
+                                            </div>
+                                            <label className="relative inline-flex items-center cursor-pointer">
+                                                <input 
+                                                    type="checkbox" 
+                                                    className="sr-only peer" 
+                                                    checked={useWallet}
+                                                    onChange={(e) => setUseWallet(e.target.checked)}
+                                                />
+                                                <div className="w-11 h-6 bg-neutral-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-neutral-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-white"></div>
+                                            </label>
+                                        </div>
+                                    )}
+
                                 </div>
 
                                 <div className="mt-8 pt-6 border-t border-neutral-200">
+                                    {walletDeduction > 0 && (
+                                        <div className="flex items-center justify-between text-sm font-sans mb-3 text-green-700 font-bold">
+                                            <span>Wallet Credit Applied</span>
+                                            <span>-₹{walletDeduction.toLocaleString('en-IN')}</span>
+                                        </div>
+                                    )}
                                     <div className="flex items-center justify-between font-serif text-lg mb-6 pt-4 border-t border-dashed border-neutral-200">
                                         <span>Total Due</span>
                                         <span>₹{finalTotal.toLocaleString('en-IN')}</span>
