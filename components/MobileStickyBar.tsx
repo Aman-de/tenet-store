@@ -35,7 +35,7 @@ export default function MobileStickyBar({ product, selectedVariant, onAddToCart 
                     animate={{ y: 0, opacity: 1 }}
                     exit={{ y: "150%", opacity: 0 }}
                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                    className="fixed bottom-4 left-4 right-4 z-40 bg-[#FDFBF7] border border-neutral-200 p-3 rounded-xl lg:landscape:hidden xl:hidden shadow-[0_4px_20px_rgba(0,0,0,0.12)]"
+                    className="fixed bottom-0 left-0 right-0 z-40 bg-[#FDFBF7]/95 backdrop-blur-md border-t border-neutral-200 p-3 px-4 pb-safe lg:landscape:hidden xl:hidden"
                 >
                     <div className="flex items-center gap-4">
                         <div className="relative w-12 h-16 bg-neutral-100 shrink-0">
