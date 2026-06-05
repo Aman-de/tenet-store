@@ -411,7 +411,6 @@ export async function getProducts() {
     "hoverImageUrl": variants[0].images[1].asset->url,
     category,
     "colors": variants[].colorHex,
-    "discountLabel": "SAVE RS. " + (originalPrice - price),
     sizes,
     sizeType,
     gender,
@@ -442,7 +441,6 @@ export async function getProduct(slug: string) {
     price,
     originalPrice,
     category,
-    "discountLabel": "SAVE RS. " + (originalPrice - price),
     sizeType,
     sizes,
     gender,
@@ -573,7 +571,6 @@ export async function getRecommendedProducts(category: string, currentSlug: stri
     "hoverImageUrl": variants[0].images[1].asset->url,
     category,
     "colors": variants[].colorHex,
-    "discountLabel": "SAVE RS. " + (originalPrice - price),
     gender,
     isOutOfStock
   }`;
@@ -594,7 +591,6 @@ export async function getRecommendedProducts(category: string, currentSlug: stri
         "hoverImageUrl": variants[0].images[1].asset->url,
         category,
         "colors": variants[].colorHex,
-        "discountLabel": "SAVE RS. " + (originalPrice - price),
         gender,
         isOutOfStock
       }`;
@@ -674,7 +670,6 @@ export async function getCollection(slug: string) {
         "hoverImageUrl": variants[0].images[1].asset->url,
         category,
         "colors": variants[].colorHex,
-        "discountLabel": "SAVE RS. " + (originalPrice - price),
         sizes,
         sizeType,
         gender,
@@ -714,7 +709,6 @@ export async function getCartUpsells(cartProductIds: string[]) {
     "hoverImageUrl": variants[0].images[1].asset->url,
     category,
     "colors": variants[].colorHex,
-    "discountLabel": "SAVE RS. " + (originalPrice - price),
     sizeType,
     sizes,
     gender,
@@ -748,7 +742,6 @@ export async function searchProducts(searchTerm: string) {
     "hoverImageUrl": variants[0].images[1].asset->url,
     category,
     "colors": variants[].colorHex,
-    "discountLabel": "SAVE RS. " + (originalPrice - price),
     sizeType,
     sizes,
     gender,

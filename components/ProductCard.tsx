@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useStore } from "@/lib/store";
+import { useGender } from "@/context/GenderContext";
 import { Plus, Heart, Loader2, Check } from "lucide-react";
 import { trackViewItem, trackAddToCart } from "@/lib/analytics";
 
@@ -19,6 +20,9 @@ export default function ProductCard({ product }: ProductCardProps) {
     const [addingState, setAddingState] = useState<'idle' | 'adding' | 'added'>('idle');
     const [altImgError, setAltImgError] = useState(false);
     const { addToCart, openCart, toggleWishlist, isInWishlist } = useStore();
+    const { gender } = useGender();
+    const isWoman = gender === "woman";
+    const accentColor = isWoman ? "#E05275" : "#2B6496";
 
     const hasDiscount = product.originalPrice && product.originalPrice > product.price;
     const discountPercentage = hasDiscount
@@ -83,10 +87,19 @@ export default function ProductCard({ product }: ProductCardProps) {
                 </Link>
 
                 {/* Out of Stock Badge */}
-                    {product.isOutOfStock && (
+                    {product.isOutOfStock ? (
                         <div className="absolute top-2 left-2 bg-black/90 backdrop-blur-sm text-white text-[10px] font-medium px-2 py-1 uppercase tracking-widest z-20">
                             Out of Stock
                         </div>
+                    ) : (
+                        hasDiscount && (
+                            <div 
+                                className="absolute top-2 left-2 text-white text-[10px] font-bold px-2 py-1 uppercase tracking-wider z-20 shadow-sm rounded-sm"
+                                style={{ backgroundColor: accentColor }}
+                            >
+                                {discountPercentage}% OFF
+                            </div>
+                        )
                     )}
 
                     {/* Mobile Wishlist Button - Top Right */}
@@ -108,10 +121,8 @@ export default function ProductCard({ product }: ProductCardProps) {
                     >
                         <Heart
                             size={18}
-                            className={`transition-all duration-300 ${isInWishlist(product.id)
-                                ? "fill-white stroke-white"
-                                : "stroke-white"
-                                }`}
+                            className="transition-all duration-300"
+                            style={isInWishlist(product.id) ? { fill: accentColor, stroke: accentColor } : { stroke: "white" }}
                             strokeWidth={2}
                         />
                     </motion.button>
@@ -128,10 +139,11 @@ export default function ProductCard({ product }: ProductCardProps) {
                             className={`
                                 pointer-events-auto
                                 w-full bg-white text-[#1A1A1A] py-3 text-xs font-bold uppercase tracking-widest shadow-lg transition-all duration-300 ease-out rounded-full
-                                hover:bg-black hover:text-white
+                                hover:bg-[var(--accent-color)] hover:text-white
                                 opacity-0 group-hover:opacity-100
                                 transform ${addingState !== 'idle' && !product.isOutOfStock ? 'translate-y-0 opacity-100' : 'translate-y-[120%] group-hover:translate-y-0'}
                             `}
+                            style={{ '--accent-color': accentColor } as React.CSSProperties}
                             disabled={addingState !== 'idle' || product.isOutOfStock}
                         >
                             {product.isOutOfStock
@@ -158,11 +170,9 @@ export default function ProductCard({ product }: ProductCardProps) {
                         >
                             <Heart
                                 size={22}
-                            className={`transition-all duration-300 ${isInWishlist(product.id)
-                                ? "fill-black stroke-black"
-                                : "stroke-black"
-                                }`}
-                            strokeWidth={2}
+                                className="transition-all duration-300"
+                                style={isInWishlist(product.id) ? { fill: accentColor, stroke: accentColor } : { stroke: "black" }}
+                                strokeWidth={2}
                             />
                         </motion.button>
                     </div>

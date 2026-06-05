@@ -9,10 +9,14 @@ import { UserButton, SignInButton, useUser, SignedIn, SignedOut } from "@clerk/n
 import { motion, AnimatePresence } from "framer-motion";
 
 import { useStore } from "@/lib/store";
+import { useGender } from "@/context/GenderContext";
 
 export default function Navbar() {
     const router = useRouter();
     const { openCart, openWishlist, cart, wishlist } = useStore();
+    const { gender } = useGender();
+    const isWoman = gender === "woman";
+    const accentColor = isWoman ? "#E05275" : "#2B6496";
     const [mounted, setMounted] = useState(false);
     const { isSignedIn } = useUser();
 
@@ -154,7 +158,7 @@ export default function Navbar() {
                                 <Heart className={`w-5 h-5 transition-colors ${textColor}`} />
                             </motion.div>
                             {wishlistCount > 0 && (
-                                <span className="absolute -top-1 -right-1 w-2 h-2 bg-black rounded-full" />
+                                <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full" style={{ backgroundColor: accentColor }} />
                             )}
                         </button>
 
@@ -169,7 +173,7 @@ export default function Navbar() {
                                 <ShoppingBag className={`w-5 h-5 transition-colors ${textColor}`} />
                             </motion.div>
                             {cartCount > 0 && (
-                                <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-800 rounded-full animate-pulse" />
+                                <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: accentColor }} />
                             )}
                         </button>
                     </div>

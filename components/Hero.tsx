@@ -16,8 +16,10 @@ interface HeroProps {
 
 export default function Hero({ spotlightProducts = [] }: HeroProps) {
     const { gender } = useGender();
-    const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, skipSnaps: false }, [Autoplay({ delay: 5000, stopOnInteraction: true })]);
+    const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, skipSnaps: true, align: "start", slidesToScroll: "auto" }, [Autoplay({ delay: 5000, stopOnInteraction: true })]);
     const [activeIndex, setActiveIndex] = useState(0);
+    const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
+    const [mounted, setMounted] = useState(false);
 
     const totalSlides = 1 + spotlightProducts.length;
 
@@ -26,11 +28,25 @@ export default function Hero({ spotlightProducts = [] }: HeroProps) {
     const scrollToIndex = (index: number) => emblaApi?.scrollTo(index);
 
     useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    useEffect(() => {
         if (!emblaApi) return;
-        const onSelect = () => setActiveIndex(emblaApi.selectedScrollSnap());
-        emblaApi.on("select", onSelect);
-        onSelect();
-        return () => { emblaApi.off("select", onSelect); };
+        
+        const updateSnaps = () => {
+            setScrollSnaps(emblaApi.scrollSnapList());
+            setActiveIndex(emblaApi.selectedScrollSnap());
+        };
+
+        updateSnaps();
+        emblaApi.on("select", updateSnaps);
+        emblaApi.on("reInit", updateSnaps);
+        
+        return () => {
+            emblaApi.off("select", updateSnaps);
+            emblaApi.off("reInit", updateSnaps);
+        };
     }, [emblaApi]);
 
     // Reset scroll position on gender change
@@ -170,7 +186,7 @@ export default function Hero({ spotlightProducts = [] }: HeroProps) {
 
                     {/* Pagination Dots (PC only) */}
                     <div className="hidden lg:flex absolute bottom-8 w-full justify-center gap-3 z-40 pointer-events-auto">
-                        {Array.from({ length: totalSlides }).map((_, idx) => (
+                        {mounted && scrollSnaps.map((_, idx) => (
                             <button
                                 key={idx}
                                 onClick={() => scrollToIndex(idx)}

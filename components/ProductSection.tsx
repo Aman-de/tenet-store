@@ -72,7 +72,7 @@ export default function ProductSection({ products }: ProductSectionProps) {
                 {activeGender === 'man' && (
                     <motion.div
                         layoutId="activeTabBackground"
-                        className="absolute inset-0 bg-[#1A1A1A] rounded-full -z-10"
+                        className="absolute inset-0 bg-[#2B6496] rounded-full -z-10"
                         transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                     />
                 )}
@@ -86,7 +86,7 @@ export default function ProductSection({ products }: ProductSectionProps) {
                 {activeGender === 'woman' && (
                     <motion.div
                         layoutId="activeTabBackground"
-                        className="absolute inset-0 bg-[#1A1A1A] rounded-full -z-10"
+                        className="absolute inset-0 bg-[#E05275] rounded-full -z-10"
                         transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                     />
                 )}

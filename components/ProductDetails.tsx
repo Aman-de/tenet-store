@@ -14,6 +14,7 @@ import { createReview } from "@/app/actions";
 import { trackViewItem, trackAddToCart } from "@/lib/analytics";
 import { useUser } from "@clerk/nextjs";
 import useEmblaCarousel from "embla-carousel-react";
+import { useGender } from "@/context/GenderContext";
 
 interface ProductDetailsProps {
     product: Product;
@@ -24,6 +25,9 @@ interface ProductDetailsProps {
 const ReviewForm = ({ productId, onCancel }: { productId: string, onCancel: () => void }) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [message, setMessage] = useState<string | null>(null);
+    const { gender } = useGender();
+    const isWoman = gender === "woman";
+    const accentColor = isWoman ? "#E05275" : "#2B6496";
 
     async function handleSubmit(formData: FormData) {
         setIsSubmitting(true);
@@ -46,11 +50,22 @@ const ReviewForm = ({ productId, onCancel }: { productId: string, onCancel: () =
             <h4 className="font-serif text-lg">Write a Review</h4>
             <div className="space-y-1">
                 <label className="text-xs uppercase tracking-widest font-bold text-neutral-500">Name</label>
-                <input required name="name" className="w-full p-2 border border-neutral-200 focus:border-[#1A1A1A] outline-none text-sm" placeholder="Your name" />
+                <input 
+                    required 
+                    name="name" 
+                    className="w-full p-2 border border-neutral-200 focus:border-[var(--accent-color)] outline-none text-sm" 
+                    style={{ '--accent-color': accentColor } as React.CSSProperties}
+                    placeholder="Your name" 
+                />
             </div>
             <div className="space-y-1">
                 <label className="text-xs uppercase tracking-widest font-bold text-neutral-500">Rating</label>
-                <select required name="rating" className="w-full p-2 border border-neutral-200 focus:border-[#1A1A1A] outline-none text-sm bg-white">
+                <select 
+                    required 
+                    name="rating" 
+                    className="w-full p-2 border border-neutral-200 focus:border-[var(--accent-color)] outline-none text-sm bg-white" 
+                    style={{ '--accent-color': accentColor } as React.CSSProperties}
+                >
                     <option value="5">5 - Excellent</option>
                     <option value="4">4 - Good</option>
                     <option value="3">3 - Average</option>
@@ -60,7 +75,14 @@ const ReviewForm = ({ productId, onCancel }: { productId: string, onCancel: () =
             </div>
             <div className="space-y-1">
                 <label className="text-xs uppercase tracking-widest font-bold text-neutral-500">Comment</label>
-                <textarea required name="comment" rows={3} className="w-full p-2 border border-neutral-200 focus:border-[#1A1A1A] outline-none text-sm" placeholder="Share your thoughts..." />
+                <textarea 
+                    required 
+                    name="comment" 
+                    rows={3} 
+                    className="w-full p-2 border border-neutral-200 focus:border-[var(--accent-color)] outline-none text-sm" 
+                    style={{ '--accent-color': accentColor } as React.CSSProperties}
+                    placeholder="Share your thoughts..." 
+                />
             </div>
 
             {message && (
@@ -73,7 +95,8 @@ const ReviewForm = ({ productId, onCancel }: { productId: string, onCancel: () =
                 <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="flex-1 bg-[#1A1A1A] text-white py-3 text-xs uppercase tracking-widest hover:bg-black disabled:opacity-50 flex items-center justify-center gap-2"
+                    className="flex-1 text-white py-3 text-xs uppercase tracking-widest hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2"
+                    style={{ backgroundColor: accentColor }}
                 >
                     {isSubmitting && <Loader2 className="w-3 h-3 animate-spin" />}
                     Submit Review
@@ -92,6 +115,10 @@ const ReviewForm = ({ productId, onCancel }: { productId: string, onCancel: () =
 
 export default function ProductDetails({ product, reviews = [] }: ProductDetailsProps) {
     const { addToCart, openCart, toggleWishlist, isInWishlist, setCheckoutItem, trackEngagement } = useStore();
+    const { gender } = useGender();
+    const targetGender = product.gender ? product.gender.toLowerCase() : gender;
+    const isWoman = targetGender === "woman" || (targetGender === "unisex" && gender === "woman");
+    const accentColor = isWoman ? "#E05275" : "#2B6496";
 
     // Variant Logic
     const hasVariants = product.variants && product.variants.length > 0;
@@ -310,7 +337,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
     };
 
     return (
-        <div className="max-w-[2000px] w-full mx-auto px-0 md:px-8 xl:px-12 pt-0 xl:pt-14 grid grid-cols-1 lg:landscape:grid-cols-[1.3fr_1fr] xl:grid-cols-[1.3fr_1fr] 2xl:grid-cols-[1.5fr_1fr] gap-0 lg:landscape:gap-16 xl:gap-20 2xl:gap-28">
+        <div className="max-w-[2000px] w-full mx-auto px-0 md:px-8 xl:px-12 pt-0 xl:pt-14 grid grid-cols-1 lg:landscape:grid-cols-[1.3fr_1fr] xl:grid-cols-[1.3fr_1fr] 2xl:grid-cols-[1.5fr_1fr] gap-0 lg:landscape:gap-[4vw] xl:gap-[6vw] 2xl:gap-[8vw]">
             <SizeGuide isOpen={isSizeGuideOpen} onClose={() => setIsSizeGuideOpen(false)} />
 
             {/* Left Column: Gallery */}
@@ -345,7 +372,11 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                     title="Add to Wishlist"
                     aria-label="Wishlist"
                 >
-                    <Heart className={cn("w-5 h-5", isWishlisted ? "fill-current text-[#1A1A1A] stroke-[#1A1A1A]" : "text-neutral-600 stroke-neutral-600")} strokeWidth={2} />
+                    <Heart 
+                        className="w-5 h-5 transition-all duration-300"
+                        style={isWishlisted ? { fill: accentColor, stroke: accentColor } : { stroke: "currentColor" }} 
+                        strokeWidth={2} 
+                    />
                 </button>
 
                 {/* Mobile Dots */}
@@ -372,7 +403,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                             key={idx}
                             onClick={() => scrollToIndex(idx)}
                             className={cn(
-                                "relative w-20 h-28 lg:w-28 lg:h-36 xl:w-32 xl:h-44 shrink-0 border transition-all",
+                                "relative w-20 h-28 lg:w-28 lg:h-36 xl:w-32 xl:h-44 2xl:w-36 2xl:h-48 shrink-0 border transition-all",
                                 selectedImageIndex === idx ? "border-[#1A1A1A] opacity-100 ring-1 ring-[#1A1A1A] ring-offset-1" : "border-transparent opacity-60 hover:opacity-100"
                             )}
                         >
@@ -421,13 +452,17 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         title="Add to Wishlist"
                         aria-label="Wishlist"
                     >
-                        <Heart className={cn("w-5 h-5", isWishlisted ? "fill-current text-[#1A1A1A] stroke-[#1A1A1A]" : "text-neutral-600 stroke-neutral-600")} strokeWidth={2} />
+                        <Heart 
+                            className="w-5 h-5 transition-all duration-300"
+                            style={isWishlisted ? { fill: accentColor, stroke: accentColor } : { stroke: "currentColor" }} 
+                            strokeWidth={2} 
+                        />
                     </button>
                 </div>
             </div>
 
             {/* Right Column: Details */}
-            <div className="flex flex-col pt-4 px-4 md:px-0">
+            <div className="flex flex-col pt-4 px-4 md:px-0 lg:max-w-[480px] xl:max-w-[540px] 2xl:max-w-[600px] w-full">
                 {/* Breadcrumb pseudo */}
                 <span className="text-xs uppercase tracking-widest text-neutral-400 mb-2">{product.category}</span>
 
@@ -443,16 +478,35 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 <div className="flex items-center gap-4 mb-2">
                     {product.originalPrice && <span className="text-neutral-400 line-through text-lg">₹{product.originalPrice.toLocaleString('en-IN')}</span>}
                     <span className="text-2xl text-[#1A1A1A]">₹{product.price.toLocaleString('en-IN')}</span>
-                    {product.discountLabel && !product.isOutOfStock && <span className="text-xs bg-black text-white px-2 py-1 uppercase">{product.discountLabel}</span>}
+                    {product.originalPrice && product.originalPrice > product.price && !product.isOutOfStock && (
+                        <div className="flex items-center gap-2">
+                            <span 
+                                className="text-[10px] font-bold text-white px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm"
+                                style={{ backgroundColor: accentColor }}
+                            >
+                                {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF
+                            </span>
+                            <span 
+                                className="text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider border bg-neutral-50/50"
+                                style={{ color: accentColor, borderColor: `${accentColor}30` }}
+                            >
+                                SAVE ₹{(product.originalPrice - product.price).toLocaleString('en-IN')}
+                            </span>
+                        </div>
+                    )}
                     {product.isOutOfStock && <span className="text-xs bg-red-600 text-white px-2 py-1 uppercase font-bold tracking-widest">Out of Stock</span>}
                 </div>
 
                 {/* Rating Mini Summary */}
                 {reviews.length > 0 && (
                     <div className="flex items-center gap-1 mb-4">
-                        <div className="flex text-[#1A1A1A]">
+                        <div className="flex">
                             {[...Array(5)].map((_, i) => (
-                                <Star key={i} className={cn("w-4 h-4", i < Math.round(averageRating) ? "fill-current" : "text-neutral-300")} />
+                                <Star 
+                                    key={i} 
+                                    className={cn("w-4 h-4", i < Math.round(averageRating) ? "" : "text-neutral-300")} 
+                                    style={i < Math.round(averageRating) ? { fill: accentColor, color: accentColor } : undefined}
+                                />
                             ))}
                         </div>
                         <span className="text-xs text-neutral-500 font-medium">({reviews.length} Reviews)</span>
@@ -473,11 +527,13 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                 <button
                                     key={variant.colorName}
                                     onClick={() => setSelectedVariant(variant)}
-                                    className={cn(
-                                        "w-8 h-8 rounded-full border border-neutral-200 transition-all relative",
-                                        selectedVariant?.colorName === variant.colorName ? "ring-2 ring-offset-2 ring-[#1A1A1A]" : "hover:scale-110"
-                                    )}
-                                    style={{ backgroundColor: variant.colorHex }}
+                                    className="w-8 h-8 rounded-full border border-neutral-200 transition-all relative hover:scale-110"
+                                    style={{ 
+                                        backgroundColor: variant.colorHex,
+                                        boxShadow: selectedVariant?.colorName === variant.colorName 
+                                            ? `0 0 0 2px white, 0 0 0 4px ${accentColor}` 
+                                            : undefined 
+                                    }}
                                     title={variant.colorName}
                                 />
                             ))}
@@ -517,7 +573,8 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                 )}
                                 <button
                                     onClick={() => setIsSizeGuideOpen(true)}
-                                    className="flex items-center gap-1 text-xs text-[#1A1A1A] font-medium border-b border-[#1A1A1A] pb-0.5 hover:opacity-70 transition-opacity"
+                                    className="flex items-center gap-1 text-xs font-medium border-b pb-0.5 hover:opacity-70 transition-opacity"
+                                    style={{ color: accentColor, borderColor: accentColor }}
                                 >
                                     <Ruler className="w-3 h-3" />
                                     Size Guide
@@ -532,11 +589,12 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                     className={cn(
                                         "w-12 h-12 border flex items-center justify-center font-sans text-sm transition-all",
                                         selectedSize === size
-                                            ? "bg-[#1A1A1A] text-white border-[#1A1A1A]"
+                                            ? "text-white"
                                             : error
                                                 ? "border-red-300 text-[#1A1A1A] bg-red-50 hover:border-red-500"
                                                 : "border-neutral-200 text-[#1A1A1A] hover:border-[#1A1A1A]"
                                     )}
+                                    style={selectedSize === size ? { backgroundColor: accentColor, borderColor: accentColor } : undefined}
                                 >
                                     {size}
                                 </button>
@@ -562,11 +620,12 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         onClick={handleBuyNow}
                         disabled={product.isOutOfStock}
                         className={cn(
-                            "flex-grow h-[56px] flex items-center justify-center font-sans uppercase tracking-widest transition-all text-xs md:text-sm font-bold shadow-md",
+                            "flex-grow h-[56px] flex items-center justify-center font-sans uppercase tracking-widest text-xs md:text-sm font-bold shadow-md hover:scale-[1.01] hover:brightness-[1.04] hover:shadow-xl active:scale-[0.98] transition-all duration-300",
                             product.isOutOfStock
                                 ? "bg-neutral-300 text-neutral-500 cursor-not-allowed"
-                                : "bg-[#1A1A1A] text-white hover:bg-black hover:shadow-lg active:scale-[0.99]"
+                                : "text-white"
                         )}
+                        style={!product.isOutOfStock ? { backgroundColor: accentColor } : undefined}
                     >
                         {product.isOutOfStock ? "Out of Stock" : "Buy Now"}
                     </button>
@@ -575,11 +634,12 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         onClick={handleAddToCart}
                         disabled={product.isOutOfStock}
                         className={cn(
-                            "w-[53px] h-[56px] flex items-center justify-center border transition-all shrink-0",
+                            "w-[53px] h-[56px] flex items-center justify-center border shrink-0 hover:scale-[1.05] active:scale-[0.95] hover:bg-[var(--accent-color)] hover:text-white transition-all duration-300",
                             product.isOutOfStock
                                 ? "bg-neutral-100 text-neutral-400 border-neutral-200 cursor-not-allowed"
-                                : "bg-[#FDFBF7] border-[#1A1A1A] text-[#1A1A1A] hover:bg-neutral-50 active:scale-[0.99]"
+                                : "bg-[#FDFBF7]"
                         )}
+                        style={!product.isOutOfStock ? { borderColor: accentColor, color: accentColor, '--accent-color': accentColor } as React.CSSProperties : undefined}
                         title="Add to Cart"
                         aria-label="Add to Cart"
                     >
@@ -598,8 +658,9 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                             onChange={handlePincodeChange}
                             className={cn(
                                 "w-full border px-4 py-3 text-sm focus:outline-none transition-colors",
-                                pincodeError ? "border-red-300 focus:border-red-500 bg-red-50" : "border-neutral-200 focus:border-[#1A1A1A]"
+                                pincodeError ? "border-red-300 focus:border-red-500 bg-red-50" : "border-neutral-200 focus:border-[var(--accent-color)]"
                             )}
+                            style={{ '--accent-color': accentColor } as React.CSSProperties}
                             maxLength={6}
                         />
                     </div>
@@ -655,36 +716,44 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                     <AccordionItem title={`Reviews (${reviews.length})`}>
                         <div className="space-y-8 py-4">
                             {/* Brand Info Card */}
-                            <div className="border border-neutral-200 rounded-lg p-6 bg-white">
-                                <h3 className="font-serif text-lg text-[#1A1A1A] mb-2">About Tenet</h3>
-                                <p className="text-sm text-neutral-600 mb-6">Tenet is a luxury fashion brand based in India. The brand brings the latest international trends of prints, colour and style ...<span className="text-red-500 cursor-pointer">read more</span></p>
-                                
-                                <div className="grid grid-cols-4 gap-4 text-center mb-6 border-b border-neutral-100 pb-6">
+                            <div className="border border-neutral-100 rounded-xl p-6 bg-neutral-50/30">
+                                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
                                     <div>
-                                        <div className="font-bold text-xl text-[#1A1A1A]">5+</div>
-                                        <div className="text-[10px] text-neutral-500 uppercase">Years</div>
+                                        <h3 className="font-serif text-lg text-[#1A1A1A] mb-1">About Tenet</h3>
+                                        <p className="text-xs text-neutral-500 leading-relaxed max-w-md">
+                                            TENET is defined by silent luxury—clean silhouettes, exceptional natural materials, and meticulous tailoring curated for the modern wardrobe.
+                                        </p>
                                     </div>
-                                    <div className="border-l border-neutral-100">
-                                        <div className="font-bold text-xl text-[#1A1A1A]">95k+</div>
-                                        <div className="text-[10px] text-neutral-500 uppercase">Orders Fulfilled</div>
-                                    </div>
-                                    <div className="border-l border-neutral-100">
-                                        <div className="font-bold text-xl text-[#1A1A1A]">4.8</div>
-                                        <div className="text-[10px] text-neutral-500 uppercase">Average Rating</div>
-                                    </div>
-                                    <div className="border-l border-neutral-100">
-                                        <div className="font-bold text-xl text-[#1A1A1A]">10k+</div>
-                                        <div className="text-[10px] text-neutral-500 uppercase">Ratings</div>
+                                    <div className="flex gap-4 text-center border-t md:border-t-0 md:border-l border-neutral-100 pt-4 md:pt-0 md:pl-6 shrink-0">
+                                        <div>
+                                            <div className="font-serif text-lg text-[#1A1A1A]">4.8★</div>
+                                            <div className="text-[9px] text-neutral-400 uppercase tracking-wider">Patron Rating</div>
+                                        </div>
+                                        <div className="border-l border-neutral-100 pl-4">
+                                            <div className="font-serif text-lg text-[#1A1A1A]">10k+</div>
+                                            <div className="text-[9px] text-neutral-400 uppercase tracking-wider">Reviews</div>
+                                        </div>
                                     </div>
                                 </div>
-
-                                <div>
-                                    <h4 className="text-sm font-bold text-center text-[#1A1A1A] mb-3">What customers say about this brand</h4>
-                                    <div className="flex flex-wrap justify-center gap-2">
-                                        <span className="text-xs bg-[#F8F9FA] border border-neutral-200 px-3 py-1.5 rounded-full text-neutral-600">Value for money • 3457</span>
-                                        <span className="text-xs bg-[#F8F9FA] border border-neutral-200 px-3 py-1.5 rounded-full text-neutral-600">Quality matches the price • 2282</span>
-                                        <span className="text-xs bg-[#F8F9FA] border border-neutral-200 px-3 py-1.5 rounded-full text-neutral-600">Great Quality • 144</span>
-                                    </div>
+                                <div className="flex flex-wrap gap-2 pt-2 border-t border-neutral-100/50">
+                                    <span 
+                                        className="text-[10px] uppercase font-bold tracking-wider px-3 py-1 rounded-full border"
+                                        style={{ color: accentColor, borderColor: `${accentColor}20`, backgroundColor: `${accentColor}05` }}
+                                    >
+                                        Premium Cashmere & Wool
+                                    </span>
+                                    <span 
+                                        className="text-[10px] uppercase font-bold tracking-wider px-3 py-1 rounded-full border"
+                                        style={{ color: accentColor, borderColor: `${accentColor}20`, backgroundColor: `${accentColor}05` }}
+                                    >
+                                        Artisanal Craftsmanship
+                                    </span>
+                                    <span 
+                                        className="text-[10px] uppercase font-bold tracking-wider px-3 py-1 rounded-full border"
+                                        style={{ color: accentColor, borderColor: `${accentColor}20`, backgroundColor: `${accentColor}05` }}
+                                    >
+                                        Effortless Modularity
+                                    </span>
                                 </div>
                             </div>
 
@@ -694,7 +763,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                 <div className="flex justify-center items-center gap-2 mb-4">
                                     <div className="flex">
                                         {[...Array(5)].map((_, i) => (
-                                            <Star key={i} className="w-4 h-4 fill-current text-[#FF8C94]" />
+                                            <Star key={i} className="w-4 h-4" style={{ fill: accentColor, color: accentColor }} />
                                         ))}
                                     </div>
                                     <span className="text-sm text-neutral-600">4.8 ({reviews.length} reviews)</span>
@@ -703,7 +772,8 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                 {!isReviewFormOpen ? (
                                     <button
                                         onClick={() => setIsReviewFormOpen(true)}
-                                        className="bg-[#FF8C94] text-white px-8 py-3 rounded-md font-medium text-sm hover:bg-[#ff7b84] transition-colors"
+                                        className="text-white px-8 py-3 rounded-md font-medium text-sm hover:opacity-90 transition-opacity"
+                                        style={{ backgroundColor: accentColor }}
                                     >
                                         Write a review
                                     </button>
@@ -721,7 +791,11 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                         <div key={review.id} className="border-b border-neutral-100 last:border-0 pb-6 last:pb-0">
                                             <div className="flex mb-3">
                                                 {[...Array(5)].map((_, i) => (
-                                                    <Star key={i} className={cn("w-4 h-4", i < review.rating ? "fill-current text-[#FF8C94]" : "text-neutral-300")} />
+                                                    <Star 
+                                                        key={i} 
+                                                        className={cn("w-4 h-4", i < review.rating ? "" : "text-neutral-300")} 
+                                                        style={i < review.rating ? { fill: accentColor, color: accentColor } : undefined}
+                                                    />
                                                 ))}
                                             </div>
                                             <div className="flex items-center gap-2 mb-2">
@@ -762,11 +836,12 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         onClick={handleBuyNow}
                         disabled={product.isOutOfStock}
                         className={cn(
-                            "flex-grow h-[56px] flex items-center justify-center font-sans uppercase tracking-widest transition-all text-xs font-bold shadow-md",
+                            "flex-grow h-[56px] flex items-center justify-center font-sans uppercase tracking-widest text-xs font-bold shadow-md hover:scale-[1.01] hover:brightness-[1.04] active:scale-[0.98] transition-all duration-300",
                             product.isOutOfStock
                                 ? "bg-neutral-300 text-neutral-500 cursor-not-allowed"
-                                : "bg-[#1A1A1A] text-white hover:bg-black hover:shadow-lg active:scale-[0.99]"
+                                : "text-white"
                         )}
+                        style={!product.isOutOfStock ? { backgroundColor: accentColor } : undefined}
                     >
                         {product.isOutOfStock ? "Out of Stock" : "Buy Now"}
                     </button>
@@ -775,11 +850,12 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         onClick={handleAddToCart}
                         disabled={product.isOutOfStock}
                         className={cn(
-                            "w-[53px] h-[56px] flex items-center justify-center border transition-all shrink-0",
+                            "w-[53px] h-[56px] flex items-center justify-center border shrink-0 hover:scale-[1.05] active:scale-[0.95] hover:bg-[var(--accent-color)] hover:text-white transition-all duration-300",
                             product.isOutOfStock
                                 ? "bg-neutral-100 text-[#A3A3A3] border-neutral-200 cursor-not-allowed"
-                                : "bg-[#FDFBF7] border-[#1A1A1A] text-[#1A1A1A] hover:bg-neutral-50 active:scale-[0.99]"
+                                : "bg-[#FDFBF7]"
                         )}
+                        style={!product.isOutOfStock ? { borderColor: accentColor, color: accentColor, '--accent-color': accentColor } as React.CSSProperties : undefined}
                         title="Add to Cart"
                         aria-label="Add to Cart"
                     >

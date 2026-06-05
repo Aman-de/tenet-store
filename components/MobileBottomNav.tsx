@@ -4,10 +4,15 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Home, Grid, Heart, Package, ShoppingBag, Sparkles, User } from "lucide-react";
 import { UserButton, SignInButton, useUser, SignedIn, SignedOut } from "@clerk/nextjs";
+import { useGender } from "@/context/GenderContext";
 
 export default function MobileBottomNav() {
     const pathname = usePathname();
     const { isSignedIn } = useUser();
+    const { gender } = useGender();
+    const isWoman = gender === "woman";
+    const activeTextClass = isWoman ? "text-[#E05275]" : "text-[#2B6496]";
+    const activeFillClass = isWoman ? "fill-[#E05275]/5" : "fill-[#2B6496]/5";
 
     if (pathname.includes("/product/")) {
         return null;
@@ -45,18 +50,18 @@ export default function MobileBottomNav() {
                 >
                     <item.icon
                         strokeWidth={1.5}
-                        className={`w-6 h-6 transition-colors ${item.isActive ? "text-black fill-black/5" : "text-neutral-400"
+                        className={`w-6 h-6 transition-colors ${item.isActive ? `${activeTextClass} ${activeFillClass}` : "text-neutral-400"
                             }`}
                     />
                     <span
-                        className={`text-[10px] uppercase tracking-widest font-bold ${item.isActive ? "text-black" : "text-neutral-400"
+                        className={`text-[10px] uppercase tracking-widest font-bold ${item.isActive ? activeTextClass : "text-neutral-400"
                             }`}
                     >
                         {item.name}
                     </span>
                 </Link>
             ))}
-
+ 
             {/* Account Tab (Handling Auth) */}
             <div className="flex flex-col items-center justify-center w-full h-full space-y-1">
                 <SignedIn>
@@ -78,7 +83,7 @@ export default function MobileBottomNav() {
                     </SignInButton>
                 </SignedOut>
                 <SignedIn>
-                    <span className="text-[10px] uppercase tracking-widest font-bold text-black -mt-1">
+                    <span className={`text-[10px] uppercase tracking-widest font-bold -mt-1 ${activeTextClass}`}>
                         Account
                     </span>
                 </SignedIn>

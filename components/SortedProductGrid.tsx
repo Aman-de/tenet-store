@@ -32,6 +32,8 @@ const sortSizes = (sizesList: string[]) => {
 
 export default function SortedProductGrid({ products: rawProducts, showSizeFilter = true, alignFiltersWithTitle = false }: SortedProductGridProps) {
     const { gender: activeGender } = useGender();
+    const isWoman = activeGender === "woman";
+    const accentColor = isWoman ? "#E05275" : "#2B6496";
 
     // Filter products dynamically by the active global gender
     const products = rawProducts.filter(p => {
@@ -113,9 +115,10 @@ export default function SortedProductGrid({ products: rawProducts, showSizeFilte
                                         key={size}
                                         onClick={() => setSelectedSize(selectedSize === size ? null : size)}
                                         className={`h-9 min-w-[36px] px-3 flex items-center justify-center rounded-sm text-xs font-medium transition-all border ${selectedSize === size
-                                            ? "bg-[#1A1A1A] text-white border-[#1A1A1A]"
+                                            ? "text-white"
                                             : "bg-white text-neutral-600 border-gray-200 hover:border-[#1A1A1A]"
                                             }`}
+                                        style={selectedSize === size ? { backgroundColor: accentColor, borderColor: accentColor } : undefined}
                                     >
                                         {size}
                                     </button>
@@ -148,9 +151,10 @@ export default function SortedProductGrid({ products: rawProducts, showSizeFilte
                                     key={tier}
                                     onClick={() => setPriceFilter(tier)}
                                     className={`h-9 flex-1 lg:flex-none lg:px-4 flex items-center justify-center rounded-sm text-xs font-bold uppercase transition-all border ${priceFilter === tier
-                                        ? "bg-[#1A1A1A] text-white border-[#1A1A1A]"
+                                        ? "text-white"
                                         : "bg-white text-neutral-600 border-gray-200 hover:border-[#1A1A1A]"
                                         }`}
+                                    style={priceFilter === tier ? { backgroundColor: accentColor, borderColor: accentColor } : undefined}
                                 >
                                     {tier === 'all' ? 'All' : tier}
                                 </button>

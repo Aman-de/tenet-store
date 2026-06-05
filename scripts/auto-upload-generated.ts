@@ -75,16 +75,17 @@ async function main() {
         for (const v of p.variants) {
             const currentImages = v.images || []
             const colorName = v.colorName || 'Default'
-            const isWatchOrBelt = p.slug.includes('watch') || p.slug.includes('chronograph') || 
+            const slugStr = p.slug || ''
+            const isWatchOrBelt = slugStr.includes('watch') || slugStr.includes('chronograph') || 
                                   p.title.toLowerCase().includes('watch') || p.title.toLowerCase().includes('chronograph') ||
-                                  p.slug === 'the-bridle-leather-belt'
+                                  slugStr === 'the-bridle-leather-belt'
 
             // We only process if it has fewer than 3 images
             if (currentImages.length < 3) {
-                console.log(`\n🔍 Product "${p.title}" (${p.slug}) - Variant "${colorName}" has only ${currentImages.length} images.`)
+                console.log(`\n🔍 Product "${p.title}" (${slugStr}) - Variant "${colorName}" has only ${currentImages.length} images.`)
 
                 // Search for files in the brain folder that match the product slug and color
-                const sanitizedSlug = sanitizeString(p.slug)
+                const sanitizedSlug = sanitizeString(slugStr)
                 const sanitizedColor = sanitizeString(colorName)
 
                 const matchingFiles = files.filter(filename => {
