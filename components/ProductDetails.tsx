@@ -557,7 +557,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 )}
 
                 {/* Action Buttons (Desktop Only) */}
-                <div className="hidden md:flex gap-3 mb-6">
+                <div className="hidden md:flex gap-2 mb-6">
                     <button
                         onClick={handleBuyNow}
                         disabled={product.isOutOfStock}
@@ -575,7 +575,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         onClick={handleAddToCart}
                         disabled={product.isOutOfStock}
                         className={cn(
-                            "w-[56px] h-[56px] flex items-center justify-center border transition-all shrink-0",
+                            "w-[53px] h-[56px] flex items-center justify-center border transition-all shrink-0",
                             product.isOutOfStock
                                 ? "bg-neutral-100 text-neutral-400 border-neutral-200 cursor-not-allowed"
                                 : "bg-[#FDFBF7] border-[#1A1A1A] text-[#1A1A1A] hover:bg-neutral-50 active:scale-[0.99]"
@@ -757,7 +757,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 </div>
 
                 {/* Mobile-only Sticky CTA Bar (stops sticking below reviews/accordions) */}
-                <div className="md:hidden sticky bottom-0 left-0 right-0 z-30 bg-[#FDFBF7]/95 backdrop-blur-md border-t border-neutral-200 p-4 pb-safe -mx-4 px-4 flex gap-3">
+                <div className="md:hidden sticky bottom-0 left-0 right-0 z-30 bg-[#FDFBF7]/95 backdrop-blur-md border-t border-neutral-200 p-4 pb-safe -mx-4 px-4 flex gap-2">
                     <button
                         onClick={handleBuyNow}
                         disabled={product.isOutOfStock}
@@ -775,7 +775,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         onClick={handleAddToCart}
                         disabled={product.isOutOfStock}
                         className={cn(
-                            "w-[56px] h-[56px] flex items-center justify-center border transition-all shrink-0",
+                            "w-[53px] h-[56px] flex items-center justify-center border transition-all shrink-0",
                             product.isOutOfStock
                                 ? "bg-neutral-100 text-[#A3A3A3] border-neutral-200 cursor-not-allowed"
                                 : "bg-[#FDFBF7] border-[#1A1A1A] text-[#1A1A1A] hover:bg-neutral-50 active:scale-[0.99]"
