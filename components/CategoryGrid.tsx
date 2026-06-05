@@ -21,8 +21,8 @@ const CATEGORY_IMAGES: Record<string, { man: string; woman: string }> = {
         woman: "https://cdn.sanity.io/images/9zyx0aef/production/4b998246d8c90396fb10b2df7e96b34cfdb2bb5a-1125x1688.jpg"
     },
     accessories: {
-        man: "https://cdn.sanity.io/images/9zyx0aef/production/2cbb891f218dccdefb311af77fed2d2e1abc1473-1024x1024.jpg",
-        woman: "https://cdn.sanity.io/images/9zyx0aef/production/2cbb891f218dccdefb311af77fed2d2e1abc1473-1024x1024.jpg"
+        man: "https://cdn.sanity.io/images/9zyx0aef/production/7ce9299a9cbcb7409be5056cce3c841814e02083-1024x1024.jpg",
+        woman: "https://cdn.sanity.io/images/9zyx0aef/production/7ce9299a9cbcb7409be5056cce3c841814e02083-1024x1024.jpg"
     },
     shirts: {
         man: "https://cdn.sanity.io/images/9zyx0aef/production/29e84824821367d32232ee2fdbc7aa93d3a6fd71-1024x1024.jpg",

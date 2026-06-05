@@ -55,8 +55,8 @@ export default function ProductCard({ product }: ProductCardProps) {
             onMouseLeave={() => setIsHovered(false)}
         >
             {/* Image Container */}
-            <Link href={`/product/${product.handle}`} onClick={handleViewItem}>
-                <div className="relative aspect-[3/4] w-full overflow-hidden bg-neutral-100 mb-2">
+            <div className="relative aspect-[3/4] w-full overflow-hidden bg-neutral-100 mb-2">
+                <Link href={`/product/${product.handle}`} onClick={handleViewItem} className="absolute inset-0 z-0 block w-full h-full">
                     {product.images?.[0] ? (
                         <Image
                             src={product.images[0]}
@@ -80,9 +80,9 @@ export default function ProductCard({ product }: ProductCardProps) {
                             onError={() => setAltImgError(true)}
                         />
                     )}
+                </Link>
 
-
-                    {/* Out of Stock Badge */}
+                {/* Out of Stock Badge */}
                     {product.isOutOfStock && (
                         <div className="absolute top-2 left-2 bg-black/90 backdrop-blur-sm text-white text-[10px] font-medium px-2 py-1 uppercase tracking-widest z-20">
                             Out of Stock
@@ -107,12 +107,12 @@ export default function ProductCard({ product }: ProductCardProps) {
                         aria-label="Wishlist"
                     >
                         <Heart
-                            size={16}
+                            size={18}
                             className={`transition-all duration-300 ${isInWishlist(product.id)
                                 ? "fill-white stroke-white"
                                 : "stroke-white"
                                 }`}
-                            strokeWidth={1.5}
+                            strokeWidth={2}
                         />
                     </motion.button>
 
@@ -157,12 +157,12 @@ export default function ProductCard({ product }: ProductCardProps) {
                             aria-label="Wishlist"
                         >
                             <Heart
-                                size={20}
-                                className={`transition-all duration-300 ${isInWishlist(product.id)
-                                    ? "fill-black stroke-black"
-                                    : "stroke-black"
-                                    }`}
-                                strokeWidth={1.5}
+                                size={22}
+                            className={`transition-all duration-300 ${isInWishlist(product.id)
+                                ? "fill-black stroke-black"
+                                : "stroke-black"
+                                }`}
+                            strokeWidth={2}
                             />
                         </motion.button>
                     </div>
@@ -170,7 +170,6 @@ export default function ProductCard({ product }: ProductCardProps) {
 
 
                 </div>
-            </Link>
 
             {/* Product Info */}
             <div className="space-y-1 p-3 pt-2"> {/* Added pt-2 for spacing */}

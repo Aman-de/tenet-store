@@ -27,7 +27,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         notFound();
     }
 
-    const recommendations = await getRecommendedProducts(product.category, product.handle);
+    const recommendations = await getRecommendedProducts(product.category, product.handle, product.gender);
     const reviews = await getReviews(product.id);
 
     return (

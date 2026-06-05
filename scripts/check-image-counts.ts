@@ -38,7 +38,7 @@ async function checkImages() {
         for (const v of p.variants) {
             const count = v.images ? v.images.length : 0
             const colorName = v.colorName || 'Default'
-            const isWatchOrBelt = p.slug.includes('watch') || p.slug.includes('chronograph') || 
+            const isWatchOrBelt = (p.slug || '').includes('watch') || (p.slug || '').includes('chronograph') || 
                                   p.title.toLowerCase().includes('watch') || p.title.toLowerCase().includes('chronograph') ||
                                   p.slug === 'the-bridle-leather-belt'
 

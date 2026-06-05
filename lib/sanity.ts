@@ -557,9 +557,13 @@ export async function getProduct(slug: string) {
     };
 }
 
-export async function getRecommendedProducts(category: string, currentSlug: string) {
+export async function getRecommendedProducts(category: string, currentSlug: string, gender?: string) {
+    const genderFilter = gender ? `&& gender == $gender` : "";
+    const params: any = { category, currentSlug };
+    if (gender) params.gender = gender;
+
     // Better algorithm: First try to fetch 8 items from the exact same category
-    const query = `*[_type == "product" && category == $category && slug.current != $currentSlug][0...8]{
+    const query = `*[_type == "product" && category == $category && slug.current != $currentSlug ${genderFilter}][0...8]{
     _id,
     title,
     "slug": slug.current,
@@ -574,13 +578,13 @@ export async function getRecommendedProducts(category: string, currentSlug: stri
     isOutOfStock
   }`;
 
-    let products = await client.fetch(query, { category, currentSlug }, { cache: 'no-store' });
+    let products = await client.fetch(query, params, { cache: 'no-store' });
     products = (products || []).filter((p: any) => p && !HIDDEN_PRODUCT_TITLES.has(p.title));
 
     // Fallback: If we couldn't find at least 4 items, pad with general products to keep the grid full
     if (products.length < 4) {
         const fallbackLimit = 16;
-        const fallbackQuery = `*[_type == "product" && category != $category && slug.current != $currentSlug][0...${fallbackLimit}]{
+        const fallbackQuery = `*[_type == "product" && category != $category && slug.current != $currentSlug ${genderFilter}][0...${fallbackLimit}]{
         _id,
         title,
         "slug": slug.current,
@@ -594,7 +598,7 @@ export async function getRecommendedProducts(category: string, currentSlug: stri
         gender,
         isOutOfStock
       }`;
-        let fallbackProducts = await client.fetch(fallbackQuery, { category, currentSlug }, { cache: 'no-store' });
+        let fallbackProducts = await client.fetch(fallbackQuery, params, { cache: 'no-store' });
         fallbackProducts = (fallbackProducts || []).filter((p: any) => p && !HIDDEN_PRODUCT_TITLES.has(p.title));
         
         const needed = 8 - products.length;
@@ -611,7 +615,8 @@ export async function getReviews(productId: string) {
     author,
     rating,
     comment,
-    _createdAt
+    _createdAt,
+    "images": images[].asset->url
   }`;
 
     const reviews = await client.fetch(query, { productId }, { cache: 'no-store' });
@@ -622,7 +627,8 @@ export async function getReviews(productId: string) {
         name: r.author, // Map author -> name
         rating: r.rating,
         comment: r.comment,
-        date: r._createdAt
+        date: r._createdAt,
+        images: r.images || []
     }));
 }
 

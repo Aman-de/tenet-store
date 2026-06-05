@@ -47,6 +47,13 @@ export const review = {
             title: 'Created At',
             type: 'datetime',
             initialValue: (new Date()).toISOString()
+        },
+        {
+            name: 'images',
+            title: 'Review Images',
+            type: 'array',
+            of: [{ type: 'image' }],
+            description: 'Optional customer uploaded photos'
         }
     ],
     preview: {

@@ -8,148 +8,35 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import ScrollIndicator from "./ScrollIndicator";
 import { Product } from "@/lib/data";
 import { useGender } from "@/context/GenderContext";
-
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
 interface HeroProps {
     spotlightProducts?: Product[];
 }
 
 export default function Hero({ spotlightProducts = [] }: HeroProps) {
     const { gender } = useGender();
-    const scrollContainerRef = useRef<HTMLDivElement>(null);
+    const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, skipSnaps: false }, [Autoplay({ delay: 5000, stopOnInteraction: true })]);
     const [activeIndex, setActiveIndex] = useState(0);
 
     const totalSlides = 1 + spotlightProducts.length;
 
-    // Handle scroll to update active dot
+    const scrollPrev = () => emblaApi?.scrollPrev();
+    const scrollNext = () => emblaApi?.scrollNext();
+    const scrollToIndex = (index: number) => emblaApi?.scrollTo(index);
+
     useEffect(() => {
-        const container = scrollContainerRef.current;
-        if (!container) return;
-
-        const handleScroll = () => {
-            const children = Array.from(container.children) as HTMLElement[];
-            const slides = children.filter(child => child.tagName === 'DIV' || child.tagName === 'A');
-            
-            const isAtEnd = Math.abs(container.scrollWidth - container.clientWidth - container.scrollLeft) < 5;
-            if (isAtEnd) {
-                setActiveIndex(slides.length - 1);
-                return;
-            }
-            
-            let closestIndex = 0;
-            let minDistance = Infinity;
-
-            slides.forEach((child, index) => {
-                const distance = Math.abs(container.scrollLeft - child.offsetLeft);
-                if (distance < minDistance) {
-                    minDistance = distance;
-                    closestIndex = index;
-                }
-            });
-
-            setActiveIndex(closestIndex);
-        };
-
-        container.addEventListener('scroll', handleScroll, { passive: true });
-        // Initial check
-        handleScroll();
-
-        return () => container.removeEventListener('scroll', handleScroll);
-    }, []);
-
-    // Auto-scroll logic
-    useEffect(() => {
-        const container = scrollContainerRef.current;
-        if (!container) return;
-
-        const scrollInterval = setInterval(() => {
-            const isAtEnd = Math.abs(container.scrollWidth - container.clientWidth - container.scrollLeft) < 5;
-            if (isAtEnd) {
-                container.scrollTo({ left: 0, behavior: 'smooth' });
-            } else {
-                const children = Array.from(container.children) as HTMLElement[];
-                const slides = children.filter(child => child.tagName === 'DIV' || child.tagName === 'A');
-                for (let i = 0; i < slides.length; i++) {
-                    if (slides[i].offsetLeft > container.scrollLeft + 10) {
-                        container.scrollTo({ left: slides[i].offsetLeft, behavior: 'smooth' });
-                        break;
-                    }
-                }
-            }
-        }, 5000);
-
-        const pauseScroll = () => clearInterval(scrollInterval);
-        
-        container.addEventListener('mouseenter', pauseScroll);
-        container.addEventListener('touchstart', pauseScroll, { passive: true });
-
-        return () => {
-            clearInterval(scrollInterval);
-            container.removeEventListener('mouseenter', pauseScroll);
-            container.removeEventListener('touchstart', pauseScroll);
-        };
-    }, [totalSlides]);
+        if (!emblaApi) return;
+        const onSelect = () => setActiveIndex(emblaApi.selectedScrollSnap());
+        emblaApi.on("select", onSelect);
+        onSelect();
+        return () => { emblaApi.off("select", onSelect); };
+    }, [emblaApi]);
 
     // Reset scroll position on gender change
     useEffect(() => {
-        const container = scrollContainerRef.current;
-        if (container) {
-            container.scrollTo({ left: 0, behavior: 'smooth' });
-        }
-    }, [gender]);
-
-    const scrollToIndex = (index: number) => {
-        const container = scrollContainerRef.current;
-        if (!container) return;
-        
-        const children = Array.from(container.children) as HTMLElement[];
-        const slides = children.filter(child => child.tagName === 'DIV' || child.tagName === 'A');
-        
-        if (index === slides.length - 1) {
-            container.scrollTo({ left: container.scrollWidth, behavior: 'smooth' });
-        } else if (slides[index]) {
-            container.scrollTo({ left: slides[index].offsetLeft, behavior: 'smooth' });
-        }
-    };
-
-    const scrollPrev = () => {
-        const container = scrollContainerRef.current;
-        if (!container) return;
-        const children = Array.from(container.children) as HTMLElement[];
-        const slides = children.filter(child => child.tagName === 'DIV' || child.tagName === 'A');
-        
-        if (container.scrollLeft <= 5) {
-            // We are at the start, loop to end
-            container.scrollTo({ left: container.scrollWidth, behavior: 'smooth' });
-            return;
-        }
-
-        for (let i = slides.length - 1; i >= 0; i--) {
-            if (slides[i].offsetLeft < container.scrollLeft - 10) {
-                container.scrollTo({ left: slides[i].offsetLeft, behavior: 'smooth' });
-                return;
-            }
-        }
-    };
-
-    const scrollNext = () => {
-        const container = scrollContainerRef.current;
-        if (!container) return;
-        
-        const isAtEnd = Math.abs(container.scrollWidth - container.clientWidth - container.scrollLeft) < 5;
-        if (isAtEnd) {
-            container.scrollTo({ left: 0, behavior: 'smooth' });
-            return;
-        }
-
-        const children = Array.from(container.children) as HTMLElement[];
-        const slides = children.filter(child => child.tagName === 'DIV' || child.tagName === 'A');
-        for (let i = 0; i < slides.length; i++) {
-            if (slides[i].offsetLeft > container.scrollLeft + 10) {
-                container.scrollTo({ left: slides[i].offsetLeft, behavior: 'smooth' });
-                break;
-            }
-        }
-    };
+        if (emblaApi) emblaApi.scrollTo(0);
+    }, [gender, emblaApi]);
 
     const scrollToCollection = () => {
         const section = document.getElementById("new-arrivals");
@@ -162,11 +49,12 @@ export default function Hero({ spotlightProducts = [] }: HeroProps) {
         <section className="relative h-[85vh] lg:h-[90vh] w-full overflow-hidden bg-[#FDFBF7] group/hero">
             {/* Horizontal Scroll Layout */}
             <div 
-                ref={scrollContainerRef}
-                className="flex h-full w-full overflow-x-auto snap-x snap-mandatory scrollbar-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] scroll-smooth items-center lg:gap-1 px-0 py-0 lg:py-1"
+                ref={emblaRef}
+                className="overflow-hidden h-full w-full"
             >
-                {/* 1. Original Horizontal Hero Image - Full Width Everywhere */}
-                <div className="relative h-full w-full md:w-[100vw] lg:w-[100vw] shrink-0 snap-start overflow-hidden group">
+                <div className="flex h-full w-full touch-pan-y items-center lg:gap-1 px-0 py-0 lg:py-1">
+                    {/* 1. Original Horizontal Hero Image - Full Width Everywhere */}
+                    <div className="relative h-full w-full md:w-[100vw] lg:w-[100vw] shrink-0 overflow-hidden group">
                     <Image
                         key={`hero-bg-${gender}`}
                         src={gender === "man" ? "/images/hero-main.webp" : "/images/hero-women.webp"}
@@ -233,11 +121,11 @@ export default function Hero({ spotlightProducts = [] }: HeroProps) {
                     <Link
                         href={`/product/${product.handle}`}
                         key={product.id}
-                        className="relative h-full w-full md:w-[50vw] lg:w-auto lg:aspect-square shrink-0 snap-start overflow-hidden lg:rounded-sm group block ml-0 bg-[#f4f4f4]"
+                        className="relative h-full w-full md:w-[50vw] lg:w-auto lg:aspect-square shrink-0 overflow-hidden lg:rounded-sm group block ml-0 bg-[#f4f4f4]"
                     >
-                        {(product.images[1] || product.images[0]) && (
+                        {product.images[0] && (
                             <Image
-                                src={product.images[1] || product.images[0]}
+                                src={product.images[0]}
                                 alt={product.title}
                                 fill
                                 className="object-cover object-center transition-transform duration-[8s] ease-out group-hover:scale-105"
@@ -258,6 +146,7 @@ export default function Hero({ spotlightProducts = [] }: HeroProps) {
                         </div>
                     </Link>
                 ))}
+                </div>
             </div>
 
             {/* Navigation Arrows & Dots (PC only) */}
