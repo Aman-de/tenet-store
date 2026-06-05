@@ -15,58 +15,58 @@ interface Collection {
 }
 
 // Curated high-aesthetic category cover photos for Men & Women
-const CATEGORY_IMAGES: Record<string, { man: string; woman: string }> = {
+const CATEGORY_IMAGES: Record<string, { man?: string; woman?: string }> = {
     knitwear: {
-        man: "https://cdn.sanity.io/images/9zyx0aef/production/6c3db6c7a574fe47ea84a22cb1af12b9dde253bb_1024x1024.webp",
-        woman: "https://cdn.sanity.io/images/9zyx0aef/production/4b998246d8c90396fb10b2df7e96b34cfdb2bb5a_1125x1688.webp"
+
+
     },
     accessories: {
-        man: "https://cdn.sanity.io/images/9zyx0aef/production/7ce9299a9cbcb7409be5056cce3c841814e02083_1024x1024.webp",
-        woman: "https://cdn.sanity.io/images/9zyx0aef/production/7ce9299a9cbcb7409be5056cce3c841814e02083_1024x1024.webp"
+        man: "https://cdn.sanity.io/images/9zyx0aef/production/631cae490b81cba20ad3bde888e83f8a9437522a-1024x1024.webp",
+        woman: "https://cdn.sanity.io/images/9zyx0aef/production/631cae490b81cba20ad3bde888e83f8a9437522a-1024x1024.webp"
     },
     shirts: {
-        man: "https://cdn.sanity.io/images/9zyx0aef/production/29e84824821367d32232ee2fdbc7aa93d3a6fd71_1024x1024.webp",
-        woman: "https://cdn.sanity.io/images/9zyx0aef/production/14edb89b15b36be734a72bfe3506a495bd7fd043_1024x1024.webp"
+        man: "https://cdn.sanity.io/images/9zyx0aef/production/8164623b78c4f923de6713c2f0c580e71acdccc9-1024x1024.webp",
+        woman: "https://cdn.sanity.io/images/9zyx0aef/production/785069aedf180182e39693484ad92b0c10acd092-1024x1024.webp"
     },
     jackets: {
-        man: "https://cdn.sanity.io/images/9zyx0aef/production/ef5d45ee0ae8df70f9f8b5e10e0c0a92c1b1976c_640x640.webp",
-        woman: "https://cdn.sanity.io/images/9zyx0aef/production/b6f311a9a3aba454ebb47f9ee63ed3a94de98e89_640x640.webp"
+        man: "https://cdn.sanity.io/images/9zyx0aef/production/d2c8d62d29da7a292041906aef8baf0ec4052676-640x640.webp",
+        woman: "https://cdn.sanity.io/images/9zyx0aef/production/5b5c0311f171c46cb66515c24304b7e61f48bd1e-640x640.webp"
     },
     footwear: {
-        man: "https://cdn.sanity.io/images/9zyx0aef/production/f05210eb953a188ea5420e576752b600ca7ad7eb_1024x1024.webp",
+        man: "https://cdn.sanity.io/images/9zyx0aef/production/b87b417450fae7281a6b41ead55e74f43c897fb7-1024x1024.webp",
         woman: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&q=80&w=1024"
     },
     outerwear: {
-        man: "https://cdn.sanity.io/images/9zyx0aef/production/bdd03160a087d30ab522041b736083861500586a_1024x1024.webp",
-        woman: "https://cdn.sanity.io/images/9zyx0aef/production/117ef8a141e8002d9be68181043e221fcde5d2d8_1125x1688.webp"
+        man: "https://cdn.sanity.io/images/9zyx0aef/production/7dc9cb85576054710c3cf2d7c05878b97c6c3eb2-1024x1024.webp",
+        woman: "https://cdn.sanity.io/images/9zyx0aef/production/5437d499c94607847f4aec1971df6cc28312d366-1125x1688.webp"
     },
     trousers: {
-        man: "https://cdn.sanity.io/images/9zyx0aef/production/9adb4b3f103f4bdde371dcaad28f0e8070d3ac80_994x1500.webp",
-        woman: "https://cdn.sanity.io/images/9zyx0aef/production/14dbf30d573a06d12a808b4e05baea4c39ad3041_1125x1688.webp"
+
+        woman: "https://cdn.sanity.io/images/9zyx0aef/production/86589d169a8de56c24f78ce765ceffc7eeba5419-1125x1688.webp"
     },
     pants: {
-        man: "https://cdn.sanity.io/images/9zyx0aef/production/9adb4b3f103f4bdde371dcaad28f0e8070d3ac80_994x1500.webp",
-        woman: "https://cdn.sanity.io/images/9zyx0aef/production/14dbf30d573a06d12a808b4e05baea4c39ad3041_1125x1688.webp"
+
+        woman: "https://cdn.sanity.io/images/9zyx0aef/production/86589d169a8de56c24f78ce765ceffc7eeba5419-1125x1688.webp"
     },
     swimwear: {
-        man: "https://cdn.sanity.io/images/9zyx0aef/production/6e13986721184fc00b1a90f4a514b6449bd9ab25_1024x1024.webp",
-        woman: "https://cdn.sanity.io/images/9zyx0aef/production/6e13986721184fc00b1a90f4a514b6449bd9ab25_1024x1024.webp"
+        man: "https://cdn.sanity.io/images/9zyx0aef/production/85949fe7c5800a01a9ba444f84e20b5f1c6590e4-1024x1024.webp",
+        woman: "https://cdn.sanity.io/images/9zyx0aef/production/85949fe7c5800a01a9ba444f84e20b5f1c6590e4-1024x1024.webp"
     },
     sets: {
-        man: "https://cdn.sanity.io/images/9zyx0aef/production/7e056f1f0586bb44848798acf10950a070ce6c5e_640x640.webp",
-        woman: "https://cdn.sanity.io/images/9zyx0aef/production/93d81dc4b07d4bc9e8bc63578f20b670cc8bab8c_1024x1024.webp"
+        man: "https://cdn.sanity.io/images/9zyx0aef/production/04767c2b24c268b17549176dd331fdac21ab55fd-640x640.webp",
+        woman: "https://cdn.sanity.io/images/9zyx0aef/production/779ef235f4592467c99bde5ef7774e73f4334d80-1024x1024.webp"
     },
     shirting: {
-        man: "https://cdn.sanity.io/images/9zyx0aef/production/6c09616307c89c67743c1c3d186fd2cda0e7371b_1024x1024.webp",
+
         woman: "https://cdn.sanity.io/images/9zyx0aef/production/9a82a1bf981d5953889bd0bcc093e21ffef7d645-800x1000.webp"
     },
     lounge: {
-        man: "https://cdn.sanity.io/images/9zyx0aef/production/a08cd83029c2ed735d94ce28a2362d99fdc8edd1_1024x1024.webp",
-        woman: "https://cdn.sanity.io/images/9zyx0aef/production/0aeadafae8ab939961d6403f6f9e1325d837adda_800x1000.webp"
+        man: "https://cdn.sanity.io/images/9zyx0aef/production/c1363a27626d89034b79adc7d043c505ce39910e-1024x1024.webp",
+        woman: "https://cdn.sanity.io/images/9zyx0aef/production/5f86d7ffaa9f8beae1acda5d56713544228e9635-800x1000.webp"
     },
     shorts: {
-        man: "https://cdn.sanity.io/images/9zyx0aef/production/a4b0a74a416c43850db3f606391f457dc5f4685c_640x640.webp",
-        woman: "https://cdn.sanity.io/images/9zyx0aef/production/e4d3d80b5dc7e206d6fb1e89610ba56a7eec0ff9_640x640.webp"
+        man: "https://cdn.sanity.io/images/9zyx0aef/production/e2c3ba688850b272c1c51d6809e1781b26caf163-640x640.webp",
+        woman: "https://cdn.sanity.io/images/9zyx0aef/production/11a3669561183f64048557a9a53a465f858dbedd-640x640.webp"
     }
 };
 
