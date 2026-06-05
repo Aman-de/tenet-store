@@ -35,17 +35,6 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
         trackViewItem(product);
     };
 
-    const handleCardClick = (e: React.MouseEvent) => {
-        if (isRecommended && window.innerWidth < 768) {
-            e.preventDefault();
-            e.stopPropagation();
-            if (product.isOutOfStock) return;
-            setIsSizeSelectorOpen(true);
-        } else {
-            handleViewItem();
-        }
-    };
-
     const handleSelectSize = (size: string) => {
         setIsSizeSelectorOpen(false);
         setAddingState('adding');
@@ -70,7 +59,7 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
         >
             {/* Image Container */}
             <div className="relative aspect-[3/4] w-full overflow-hidden bg-neutral-100 mb-2">
-                <Link href={`/product/${product.handle}`} onClick={handleCardClick} className="absolute inset-0 z-0 block w-full h-full">
+                <Link href={`/product/${product.handle}`} onClick={handleViewItem} className="absolute inset-0 z-0 block w-full h-full">
                     {product.images?.[0] ? (
                         <Image
                             src={product.images[0]}
@@ -235,15 +224,6 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
                                     ))}
                                 </div>
                                 <div className="flex flex-col gap-1 w-full mt-1 border-t border-neutral-100 pt-2">
-                                    {isRecommended && (
-                                        <Link
-                                            href={`/product/${product.handle}`}
-                                            className="text-[9px] uppercase tracking-widest font-bold underline text-neutral-600 hover:text-black transition-colors"
-                                            onClick={() => setIsSizeSelectorOpen(false)}
-                                        >
-                                            View Details
-                                        </Link>
-                                    )}
                                     <button
                                         onClick={(e) => {
                                             e.preventDefault();
