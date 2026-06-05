@@ -205,6 +205,38 @@ export default function CartDrawer() {
     });
 
     const [isLocating, setIsLocating] = useState(false);
+    
+    // Coupon State
+    const [couponInput, setCouponInput] = useState("");
+    const [appliedCoupon, setAppliedCoupon] = useState<{code: string, percent: number} | null>(null);
+    const [couponError, setCouponError] = useState("");
+
+    const VALID_COUPONS: Record<string, number> = {
+        'TENET5': 0.05,
+        'CREATOR15': 0.15,
+        'TENET20': 0.20,
+        'TENET30': 0.30,
+        'TENET50': 0.50,
+        'TENET70': 0.70,
+    };
+
+    const handleApplyCoupon = () => {
+        setCouponError("");
+        const code = couponInput.trim().toUpperCase();
+        if (!code) return;
+        
+        if (VALID_COUPONS[code]) {
+            setAppliedCoupon({ code, percent: VALID_COUPONS[code] });
+            setCouponInput("");
+        } else {
+            setCouponError("Invalid coupon code");
+        }
+    };
+    
+    const handleRemoveCoupon = () => {
+        setAppliedCoupon(null);
+        setCouponError("");
+    };
 
     const handleUseCurrentLocation = () => {
         if (!navigator.geolocation) {
@@ -348,8 +380,8 @@ export default function CartDrawer() {
     }
 
     const afterB2G1 = rawSubtotal - b2g1Discount;
-    const first20Discount = afterB2G1 * 0.20;
-    const totalDiscount = b2g1Discount + first20Discount;
+    const couponDiscount = appliedCoupon ? (afterB2G1 * appliedCoupon.percent) : 0;
+    const totalDiscount = b2g1Discount + couponDiscount;
     
     const subtotal = Math.max(0, rawSubtotal - totalDiscount);
 
@@ -677,12 +709,44 @@ export default function CartDrawer() {
                                             <span>-₹{b2g1Discount.toLocaleString('en-IN')}</span>
                                         </div>
                                     )}
-                                    {first20Discount > 0 && (
+                                    {appliedCoupon && (
                                         <div className="flex items-center justify-between text-xs font-sans text-green-600 font-bold">
-                                            <span>FIRST20 (20% Off)</span>
-                                            <span>-₹{first20Discount.toLocaleString('en-IN')}</span>
+                                            <span>{appliedCoupon.code} ({(appliedCoupon.percent * 100)}% Off)</span>
+                                            <div className="flex items-center gap-2">
+                                                <span>-₹{couponDiscount.toLocaleString('en-IN')}</span>
+                                                <button onClick={handleRemoveCoupon} className="text-red-500 hover:text-red-700 ml-1">
+                                                    <X className="w-3 h-3" />
+                                                </button>
+                                            </div>
                                         </div>
                                     )}
+                                    
+                                    {/* Coupon Input Area */}
+                                    {!appliedCoupon && (
+                                        <div className="flex flex-col gap-1 mt-2 mb-2">
+                                            <div className="flex gap-2">
+                                                <input 
+                                                    type="text" 
+                                                    placeholder="Enter discount code" 
+                                                    value={couponInput}
+                                                    onChange={(e) => {
+                                                        setCouponInput(e.target.value);
+                                                        setCouponError("");
+                                                    }}
+                                                    className="flex-1 border border-neutral-300 rounded-sm px-3 py-2 text-xs font-sans outline-none focus:border-black uppercase"
+                                                />
+                                                <button 
+                                                    onClick={handleApplyCoupon}
+                                                    disabled={!couponInput.trim()}
+                                                    className="bg-black text-white px-4 text-xs font-bold tracking-widest uppercase rounded-sm disabled:opacity-50"
+                                                >
+                                                    Apply
+                                                </button>
+                                            </div>
+                                            {couponError && <span className="text-[10px] text-red-500">{couponError}</span>}
+                                        </div>
+                                    )}
+
                                     <div className="flex items-center justify-between text-xs font-sans text-neutral-500">
                                         <span>Shipping</span>
                                         <span className={isFreeShipping ? "text-green-700 font-bold" : ""}>

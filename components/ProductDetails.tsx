@@ -134,7 +134,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 const res = await fetch(`https://api.postalpincode.in/pincode/${code}`);
                 const data = await res.json();
                 
-                const days = Math.floor(Math.random() * 5 + 2);
+                const days = 3;
 
                 if (data && data[0] && data[0].Status === "Success" && data[0].PostOffice && data[0].PostOffice.length > 0) {
                     const city = data[0].PostOffice[0].District || data[0].PostOffice[0].Block || "your location";
@@ -146,7 +146,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                     setPincodeError("Oops, we don't deliver to this pincode or it is invalid.");
                 }
             } catch (err) {
-                const days = Math.floor(Math.random() * 5 + 2);
+                const days = 3;
                 setDeliveryInfo({ 
                     date: `Delivery available in ${days} days`, 
                     free: true 
