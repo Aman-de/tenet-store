@@ -44,7 +44,7 @@ export const products: Product[] = [
         price: 10600,
         discountLabel: "SAVE RS. 8,000",
         category: "Knitwear",
-        images: ["/images/products/white.jpeg", "/images/products/white.jpeg", "/images/generated/the_sterling_cashmere_vest_third.png"],
+        images: ["/images/products/white.webp", "/images/products/white.webp", "/images/generated/the_sterling_cashmere_vest_third.webp"],
         colors: ["#FDFBF7", "#1A1A1A"]
     },
     {
@@ -55,7 +55,7 @@ export const products: Product[] = [
         price: 4200,
         discountLabel: "SAVE RS. 4,200",
         category: "Knitwear",
-        images: ["/images/products/combo.jpeg", "/images/generated/the_archive_cable_knit_zip_real_alt_matching.png", "/images/generated/the_archive_cable_knit_zip_third.png"],
+        images: ["/images/products/combo.webp", "/images/generated/the_archive_cable_knit_zip_real_alt_matching.webp", "/images/generated/the_archive_cable_knit_zip_third.webp"],
         colors: ["#1A1A1A", "#355E3B"]
     },
     {
@@ -66,7 +66,7 @@ export const products: Product[] = [
         price: 8400,
         discountLabel: "SAVE RS. 4,100",
         category: "Lounge",
-        images: ["/images/products/hoodie.jpeg", "/images/products/hoodie.jpeg"],
+        images: ["/images/products/hoodie.webp", "/images/products/hoodie.webp"],
         colors: ["#F5F5DC", "#2F4F4F"]
     },
     {
@@ -77,7 +77,7 @@ export const products: Product[] = [
         price: 4200,
         discountLabel: "SAVE RS. 2,300",
         category: "Knitwear",
-        images: ["/images/products/turtelneck.jpg", "/images/products/turtelneck.jpg", "/images/generated/the_scholar_turtleneck_third.png"],
+        images: ["/images/products/turtelneck.webp", "/images/products/turtelneck.webp", "/images/generated/the_scholar_turtleneck_third.webp"],
         colors: ["#1A1A1A", "#808080", "#FDFBF7"]
     }
 ];

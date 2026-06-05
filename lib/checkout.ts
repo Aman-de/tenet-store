@@ -48,7 +48,7 @@ export const checkout = async (cartItems: CartItem[]) => {
         currency: order.currency,
         name: "TENET ARCHIVES",
         description: "Luxury Transaction",
-        image: "/logo.png", // Optional: Add logo if available
+        image: "/logo.webp", // Optional: Add logo if available
         order_id: order.id,
         handler: function (response: any) {
             alert("Payment Successful. Payment ID: " + response.razorpay_payment_id);

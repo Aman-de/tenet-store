@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Editorial Campaign | A Quiet Luxury | TENET",
     description: "Discover our latest collections featuring clean silhouettes, premium organic threads, and absolute modularity.",
-    images: ["/images/editorial_campaign.png"],
+    images: ["/images/editorial_campaign.webp"],
   }
 };
 
@@ -32,7 +32,7 @@ export default function EditorialPage() {
           <div className="bg-white border border-neutral-100 rounded-3xl overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.02)] flex flex-col lg:flex-row items-stretch group">
             <div className="relative w-full lg:w-1/2 min-h-[400px] lg:min-h-[600px] overflow-hidden">
               <Image
-                src="/images/editorial_campaign.png"
+                src="/images/editorial_campaign.webp"
                 alt="TENET Men's Campaign - A Quiet Luxury"
                 fill
                 className="object-cover object-center transform scale-105 group-hover:scale-100 transition-transform duration-1000 ease-out"
@@ -73,7 +73,7 @@ export default function EditorialPage() {
           <div className="bg-white border border-neutral-100 rounded-3xl overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.02)] flex flex-col lg:flex-row-reverse items-stretch group">
             <div className="relative w-full lg:w-1/2 min-h-[400px] lg:min-h-[600px] overflow-hidden">
               <Image
-                src="/images/editorial_campaign_women.png"
+                src="/images/editorial_campaign_women.webp"
                 alt="TENET Women's Campaign - An Effortless Elegance"
                 fill
                 className="object-cover object-center transform scale-105 group-hover:scale-100 transition-transform duration-1000 ease-out"

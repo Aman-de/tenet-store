@@ -39,10 +39,10 @@ async function uploadFileToSanity(filePath: string, filename: string): Promise<s
 async function main() {
     console.log('🚀 Uploading pique polo images to Sanity...')
 
-    const whiteThirdPath = path.join(process.cwd(), 'public/images/generated/classic_pique_polo_white_third.png')
-    const blackThirdPath = path.join(process.cwd(), 'public/images/generated/classic_pique_polo_black_third.png')
-    const navyAltPath = path.join(process.cwd(), 'public/images/generated/classic_pique_polo_navy_alt.png')
-    const navyThirdPath = path.join(process.cwd(), 'public/images/generated/classic_pique_polo_navy_third.png')
+    const whiteThirdPath = path.join(process.cwd(), 'public/images/generated/classic_pique_polo_white_third.webp')
+    const blackThirdPath = path.join(process.cwd(), 'public/images/generated/classic_pique_polo_black_third.webp')
+    const navyAltPath = path.join(process.cwd(), 'public/images/generated/classic_pique_polo_navy_alt.webp')
+    const navyThirdPath = path.join(process.cwd(), 'public/images/generated/classic_pique_polo_navy_third.webp')
 
     const whiteThirdId = await uploadFileToSanity(whiteThirdPath, 'classic_pique_polo_white_third.png')
     const blackThirdId = await uploadFileToSanity(blackThirdPath, 'classic_pique_polo_black_third.png')

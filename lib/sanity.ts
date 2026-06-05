@@ -147,13 +147,13 @@ const ARTIFICIAL_PRODUCTS = [
         price: 2899,
         originalPrice: null,
         category: "knitwear",
-        images: ["/images/generated/the_archive_cable_knit_zip_alt_1779785469898.png", "/images/generated/the_alpine_cable_knit_alt_1779835239375.png"],
+        images: ["/images/generated/the_archive_cable_knit_zip_alt_1779785469898.webp", "/images/generated/the_alpine_cable_knit_alt_1779835239375.webp"],
         colors: ["#8B7355"],
         sizes: ["S", "M", "L", "XL"],
         sizeType: "clothing",
         gender: "men",
         isOutOfStock: false,
-        variants: [{ colorName: "Oatmeal", colorHex: "#8B7355", stock: 10, images: ["/images/generated/the_archive_cable_knit_zip_alt_1779785469898.png", "/images/generated/the_alpine_cable_knit_alt_1779835239375.png"] }]
+        variants: [{ colorName: "Oatmeal", colorHex: "#8B7355", stock: 10, images: ["/images/generated/the_archive_cable_knit_zip_alt_1779785469898.webp", "/images/generated/the_alpine_cable_knit_alt_1779835239375.webp"] }]
     },
     {
         id: "art-gurkha",
@@ -162,13 +162,13 @@ const ARTIFICIAL_PRODUCTS = [
         price: 2499,
         originalPrice: null,
         category: "pants",
-        images: ["/images/generated/the_tailored_gurkha_trouser_alt_1779785496750.png", "/images/generated/the_minimalist_gurkha_trouser_alt_1779835253569.png"],
+        images: ["/images/generated/the_tailored_gurkha_trouser_alt_1779785496750.webp", "/images/generated/the_minimalist_gurkha_trouser_alt_1779835253569.webp"],
         colors: ["#4A4A4A"],
         sizes: ["28", "30", "32", "34", "36"],
         sizeType: "pants",
         gender: "men",
         isOutOfStock: false,
-        variants: [{ colorName: "Charcoal", colorHex: "#4A4A4A", stock: 10, images: ["/images/generated/the_tailored_gurkha_trouser_alt_1779785496750.png", "/images/generated/the_minimalist_gurkha_trouser_alt_1779835253569.png"] }]
+        variants: [{ colorName: "Charcoal", colorHex: "#4A4A4A", stock: 10, images: ["/images/generated/the_tailored_gurkha_trouser_alt_1779785496750.webp", "/images/generated/the_minimalist_gurkha_trouser_alt_1779835253569.webp"] }]
     },
     {
         id: "art-duffel",
@@ -177,13 +177,13 @@ const ARTIFICIAL_PRODUCTS = [
         price: 4999,
         originalPrice: null,
         category: "accessories",
-        images: ["/images/generated/the_voyager_leather_duffel_alt_1779785533301.png", "/images/generated/the_artisan_leather_duffel_alt_1779835289705.png"],
+        images: ["/images/generated/the_voyager_leather_duffel_alt_1779785533301.webp", "/images/generated/the_artisan_leather_duffel_alt_1779835289705.webp"],
         colors: ["#5C4033"],
         sizes: ["One Size"],
         sizeType: "onesize",
         gender: "unisex",
         isOutOfStock: false,
-        variants: [{ colorName: "Vintage Brown", colorHex: "#5C4033", stock: 10, images: ["/images/generated/the_voyager_leather_duffel_alt_1779785533301.png", "/images/generated/the_artisan_leather_duffel_alt_1779835289705.png"] }]
+        variants: [{ colorName: "Vintage Brown", colorHex: "#5C4033", stock: 10, images: ["/images/generated/the_voyager_leather_duffel_alt_1779785533301.webp", "/images/generated/the_artisan_leather_duffel_alt_1779835289705.webp"] }]
     },
     {
         id: "art-chrono",
@@ -192,13 +192,13 @@ const ARTIFICIAL_PRODUCTS = [
         price: 8999,
         originalPrice: null,
         category: "accessories",
-        images: ["/images/generated/the_heritage_chronograph_alt_1779785550608.png", "/images/generated/the_onyx_chronograph_alt_1779835307570.png"],
+        images: ["/images/generated/the_heritage_chronograph_alt_1779785550608.webp", "/images/generated/the_onyx_chronograph_alt_1779835307570.webp"],
         colors: ["#000000"],
         sizes: ["One Size"],
         sizeType: "onesize",
         gender: "unisex",
         isOutOfStock: false,
-        variants: [{ colorName: "Silver/Black", colorHex: "#000000", stock: 10, images: ["/images/generated/the_heritage_chronograph_alt_1779785550608.png", "/images/generated/the_onyx_chronograph_alt_1779835307570.png"] }]
+        variants: [{ colorName: "Silver/Black", colorHex: "#000000", stock: 10, images: ["/images/generated/the_heritage_chronograph_alt_1779785550608.webp", "/images/generated/the_onyx_chronograph_alt_1779835307570.webp"] }]
     },
     {
         id: "art-weekender",
@@ -207,13 +207,13 @@ const ARTIFICIAL_PRODUCTS = [
         price: 3499,
         originalPrice: null,
         category: "accessories",
-        images: ["/images/generated/the_weekender_alt_1779785663583.png"],
+        images: ["/images/generated/the_weekender_alt_1779785663583.webp"],
         colors: ["#6B8E23"],
         sizes: ["One Size"],
         sizeType: "onesize",
         gender: "unisex",
         isOutOfStock: false,
-        variants: [{ colorName: "Olive", colorHex: "#6B8E23", stock: 10, images: ["/images/generated/the_weekender_alt_1779785663583.png"] }]
+        variants: [{ colorName: "Olive", colorHex: "#6B8E23", stock: 10, images: ["/images/generated/the_weekender_alt_1779785663583.webp"] }]
     },
     {
         id: "art-hamptons",
@@ -222,13 +222,13 @@ const ARTIFICIAL_PRODUCTS = [
         price: 4599,
         originalPrice: null,
         category: "sets",
-        images: ["/images/generated/the_hamptons_weekend_edit_alt_1779785717300.png"],
+        images: ["/images/generated/the_hamptons_weekend_edit_alt_1779785717300.webp"],
         colors: ["#F5F5DC"],
         sizes: ["S", "M", "L", "XL"],
         sizeType: "clothing",
         gender: "men",
         isOutOfStock: false,
-        variants: [{ colorName: "Linen", colorHex: "#F5F5DC", stock: 10, images: ["/images/generated/the_hamptons_weekend_edit_alt_1779785717300.png"] }]
+        variants: [{ colorName: "Linen", colorHex: "#F5F5DC", stock: 10, images: ["/images/generated/the_hamptons_weekend_edit_alt_1779785717300.webp"] }]
     },
     {
         id: "art-amalfi",
@@ -237,13 +237,13 @@ const ARTIFICIAL_PRODUCTS = [
         price: 1999,
         originalPrice: null,
         category: "shirts",
-        images: ["/images/generated/the_amalfi_stripe_alt_1779785859994.png"],
+        images: ["/images/generated/the_amalfi_stripe_alt_1779785859994.webp"],
         colors: ["#4682B4"],
         sizes: ["S", "M", "L", "XL"],
         sizeType: "clothing",
         gender: "men",
         isOutOfStock: false,
-        variants: [{ colorName: "Blue Stripe", colorHex: "#4682B4", stock: 10, images: ["/images/generated/the_amalfi_stripe_alt_1779785859994.png"] }]
+        variants: [{ colorName: "Blue Stripe", colorHex: "#4682B4", stock: 10, images: ["/images/generated/the_amalfi_stripe_alt_1779785859994.webp"] }]
     }
 ];
 
@@ -371,16 +371,16 @@ function mapProduct(p: any): Product {
     let colors = p.colors || [];
     
     if (titleLower === "the amalfi stripe") {
-        const originalMain = p.imageUrl || "/images/original_mains/the_amalfi_stripe_main.png";
-        const originalAlt = "/images/generated/the_amalfi_stripe_real_alt_matching.jpg";
-        const originalThird = "/images/generated/the_amalfi_stripe_third.png";
+        const originalMain = p.imageUrl || "/images/original_mains/the_amalfi_stripe_main.webp";
+        const originalAlt = "/images/generated/the_amalfi_stripe_real_alt_matching.webp";
+        const originalThird = "/images/generated/the_amalfi_stripe_third.webp";
         images = [originalMain, originalAlt, originalThird];
         colors = ["#556B2F", "#4682B4"];
     }
 
     if (titleLower === "the hamptons weekend edit") {
-        const originalMain = p.imageUrl || "/images/original_mains/the_hamptons_weekend_edit_main.png";
-        const originalAlt = "/images/generated/the_hamptons_weekend_edit_blue_red_alt_1779882261092.png";
+        const originalMain = p.imageUrl || "/images/original_mains/the_hamptons_weekend_edit_main.webp";
+        const originalAlt = "/images/generated/the_hamptons_weekend_edit_blue_red_alt_1779882261092.webp";
         images = [originalMain, originalAlt];
         colors = ["#CD5C5C", "#F5F5DC"];
     }
@@ -464,11 +464,11 @@ export async function getProduct(slug: string) {
 
     let title = renameProductTitle(product.title);
     if (product.title?.toLowerCase() === "the amalfi stripe") {
-        const originalMain = defaultImages[0] || "/images/original_mains/the_amalfi_stripe_main.png";
-        const originalAlt = "/images/generated/the_amalfi_stripe_real_alt_matching.jpg";
-        const originalThird = "/images/generated/the_amalfi_stripe_third.png";
-        const blueImage = "/images/generated/the_amalfi_stripe_alt_1779836744521.png";
-        const blueAlt = "/images/generated/the_amalfi_stripe_blue_alt_1779882813282.png";
+        const originalMain = defaultImages[0] || "/images/original_mains/the_amalfi_stripe_main.webp";
+        const originalAlt = "/images/generated/the_amalfi_stripe_real_alt_matching.webp";
+        const originalThird = "/images/generated/the_amalfi_stripe_third.webp";
+        const blueImage = "/images/generated/the_amalfi_stripe_alt_1779836744521.webp";
+        const blueAlt = "/images/generated/the_amalfi_stripe_blue_alt_1779882813282.webp";
 
         const variants = [
             {
@@ -502,10 +502,10 @@ export async function getProduct(slug: string) {
     }
 
     if (product.title?.toLowerCase() === "the hamptons weekend edit") {
-        const originalMain = defaultImages[0] || "/images/original_mains/the_amalfi_stripe_main.png"; // Fallback to main
-        const originalAlt = "/images/generated/the_hamptons_weekend_edit_blue_red_alt_1779882261092.png";
-        const beigeModel = "/images/generated/the_hamptons_weekend_edit_alt_1779836712724.png";
-        const beigeAlt = "/images/generated/the_hamptons_weekend_edit_beige_alt_1779882353962.png";
+        const originalMain = defaultImages[0] || "/images/original_mains/the_amalfi_stripe_main.webp"; // Fallback to main
+        const originalAlt = "/images/generated/the_hamptons_weekend_edit_blue_red_alt_1779882261092.webp";
+        const beigeModel = "/images/generated/the_hamptons_weekend_edit_alt_1779836712724.webp";
+        const beigeAlt = "/images/generated/the_hamptons_weekend_edit_beige_alt_1779882353962.webp";
 
         const variants = [
             {

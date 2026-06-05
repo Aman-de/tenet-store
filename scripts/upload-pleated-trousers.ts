@@ -39,10 +39,10 @@ async function uploadFileToSanity(filePath: string, filename: string): Promise<s
 async function main() {
     console.log('🚀 Uploading pleated wool trouser images to Sanity...')
 
-    const greyAltPath = path.join(process.cwd(), 'public/images/generated/pleated_wool_trouser_grey_alt.png')
-    const greyThirdPath = path.join(process.cwd(), 'public/images/generated/pleated_wool_trouser_grey_third.png')
-    const charcoalAltPath = path.join(process.cwd(), 'public/images/generated/pleated_wool_trouser_charcoal_alt.png')
-    const charcoalThirdPath = path.join(process.cwd(), 'public/images/generated/pleated_wool_trouser_charcoal_third.png')
+    const greyAltPath = path.join(process.cwd(), 'public/images/generated/pleated_wool_trouser_grey_alt.webp')
+    const greyThirdPath = path.join(process.cwd(), 'public/images/generated/pleated_wool_trouser_grey_third.webp')
+    const charcoalAltPath = path.join(process.cwd(), 'public/images/generated/pleated_wool_trouser_charcoal_alt.webp')
+    const charcoalThirdPath = path.join(process.cwd(), 'public/images/generated/pleated_wool_trouser_charcoal_third.webp')
 
     const greyAltId = await uploadFileToSanity(greyAltPath, 'pleated_wool_trouser_grey_alt.png')
     const greyThirdId = await uploadFileToSanity(greyThirdPath, 'pleated_wool_trouser_grey_third.png')
