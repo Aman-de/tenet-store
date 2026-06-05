@@ -757,7 +757,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 </div>
 
                 {/* Mobile-only Sticky CTA Bar (stops sticking below reviews/accordions) */}
-                <div className="md:hidden sticky bottom-0 left-0 right-0 z-30 bg-[#FDFBF7]/95 backdrop-blur-md border-t border-neutral-200 p-4 pb-safe -mx-4 px-4 flex gap-2">
+                <div className="md:hidden sticky bottom-0 left-0 right-0 z-30 bg-[#FDFBF7] border-t border-neutral-200 py-5 pb-safe -mx-4 px-4 flex gap-2">
                     <button
                         onClick={handleBuyNow}
                         disabled={product.isOutOfStock}
