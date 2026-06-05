@@ -161,16 +161,7 @@ export default function SortedProductGrid({ products: rawProducts, showSizeFilte
                     {/* Desktop Divider */}
                     <span className="hidden lg:inline-block w-px h-4 bg-neutral-200" />
 
-                    {/* Smart Feed Indicator */}
-                    <div className="relative z-20 w-full lg:w-auto">
-                        <div className="h-9 px-4 flex items-center gap-2 rounded-sm text-xs font-bold uppercase border bg-[#1A1A1A] text-white border-[#1A1A1A] whitespace-nowrap w-full lg:w-auto">
-                            <span className="relative flex h-2 w-2 mr-1">
-                              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-                              <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
-                            </span>
-                            Smart Feed
-                        </div>
-                    </div>
+                    {/* Removed Smart Feed Indicator as per user request */}
                 </div>
             </div>
 
