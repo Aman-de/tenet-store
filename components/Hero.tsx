@@ -121,7 +121,7 @@ export default function Hero({ spotlightProducts = [] }: HeroProps) {
                     <Link
                         href={`/product/${product.handle}`}
                         key={product.id}
-                        className="relative h-full w-full md:w-[50vw] lg:w-auto lg:aspect-square shrink-0 overflow-hidden lg:rounded-sm group block ml-0 bg-[#f4f4f4]"
+                        className="relative h-full w-full md:w-[50vw] lg:w-[33.333vw] shrink-0 overflow-hidden lg:rounded-sm group block ml-0 bg-[#f4f4f4]"
                     >
                         {product.images[0] && (
                             <Image
