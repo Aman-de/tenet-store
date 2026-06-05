@@ -16,6 +16,7 @@ interface HeroProps {
 
 export default function Hero({ spotlightProducts = [] }: HeroProps) {
     const { gender } = useGender();
+    const accentColor = gender === "woman" ? "#E05275" : "#2B6496";
     const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, skipSnaps: true, align: "start", slidesToScroll: "auto" }, [Autoplay({ delay: 5000, stopOnInteraction: true })]);
     const [activeIndex, setActiveIndex] = useState(0);
     const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
@@ -147,6 +148,15 @@ export default function Hero({ spotlightProducts = [] }: HeroProps) {
                                 className="object-cover object-center transition-transform duration-[8s] ease-out group-hover:scale-105"
                                 quality={90}
                             />
+                        )}
+                        {/* Discount Badge */}
+                        {product.originalPrice && product.originalPrice > product.price && (
+                            <div 
+                                className="absolute top-4 left-4 text-white text-[10px] font-bold px-2.5 py-1 uppercase tracking-wider z-20 shadow-sm rounded-sm"
+                                style={{ backgroundColor: accentColor }}
+                            >
+                                {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF
+                            </div>
                         )}
                         {/* Subtle Gradient for text readability */}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-90 transition-opacity group-hover:opacity-100" />
