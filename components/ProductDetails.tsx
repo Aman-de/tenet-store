@@ -120,22 +120,38 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
     const [deliveryInfo, setDeliveryInfo] = useState<{ date: string, free: boolean } | null>(null);
     const [pincodeError, setPincodeError] = useState<string | null>(null);
 
-    const handleCheckPincode = (code: string) => {
+    const handleCheckPincode = async (code: string) => {
         setPincodeError(null);
         setDeliveryInfo(null);
         
         if (code.length === 6) {
-            // Mock validation: Must start with 1-9 and be 6 digits
             if (!/^[1-9][0-9]{5}$/.test(code)) {
                 setPincodeError("Oops, we don't deliver to this pincode or it is invalid.");
                 return;
             }
-            const days = Math.floor(Math.random() * 5 + 2);
-            const deliveryDate = new Date(Date.now() + 86400000 * days);
-            setDeliveryInfo({ 
-                date: "Delivery by " + deliveryDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }), 
-                free: true 
-            });
+
+            try {
+                const res = await fetch(`https://api.postalpincode.in/pincode/${code}`);
+                const data = await res.json();
+                
+                const days = Math.floor(Math.random() * 5 + 2);
+
+                if (data && data[0] && data[0].Status === "Success" && data[0].PostOffice && data[0].PostOffice.length > 0) {
+                    const city = data[0].PostOffice[0].District || data[0].PostOffice[0].Block || "your location";
+                    setDeliveryInfo({ 
+                        date: `Delivery available in ${city} in ${days} days`, 
+                        free: true 
+                    });
+                } else {
+                    setPincodeError("Oops, we don't deliver to this pincode or it is invalid.");
+                }
+            } catch (err) {
+                const days = Math.floor(Math.random() * 5 + 2);
+                setDeliveryInfo({ 
+                    date: `Delivery available in ${days} days`, 
+                    free: true 
+                });
+            }
         }
     };
 
