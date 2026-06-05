@@ -35,15 +35,15 @@ const HIDDEN_PRODUCT_TITLES = new Set([
 ]);
 
 const PRICE_OVERRIDES: Record<string, number> = {
-    "essential heavyweight tee": 899,
-    "the merino crewneck": 1899,
-    "the weekender": 2499,
-    "the pleated wool trouser": 2299,
-    "the merino turtleneck": 1799,
-    "the riviera linen short": 1499,
-    "the essential jogger": 1599,
-    "the heavyweight hoodie": 1999,
-    "the amalfi stripe": 1299
+    "essential heavyweight tee": 549,
+    "the merino crewneck": 1199,
+    "the weekender": 1599,
+    "the pleated wool trouser": 1499,
+    "the merino turtleneck": 1199,
+    "the riviera linen short": 899,
+    "the essential jogger": 999,
+    "the heavyweight hoodie": 1299,
+    "the amalfi stripe": 799
 };
 
 const IMAGE_OVERRIDES: Record<string, { main?: string, alt?: string, third?: string }> = {
@@ -87,7 +87,7 @@ function resolveVariantImages(title: string, defaultImages: string[]) {
 }
 
 function getIndianPricing(title: string) {
-    if (!title) return { price: 1499, originalPrice: null, discountLabel: null };
+    if (!title) return { price: 999, originalPrice: null, discountLabel: null };
     
     let price = 0;
     const titleLower = title.toLowerCase();
@@ -102,11 +102,11 @@ function getIndianPricing(title: string) {
     if (PRICE_OVERRIDES[titleLower]) {
         price = PRICE_OVERRIDES[titleLower];
     } else {
-        price = 1500 + Math.floor(pseudoRandom * 30) * 100 - 1;
+        price = 800 + Math.floor(pseudoRandom * 20) * 100 - 1;
     }
     
     const hasDiscount = pseudoRandom > 0.85; // few items have MRP discount
-    const originalPrice = hasDiscount ? price + 500 + Math.floor(pseudoRandom * 15) * 100 : null;
+    const originalPrice = hasDiscount ? price + 300 + Math.floor(pseudoRandom * 10) * 100 : null;
     const discountLabel = originalPrice ? `SAVE RS. ${originalPrice - price}` : null;
     return { price, originalPrice, discountLabel };
 }
@@ -144,7 +144,7 @@ const ARTIFICIAL_PRODUCTS = [
         id: "art-cable-knit",
         title: "The Alpine Cable Knit",
         handle: "the-alpine-cable-knit",
-        price: 2899,
+        price: 1799,
         originalPrice: null,
         category: "knitwear",
         images: ["/images/generated/the_archive_cable_knit_zip_alt_1779785469898.webp", "/images/generated/the_alpine_cable_knit_alt_1779835239375.webp"],
@@ -159,7 +159,7 @@ const ARTIFICIAL_PRODUCTS = [
         id: "art-gurkha",
         title: "The Minimalist Gurkha Trouser",
         handle: "the-minimalist-gurkha-trouser",
-        price: 2499,
+        price: 1599,
         originalPrice: null,
         category: "pants",
         images: ["/images/generated/the_tailored_gurkha_trouser_alt_1779785496750.webp", "/images/generated/the_minimalist_gurkha_trouser_alt_1779835253569.webp"],
@@ -174,7 +174,7 @@ const ARTIFICIAL_PRODUCTS = [
         id: "art-duffel",
         title: "The Artisan Leather Duffel",
         handle: "the-artisan-leather-duffel",
-        price: 4999,
+        price: 2999,
         originalPrice: null,
         category: "accessories",
         images: ["/images/generated/the_voyager_leather_duffel_alt_1779785533301.webp", "/images/generated/the_artisan_leather_duffel_alt_1779835289705.webp"],
@@ -189,7 +189,7 @@ const ARTIFICIAL_PRODUCTS = [
         id: "art-chrono",
         title: "The Onyx Chronograph",
         handle: "the-onyx-chronograph",
-        price: 8999,
+        price: 5499,
         originalPrice: null,
         category: "accessories",
         images: ["/images/generated/the_heritage_chronograph_alt_1779785550608.webp", "/images/generated/the_onyx_chronograph_alt_1779835307570.webp"],
@@ -204,7 +204,7 @@ const ARTIFICIAL_PRODUCTS = [
         id: "art-weekender",
         title: "The Heritage Weekender",
         handle: "the-heritage-weekender",
-        price: 3499,
+        price: 2199,
         originalPrice: null,
         category: "accessories",
         images: ["/images/generated/the_weekender_alt_1779785663583.webp"],
@@ -219,7 +219,7 @@ const ARTIFICIAL_PRODUCTS = [
         id: "art-hamptons",
         title: "The Weekend Escape Edit",
         handle: "the-weekend-escape-edit",
-        price: 4599,
+        price: 2799,
         originalPrice: null,
         category: "sets",
         images: ["/images/generated/the_hamptons_weekend_edit_alt_1779785717300.webp"],
@@ -234,7 +234,7 @@ const ARTIFICIAL_PRODUCTS = [
         id: "art-amalfi",
         title: "The Coastal Stripe Resort Shirt",
         handle: "the-coastal-stripe-resort-shirt",
-        price: 1999,
+        price: 1199,
         originalPrice: null,
         category: "shirts",
         images: ["/images/generated/the_amalfi_stripe_alt_1779785859994.webp"],

@@ -13,12 +13,14 @@ import { trackViewItem, trackAddToCart } from "@/lib/analytics";
 
 interface ProductCardProps {
     product: Product;
+    isRecommended?: boolean;
 }
 
-export default function ProductCard({ product }: ProductCardProps) {
+export default function ProductCard({ product, isRecommended = false }: ProductCardProps) {
     const [isHovered, setIsHovered] = useState(false);
     const [addingState, setAddingState] = useState<'idle' | 'adding' | 'added'>('idle');
     const [altImgError, setAltImgError] = useState(false);
+    const [isSizeSelectorOpen, setIsSizeSelectorOpen] = useState(false);
     const { addToCart, openCart, toggleWishlist, isInWishlist } = useStore();
     const { gender } = useGender();
     const isWoman = gender === "woman";
@@ -33,17 +35,25 @@ export default function ProductCard({ product }: ProductCardProps) {
         trackViewItem(product);
     };
 
-    const handleQuickAdd = () => {
-        if (addingState !== 'idle' || product.isOutOfStock) return;
+    const handleCardClick = (e: React.MouseEvent) => {
+        if (isRecommended && window.innerWidth < 768) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (product.isOutOfStock) return;
+            setIsSizeSelectorOpen(true);
+        } else {
+            handleViewItem();
+        }
+    };
 
+    const handleSelectSize = (size: string) => {
+        setIsSizeSelectorOpen(false);
         setAddingState('adding');
 
-        // Add item and open cart immediately for instant feedback
-        addToCart(product, "M", product.colors?.[0]);
-        trackAddToCart(product, 1, "M", product.colors?.[0]);
+        addToCart(product, size, product.colors?.[0]);
+        trackAddToCart(product, 1, size, product.colors?.[0]);
         openCart();
 
-        // Simulate processing state then success
         setTimeout(() => {
             setAddingState('added');
             setTimeout(() => {
@@ -60,7 +70,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         >
             {/* Image Container */}
             <div className="relative aspect-[3/4] w-full overflow-hidden bg-neutral-100 mb-2">
-                <Link href={`/product/${product.handle}`} onClick={handleViewItem} className="absolute inset-0 z-0 block w-full h-full">
+                <Link href={`/product/${product.handle}`} onClick={handleCardClick} className="absolute inset-0 z-0 block w-full h-full">
                     {product.images?.[0] ? (
                         <Image
                             src={product.images[0]}
@@ -127,6 +137,21 @@ export default function ProductCard({ product }: ProductCardProps) {
                         />
                     </motion.button>
 
+                    {/* Mobile Quick Add Button - Bottom Right of Image */}
+                    {!product.isOutOfStock && (
+                        <motion.button
+                            whileTap={{ scale: 1.1 }}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                setIsSizeSelectorOpen(true);
+                            }}
+                            className="md:hidden absolute bottom-2 right-2 z-30 w-8 h-8 bg-white/90 backdrop-blur-sm text-[#1A1A1A] rounded-full flex items-center justify-center shadow-md border border-neutral-200/50 active:scale-95 transition-all duration-200"
+                        >
+                            <Plus size={16} style={{ color: accentColor }} />
+                        </motion.button>
+                    )}
+
                     {/* Quick Add and Wishlist Overlay - Desktop Only */}
                     <div className="absolute bottom-4 left-4 right-4 z-30 hidden md:flex gap-2 justify-center pointer-events-none">
                         {/* Desktop: Full Width Text Button */}
@@ -134,7 +159,8 @@ export default function ProductCard({ product }: ProductCardProps) {
                             onClick={(e) => {
                                 e.preventDefault();
                                 e.stopPropagation();
-                                handleQuickAdd();
+                                if (addingState !== 'idle' || product.isOutOfStock) return;
+                                setIsSizeSelectorOpen(true);
                             }}
                             className={`
                                 pointer-events-auto
@@ -177,7 +203,61 @@ export default function ProductCard({ product }: ProductCardProps) {
                         </motion.button>
                     </div>
 
-
+                    {/* Size Selector Popup Overlay */}
+                    <AnimatePresence>
+                        {isSizeSelectorOpen && (
+                            <motion.div
+                                initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                                animate={{ opacity: 1, y: 0, scale: 1 }}
+                                exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                                className="absolute bottom-2 left-2 right-2 z-40 bg-white/95 backdrop-blur-md border border-neutral-200/80 p-3 rounded-lg shadow-xl flex flex-col items-center gap-2 text-center pointer-events-auto"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                }}
+                            >
+                                <span className="text-[9px] uppercase font-bold tracking-widest text-neutral-500">
+                                    Select Size
+                                </span>
+                                <div className="flex gap-1.5 flex-wrap justify-center my-1">
+                                    {(product.sizes && product.sizes.length > 0 ? product.sizes : ["S", "M", "L", "XL"]).map((size) => (
+                                        <button
+                                            key={size}
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                e.stopPropagation();
+                                                handleSelectSize(size);
+                                            }}
+                                            className="w-8 h-8 border rounded-full flex items-center justify-center font-sans text-[10px] font-bold transition-all border-neutral-200 hover:border-[#1A1A1A] hover:bg-neutral-50 active:scale-95"
+                                        >
+                                            {size}
+                                        </button>
+                                    ))}
+                                </div>
+                                <div className="flex flex-col gap-1 w-full mt-1 border-t border-neutral-100 pt-2">
+                                    {isRecommended && (
+                                        <Link
+                                            href={`/product/${product.handle}`}
+                                            className="text-[9px] uppercase tracking-widest font-bold underline text-neutral-600 hover:text-black transition-colors"
+                                            onClick={() => setIsSizeSelectorOpen(false)}
+                                        >
+                                            View Details
+                                        </Link>
+                                    )}
+                                    <button
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                            setIsSizeSelectorOpen(false);
+                                        }}
+                                        className="text-[9px] uppercase tracking-wider text-neutral-400 hover:text-neutral-600 transition-colors"
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
 
                 </div>
 
