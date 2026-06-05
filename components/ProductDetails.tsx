@@ -562,7 +562,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         onClick={handleBuyNow}
                         disabled={product.isOutOfStock}
                         className={cn(
-                            "flex-grow py-4 font-sans uppercase tracking-widest transition-all text-xs md:text-sm font-bold shadow-md",
+                            "flex-grow h-[56px] flex items-center justify-center font-sans uppercase tracking-widest transition-all text-xs md:text-sm font-bold shadow-md",
                             product.isOutOfStock
                                 ? "bg-neutral-300 text-neutral-500 cursor-not-allowed"
                                 : "bg-[#1A1A1A] text-white hover:bg-black hover:shadow-lg active:scale-[0.99]"
@@ -762,7 +762,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         onClick={handleBuyNow}
                         disabled={product.isOutOfStock}
                         className={cn(
-                            "flex-grow py-4 font-sans uppercase tracking-widest transition-all text-xs font-bold shadow-md",
+                            "flex-grow h-[56px] flex items-center justify-center font-sans uppercase tracking-widest transition-all text-xs font-bold shadow-md",
                             product.isOutOfStock
                                 ? "bg-neutral-300 text-neutral-500 cursor-not-allowed"
                                 : "bg-[#1A1A1A] text-white hover:bg-black active:scale-[0.99]"
