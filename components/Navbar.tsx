@@ -4,7 +4,7 @@ import { ShoppingBag, Search, Menu, X, Heart, User, Package } from "lucide-react
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { UserButton, SignInButton, useUser } from "@clerk/nextjs";
+import { UserButton, SignInButton, useUser, SignedIn, SignedOut } from "@clerk/nextjs";
 
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -214,11 +214,11 @@ export default function Navbar() {
                         >
                             <div className="flex flex-col">
                                 <Link
-                                    href="/support"
+                                    href="/"
                                     onClick={() => setIsMobileMenuOpen(false)}
-                                    className="px-6 py-3 text-sm font-medium text-[#1A1A1A] hover:bg-neutral-50 transition-colors text-left"
+                                    className="px-6 py-3 text-sm font-medium text-[#1A1A1A] hover:bg-neutral-50 transition-colors text-left border-b border-neutral-50"
                                 >
-                                    SUPPORT
+                                    HOME
                                 </Link>
                                 <Link
                                     href="/#new-arrivals"
@@ -228,11 +228,44 @@ export default function Navbar() {
                                     COLLECTIONS
                                 </Link>
                                 <Link
+                                    href="/orders"
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                    className="px-6 py-3 text-sm font-medium text-[#1A1A1A] hover:bg-neutral-50 transition-colors text-left"
+                                >
+                                    ORDERS
+                                </Link>
+                                <SignedIn>
+                                    <div className="px-6 py-3 text-sm font-medium text-[#1A1A1A] hover:bg-neutral-50 transition-colors text-left flex items-center justify-between">
+                                        <span>ACCOUNT</span>
+                                        <div className="scale-75 origin-right">
+                                            <UserButton afterSignOutUrl="/" />
+                                        </div>
+                                    </div>
+                                </SignedIn>
+                                <SignedOut>
+                                    <SignInButton mode="modal">
+                                        <button 
+                                            onClick={() => setIsMobileMenuOpen(false)}
+                                            className="px-6 py-3 text-sm font-medium text-[#1A1A1A] hover:bg-neutral-50 transition-colors text-left w-full"
+                                        >
+                                            ACCOUNT (LOG IN)
+                                        </button>
+                                    </SignInButton>
+                                </SignedOut>
+                                <div className="border-t border-neutral-50 my-1" />
+                                <Link
                                     href="/about"
                                     onClick={() => setIsMobileMenuOpen(false)}
                                     className="px-6 py-3 text-sm font-medium text-[#1A1A1A] hover:bg-neutral-50 transition-colors text-left"
                                 >
                                     ABOUT
+                                </Link>
+                                <Link
+                                    href="/support"
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                    className="px-6 py-3 text-sm font-medium text-[#1A1A1A] hover:bg-neutral-50 transition-colors text-left"
+                                >
+                                    SUPPORT
                                 </Link>
                             </div>
                         </motion.div>

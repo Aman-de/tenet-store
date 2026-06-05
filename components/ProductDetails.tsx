@@ -267,6 +267,9 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
         // Size Check
         if (showSizeSelector && !selectedSize) {
             setError("Please select a size.");
+            if (typeof window !== "undefined") {
+                window.scrollTo({ top: 380, behavior: "smooth" });
+            }
             return null;
         }
 
@@ -755,7 +758,12 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
             </div>
 
             {/* Sticky Mobile Bar */}
-            <MobileStickyBar product={product} selectedVariant={selectedVariant} />
+            <MobileStickyBar 
+                product={product} 
+                selectedVariant={selectedVariant} 
+                onAddToCart={handleAddToCart}
+                onBuyNow={handleBuyNow}
+            />
         </div>
     );
 }

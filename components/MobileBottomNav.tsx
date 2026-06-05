@@ -9,6 +9,10 @@ export default function MobileBottomNav() {
     const pathname = usePathname();
     const { isSignedIn } = useUser();
 
+    if (pathname.includes("/product/")) {
+        return null;
+    }
+
     // Navigation Items
     const navItems = [
         {
