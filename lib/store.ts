@@ -56,6 +56,10 @@ interface StoreState {
     // Referral Tracking
     referralCode: string | null;
     setReferralCode: (code: string | null) => void;
+
+    // Engagement Tracking (Smart Feed)
+    engagement: Record<string, number>;
+    trackEngagement: (tag: string, score: number) => void;
 }
 
 export const useStore = create<StoreState>()(
@@ -68,9 +72,22 @@ export const useStore = create<StoreState>()(
             isWishlistOpen: false,
             checkoutItem: null,
             referralCode: null,
+            engagement: {},
 
             // --- Referral Tracker ---
             setReferralCode: (code) => set({ referralCode: code }),
+
+            // --- Engagement Tracker ---
+            trackEngagement: (tag, score) => set((state) => {
+                const lowerTag = tag.toLowerCase();
+                const currentScore = state.engagement[lowerTag] || 0;
+                return {
+                    engagement: {
+                        ...state.engagement,
+                        [lowerTag]: currentScore + score
+                    }
+                };
+            }),
 
             // --- Cart Implementation ---
             openCart: () => set({ isCartOpen: true, isWishlistOpen: false }), // Close wishlist if opening cart
@@ -203,7 +220,7 @@ export const useStore = create<StoreState>()(
             name: 'tenet-storage',
             storage: createJSONStorage(() => localStorage),
             skipHydration: true,
-            partialize: (state) => ({ cart: state.cart, wishlist: state.wishlist, referralCode: state.referralCode }), // Don't persist checkoutItem
+            partialize: (state) => ({ cart: state.cart, wishlist: state.wishlist, referralCode: state.referralCode, engagement: state.engagement }), // Don't persist checkoutItem
         }
     )
 );

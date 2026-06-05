@@ -98,7 +98,7 @@ export default function CategoryGrid({ collections }: { collections: Collection[
                         Shop by Category
                     </h2>
                     <span className="hidden md:inline-block text-xs font-medium tracking-[0.2em] text-neutral-400 uppercase">
-                        The Edit
+                        The Sets
                     </span>
                 </div>
             </div>

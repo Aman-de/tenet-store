@@ -91,7 +91,7 @@ const ReviewForm = ({ productId, onCancel }: { productId: string, onCancel: () =
 };
 
 export default function ProductDetails({ product, reviews = [] }: ProductDetailsProps) {
-    const { addToCart, openCart, toggleWishlist, isInWishlist, setCheckoutItem } = useStore();
+    const { addToCart, openCart, toggleWishlist, isInWishlist, setCheckoutItem, trackEngagement } = useStore();
 
     // Variant Logic
     const hasVariants = product.variants && product.variants.length > 0;
@@ -207,12 +207,23 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
         };
     }, []);
 
-    // GA4 View Item Tracking
+    // GA4 View Item Tracking & Smart Feed Engagement
     useEffect(() => {
         if (product) {
             trackViewItem(product);
+            
+            // Smart Feed Engagement: Immediate View (+1)
+            const category = product.category || 'general';
+            trackEngagement(category, 1);
+            
+            // Smart Feed Engagement: Retention > 5s (+3)
+            const timer = setTimeout(() => {
+                trackEngagement(category, 3);
+            }, 5000);
+            
+            return () => clearTimeout(timer);
         }
-    }, [product.id]);
+    }, [product.id, product.category, trackEngagement]);
 
     const isWishlisted = isInWishlist(product.id);
     const averageRating = reviews.length > 0

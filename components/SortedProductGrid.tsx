@@ -3,8 +3,7 @@
 import { useState } from "react";
 import { Product } from "@/lib/data";
 import ProductCard from "./ProductCard";
-// Framer motion removed for instant rendering
-import { ChevronDown } from "lucide-react";
+import { useStore } from "@/lib/store";
 
 import { useGender } from "@/context/GenderContext";
 
@@ -14,8 +13,6 @@ interface SortedProductGridProps {
     showSizeFilter?: boolean;
     alignFiltersWithTitle?: boolean;
 }
-
-type SortOption = "newest" | "price-asc" | "price-desc";
 
 const standardSizeOrder = ["XXS", "XS", "S", "M", "L", "XL", "XXL", "XXXL", "3XL", "4XL"];
 
@@ -42,8 +39,7 @@ export default function SortedProductGrid({ products: rawProducts, showSizeFilte
         return g === activeGender || g === 'unisex';
     });
 
-    const [sortOption, setSortOption] = useState<SortOption>("newest");
-    const [isSortOpen, setIsSortOpen] = useState(false);
+    const { engagement } = useStore();
     const [selectedSize, setSelectedSize] = useState<string | null>(null);
     const [priceFilter, setPriceFilter] = useState<'all' | 'standard' | 'mid' | 'premium'>('all');
 
@@ -74,14 +70,19 @@ export default function SortedProductGrid({ products: rawProducts, showSizeFilte
         filteredProducts = filteredProducts.filter(p => p.price > 30000);
     }
 
-    // 3. Sort the filtered results
+    // 3. Smart Feed Algorithm
     const sortedProducts = [...filteredProducts].sort((a, b) => {
-        if (sortOption === "price-asc") {
-            return a.price - b.price;
+        const catA = (a.category || "").toLowerCase();
+        const catB = (b.category || "").toLowerCase();
+        const scoreA = engagement[catA] || 0;
+        const scoreB = engagement[catB] || 0;
+
+        // Sort by highest engagement score first
+        if (scoreB !== scoreA) {
+            return scoreB - scoreA;
         }
-        if (sortOption === "price-desc") {
-            return b.price - a.price;
-        }
+        
+        // Fallback: Newest first (original array order)
         return 0;
     });
 
@@ -160,37 +161,15 @@ export default function SortedProductGrid({ products: rawProducts, showSizeFilte
                     {/* Desktop Divider */}
                     <span className="hidden lg:inline-block w-px h-4 bg-neutral-200" />
 
-                    {/* Sort Dropdown */}
+                    {/* Smart Feed Indicator */}
                     <div className="relative z-20 w-full lg:w-auto">
-                        <button
-                            onClick={() => setIsSortOpen(!isSortOpen)}
-                            className="h-9 px-4 flex items-center justify-between lg:justify-start gap-2 rounded-sm text-xs font-bold uppercase transition-all border bg-white text-neutral-600 border-gray-200 hover:border-[#1A1A1A] whitespace-nowrap w-full lg:w-auto"
-                        >
-                            <span>{sortOption === "newest" ? "Sort: Newest" : sortOption === "price-asc" ? "Sort: Low to High" : "Sort: High to Low"}</span>
-                            <ChevronDown className={`w-3.5 h-3.5 transition-transform ${isSortOpen ? "rotate-180" : ""}`} />
-                        </button>
-                        {isSortOpen && (
-                            <div className="absolute right-0 top-full mt-1 w-full lg:w-44 bg-white border border-neutral-100 shadow-xl py-1.5 rounded-sm origin-top-right z-50 animate-in fade-in zoom-in-95 duration-200">
-                                <button
-                                    onClick={() => { setSortOption("newest"); setIsSortOpen(false); }}
-                                    className={`w-full text-left px-4 py-2.5 text-xs uppercase tracking-wider hover:bg-neutral-50 ${sortOption === "newest" ? "font-bold text-black" : "text-neutral-500"}`}
-                                >
-                                    Newest
-                                </button>
-                                <button
-                                    onClick={() => { setSortOption("price-asc"); setIsSortOpen(false); }}
-                                    className={`w-full text-left px-4 py-2.5 text-xs uppercase tracking-wider hover:bg-neutral-50 ${sortOption === "price-asc" ? "font-bold text-black" : "text-neutral-500"}`}
-                                >
-                                    Price: Low to High
-                                </button>
-                                <button
-                                    onClick={() => { setSortOption("price-desc"); setIsSortOpen(false); }}
-                                    className={`w-full text-left px-4 py-2.5 text-xs uppercase tracking-wider hover:bg-neutral-50 ${sortOption === "price-desc" ? "font-bold text-black" : "text-neutral-500"}`}
-                                >
-                                    Price: High to Low
-                                </button>
-                            </div>
-                        )}
+                        <div className="h-9 px-4 flex items-center gap-2 rounded-sm text-xs font-bold uppercase border bg-[#1A1A1A] text-white border-[#1A1A1A] whitespace-nowrap w-full lg:w-auto">
+                            <span className="relative flex h-2 w-2 mr-1">
+                              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                              <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+                            </span>
+                            Smart Feed
+                        </div>
                     </div>
                 </div>
             </div>
