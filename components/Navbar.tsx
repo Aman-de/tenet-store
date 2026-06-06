@@ -2,7 +2,7 @@
 
 import { ShoppingBag, Search, Menu, X, Heart, User, Package } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { UserButton, SignInButton, useUser, SignedIn, SignedOut } from "@clerk/nextjs";
 
@@ -13,6 +13,7 @@ import { useGender } from "@/context/GenderContext";
 
 export default function Navbar() {
     const router = useRouter();
+    const pathname = usePathname();
     const { openCart, openWishlist, cart, wishlist } = useStore();
     const { gender } = useGender();
     const isWoman = gender === "woman";
@@ -58,19 +59,21 @@ export default function Navbar() {
 
     return (
         <>
-            {/* Promo Banner */}
-            <div className="bg-gradient-to-r from-pink-600 via-purple-600 to-pink-600 text-white py-1.5 shadow-md z-[60] relative overflow-hidden flex whitespace-nowrap w-full">
-                <div className="animate-marquee flex items-center shrink-0 w-max">
-                    {[...Array(6)].map((_, i) => (
-                        <div key={i} className="flex items-center gap-4 sm:gap-8 px-2 sm:px-4 text-[10px] sm:text-xs font-sans tracking-[0.15em] font-bold uppercase">
-                            <span>🌸 FESTIVE SALE: BUY 2 GET 1 FREE</span>
-                            <span className="opacity-50">|</span>
-                            <span>FLAT 20% OFF ON FIRST ORDER</span>
-                            <span className="opacity-50">|</span>
-                        </div>
-                    ))}
+            {/* Promo Banner (Only on Home Page) */}
+            {pathname === "/" && (
+                <div className="bg-gradient-to-r from-pink-600 via-purple-600 to-pink-600 text-white py-1.5 shadow-md z-[60] relative overflow-hidden flex whitespace-nowrap w-full">
+                    <div className="animate-marquee flex items-center shrink-0 w-max">
+                        {[...Array(6)].map((_, i) => (
+                            <div key={i} className="flex items-center gap-4 sm:gap-8 px-2 sm:px-4 text-[10px] sm:text-xs font-sans tracking-[0.15em] font-bold uppercase">
+                                <span>🌸 FESTIVE SALE: BUY 2 GET 1 FREE</span>
+                                <span className="opacity-50">|</span>
+                                <span>FLAT 20% OFF ON FIRST ORDER</span>
+                                <span className="opacity-50">|</span>
+                            </div>
+                        ))}
+                    </div>
                 </div>
-            </div>
+            )}
             <nav
                 className={`sticky top-0 left-0 w-full z-50 transition-all duration-300 ${navBackground}`}
             >

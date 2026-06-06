@@ -539,8 +539,27 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         <span className="text-xs text-neutral-500 font-medium">({reviews.length} Reviews)</span>
                     </div>
                 )}
-                {reviews.length === 0 && <div className="mb-4" />}
+                {reviews.length === 0 && <div className="mb-2" />}
 
+                {/* Active Promo Tags */}
+                <div className="flex flex-col gap-2.5 mb-5 mt-1 border-t border-b border-neutral-100/60 py-3">
+                    <div className="flex items-start gap-2.5">
+                        <span className="text-[9px] font-bold text-white px-1.5 py-0.5 rounded uppercase tracking-wider shrink-0" style={{ backgroundColor: accentColor }}>
+                            Offer
+                        </span>
+                        <div className="text-[11.5px] leading-snug text-neutral-500 font-sans">
+                            <strong className="text-[#1A1A1A] font-semibold">-20% OFF</strong> on your first purchase. Use code <strong className="font-mono bg-neutral-100/80 px-1.5 py-0.5 border border-neutral-200/60 rounded text-neutral-800 text-[10.5px]">FIRST20</strong>
+                        </div>
+                    </div>
+                    <div className="flex items-start gap-2.5">
+                        <span className="text-[9px] font-bold text-white px-1.5 py-0.5 rounded bg-neutral-800 uppercase tracking-wider shrink-0">
+                            Delivery
+                        </span>
+                        <div className="text-[11.5px] leading-snug text-neutral-500 font-sans">
+                            <strong className="text-[#1A1A1A] font-semibold">First Order Free Delivery</strong> automatically applied at checkout.
+                        </div>
+                    </div>
+                </div>
 
                 {/* Color Selector (Variants) */}
                 {hasVariants ? (
