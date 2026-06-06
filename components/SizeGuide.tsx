@@ -28,22 +28,22 @@ export default function SizeGuide({ isOpen, onClose }: SizeGuideProps) {
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 20 }}
                         transition={{ duration: 0.3 }}
-                        className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-lg bg-white p-8 shadow-2xl z-[90] rounded-sm"
+                        className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-lg bg-white p-6 sm:p-8 shadow-2xl z-[90] rounded-2xl"
                     >
-                        <div className="flex justify-between items-start mb-6">
-                            <h2 className="font-serif text-2xl text-[#1A1A1A] flex items-center gap-3">
-                                <Ruler className="w-6 h-6" />
+                        <div className="flex justify-between items-start mb-4 sm:mb-6">
+                            <h2 className="font-serif text-xl sm:text-2xl text-[#1A1A1A] flex items-center gap-3">
+                                <Ruler className="w-5 h-5 sm:w-6 sm:h-6" />
                                 Size Guide
                             </h2>
                             <button
                                 onClick={onClose}
-                                className="p-2 hover:bg-neutral-100 rounded-full transition-colors"
+                                className="p-2 hover:bg-neutral-100 rounded-full transition-colors cursor-pointer"
                             >
                                 <X className="w-5 h-5 text-[#1A1A1A]" />
                             </button>
                         </div>
 
-                        <p className="text-sm font-sans text-neutral-500 mb-8">
+                        <p className="text-xs sm:text-sm font-sans text-neutral-500 mb-6 sm:mb-8">
                             Measurements are in inches. For the best fit, compare these measurements to a similar garment you already own.
                         </p>
 
@@ -91,7 +91,7 @@ export default function SizeGuide({ isOpen, onClose }: SizeGuideProps) {
                             </table>
                         </div>
 
-                        <div className="mt-8 pt-6 border-t border-neutral-200">
+                        <div className="mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-neutral-200">
                             <p className="text-xs text-neutral-400 text-center uppercase tracking-widest">
                                 Need more help? <a href="/support" className="border-b border-neutral-400 hover:text-[#1A1A1A] transition-colors">Contact Support</a>
                             </p>

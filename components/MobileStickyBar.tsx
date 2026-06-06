@@ -40,10 +40,10 @@ export default function MobileStickyBar({ product, selectedVariant, onAddToCart 
                     animate={{ y: 0, opacity: 1 }}
                     exit={{ y: "150%", opacity: 0 }}
                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                    className="fixed bottom-0 left-0 right-0 z-40 bg-[#FDFBF7]/95 backdrop-blur-md border-t border-neutral-200 p-3 px-4 pb-safe lg:landscape:hidden xl:hidden"
+                    className="fixed bottom-0 left-0 right-0 z-40 bg-[#FDFBF7]/90 backdrop-blur-md border-t border-neutral-200/50 p-3 px-4 pb-safe lg:landscape:hidden xl:hidden rounded-t-2xl shadow-[0_-6px_24px_rgba(0,0,0,0.03)]"
                 >
                     <div className="flex items-center gap-4">
-                        <div className="relative w-12 h-16 bg-neutral-100 shrink-0">
+                        <div className="relative w-10 h-13 bg-neutral-100 shrink-0 rounded-md overflow-hidden">
                             {imageToUse ? (
                                 <Image
                                     src={imageToUse}
@@ -56,13 +56,13 @@ export default function MobileStickyBar({ product, selectedVariant, onAddToCart 
                             )}
                         </div>
                         <div className="flex-1 min-w-0">
-                            <h3 className="font-serif text-sm text-[#1A1A1A] truncate">{product.title}</h3>
-                            <p className="text-xs font-bold text-neutral-500">₹{price}</p>
+                            <h3 className="font-serif text-xs xs:text-sm text-[#1A1A1A] truncate">{product.title}</h3>
+                            <p className="text-[11px] xs:text-xs font-medium text-neutral-400">₹{price}</p>
                         </div>
                         <button
                             onClick={onAddToCart}
                             disabled={product.isOutOfStock}
-                            className={`px-6 py-3 text-xs font-bold uppercase tracking-widest transition-all ${
+                            className={`px-5 py-2 text-[10px] xs:text-xs font-medium uppercase tracking-[0.15em] transition-all rounded-lg shadow-sm cursor-pointer ${
                                 product.isOutOfStock
                                     ? "bg-neutral-300 text-neutral-500 cursor-not-allowed"
                                     : "text-white hover:opacity-90 active:scale-95"
