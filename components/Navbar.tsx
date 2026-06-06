@@ -65,7 +65,7 @@ export default function Navbar() {
                     <div className="animate-marquee flex items-center shrink-0 w-max">
                         {[...Array(6)].map((_, i) => (
                             <div key={i} className="flex items-center gap-4 sm:gap-8 px-2 sm:px-4 text-[10px] sm:text-xs font-sans tracking-[0.15em] font-bold uppercase">
-                                <span>🌸 FESTIVE SALE: BUY 2 GET 1 FREE</span>
+                                <span>🌸 FESTIVE SALE: FREE DELIVERY ON FIRST ORDER</span>
                                 <span className="opacity-50">|</span>
                                 <span>FLAT 20% OFF ON FIRST ORDER</span>
                                 <span className="opacity-50">|</span>
