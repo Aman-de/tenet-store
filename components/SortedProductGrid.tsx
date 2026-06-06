@@ -65,11 +65,11 @@ export default function SortedProductGrid({ products: rawProducts, showSizeFilte
 
     // 2. Filter by Price Tier
     if (priceFilter === 'standard') {
-        filteredProducts = filteredProducts.filter(p => p.price < 10000);
+        filteredProducts = filteredProducts.filter(p => p.price < 1000);
     } else if (priceFilter === 'mid') {
-        filteredProducts = filteredProducts.filter(p => p.price >= 10000 && p.price <= 30000);
+        filteredProducts = filteredProducts.filter(p => p.price >= 1000 && p.price < 3000);
     } else if (priceFilter === 'premium') {
-        filteredProducts = filteredProducts.filter(p => p.price > 30000);
+        filteredProducts = filteredProducts.filter(p => p.price >= 3000);
     }
 
     // 3. Smart Feed Algorithm
@@ -150,13 +150,16 @@ export default function SortedProductGrid({ products: rawProducts, showSizeFilte
                                 <button
                                     key={tier}
                                     onClick={() => setPriceFilter(tier)}
-                                    className={`h-9 flex-1 lg:flex-none lg:px-4 flex items-center justify-center rounded-sm text-xs font-bold uppercase transition-all border ${priceFilter === tier
+                                    className={`h-9 flex-1 lg:flex-none lg:px-4 flex items-center justify-center rounded-sm text-xs font-bold uppercase transition-all border cursor-pointer ${priceFilter === tier
                                         ? "text-white"
                                         : "bg-white text-neutral-600 border-gray-200 hover:border-[#1A1A1A]"
                                         }`}
                                     style={priceFilter === tier ? { backgroundColor: accentColor, borderColor: accentColor } : undefined}
                                 >
-                                    {tier === 'all' ? 'All' : tier}
+                                    {tier === 'all' && 'All'}
+                                    {tier === 'standard' && 'Under ₹1K'}
+                                    {tier === 'mid' && '₹1K - ₹3K'}
+                                    {tier === 'premium' && 'Over ₹3K'}
                                 </button>
                             ))}
                         </div>
