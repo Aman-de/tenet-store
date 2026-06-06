@@ -502,11 +502,11 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                     />
                 </h1>
 
-                <div className="flex items-center gap-3 mb-2 flex-wrap">
+                <div className="flex items-center gap-x-3 gap-y-2 mb-3 flex-wrap">
                     {product.originalPrice && <span className="text-neutral-400 line-through text-sm xs:text-base">₹{product.originalPrice.toLocaleString('en-IN')}</span>}
                     <span className="text-lg xs:text-xl md:text-2xl font-medium text-[#1A1A1A]">₹{product.price.toLocaleString('en-IN')}</span>
                     {product.originalPrice && product.originalPrice > product.price && !product.isOutOfStock && (
-                        <div className="flex items-center gap-1.5 flex-wrap">
+                        <div className="flex items-center gap-x-1.5 gap-y-1 flex-wrap">
                             <span 
                                 className="text-[9px] xs:text-[10px] font-semibold text-white px-2 py-0.5 rounded uppercase tracking-wider"
                                 style={{ backgroundColor: accentColor }}
