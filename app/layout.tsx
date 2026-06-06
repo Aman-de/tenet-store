@@ -51,6 +51,20 @@ export default function RootLayout({
                 })(window,document,'script','dataLayer','GTM-NW4TQXSW');
               `}
             </Script>
+            <Script id="meta-pixel" strategy="afterInteractive">
+              {`
+                !function(f,b,e,v,n,t,s)
+                {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+                n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+                if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+                n.queue=[];t=b.createElement(e);t.async=!0;
+                t.src=v;s=b.getElementsByTagName(e)[0];
+                s.parentNode.insertBefore(t,s)}(window, document,'script',
+                'https://connect.facebook.net/en_US/fbevents.js');
+                fbq('init', '976090785135183');
+                fbq('track', 'PageView');
+              `}
+            </Script>
           </head>
           <body
             className={`${playfair.variable} ${inter.variable} antialiased bg-[#FDFBF7] text-[#1A1A1A] font-sans relative pb-20 lg:pb-0`}
@@ -62,6 +76,15 @@ export default function RootLayout({
                 width="0"
                 style={{ display: "none", visibility: "hidden" }}
               ></iframe>
+            </noscript>
+            <noscript>
+              <img
+                height="1"
+                width="1"
+                style={{ display: "none" }}
+                src="https://www.facebook.com/tr?id=976090785135183&ev=PageView&noscript=1"
+                alt=""
+              />
             </noscript>
             {/* Global Film Grain / Noise Overlay */}
             <div className="fixed inset-0 z-[9999] pointer-events-none opacity-[0.05]" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E")' }} />
