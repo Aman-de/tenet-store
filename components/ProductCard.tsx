@@ -21,6 +21,8 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
     const [addingState, setAddingState] = useState<'idle' | 'adding' | 'added'>('idle');
     const [altImgError, setAltImgError] = useState(false);
     const [isSizeSelectorOpen, setIsSizeSelectorOpen] = useState(false);
+    const [isImg1Loading, setIsImg1Loading] = useState(true);
+    const [isImg2Loading, setIsImg2Loading] = useState(true);
     const { addToCart, openCart, toggleWishlist, isInWishlist } = useStore();
     const { gender } = useGender();
     const isWoman = gender === "woman";
@@ -61,27 +63,39 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
             <div className="relative aspect-[3/4] w-full overflow-hidden bg-neutral-100 mb-2">
                 <Link href={`/product/${product.handle}`} onClick={handleViewItem} className="absolute inset-0 z-0 block w-full h-full">
                     {product.images?.[0] ? (
-                        <Image
-                            src={product.images[0]}
-                            alt={product.title}
-                            fill
-                            className="object-cover absolute inset-0 z-0 transition-opacity duration-200 ease-in-out group-hover:opacity-0"
-                            sizes="(max-width: 768px) 50vw, 33vw"
-                        />
+                        <>
+                            {isImg1Loading && (
+                                <div className="absolute inset-0 bg-neutral-200 animate-pulse z-10" />
+                            )}
+                            <Image
+                                src={product.images[0]}
+                                alt={product.title}
+                                fill
+                                className="object-cover absolute inset-0 z-0 transition-opacity duration-200 ease-in-out group-hover:opacity-0"
+                                sizes="(max-width: 768px) 50vw, 33vw"
+                                onLoad={() => setIsImg1Loading(false)}
+                            />
+                        </>
                     ) : (
                         <div className="w-full h-full bg-neutral-200 flex items-center justify-center text-neutral-400 text-xs z-0 absolute inset-0 group-hover:opacity-0 transition-opacity duration-200">
                             No Image
                         </div>
                     )}
                     {product.images?.[1] && !altImgError && (
-                        <Image
-                            src={product.images[1]}
-                            alt={product.title}
-                            fill
-                            className="object-cover absolute inset-0 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-in-out"
-                            sizes="(max-width: 768px) 50vw, 33vw"
-                            onError={() => setAltImgError(true)}
-                        />
+                        <>
+                            {isImg2Loading && isHovered && (
+                                <div className="absolute inset-0 bg-neutral-200 animate-pulse z-10" />
+                            )}
+                            <Image
+                                src={product.images[1]}
+                                alt={product.title}
+                                fill
+                                className="object-cover absolute inset-0 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-in-out"
+                                sizes="(max-width: 768px) 50vw, 33vw"
+                                onError={() => setAltImgError(true)}
+                                onLoad={() => setIsImg2Loading(false)}
+                            />
+                        </>
                     )}
                 </Link>
 

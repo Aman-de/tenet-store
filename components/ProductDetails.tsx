@@ -140,6 +140,13 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
     const [error, setError] = useState<string | null>(null);
     const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
     const [isReviewFormOpen, setIsReviewFormOpen] = useState(false);
+    const [isMainImgLoading, setIsMainImgLoading] = useState(true);
+    const [loadedImages, setLoadedImages] = useState<Record<number, boolean>>({});
+    const [loadedThumbnails, setLoadedThumbnails] = useState<Record<number, boolean>>({});
+
+    useEffect(() => {
+        setIsMainImgLoading(true);
+    }, [selectedVariant?.colorName, selectedImageIndex]);
     
     // Pincode State
     const { user } = useUser();
@@ -354,17 +361,23 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                     {displayImages.map((img, idx) => (
                         <div 
                             key={idx} 
-                            className="flex-[0_0_100%] h-full relative"
+                            className="flex-[0_0_100%] h-full relative bg-neutral-100"
                         >
                             {img ? (
-                                <Image
-                                    src={img}
-                                    alt={`${product.title} - View ${idx + 1}`}
-                                    fill
-                                    className="object-cover"
-                                    priority={idx === 0}
-                                    quality={90}
-                                />
+                                <>
+                                    {!loadedImages[idx] && (
+                                        <div className="absolute inset-0 bg-neutral-200 animate-pulse z-10" />
+                                    )}
+                                    <Image
+                                        src={img}
+                                        alt={`${product.title} - View ${idx + 1}`}
+                                        fill
+                                        className="object-cover"
+                                        priority={idx === 0}
+                                        quality={90}
+                                        onLoad={() => setLoadedImages(prev => ({ ...prev, [idx]: true }))}
+                                    />
+                                </>
                             ) : (
                                 <div className="w-full h-full bg-neutral-200" />
                             )}
@@ -415,12 +428,15 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                             )}
                         >
                             {img ? (
-                                <Image
-                                    src={img}
-                                    alt={`Thumbnail ${idx}`}
-                                    fill
-                                    className="object-cover"
-                                />
+                                <div className={cn("w-full h-full relative bg-neutral-100", !loadedThumbnails[idx] && "animate-pulse bg-neutral-200")}>
+                                    <Image
+                                        src={img}
+                                        alt={`Thumbnail ${idx}`}
+                                        fill
+                                        className="object-cover"
+                                        onLoad={() => setLoadedThumbnails(prev => ({ ...prev, [idx]: true }))}
+                                    />
+                                </div>
                             ) : (
                                 <div className="w-full h-full bg-neutral-100" />
                             )}
@@ -430,6 +446,9 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
 
                 {/* Main Image */}
                 <div className="relative flex-1 aspect-[3/4] bg-neutral-100 overflow-hidden">
+                    {isMainImgLoading && (
+                        <div className="absolute inset-0 bg-neutral-200 animate-pulse z-10" />
+                    )}
                     <motion.div
                         key={`${selectedVariant?.colorName}-${selectedImageIndex}`} // Force re-render on variant change
                         initial={{ opacity: 0 }}
@@ -444,6 +463,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                 fill
                                 className="object-cover"
                                 priority
+                                onLoad={() => setIsMainImgLoading(false)}
                             />
                         ) : (
                             <div className="w-full h-full bg-neutral-100 flex items-center justify-center">
