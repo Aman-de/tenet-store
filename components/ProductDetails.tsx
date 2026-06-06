@@ -46,24 +46,24 @@ const ReviewForm = ({ productId, onCancel }: { productId: string, onCancel: () =
     }
 
     return (
-        <form action={handleSubmit} className="bg-neutral-50 p-6 rounded-sm space-y-4 mt-4 animate-in fade-in slide-in-from-top-2">
-            <h4 className="font-serif text-lg">Write a Review</h4>
+        <form action={handleSubmit} className="bg-neutral-50/70 p-6 rounded-2xl border border-neutral-100/80 shadow-sm space-y-4 mt-6 animate-in fade-in slide-in-from-top-2">
+            <h4 className="font-serif text-lg text-[#1A1A1A] font-medium">Write a Review</h4>
             <div className="space-y-1">
-                <label className="text-xs uppercase tracking-widest font-bold text-neutral-500">Name</label>
+                <label className="text-[10px] uppercase tracking-wider font-bold text-neutral-500">Name</label>
                 <input 
                     required 
                     name="name" 
-                    className="w-full p-2 border border-neutral-200 focus:border-[var(--accent-color)] outline-none text-sm" 
+                    className="w-full p-3 border border-neutral-200 focus:border-[var(--accent-color)] focus:ring-1 focus:ring-[var(--accent-color)] outline-none text-sm rounded-xl transition-all bg-white" 
                     style={{ '--accent-color': accentColor } as React.CSSProperties}
                     placeholder="Your name" 
                 />
             </div>
             <div className="space-y-1">
-                <label className="text-xs uppercase tracking-widest font-bold text-neutral-500">Rating</label>
+                <label className="text-[10px] uppercase tracking-wider font-bold text-neutral-500">Rating</label>
                 <select 
                     required 
                     name="rating" 
-                    className="w-full p-2 border border-neutral-200 focus:border-[var(--accent-color)] outline-none text-sm bg-white" 
+                    className="w-full p-3 border border-neutral-200 focus:border-[var(--accent-color)] focus:ring-1 focus:ring-[var(--accent-color)] outline-none text-sm bg-white rounded-xl transition-all cursor-pointer" 
                     style={{ '--accent-color': accentColor } as React.CSSProperties}
                 >
                     <option value="5">5 - Excellent</option>
@@ -74,19 +74,19 @@ const ReviewForm = ({ productId, onCancel }: { productId: string, onCancel: () =
                 </select>
             </div>
             <div className="space-y-1">
-                <label className="text-xs uppercase tracking-widest font-bold text-neutral-500">Comment</label>
+                <label className="text-[10px] uppercase tracking-wider font-bold text-neutral-500">Comment</label>
                 <textarea 
                     required 
                     name="comment" 
                     rows={3} 
-                    className="w-full p-2 border border-neutral-200 focus:border-[var(--accent-color)] outline-none text-sm" 
+                    className="w-full p-3 border border-neutral-200 focus:border-[var(--accent-color)] focus:ring-1 focus:ring-[var(--accent-color)] outline-none text-sm rounded-xl transition-all bg-white" 
                     style={{ '--accent-color': accentColor } as React.CSSProperties}
                     placeholder="Share your thoughts..." 
                 />
             </div>
 
             {message && (
-                <p className={cn("text-xs font-medium", message.includes("Thank you") ? "text-green-700" : "text-red-600")}>
+                <p className={cn("text-xs font-semibold mt-2", message.includes("Thank you") ? "text-green-700" : "text-red-600")}>
                     {message}
                 </p>
             )}
@@ -95,7 +95,7 @@ const ReviewForm = ({ productId, onCancel }: { productId: string, onCancel: () =
                 <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="flex-1 text-white py-3 text-xs uppercase tracking-widest hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2"
+                    className="flex-1 text-white py-3 text-xs uppercase tracking-widest hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2 rounded-xl active:scale-95 transition-all font-bold shadow-sm"
                     style={{ backgroundColor: accentColor }}
                 >
                     {isSubmitting && <Loader2 className="w-3 h-3 animate-spin" />}
@@ -104,7 +104,7 @@ const ReviewForm = ({ productId, onCancel }: { productId: string, onCancel: () =
                 <button
                     type="button"
                     onClick={onCancel}
-                    className="px-4 border border-neutral-200 text-[#1A1A1A] text-xs uppercase tracking-widest hover:bg-white"
+                    className="px-6 border border-neutral-200 text-[#1A1A1A] text-xs uppercase tracking-widest hover:bg-neutral-100/50 rounded-xl transition-all active:scale-95"
                 >
                     Cancel
                 </button>
@@ -743,7 +743,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                     <AccordionItem title={`Reviews (${reviews.length})`}>
                         <div className="space-y-8 py-4">
                             {/* Brand Info Card */}
-                            <div className="border border-neutral-100 rounded-xl p-6 bg-neutral-50/30">
+                            <div className="border border-neutral-100 rounded-2xl p-6 bg-neutral-50/30">
                                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
                                     <div>
                                         <h3 className="font-serif text-lg text-[#1A1A1A] mb-1">About Tenet</h3>
@@ -754,11 +754,11 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                     <div className="flex gap-4 text-center border-t md:border-t-0 md:border-l border-neutral-100 pt-4 md:pt-0 md:pl-6 shrink-0">
                                         <div>
                                             <div className="font-serif text-lg text-[#1A1A1A]">4.8★</div>
-                                            <div className="text-[9px] text-neutral-400 uppercase tracking-wider">Patron Rating</div>
+                                            <div className="text-[9px] text-neutral-400 uppercase tracking-wider font-bold">Patron Rating</div>
                                         </div>
                                         <div className="border-l border-neutral-100 pl-4">
                                             <div className="font-serif text-lg text-[#1A1A1A]">10k+</div>
-                                            <div className="text-[9px] text-neutral-400 uppercase tracking-wider">Reviews</div>
+                                            <div className="text-[9px] text-neutral-400 uppercase tracking-wider font-bold">Reviews</div>
                                         </div>
                                     </div>
                                 </div>
@@ -785,21 +785,21 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                             </div>
 
                             {/* Reviews Header */}
-                            <div className="text-center pb-4">
-                                <h3 className="font-serif text-xl text-[#1A1A1A] mb-2">Customer Reviews</h3>
+                            <div className="text-center pb-6 pt-4 border-b border-neutral-100">
+                                <h3 className="font-serif text-2xl text-[#1A1A1A] mb-2 font-medium">Customer Reviews</h3>
                                 <div className="flex justify-center items-center gap-2 mb-4">
                                     <div className="flex">
                                         {[...Array(5)].map((_, i) => (
-                                            <Star key={i} className="w-4 h-4" style={{ fill: accentColor, color: accentColor }} />
+                                            <Star key={i} className="w-4.5 h-4.5" style={{ fill: accentColor, color: accentColor }} />
                                         ))}
                                     </div>
-                                    <span className="text-sm text-neutral-600">4.8 ({reviews.length} reviews)</span>
+                                    <span className="text-sm text-neutral-600 font-medium">4.8 ({reviews.length} reviews)</span>
                                 </div>
                                 
                                 {!isReviewFormOpen ? (
                                     <button
                                         onClick={() => setIsReviewFormOpen(true)}
-                                        className="text-white px-8 py-3 rounded-md font-medium text-sm hover:opacity-90 transition-opacity"
+                                        className="text-white px-8 py-3 rounded-full font-bold text-xs uppercase tracking-widest hover:scale-[1.02] active:scale-95 shadow-sm hover:shadow-md transition-all duration-300"
                                         style={{ backgroundColor: accentColor }}
                                     >
                                         Write a review
@@ -811,34 +811,47 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
 
                             {/* Reviews List */}
                             {reviews.length === 0 ? (
-                                <p className="text-neutral-400 italic text-sm text-center">No reviews yet. Be the first to review!</p>
+                                <p className="text-neutral-400 italic text-sm text-center py-8">No reviews yet. Be the first to review!</p>
                             ) : (
-                                <div className="border border-neutral-200 rounded-lg p-6 bg-[#FDFDFD] space-y-6">
+                                <div className="space-y-4 pt-4">
                                     {reviews.map((review) => (
-                                        <div key={review.id} className="border-b border-neutral-100 last:border-0 pb-6 last:pb-0">
-                                            <div className="flex mb-3">
-                                                {[...Array(5)].map((_, i) => (
-                                                    <Star 
-                                                        key={i} 
-                                                        className={cn("w-4 h-4", i < review.rating ? "" : "text-neutral-300")} 
-                                                        style={i < review.rating ? { fill: accentColor, color: accentColor } : undefined}
-                                                    />
-                                                ))}
+                                        <div 
+                                            key={review.id} 
+                                            className="bg-white p-6 rounded-2xl border border-neutral-100 shadow-sm hover:shadow-md transition-all duration-300"
+                                        >
+                                            <div className="flex justify-between items-start mb-4">
+                                                <div className="flex items-center gap-3">
+                                                    {/* User Initials Avatar */}
+                                                    <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm text-neutral-600 bg-neutral-100 uppercase select-none">
+                                                        {review.name.charAt(0)}
+                                                    </div>
+                                                    <div>
+                                                        <div className="flex items-center gap-2">
+                                                            <h4 className="font-bold text-[#1A1A1A] text-sm">{review.name}</h4>
+                                                            <span className="text-[9px] bg-green-50 text-green-700 border border-green-100 rounded-full px-2 py-0.5 uppercase tracking-wider font-bold">Verified Buy</span>
+                                                        </div>
+                                                        <span className="text-[10px] text-neutral-400 block font-sans">{new Date(review.date).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                                                    </div>
+                                                </div>
+                                                <div className="flex">
+                                                    {[...Array(5)].map((_, i) => (
+                                                        <Star 
+                                                            key={i} 
+                                                            className={cn("w-3.5 h-3.5", i < review.rating ? "" : "text-neutral-200")} 
+                                                            style={i < review.rating ? { fill: accentColor, color: accentColor } : undefined}
+                                                        />
+                                                    ))}
+                                                </div>
                                             </div>
-                                            <div className="flex items-center gap-2 mb-2">
-                                                <h4 className="font-bold text-[#1A1A1A] text-sm">{review.name}</h4>
-                                                <span className="text-[10px] border border-[#1A1A1A] rounded-full px-2 py-0.5 text-[#1A1A1A]">Verified</span>
-                                            </div>
-                                            <span className="text-xs text-neutral-400 block mb-3">{new Date(review.date).toLocaleDateString()}</span>
                                             
-                                            <p className="font-bold text-sm text-[#1A1A1A] mb-1">{review.comment.split('.')[0]}</p>
-                                            <p className="text-neutral-600 text-sm mb-4">{review.comment}</p>
+                                            <p className="font-serif text-base text-[#1A1A1A] mb-1.5 font-medium">{review.comment.split('.')[0]}</p>
+                                            <p className="text-neutral-600 text-sm leading-relaxed mb-4">{review.comment}</p>
                                             
                                             {/* Review Images */}
                                             {review.images && review.images.length > 0 && (
-                                                <div className="flex gap-2 mb-3 mt-2 overflow-x-auto pb-2 scrollbar-hide">
+                                                <div className="flex gap-3 mb-1 mt-3 overflow-x-auto pb-1 scrollbar-hide">
                                                     {review.images.map((img, idx) => (
-                                                        <div key={idx} className="relative w-20 h-20 flex-shrink-0 rounded-md overflow-hidden bg-neutral-100 border border-neutral-200">
+                                                        <div key={idx} className="relative w-24 h-24 flex-shrink-0 rounded-xl overflow-hidden bg-neutral-50 border border-neutral-100 shadow-sm hover:shadow-md hover:scale-105 active:scale-95 transition-all duration-300 cursor-zoom-in">
                                                             <Image 
                                                                 src={img} 
                                                                 alt={`Review photo ${idx + 1}`} 
