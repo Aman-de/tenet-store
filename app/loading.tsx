@@ -1,20 +1,37 @@
-"use client";
-
-// Removed framer-motion as user requested fast loading with no animation
-
 export default function Loading() {
     return (
-        <div className="min-h-[70vh] w-full flex flex-col items-center justify-center">
-            <div className="flex flex-col items-center gap-6 text-[#1A1A1A]">
-                {/* Minimalist Spinner */}
-                <div className="relative w-10 h-10 md:w-12 md:h-12">
-                    <div className="absolute inset-0 border border-neutral-200 rounded-full" />
-                    <div className="absolute inset-0 border-t-2 border-l-2 border-[#1A1A1A] rounded-full animate-spin" />
-                </div>
-                <p className="text-[9px] md:text-[10px] uppercase tracking-[0.3em] font-medium text-neutral-500">
-                    Entering
-                </p>
+        <main className="bg-[#FDFBF7] min-h-screen animate-pulse">
+            {/* Hero Banner Skeleton */}
+            <div className="w-full h-[55vh] md:h-[75vh] bg-neutral-200 relative overflow-hidden flex items-center justify-center">
+                <div className="w-24 h-1 bg-neutral-300 rounded-full" />
             </div>
-        </div>
+
+            {/* Category Grid Section Skeleton */}
+            <div className="max-w-7xl mx-auto px-4 md:px-6 py-12 md:py-20">
+                <div className="w-48 h-8 bg-neutral-200 mx-auto mb-8 md:mb-12 rounded" />
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    {[1, 2, 3, 4].map((i) => (
+                        <div key={i} className="flex flex-col items-center gap-4">
+                            <div className="w-20 h-20 md:w-32 md:h-32 rounded-full bg-neutral-200" />
+                            <div className="w-16 h-4 bg-neutral-200 rounded" />
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* Product Section Grid Skeleton */}
+            <div className="max-w-[2000px] w-full mx-auto px-4 md:px-6 xl:px-12 py-12 border-t border-neutral-100">
+                <div className="w-64 h-8 bg-neutral-200 mb-8 rounded" />
+                <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-4 md:gap-x-8 gap-y-10">
+                    {[1, 2, 3, 4, 5].map((i) => (
+                        <div key={i} className="space-y-4">
+                            <div className="w-full aspect-[3/4] bg-neutral-200 rounded-lg" />
+                            <div className="w-3/4 h-4 bg-neutral-200 rounded" />
+                            <div className="w-1/2 h-4 bg-neutral-200 rounded" />
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </main>
     );
 }

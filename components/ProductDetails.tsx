@@ -295,7 +295,14 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
         if (showSizeSelector && !selectedSize) {
             setError("Please select a size.");
             if (typeof window !== "undefined") {
-                window.scrollTo({ top: 380, behavior: "smooth" });
+                setTimeout(() => {
+                    const element = document.getElementById("size-selector-section");
+                    if (element) {
+                        element.scrollIntoView({ behavior: "smooth", block: "center" });
+                    } else {
+                        window.scrollTo({ top: 380, behavior: "smooth" });
+                    }
+                }, 100);
             }
             return null;
         }
@@ -557,7 +564,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
 
                 {/* Size Selector */}
                 {showSizeSelector && (
-                    <div className="mb-6">
+                    <div id="size-selector-section" className="mb-6">
                         <div className="flex justify-between items-center mb-2">
                             <span className="text-xs font-bold uppercase tracking-widest text-neutral-500">Size</span>
                             <div className="flex items-center gap-4">
