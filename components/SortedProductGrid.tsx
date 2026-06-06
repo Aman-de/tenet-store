@@ -14,7 +14,7 @@ interface SortedProductGridProps {
     alignFiltersWithTitle?: boolean;
 }
 
-const standardSizeOrder = ["XXS", "XS", "S", "M", "L", "XL", "XXL", "XXXL", "3XL", "4XL"];
+const standardSizeOrder = ["XXS", "XS", "S", "M", "L", "XL", "XXL", "2XL", "XXXL", "3XL", "4XL"];
 
 const sortSizes = (sizesList: string[]) => {
     return [...sizesList].sort((a, b) => {

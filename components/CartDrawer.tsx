@@ -222,6 +222,7 @@ export default function CartDrawer() {
 
     const VALID_COUPONS: Record<string, number> = {
         'CREATOR15': 0.15,
+        'FIRST20': 0.20,
     };
 
     const handleApplyCoupon = () => {
@@ -294,7 +295,7 @@ export default function CartDrawer() {
         });
     };
 
-    const FREE_SHIPPING_THRESHOLD = 1200;
+    const FREE_SHIPPING_THRESHOLD = 499;
     const SHIPPING_COST = 70;
     const COD_MIN_THRESHOLD = 5000;
 

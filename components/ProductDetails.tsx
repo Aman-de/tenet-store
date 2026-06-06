@@ -556,7 +556,11 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                             Delivery
                         </span>
                         <div className="text-[11.5px] leading-snug text-neutral-500 font-sans">
-                            <strong className="text-[#1A1A1A] font-semibold">First Order Free Delivery</strong> automatically applied at checkout.
+                            {product.price >= 499 ? (
+                                <span><strong className="text-emerald-700 font-semibold">✓ Eligible for Free Delivery</strong> on this purchase (Orders above ₹499)</span>
+                            ) : (
+                                <span>Add <strong className="text-[#1A1A1A] font-semibold">₹{499 - product.price}</strong> more to cart for <strong className="text-[#1A1A1A] font-semibold">Free Delivery</strong> (Threshold: ₹499)</span>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -648,13 +652,14 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         </div>
                         {selectedSize && (
                             <div className="mt-3.5 pl-3 py-1 bg-transparent border-l-2 border-neutral-200 text-[11px] font-sans text-neutral-500 leading-normal animate-in fade-in slide-in-from-top-1">
+                                {selectedSize === "XS" && "Product Bust 34 in • Product Waist 32 in • Product Hip 38 in"}
                                 {selectedSize === "S" && "Product Bust 36 in • Product Waist 34 in • Product Hip 40 in"}
                                 {selectedSize === "M" && "Product Bust 38 in • Product Waist 36 in • Product Hip 42 in"}
                                 {selectedSize === "L" && "Product Bust 40 in • Product Waist 38 in • Product Hip 44 in"}
                                 {selectedSize === "XL" && "Product Bust 42 in • Product Waist 40 in • Product Hip 46 in"}
                                 {selectedSize === "2XL" && "Product Bust 44 in • Product Waist 42 in • Product Hip 48 in"}
                                 {selectedSize === "3XL" && "Product Bust 46 in • Product Waist 44 in • Product Hip 50 in"}
-                                {(!["S", "M", "L", "XL", "2XL", "3XL"].includes(selectedSize)) && `Standard fit for size ${selectedSize}`}
+                                {(!["XS", "S", "M", "L", "XL", "2XL", "3XL"].includes(selectedSize)) && `Standard fit for size ${selectedSize}`}
                             </div>
                         )}
                     </div>
@@ -721,7 +726,11 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                             <Truck className="w-3.5 h-3.5 text-green-600" />
                             <span>{deliveryInfo.date}</span>
                             <span className="text-neutral-300">•</span>
-                            <span className="text-green-600 font-medium">Free Shipping</span>
+                            {product.price >= 499 ? (
+                                <span className="text-green-600 font-medium">Free Shipping</span>
+                            ) : (
+                                <span className="text-neutral-500 font-medium">₹70 Shipping (Free above ₹499)</span>
+                            )}
                         </div>
                     )}
                 </div>
