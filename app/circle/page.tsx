@@ -11,7 +11,7 @@ export default async function InnerCirclePage() {
 
     if (!userId || !user) {
         return (
-            <div className="min-h-screen bg-[#FDFBF7] pt-32 pb-20 px-4">
+            <div className="min-h-screen bg-[#FDFBF7] pt-20 lg:pt-28 pb-20 px-4">
                 <div className="max-w-2xl mx-auto text-center space-y-8">
                     <div className="w-16 h-16 bg-[#1A1A1A] rounded-full flex items-center justify-center mx-auto mb-8 shadow-xl">
                         <Crown className="w-8 h-8 text-[#D4AF37]" />
@@ -106,7 +106,7 @@ export default async function InnerCirclePage() {
     };
 
     return (
-        <div className="min-h-screen bg-[#FDFBF7] pt-32 pb-20 px-4 animate-in fade-in duration-500">
+        <div className="min-h-screen bg-[#FDFBF7] pt-20 lg:pt-28 pb-20 px-4 animate-in fade-in duration-500">
             <div className="max-w-4xl mx-auto space-y-8">
                 <div className="flex items-center gap-4 mb-10">
                     <div className="w-12 h-12 bg-[#1A1A1A] rounded-full flex items-center justify-center shadow-md">
