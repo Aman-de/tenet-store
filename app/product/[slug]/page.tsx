@@ -2,6 +2,7 @@ import { getProduct, getRecommendedProducts, getReviews } from "@/lib/sanity";
 import { notFound, redirect } from "next/navigation";
 import ProductDetails from "@/components/ProductDetails";
 import RecommendedProducts from "@/components/RecommendedProducts";
+import Footer from "@/components/Footer";
 
 interface ProductPageProps {
     params: Promise<{
@@ -34,9 +35,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
         <main className="bg-[#FDFBF7] min-h-screen pb-20">
             <ProductDetails product={product} reviews={reviews} />
-            <div className="max-w-[2000px] w-full mx-auto px-4 md:px-6 xl:px-12">
+            <div className="max-w-[2000px] w-full mx-auto px-4 md:px-6 xl:px-12 mb-12">
                 <RecommendedProducts products={recommendations} />
             </div>
+            <Footer />
         </main>
     );
 }

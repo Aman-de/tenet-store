@@ -29,7 +29,7 @@ export default function MobileBottomNav() {
         return null;
     }
 
-    // Navigation Items (Home, Cart, Circle, Orders)
+    // Navigation Items (Home, Cart, Ambassador, Orders)
     const navItems = [
         {
             name: "Home",
@@ -45,7 +45,7 @@ export default function MobileBottomNav() {
             hasBadge: true,
         },
         {
-            name: "Circle",
+            name: "Ambassador",
             href: "/circle",
             icon: Crown,
             isActive: pathname === "/circle",
@@ -83,25 +83,35 @@ export default function MobileBottomNav() {
             `}</style>
 
             {navItems.map((item) => {
-                // Style Circle tab active state as gold (#D4AF37)
+                // Style Ambassador tab active state as gold (#D4AF37)
                 const currentActiveText = item.isGoldCircle ? "text-[#D4AF37]" : activeTextClass;
                 const currentActiveFill = item.isGoldCircle ? "fill-[#D4AF37]/5" : activeFillClass;
                 const textStyle = item.isActive ? currentActiveText : "text-neutral-400";
                 const fillStyle = item.isActive ? currentActiveFill : "";
 
                 const iconContent = (
-                    <div className="relative flex items-center justify-center p-2.5">
+                    <div className="relative flex items-center justify-center p-0.5">
                         <item.icon
                             strokeWidth={1.5}
-                            className={`w-[25px] h-[25px] transition-all duration-300 ${textStyle} ${fillStyle}`}
+                            className={`w-[21px] h-[21px] transition-all duration-300 ${textStyle} ${fillStyle}`}
                         />
                         {item.hasBadge && cartCount > 0 && (
                             <span 
-                                className="absolute top-1.5 right-1.5 w-2.5 h-2.5 rounded-full animate-pulse border border-white"
+                                className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full animate-pulse border border-white"
                                 style={{ backgroundColor: accentColor }}
                             />
                         )}
                     </div>
+                );
+
+                const labelContent = (
+                    <span
+                        className={`text-[8px] uppercase tracking-wider font-bold transition-all duration-300 ${
+                            item.isActive ? currentActiveText : "text-neutral-400"
+                        }`}
+                    >
+                        {item.name}
+                    </span>
                 );
 
                 if (item.href) {
@@ -109,10 +119,11 @@ export default function MobileBottomNav() {
                         <Link
                             key={item.name}
                             href={item.href}
-                            className="flex items-center justify-center w-full h-full relative"
+                            className="flex flex-col items-center justify-center w-full h-full space-y-0.5"
                             title={item.name}
                         >
                             {iconContent}
+                            {labelContent}
                         </Link>
                     );
                 } else {
@@ -120,36 +131,40 @@ export default function MobileBottomNav() {
                         <button
                             key={item.name}
                             onClick={item.onClick}
-                            className="flex items-center justify-center w-full h-full relative focus:outline-none"
+                            className="flex flex-col items-center justify-center w-full h-full space-y-0.5 focus:outline-none"
                             title={item.name}
                         >
                             {iconContent}
+                            {labelContent}
                         </button>
                     );
                 }
             })}
 
             {/* Account Tab (Handling Auth) */}
-            <div className="flex items-center justify-center w-full h-full">
+            <div className="flex flex-col items-center justify-center w-full h-full space-y-0.5">
                 <SignedIn>
-                    <div className="scale-90 flex items-center justify-center">
+                    <div className="scale-75 origin-bottom">
                         <UserButton afterSignOutUrl="/" />
                     </div>
                 </SignedIn>
                 <SignedOut>
                     <SignInButton mode="modal">
                         <button 
-                            className="flex items-center justify-center w-full h-full animate-attention focus:outline-none"
+                            className="flex flex-col items-center justify-center w-full h-full animate-attention focus:outline-none"
                             style={attentionStyles}
                             title="Account"
                         >
                             <User
                                 strokeWidth={1.5}
-                                className="w-[25px] h-[25px] transition-colors"
+                                className="w-[21px] h-[21px] transition-colors"
                             />
                         </button>
                     </SignInButton>
                 </SignedOut>
+                <span className="text-[8px] uppercase tracking-wider font-bold text-neutral-400">
+                    Account
+                </span>
             </div>
         </div>
     );

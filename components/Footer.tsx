@@ -38,7 +38,7 @@ export default function Footer() {
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end border-b border-white/10 pb-10 mb-10 gap-12">
                     <div className="max-w-lg">
                         <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#E05275] block mb-2.5">Exclusive Access</span>
-                        <h2 className="font-serif text-3xl md:text-5xl mb-4 leading-tight font-medium">Join our inner circle.</h2>
+                        <h2 className="font-serif text-3xl md:text-5xl mb-4 leading-tight font-medium">Join the Club.</h2>
                         <p className="text-neutral-400 font-sans text-sm leading-relaxed">
                             Subscribe to receive updates, access to exclusive deals, and more.
                         </p>
@@ -94,8 +94,8 @@ export default function Footer() {
                                         <Check className="w-4 h-4" strokeWidth={3} />
                                     </div>
                                     <div>
-                                        <h4 className="font-serif text-sm font-semibold text-white">Welcome to the Inner Circle</h4>
-                                        <p className="text-[11px] text-neutral-400 font-sans mt-0.5 leading-snug">You have successfully subscribed to our concierge list.</p>
+                                        <h4 className="font-serif text-sm font-semibold text-white">Welcome to the Ambassador Club</h4>
+                                        <p className="text-[11px] text-neutral-400 font-sans mt-0.5 leading-snug">You have successfully subscribed to our list.</p>
                                     </div>
                                 </motion.div>
                             )}
@@ -198,7 +198,7 @@ export default function Footer() {
                             <ul className="space-y-4 text-xs font-medium tracking-wider text-neutral-400">
                                 <li>
                                     <Link href="/circle" className="hover:text-white transition-colors relative group py-0.5 block w-fit text-[#D4AF37] font-semibold">
-                                        The Inner Circle (Referral)
+                                        Ambassador Club (Refer & Earn)
                                         <span className="absolute left-0 bottom-0 w-0 h-[1px] bg-[#D4AF37] transition-all group-hover:w-full" />
                                     </Link>
                                 </li>

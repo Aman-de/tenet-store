@@ -16,9 +16,9 @@ export default async function InnerCirclePage() {
                     <div className="w-16 h-16 bg-[#1A1A1A] rounded-full flex items-center justify-center mx-auto mb-8 shadow-xl">
                         <Crown className="w-8 h-8 text-[#D4AF37]" />
                     </div>
-                    <h1 className="font-serif text-4xl md:text-5xl text-[#1A1A1A]">The Inner Circle</h1>
+                    <h1 className="font-serif text-4xl md:text-5xl text-[#1A1A1A]">Ambassador Club</h1>
                     <p className="font-sans text-neutral-500 max-w-md mx-auto leading-relaxed">
-                        An exclusive society for Tenet patrons. Invite your peers and unlock curated rewards, store credit, and early access.
+                        An exclusive partnership network for Tenet patrons. Refer your peers and unlock 20% commission on their acquisitions, while offering them a 15% discount.
                     </p>
                     <div className="bg-white border border-neutral-200 p-8 rounded-2xl shadow-sm text-left space-y-6">
                         <div className="flex gap-4">
@@ -26,8 +26,8 @@ export default async function InnerCirclePage() {
                                 <span className="font-serif text-lg">1</span>
                             </div>
                             <div>
-                                <h3 className="font-bold text-sm uppercase tracking-widest text-[#1A1A1A]">Join the Circle</h3>
-                                <p className="text-sm text-neutral-500 mt-1">Create an account to receive your unique signature key.</p>
+                                <h3 className="font-bold text-sm uppercase tracking-widest text-[#1A1A1A]">Apply as Ambassador</h3>
+                                <p className="text-sm text-neutral-500 mt-1">Create an account to activate your signature referral link and custom coupon key.</p>
                             </div>
                         </div>
                         <div className="flex gap-4">
@@ -35,8 +35,8 @@ export default async function InnerCirclePage() {
                                 <span className="font-serif text-lg">2</span>
                             </div>
                             <div>
-                                <h3 className="font-bold text-sm uppercase tracking-widest text-[#1A1A1A]">Invite Peers</h3>
-                                <p className="text-sm text-neutral-500 mt-1">Share your key. Guests receive an automatic 15% courtesy discount on their first acquisition.</p>
+                                <h3 className="font-bold text-sm uppercase tracking-widest text-[#1A1A1A]">Share Privilege</h3>
+                                <p className="text-sm text-neutral-500 mt-1">Distribute your code. Guests receive an automatic 15% welcome discount on their first purchase.</p>
                             </div>
                         </div>
                         <div className="flex gap-4">
@@ -44,8 +44,8 @@ export default async function InnerCirclePage() {
                                 <span className="font-serif text-lg">3</span>
                             </div>
                             <div>
-                                <h3 className="font-bold text-sm uppercase tracking-widest text-[#1A1A1A]">Earn Credit</h3>
-                                <p className="text-sm text-neutral-500 mt-1">For every successful guest order, your wallet is credited with 20% of their order value.</p>
+                                <h3 className="font-bold text-sm uppercase tracking-widest text-[#1A1A1A]">Earn Commission</h3>
+                                <p className="text-sm text-neutral-500 mt-1">For every successful referral, your wallet is credited with 20% of their order value. Withdraw directly to your bank.</p>
                             </div>
                         </div>
                     </div>
@@ -105,7 +105,7 @@ export default async function InnerCirclePage() {
                         <Crown className="w-6 h-6 text-[#D4AF37]" />
                     </div>
                     <div>
-                        <h1 className="font-serif text-3xl md:text-4xl text-[#1A1A1A]">The Inner Circle</h1>
+                        <h1 className="font-serif text-3xl md:text-4xl text-[#1A1A1A]">Ambassador Club</h1>
                         <p className="font-sans text-neutral-500 text-sm">Welcome back, {user.firstName || 'Patron'}.</p>
                     </div>
                 </div>
@@ -119,22 +119,22 @@ export default async function InnerCirclePage() {
 
                 {/* How it works */}
                 <div className="bg-neutral-50 rounded-2xl p-8 mt-8 border border-neutral-100">
-                    <h3 className="font-serif text-xl mb-6">The Privilege Protocol</h3>
+                    <h3 className="font-serif text-xl mb-6">The Ambassador Protocol</h3>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div className="space-y-3">
                             <div className="w-8 h-8 rounded-full bg-white border border-neutral-200 flex items-center justify-center font-serif text-sm">1</div>
-                            <h4 className="font-bold text-sm uppercase tracking-widest">Share The Key</h4>
-                            <p className="text-xs text-neutral-500 leading-relaxed font-sans">Distribute your unique link or coupon code to friends and colleagues.</p>
+                            <h4 className="font-bold text-sm uppercase tracking-widest">Share Referral Assets</h4>
+                            <p className="text-xs text-neutral-500 leading-relaxed font-sans">Distribute your unique referral link or coupon key to friends and colleagues.</p>
                         </div>
                         <div className="space-y-3">
                             <div className="w-8 h-8 rounded-full bg-white border border-neutral-200 flex items-center justify-center font-serif text-sm">2</div>
-                            <h4 className="font-bold text-sm uppercase tracking-widest">Guest Privilege</h4>
-                            <p className="text-xs text-neutral-500 leading-relaxed font-sans">They receive 15% off their purchase value when using your link or code.</p>
+                            <h4 className="font-bold text-sm uppercase tracking-widest">Welcome Discount</h4>
+                            <p className="text-xs text-neutral-500 leading-relaxed font-sans">They receive 15% off their purchase value automatically at checkout when using your assets.</p>
                         </div>
                         <div className="space-y-3">
                             <div className="w-8 h-8 rounded-full bg-white border border-neutral-200 flex items-center justify-center font-serif text-sm">3</div>
-                            <h4 className="font-bold text-sm uppercase tracking-widest">Earnings Transfer</h4>
-                            <p className="text-xs text-neutral-500 leading-relaxed font-sans">You receive a 20% commission on every sale. Redeem funds directly to your linked bank account.</p>
+                            <h4 className="font-bold text-sm uppercase tracking-widest">Commission Payout</h4>
+                            <p className="text-xs text-neutral-500 leading-relaxed font-sans">You receive a 20% commission on every order. Withdraw your balance directly to your linked bank account.</p>
                         </div>
                     </div>
                 </div>

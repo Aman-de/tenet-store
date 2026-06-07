@@ -140,7 +140,7 @@ export default function Navbar() {
                     <div className="flex items-center gap-6 lg:gap-8">
                         <div className={`hidden lg:flex items-center gap-8 text-sm font-medium tracking-wide transition-colors ${textColor}`}>
                             <Link href="/circle" className="hover:underline underline-offset-4 decoration-current transition-all decoration-1 text-[#D4AF37] font-semibold">
-                                INNER CIRCLE
+                                AMBASSADOR
                             </Link>
                             <Link href="/support" className="hover:underline underline-offset-4 decoration-current transition-all decoration-1">
                                 SUPPORT
@@ -244,12 +244,12 @@ export default function Navbar() {
                                 >
                                     ORDERS
                                 </Link>
-                                <Link
+                                 <Link
                                     href="/circle"
                                     onClick={() => setIsMobileMenuOpen(false)}
                                     className="px-6 py-3 text-sm font-semibold text-[#D4AF37] hover:bg-neutral-50 transition-colors text-left border-b border-neutral-50"
                                 >
-                                    INNER CIRCLE
+                                    AMBASSADOR
                                 </Link>
                                 <SignedIn>
                                     <div className="px-6 py-3 text-sm font-medium text-[#1A1A1A] hover:bg-neutral-50 transition-colors text-left flex items-center justify-between">

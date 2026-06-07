@@ -67,8 +67,8 @@ export default function ClientCircleDashboard({
     const handleShare = () => {
         if (navigator.share) {
             navigator.share({
-                title: 'Join The Inner Circle',
-                text: 'Join me in The Inner Circle at Tenet. Use my exclusive link to get 15% off your first acquisition.',
+                title: 'Join the Ambassador Club',
+                text: 'Join the Ambassador Club at Tenet. Use my exclusive link to get 15% off your first acquisition.',
                 url: shareUrl,
             }).catch(console.error);
         } else {

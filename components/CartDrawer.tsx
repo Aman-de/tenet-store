@@ -762,7 +762,7 @@ export default function CartDrawer() {
                                     )}
                                     {activeReferral && (
                                         <div className="flex items-center justify-between text-xs font-sans text-green-600 font-bold">
-                                            <span>Inner Circle Invite (15% Off)</span>
+                                            <span>Ambassador Invite (15% Off)</span>
                                             <span>-₹{couponDiscount.toLocaleString('en-IN')}</span>
                                         </div>
                                     )}
@@ -1069,7 +1069,7 @@ export default function CartDrawer() {
                                     {walletBalance > 0 && (
                                         <div className="mt-6 border border-black rounded-xl p-4 bg-black text-white flex items-center justify-between">
                                             <div className="flex flex-col">
-                                                <span className="text-sm font-bold tracking-widest uppercase">Inner Circle Wallet</span>
+                                                <span className="text-sm font-bold tracking-widest uppercase">Ambassador Wallet</span>
                                                 <span className="text-xs text-neutral-400 mt-1">Available: ₹{walletBalance.toLocaleString('en-IN')}</span>
                                             </div>
                                             <label className="relative inline-flex items-center cursor-pointer">
