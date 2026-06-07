@@ -67,8 +67,8 @@ export default function ClientCircleDashboard({
     const handleShare = () => {
         if (navigator.share) {
             navigator.share({
-                title: 'Join the Ambassador Club',
-                text: 'Join the Ambassador Club at Tenet. Use my exclusive link to get 15% off your first acquisition.',
+                title: 'Join The Circle',
+                text: 'Join me in The Circle at Tenet. Use my exclusive link to get 15% off your first acquisition.',
                 url: shareUrl,
             }).catch(console.error);
         } else {
@@ -141,7 +141,7 @@ export default function ClientCircleDashboard({
             {/* Share and Invitation Section */}
             <div className="bg-white border border-neutral-200/60 rounded-2xl p-6 xs:p-8 shadow-sm flex flex-col gap-6">
                 <div>
-                    <h3 className="font-bold text-xs uppercase tracking-[0.2em] text-[#1A1A1A] mb-1.5">Your Ambassador Assets</h3>
+                    <h3 className="font-bold text-xs uppercase tracking-[0.2em] text-[#1A1A1A] mb-1.5">Your Circle Assets</h3>
                     <p className="text-xs text-neutral-400 font-sans leading-relaxed">
                         Share your unique invite assets. Customers receive an extra <strong className="text-[#1A1A1A] font-semibold">15% discount</strong> at checkout, and you earn <strong className="text-[#1A1A1A] font-semibold">20% commission</strong> on their entire purchase value.
                     </p>

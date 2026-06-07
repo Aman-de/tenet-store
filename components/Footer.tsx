@@ -197,9 +197,9 @@ export default function Footer() {
                             <h4 className="text-[10px] font-bold uppercase tracking-[0.25em] text-neutral-500">Support</h4>
                             <ul className="space-y-4 text-xs font-medium tracking-wider text-neutral-400">
                                 <li>
-                                    <Link href="/circle" className="hover:text-white transition-colors relative group py-0.5 block w-fit text-[#D4AF37] font-semibold">
-                                        Ambassador Club (Refer & Earn)
-                                        <span className="absolute left-0 bottom-0 w-0 h-[1px] bg-[#D4AF37] transition-all group-hover:w-full" />
+                                    <Link href="/circle" className="hover:text-white transition-colors relative group py-0.5 block w-fit">
+                                        The Circle (Referrals)
+                                        <span className="absolute left-0 bottom-0 w-0 h-[1px] bg-white transition-all group-hover:w-full" />
                                     </Link>
                                 </li>
                                 <li>

@@ -29,7 +29,7 @@ export default function MobileBottomNav() {
         return null;
     }
 
-    // Navigation Items (Home, Cart, Ambassador, Orders)
+    // Navigation Items (Home, Cart, Circle, Orders)
     const navItems = [
         {
             name: "Home",
@@ -45,11 +45,10 @@ export default function MobileBottomNav() {
             hasBadge: true,
         },
         {
-            name: "Ambassador",
+            name: "Circle",
             href: "/circle",
             icon: Crown,
             isActive: pathname === "/circle",
-            isGoldCircle: true,
         },
         {
             name: "Orders",
@@ -83,11 +82,8 @@ export default function MobileBottomNav() {
             `}</style>
 
             {navItems.map((item) => {
-                // Style Ambassador tab active state as gold (#D4AF37)
-                const currentActiveText = item.isGoldCircle ? "text-[#D4AF37]" : activeTextClass;
-                const currentActiveFill = item.isGoldCircle ? "fill-[#D4AF37]/5" : activeFillClass;
-                const textStyle = item.isActive ? currentActiveText : "text-neutral-400";
-                const fillStyle = item.isActive ? currentActiveFill : "";
+                const textStyle = item.isActive ? activeTextClass : "text-neutral-400";
+                const fillStyle = item.isActive ? activeFillClass : "";
 
                 const iconContent = (
                     <div className="relative flex items-center justify-center p-0.5">
@@ -107,7 +103,7 @@ export default function MobileBottomNav() {
                 const labelContent = (
                     <span
                         className={`text-[8px] uppercase tracking-wider font-bold transition-all duration-300 ${
-                            item.isActive ? currentActiveText : "text-neutral-400"
+                            item.isActive ? activeTextClass : "text-neutral-400"
                         }`}
                     >
                         {item.name}
