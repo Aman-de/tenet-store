@@ -297,7 +297,7 @@ export default function CartDrawer() {
 
     const FREE_SHIPPING_THRESHOLD = 499;
     const SHIPPING_COST = 70;
-    const COD_MIN_THRESHOLD = 5000;
+    const COD_MIN_THRESHOLD = 2000;
 
     useEffect(() => {
         // eslint-disable-next-line react-hooks/exhaustive-deps

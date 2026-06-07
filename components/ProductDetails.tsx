@@ -4,13 +4,13 @@ import { useStore } from "@/lib/store";
 import { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, ChevronUp, AlertCircle, Heart, Ruler, Star, Loader2, Truck, ShieldCheck, RefreshCw, ShoppingBag } from "lucide-react";
+import { ChevronDown, ChevronUp, AlertCircle, Heart, Ruler, Star, Loader2, Truck, ShieldCheck, RefreshCw, ShoppingBag, Check, Copy } from "lucide-react";
 import Image from "next/image";
 import SizeGuide from "./SizeGuide";
 import ShareButton from "./ShareButton";
 import MobileStickyBar from "./MobileStickyBar";
 import { Product, Review, Variant } from "@/lib/data";
-import { createReview } from "@/app/actions";
+import { createReview, checkUserOrderHistory } from "@/app/actions";
 import { trackViewItem, trackAddToCart } from "@/lib/analytics";
 import { useUser } from "@clerk/nextjs";
 import useEmblaCarousel from "embla-carousel-react";
@@ -149,8 +149,35 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
     }, [selectedVariant?.colorName, selectedImageIndex]);
     
     // Pincode State
-    const { user } = useUser();
+    const { user, isLoaded } = useUser();
     const [pincode, setPincode] = useState("");
+    const [isEligibleForFirst20, setIsEligibleForFirst20] = useState(true);
+    const [copied, setCopied] = useState(false);
+
+    useEffect(() => {
+        if (!isLoaded) return;
+        if (!user) {
+            setIsEligibleForFirst20(true);
+            return;
+        }
+        const email = user.primaryEmailAddress?.emailAddress;
+        if (email) {
+            checkUserOrderHistory(email).then((res) => {
+                setIsEligibleForFirst20(!res.hasOrders);
+            }).catch((err) => {
+                console.error("Failed to check user orders:", err);
+                setIsEligibleForFirst20(true);
+            });
+        } else {
+            setIsEligibleForFirst20(true);
+        }
+    }, [user, isLoaded]);
+
+    const handleCopyCode = () => {
+        navigator.clipboard.writeText("FIRST20");
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+    };
     const [deliveryInfo, setDeliveryInfo] = useState<{ date: string, free: boolean } | null>(null);
     const [pincodeError, setPincodeError] = useState<string | null>(null);
 
@@ -158,6 +185,20 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
         setPincodeError(null);
         setDeliveryInfo(null);
         
+        const TIER_1_CITIES = new Set([
+            "delhi", "new delhi", "mumbai", "mumbai suburban", "bangalore", "bengaluru", 
+            "hyderabad", "chennai", "kolkata", "pune", "ahmedabad"
+        ]);
+
+        const TIER_2_CITIES = new Set([
+            "chandigarh", "lucknow", "jaipur", "bhopal", "indore", "patna", "ranchi", 
+            "bhubaneswar", "nagpur", "surat", "vadodara", "kochi", "coimbatore", 
+            "madurai", "visakhapatnam", "mysore", "dehradun", "ludhiana", "agra", 
+            "varanasi", "kanpur", "ghaziabad", "noida", "gurugram", "gurgaon", 
+            "faridabad", "thane", "navi mumbai", "nashik", "aurangabad", "solapur", 
+            "jabalpur", "gwalior", "raipur", "jodhpur", "kota", "guwahati"
+        ]);
+
         if (code.length === 6) {
             if (!/^[1-9][0-9]{5}$/.test(code)) {
                 setPincodeError("Oops, we don't deliver to this pincode or it is invalid.");
@@ -168,21 +209,34 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 const res = await fetch(`https://api.postalpincode.in/pincode/${code}`);
                 const data = await res.json();
                 
-                const days = 3;
-
                 if (data && data[0] && data[0].Status === "Success" && data[0].PostOffice && data[0].PostOffice.length > 0) {
                     const city = data[0].PostOffice[0].District || data[0].PostOffice[0].Block || "your location";
+                    const cityLower = city.toLowerCase().trim();
+                    let dateText = "";
+                    if (TIER_1_CITIES.has(cityLower)) {
+                        dateText = `Get it by tomorrow, 6 PM in ${city}`;
+                    } else if (TIER_2_CITIES.has(cityLower)) {
+                        dateText = `Get it in 2 days in ${city}`;
+                    } else {
+                        dateText = `Get it in 3 days in ${city}`;
+                    }
                     setDeliveryInfo({ 
-                        date: `Delivery available in ${city} in ${days} days`, 
+                        date: dateText, 
                         free: true 
                     });
                 } else {
                     setPincodeError("Oops, we don't deliver to this pincode or it is invalid.");
                 }
             } catch (err) {
-                const days = 3;
+                const prefix2 = code.slice(0, 2);
+                let dateText = "";
+                if (["11", "40", "56", "50", "60", "70"].includes(prefix2)) {
+                    dateText = `Get it by tomorrow, 6 PM`;
+                } else {
+                    dateText = `Get it in 3 days`;
+                }
                 setDeliveryInfo({ 
-                    date: `Delivery available in ${days} days`, 
+                    date: dateText, 
                     free: true 
                 });
             }
@@ -543,14 +597,31 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
 
                 {/* Active Promo Tags */}
                 <div className="flex flex-col gap-2.5 mb-5 mt-1 border-t border-b border-neutral-100/60 py-3">
-                    <div className="flex items-start gap-2.5">
-                        <span className="text-[9px] font-bold text-white px-1.5 py-0.5 rounded uppercase tracking-wider shrink-0" style={{ backgroundColor: accentColor }}>
-                            Offer
-                        </span>
-                        <div className="text-[11.5px] leading-snug text-neutral-500 font-sans">
-                            <strong className="text-[#1A1A1A] font-semibold">-20% OFF</strong> on your first purchase. Use code <strong className="font-mono bg-neutral-100/80 px-1.5 py-0.5 border border-neutral-200/60 rounded text-neutral-800 text-[10.5px]">FIRST20</strong>
+                    {isEligibleForFirst20 && (
+                        <div className="flex items-start gap-2.5">
+                            <span className="text-[9px] font-bold text-white px-1.5 py-0.5 rounded uppercase tracking-wider shrink-0" style={{ backgroundColor: accentColor }}>
+                                Offer
+                            </span>
+                            <div className="text-[11.5px] leading-snug text-neutral-500 font-sans flex items-center flex-wrap gap-x-1.5 gap-y-1">
+                                <span><strong className="text-[#1A1A1A] font-semibold">-20% OFF</strong> on your first purchase. Use code</span>
+                                <button
+                                    onClick={handleCopyCode}
+                                    className="font-mono bg-neutral-100/80 px-2 py-0.5 border border-neutral-200/60 rounded text-neutral-800 text-[10.5px] flex items-center gap-1.5 hover:bg-neutral-200/50 hover:text-black active:scale-95 transition-all shadow-sm group cursor-pointer"
+                                    title="Click to copy coupon code"
+                                >
+                                    <span>FIRST20</span>
+                                    {copied ? (
+                                        <Check className="w-3 h-3 text-emerald-600 animate-in fade-in zoom-in-50 duration-200" />
+                                    ) : (
+                                        <Copy className="w-3 h-3 text-neutral-400 group-hover:text-neutral-600 transition-colors" />
+                                    )}
+                                    <span className="text-[9px] uppercase tracking-wider text-neutral-400 font-sans group-hover:text-[#1A1A1A] transition-colors">
+                                        {copied ? "Copied!" : "Copy"}
+                                    </span>
+                                </button>
+                            </div>
                         </div>
-                    </div>
+                    )}
                     <div className="flex items-start gap-2.5">
                         <span className="text-[9px] font-bold text-white px-1.5 py-0.5 rounded bg-neutral-800 uppercase tracking-wider shrink-0">
                             Delivery
@@ -871,10 +942,20 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                                     ))}
                                                 </div>
                                             </div>
-                                            
-                                            <p className="font-serif text-sm xs:text-base text-[#1A1A1A] mb-1.5 font-medium leading-snug">{review.comment.split('.')[0]}</p>
-                                            <p className="text-neutral-500 xs:text-neutral-600 text-xs xs:text-sm leading-relaxed mb-3">{review.comment}</p>
-                                            
+                                            {(() => {
+                                                const firstPeriodIndex = review.comment.indexOf('.');
+                                                if (firstPeriodIndex === -1) {
+                                                    return <p className="text-neutral-600 xs:text-neutral-700 text-xs xs:text-sm leading-relaxed mb-3">{review.comment}</p>;
+                                                }
+                                                const title = review.comment.substring(0, firstPeriodIndex).trim();
+                                                const body = review.comment.substring(firstPeriodIndex + 1).trim();
+                                                return (
+                                                    <>
+                                                        <p className="font-serif text-sm xs:text-base text-[#1A1A1A] mb-1.5 font-medium leading-snug">{title}</p>
+                                                        {body && <p className="text-neutral-500 xs:text-neutral-600 text-xs xs:text-sm leading-relaxed mb-3">{body}</p>}
+                                                    </>
+                                                );
+                                            })()}
                                             {/* Review Images */}
                                             {review.images && review.images.length > 0 && (
                                                 <div className="flex gap-2.5 mb-1 mt-3 overflow-x-auto pb-1 scrollbar-none">

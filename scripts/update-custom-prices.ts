@@ -23,45 +23,45 @@ async function main() {
         let originalPrice = null;
         
         if (title.includes("chocolate set")) {
-            // Chocolate set: 400 to 900
-            price = 899;
-            originalPrice = 1499;
-        } else if (title.includes("pink block print")) {
-            // Pink kurti: 400 to 900
-            price = 699;
-            originalPrice = 1199;
-        } else if (title.includes("chikankari")) {
-            // White/Ivory Chikankari kurti/suit: 400 to 900
-            price = 799;
-            originalPrice = 1299;
-        } else if (title.includes("jaipur print")) {
-            // Jaipur kurti: 400 to 900
-            price = 599;
-            originalPrice = 999;
-        } else if (title.includes("orange paisley")) {
-            // Kurti/Tunic: 400 to 900
+            // Chocolate set: lowered for maximum buyers
             price = 499;
+            originalPrice = 1299;
+        } else if (title.includes("pink block print")) {
+            // Pink kurti: lowered
+            price = 399;
+            originalPrice = 899;
+        } else if (title.includes("chikankari")) {
+            // White/Ivory Chikankari kurti/suit: lowered
+            price = 599;
+            originalPrice = 1499;
+        } else if (title.includes("jaipur print")) {
+            // Jaipur kurti: lowered
+            price = 499;
+            originalPrice = 1199;
+        } else if (title.includes("orange paisley")) {
+            // Kurti/Tunic: lowered
+            price = 399;
             originalPrice = 899;
         } else if (title.includes("embroidered ethnic")) {
-            // Kurti/Tunic: 400 to 900
-            price = 599;
-            originalPrice = 999;
+            // Kurti/Tunic: lowered
+            price = 399;
+            originalPrice = 899;
         } else if (title.includes("dhoti")) {
-            // Dhoti set: 800 to 2000
-            price = 1299;
-            originalPrice = 2199;
+            // Dhoti set: lowered
+            price = 899;
+            originalPrice = 1999;
         } else if (title.includes("saree") || title.includes("sari")) {
-            // Saree: 800 to 2000
-            price = 1899;
-            originalPrice = 2999;
+            // Saree: lowered
+            price = 1199;
+            originalPrice = 2499;
         } else if (title.includes("banarasi lehenga")) {
-            // Premium Silk Lehenga/Saree: 3k to 5k
-            price = 3999;
-            originalPrice = 6999;
+            // Premium Silk Lehenga/Saree: lowered
+            price = 2499;
+            originalPrice = 4999;
         } else if (title.includes("rattan tote") || title.includes("bag")) {
-            // Bag: mid tier (1299)
-            price = 1299;
-            originalPrice = 2199;
+            // Bag: lowered
+            price = 999;
+            originalPrice = 1799;
         }
         
         if (price !== null && originalPrice !== null) {

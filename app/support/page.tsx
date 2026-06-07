@@ -17,7 +17,7 @@ export default function SupportPage() {
         },
         {
             question: "Do you offer Cash on Delivery (COD)?",
-            answer: "Yes, we support Cash on Delivery (COD) for orders above ₹12,000. For orders below this threshold, we accept all major Credit/Debit Cards, UPI, Netbanking, and Wallets securely via Razorpay."
+            answer: "Yes, we support Cash on Delivery (COD) for orders above ₹2,000. For orders below this threshold, we accept all major Credit/Debit Cards, UPI, Netbanking, and Wallets securely via Razorpay."
         },
         {
             question: "What is your return and exchange policy?",

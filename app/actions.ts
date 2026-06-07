@@ -71,3 +71,14 @@ export async function createReview(productId: string, formData: FormData) {
         return { success: false, message: "Failed to submit review. Please try again." };
     }
 }
+
+export async function checkUserOrderHistory(email: string) {
+    if (!email) return { hasOrders: false };
+    try {
+        const count = await client.fetch(`count(*[_type == "order" && email == $email])`, { email });
+        return { hasOrders: count > 0 };
+    } catch (error) {
+        console.error("checkUserOrderHistory error:", error);
+        return { hasOrders: false };
+    }
+}
