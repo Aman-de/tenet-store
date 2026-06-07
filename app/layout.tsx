@@ -6,6 +6,7 @@ import "./globals.css";
 import CartDrawer from "@/components/CartDrawer";
 import WishlistDrawer from "@/components/WishlistDrawer";
 import OnboardingModal from "@/components/OnboardingModal";
+import WhatsAppWidget from "@/components/WhatsAppWidget";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -99,6 +100,7 @@ export default function RootLayout({
             </Suspense>
             <WishlistDrawer />
             <OnboardingModal />
+            <WhatsAppWidget />
             <SpeedInsights />
             <Analytics />
           </body>
