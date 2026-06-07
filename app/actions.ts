@@ -82,3 +82,67 @@ export async function checkUserOrderHistory(email: string) {
         return { hasOrders: false };
     }
 }
+
+export async function checkReferralCodeValidity(code: string) {
+    if (!code) return { isValid: false };
+    try {
+        const { clerkClient } = await import("@clerk/nextjs/server");
+        const clerk = await clerkClient();
+        const users = await clerk.users.getUserList({ limit: 500 });
+        const referrer = users.data.find(u => u.unsafeMetadata.referralCode === code);
+        return { isValid: !!referrer };
+    } catch (error) {
+        console.error("checkReferralCodeValidity error:", error);
+        return { isValid: false };
+    }
+}
+
+export async function linkBankAccount(userId: string, bankDetails: { bankName: string, accountHolder: string, accountNumber: string, ifscCode: string }) {
+    if (!userId || !bankDetails) return { success: false, message: "Missing required fields" };
+    try {
+        const { clerkClient } = await import("@clerk/nextjs/server");
+        const clerk = await clerkClient();
+        const user = await clerk.users.getUser(userId);
+        await clerk.users.updateUserMetadata(userId, {
+            unsafeMetadata: {
+                ...user.unsafeMetadata,
+                bankDetails
+            }
+        });
+        return { success: true, message: "Bank details linked successfully" };
+    } catch (error) {
+        console.error("linkBankAccount error:", error);
+        return { success: false, message: "Failed to link bank details" };
+    }
+}
+
+export async function redeemReferralBalance(userId: string) {
+    if (!userId) return { success: false, message: "Unauthorized" };
+    try {
+        const { clerkClient } = await import("@clerk/nextjs/server");
+        const clerk = await clerkClient();
+        const user = await clerk.users.getUser(userId);
+        const balance = (user.unsafeMetadata.walletBalance as number) || 0;
+        const redeemedAmount = (user.unsafeMetadata.redeemedAmount as number) || 0;
+        
+        if (balance <= 0) {
+            return { success: false, message: "Insufficient balance to redeem" };
+        }
+        if (!user.unsafeMetadata.bankDetails) {
+            return { success: false, message: "Please link your bank account first" };
+        }
+
+        await clerk.users.updateUserMetadata(userId, {
+            unsafeMetadata: {
+                ...user.unsafeMetadata,
+                walletBalance: 0,
+                redeemedAmount: redeemedAmount + balance
+            }
+        });
+        
+        return { success: true, message: `Redemption request of ₹${balance.toLocaleString('en-IN')} submitted successfully. Funds will arrive in 2-3 business days.` };
+    } catch (error) {
+        console.error("redeemReferralBalance error:", error);
+        return { success: false, message: "Redemption failed" };
+    }
+}

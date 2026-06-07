@@ -76,6 +76,11 @@ export const order = defineType({
             type: 'text', // Using text for simplicity, or object for structured address
         }),
         defineField({
+            name: 'referralCode',
+            title: 'Referral Code',
+            type: 'string',
+        }),
+        defineField({
             name: 'createdAt',
             title: 'Created At',
             type: 'datetime',

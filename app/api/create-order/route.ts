@@ -32,6 +32,7 @@ export async function POST(req: Request) {
             totalPrice: totalAmount,
             status: 'pending',
             shippingAddress: typeof shippingAddress === 'string' ? shippingAddress : JSON.stringify(shippingAddress),
+            referralCode: referralCode || null,
             createdAt: new Date().toISOString()
         };
 
@@ -57,7 +58,7 @@ export async function POST(req: Request) {
             }
         }
 
-        // 2. Reward the referrer if a referral code was used
+        // 2. Reward the referrer if a referral code was used (20% commission of totalAmount)
         if (referralCode) {
             try {
                 const clerk = await clerkClient();
@@ -67,10 +68,11 @@ export async function POST(req: Request) {
                 
                 if (referrer) {
                     const currentBalance = (referrer.unsafeMetadata.walletBalance as number) || 0;
+                    const commission = Math.round(totalAmount * 0.20);
                     await clerk.users.updateUserMetadata(referrer.id, {
                         unsafeMetadata: {
                             ...referrer.unsafeMetadata,
-                            walletBalance: currentBalance + 1000
+                            walletBalance: currentBalance + commission
                         }
                     });
                 }

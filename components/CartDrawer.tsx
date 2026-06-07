@@ -10,6 +10,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useUser, useClerk } from "@clerk/nextjs";
+import { checkReferralCodeValidity } from "@/app/actions";
 
 // Helper Component for Swipeable logic with visual feedback
 const CartItemRow = ({ item, removeFromCart, updateQuantity, toggleWishlist, isInWishlist }: any) => {
@@ -217,7 +218,7 @@ export default function CartDrawer() {
     
     // Coupon State
     const [couponInput, setCouponInput] = useState("");
-    const [appliedCoupon, setAppliedCoupon] = useState<{code: string, percent: number} | null>(null);
+    const [appliedCoupon, setAppliedCoupon] = useState<{code: string, percent: number, isReferral?: boolean} | null>(null);
     const [couponError, setCouponError] = useState("");
 
     const VALID_COUPONS: Record<string, number> = {
@@ -225,7 +226,7 @@ export default function CartDrawer() {
         'FIRST20': 0.20,
     };
 
-    const handleApplyCoupon = () => {
+    const handleApplyCoupon = async () => {
         setCouponError("");
         const code = couponInput.trim().toUpperCase();
         if (!code) return;
@@ -234,7 +235,18 @@ export default function CartDrawer() {
             setAppliedCoupon({ code, percent: VALID_COUPONS[code] });
             setCouponInput("");
         } else {
-            setCouponError("Invalid coupon code");
+            try {
+                const res = await checkReferralCodeValidity(code);
+                if (res.isValid) {
+                    setAppliedCoupon({ code, percent: 0.15, isReferral: true });
+                    setCouponInput("");
+                } else {
+                    setCouponError("Invalid coupon code");
+                }
+            } catch (err) {
+                console.error("Error validating referral code:", err);
+                setCouponError("Invalid coupon code");
+            }
         }
     };
     
@@ -540,7 +552,7 @@ export default function CartDrawer() {
                             totalAmount: totalBeforeWallet, // before wallet
                             amountPaid: amountToCharge,
                             walletUsed: walletDeduction,
-                            referralCode: activeReferral ? referralCode : null,
+                            referralCode: activeReferral ? referralCode : (appliedCoupon?.isReferral ? appliedCoupon.code : null),
                             paymentMethod: paymentMethod === 'cod' ? 'PARTIAL_COD' : 'RAZORPAY',
                             shippingAddress: fullAddress
                         }),

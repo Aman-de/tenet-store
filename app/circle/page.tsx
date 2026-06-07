@@ -1,8 +1,9 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { Crown, Wallet, Copy, Share2, ArrowRight } from "lucide-react";
+import { Crown, ArrowRight } from "lucide-react";
 import ClientCircleDashboard from "./ClientCircleDashboard";
+import { client } from "@/lib/sanity";
 
 export default async function InnerCirclePage() {
     const { userId } = await auth();
@@ -44,7 +45,7 @@ export default async function InnerCirclePage() {
                             </div>
                             <div>
                                 <h3 className="font-bold text-sm uppercase tracking-widest text-[#1A1A1A]">Earn Credit</h3>
-                                <p className="text-sm text-neutral-500 mt-1">For every successful guest order, your wallet is credited with ₹1,000.</p>
+                                <p className="text-sm text-neutral-500 mt-1">For every successful guest order, your wallet is credited with 20% of their order value.</p>
                             </div>
                         </div>
                     </div>
@@ -66,9 +67,6 @@ export default async function InnerCirclePage() {
         referralCode = `${baseName}${randomStr}`;
         
         // Update user metadata
-        // We use Clerk's backend API indirectly or rely on client side, but since we are in a Server Component,
-        // we can just pass it to the Client Component to patch it if missing, or use clerkClient from server.
-        // Let's import clerkClient
         const { clerkClient } = await import("@clerk/nextjs/server");
         const clerk = await clerkClient();
         await clerk.users.updateUserMetadata(userId, {
@@ -80,10 +78,27 @@ export default async function InnerCirclePage() {
         });
     }
 
-    const walletBalance = user.unsafeMetadata?.walletBalance as number || 0;
+    // Fetch dynamic referral orders and sales count from Sanity
+    const referralOrdersQuery = `*[_type == "order" && referralCode == $referralCode && status != "cancelled"] {
+        totalPrice
+    }`;
+    const referralOrders = await client.fetch(referralOrdersQuery, { referralCode }) || [];
+    const totalSales = referralOrders.reduce((sum: number, o: any) => sum + (o.totalPrice || 0), 0);
+    const totalEarnings = Math.round(totalSales * 0.20);
+
+    const availableBalance = user.unsafeMetadata?.walletBalance as number || 0;
+    const redeemedAmount = user.unsafeMetadata?.redeemedAmount as number || 0;
+    const bankDetails = user.unsafeMetadata?.bankDetails as any || null;
+
+    const initialStats = {
+        totalSales,
+        totalEarnings,
+        redeemedAmount,
+        availableBalance
+    };
 
     return (
-        <div className="min-h-screen bg-[#FDFBF7] pt-32 pb-20 px-4">
+        <div className="min-h-screen bg-[#FDFBF7] pt-32 pb-20 px-4 animate-in fade-in duration-500">
             <div className="max-w-4xl mx-auto space-y-8">
                 <div className="flex items-center gap-4 mb-10">
                     <div className="w-12 h-12 bg-[#1A1A1A] rounded-full flex items-center justify-center shadow-md">
@@ -95,28 +110,12 @@ export default async function InnerCirclePage() {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {/* Wallet Card */}
-                    <div className="bg-[#1A1A1A] text-white rounded-2xl p-8 shadow-xl relative overflow-hidden md:col-span-1 flex flex-col justify-between min-h-[200px]">
-                        <div className="absolute top-0 right-0 p-6 opacity-20">
-                            <Wallet className="w-24 h-24" />
-                        </div>
-                        <div>
-                            <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-2">Available Credit</p>
-                            <h2 className="font-serif text-4xl">₹{walletBalance.toLocaleString('en-IN')}</h2>
-                        </div>
-                        <p className="text-xs text-neutral-400 mt-6">Automatically available at checkout.</p>
-                    </div>
-
-                    {/* Invite Card */}
-                    <div className="bg-white border border-neutral-200 rounded-2xl p-8 shadow-sm md:col-span-2 flex flex-col justify-center">
-                        <h3 className="font-bold text-sm uppercase tracking-widest text-[#1A1A1A] mb-2">Your Signature Key</h3>
-                        <p className="text-sm text-neutral-500 mb-6">
-                            Share this link. Guests receive 15% off. You receive ₹1,000 credit per successful referral.
-                        </p>
-                        <ClientCircleDashboard referralCode={referralCode} />
-                    </div>
-                </div>
+                <ClientCircleDashboard 
+                    referralCode={referralCode} 
+                    userId={userId}
+                    initialStats={initialStats}
+                    initialBankDetails={bankDetails}
+                />
 
                 {/* How it works */}
                 <div className="bg-neutral-50 rounded-2xl p-8 mt-8 border border-neutral-100">
@@ -125,17 +124,17 @@ export default async function InnerCirclePage() {
                         <div className="space-y-3">
                             <div className="w-8 h-8 rounded-full bg-white border border-neutral-200 flex items-center justify-center font-serif text-sm">1</div>
                             <h4 className="font-bold text-sm uppercase tracking-widest">Share The Key</h4>
-                            <p className="text-xs text-neutral-500 leading-relaxed">Distribute your unique link to friends and colleagues.</p>
+                            <p className="text-xs text-neutral-500 leading-relaxed font-sans">Distribute your unique link or coupon code to friends and colleagues.</p>
                         </div>
                         <div className="space-y-3">
                             <div className="w-8 h-8 rounded-full bg-white border border-neutral-200 flex items-center justify-center font-serif text-sm">2</div>
-                            <h4 className="font-bold text-sm uppercase tracking-widest">Guest Discount</h4>
-                            <p className="text-xs text-neutral-500 leading-relaxed">They seamlessly receive 15% off their first acquisition when using your link.</p>
+                            <h4 className="font-bold text-sm uppercase tracking-widest">Guest Privilege</h4>
+                            <p className="text-xs text-neutral-500 leading-relaxed font-sans">They receive 15% off their purchase value when using your link or code.</p>
                         </div>
                         <div className="space-y-3">
                             <div className="w-8 h-8 rounded-full bg-white border border-neutral-200 flex items-center justify-center font-serif text-sm">3</div>
-                            <h4 className="font-bold text-sm uppercase tracking-widest">Wallet Credit</h4>
-                            <p className="text-xs text-neutral-500 leading-relaxed">Upon their successful order, your wallet is automatically injected with ₹1,000 credit.</p>
+                            <h4 className="font-bold text-sm uppercase tracking-widest">Earnings Transfer</h4>
+                            <p className="text-xs text-neutral-500 leading-relaxed font-sans">You receive a 20% commission on every sale. Redeem funds directly to your linked bank account.</p>
                         </div>
                     </div>
                 </div>
