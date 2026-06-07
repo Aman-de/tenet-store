@@ -61,14 +61,22 @@ export default async function InnerCirclePage() {
     let referralCode = user.unsafeMetadata?.referralCode as string;
     
     if (!referralCode) {
-        // Generate a new referral code: first name + 4 random chars
-        const baseName = (user.firstName || "TENET").toUpperCase().replace(/[^A-Z]/g, '').slice(0, 5);
-        const randomStr = Math.random().toString(36).substring(2, 6).toUpperCase();
-        referralCode = `${baseName}${randomStr}`;
+        const baseName = (user.firstName || "TENET").toUpperCase().replace(/[^A-Z]/g, '');
+        const codeCandidate = `${baseName}20`;
         
-        // Update user metadata
+        // Update user metadata and check for unique code
         const { clerkClient } = await import("@clerk/nextjs/server");
         const clerk = await clerkClient();
+        const users = await clerk.users.getUserList({ limit: 500 });
+        const codeExists = users.data.some(u => u.unsafeMetadata?.referralCode === codeCandidate);
+        
+        if (codeExists) {
+            const randomStr = Math.random().toString(36).substring(2, 5).toUpperCase();
+            referralCode = `${baseName}20${randomStr}`;
+        } else {
+            referralCode = codeCandidate;
+        }
+
         await clerk.users.updateUserMetadata(userId, {
             unsafeMetadata: {
                 ...user.unsafeMetadata,

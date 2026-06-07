@@ -11,6 +11,24 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
         }
 
+        // Security Check: Verify wallet balance before deducting or writing order
+        let verifiedWalletUsed = 0;
+        if (userId && walletUsed > 0) {
+            try {
+                const clerk = await clerkClient();
+                const user = await clerk.users.getUser(userId);
+                const currentBalance = (user.unsafeMetadata.walletBalance as number) || 0;
+                
+                if (walletUsed > currentBalance) {
+                    return NextResponse.json({ error: "Insufficient wallet balance" }, { status: 400 });
+                }
+                verifiedWalletUsed = walletUsed;
+            } catch (err) {
+                console.error("Failed to verify wallet balance:", err);
+                return NextResponse.json({ error: "Failed to verify wallet balance" }, { status: 400 });
+            }
+        }
+
         const newOrder = {
             _type: 'order',
             orderNumber: `ORD-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
@@ -19,8 +37,8 @@ export async function POST(req: Request) {
             amountPaid: amountPaid || totalAmount,
             email: email,
             products: cart.map((item: any) => ({
-                _type: 'object', // This might just be key in array, but for sanity object in array
-                _key: (item.id + item.selectedSize + item.selectedColor).replace(/[^a-zA-Z0-9]/g, ''), // Unique key
+                _type: 'object',
+                _key: (item.id + item.selectedSize + item.selectedColor).replace(/[^a-zA-Z0-9]/g, ''),
                 product: {
                     _type: 'reference',
                     _ref: item.id
@@ -40,17 +58,15 @@ export async function POST(req: Request) {
 
         // --- Wallet & Referral Logic ---
         // 1. Deduct from buyer's wallet if they used it
-        if (userId && walletUsed > 0) {
+        if (userId && verifiedWalletUsed > 0) {
             try {
-                // Since clerkClient is a function in v5, we do `await clerkClient()`
-                // Let's assume v5 syntax.
                 const clerk = await clerkClient();
                 const user = await clerk.users.getUser(userId);
                 const currentBalance = (user.unsafeMetadata.walletBalance as number) || 0;
                 await clerk.users.updateUserMetadata(userId, {
                     unsafeMetadata: {
                         ...user.unsafeMetadata,
-                        walletBalance: Math.max(0, currentBalance - walletUsed)
+                        walletBalance: Math.max(0, currentBalance - verifiedWalletUsed)
                     }
                 });
             } catch (err) {
@@ -66,7 +82,8 @@ export async function POST(req: Request) {
                 const users = await clerk.users.getUserList({ limit: 500 });
                 const referrer = users.data.find(u => u.unsafeMetadata.referralCode === referralCode);
                 
-                if (referrer) {
+                // Security Check: prevent self-referrals
+                if (referrer && referrer.id !== userId) {
                     const currentBalance = (referrer.unsafeMetadata.walletBalance as number) || 0;
                     const commission = Math.round(totalAmount * 0.20);
                     await clerk.users.updateUserMetadata(referrer.id, {
