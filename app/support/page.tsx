@@ -98,7 +98,7 @@ export default function SupportPage() {
                             </a>
 
                             <a
-                                href="https://wa.me/919999999999"
+                                href="https://wa.me/917737796817"
                                 target="_blank"
                                 rel="noreferrer"
                                 className="flex items-center gap-4 p-5 bg-white border border-neutral-100 rounded-xl hover:border-neutral-300 transition-all duration-300 group"
@@ -108,7 +108,7 @@ export default function SupportPage() {
                                 </div>
                                 <div className="flex-1">
                                     <span className="text-xs uppercase font-bold tracking-wider text-neutral-400 block">WhatsApp Desk</span>
-                                    <span className="text-sm font-sans font-medium text-black">+91 99999 99999</span>
+                                    <span className="text-sm font-sans font-medium text-black">+91 77377 96817</span>
                                 </div>
                             </a>
                         </div>
