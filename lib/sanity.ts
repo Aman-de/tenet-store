@@ -560,8 +560,8 @@ export async function getRecommendedProducts(category: string, currentSlug: stri
     const params: any = { category, currentSlug };
     if (gender) params.gender = gender;
 
-    // Better algorithm: First try to fetch 8 items from the exact same category
-    const query = `*[_type == "product" && category == $category && slug.current != $currentSlug ${genderFilter}][0...8]{
+    // Better algorithm: First try to fetch 12 items from the exact same category
+    const query = `*[_type == "product" && category == $category && slug.current != $currentSlug ${genderFilter}][0...12]{
     _id,
     title,
     "slug": slug.current,
@@ -580,7 +580,7 @@ export async function getRecommendedProducts(category: string, currentSlug: stri
 
     // Fallback: If we couldn't find at least 4 items, pad with general products to keep the grid full
     if (products.length < 4) {
-        const fallbackLimit = 16;
+        const fallbackLimit = 24;
         const fallbackQuery = `*[_type == "product" && category != $category && slug.current != $currentSlug ${genderFilter}][0...${fallbackLimit}]{
         _id,
         title,
@@ -597,7 +597,7 @@ export async function getRecommendedProducts(category: string, currentSlug: stri
         let fallbackProducts = await client.fetch(fallbackQuery, params, { cache: 'no-store' });
         fallbackProducts = (fallbackProducts || []).filter((p: any) => p && !HIDDEN_PRODUCT_TITLES.has(p.title));
         
-        const needed = 8 - products.length;
+        const needed = 12 - products.length;
         products = [...products, ...fallbackProducts.slice(0, needed)];
     }
 
