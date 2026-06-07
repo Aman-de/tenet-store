@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
-import { Home, Package, ShoppingBag, User } from "lucide-react";
+import { Home, Package, ShoppingBag, User, Crown } from "lucide-react";
 import { UserButton, SignInButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import { useGender } from "@/context/GenderContext";
 import { useStore } from "@/lib/store";
@@ -29,7 +29,7 @@ export default function MobileBottomNav() {
         return null;
     }
 
-    // Navigation Items
+    // Navigation Items (Home, Cart, Circle, Orders)
     const navItems = [
         {
             name: "Home",
@@ -43,6 +43,13 @@ export default function MobileBottomNav() {
             icon: ShoppingBag,
             isActive: false,
             hasBadge: true,
+        },
+        {
+            name: "Circle",
+            href: "/circle",
+            icon: Crown,
+            isActive: pathname === "/circle",
+            isGoldCircle: true,
         },
         {
             name: "Orders",
@@ -64,12 +71,10 @@ export default function MobileBottomNav() {
                     0%, 20%, 100% {
                         color: #a3a3a3;
                         transform: scale(1);
-                        filter: drop-shadow(0 0 0px transparent);
                     }
                     10% {
                         color: var(--attention-color);
-                        transform: scale(1.06);
-                        filter: drop-shadow(0 0 4px var(--attention-color-glow));
+                        transform: scale(1.08);
                     }
                 }
                 .animate-attention {
@@ -78,29 +83,25 @@ export default function MobileBottomNav() {
             `}</style>
 
             {navItems.map((item) => {
+                // Style Circle tab active state as gold (#D4AF37)
+                const currentActiveText = item.isGoldCircle ? "text-[#D4AF37]" : activeTextClass;
+                const currentActiveFill = item.isGoldCircle ? "fill-[#D4AF37]/5" : activeFillClass;
+                const textStyle = item.isActive ? currentActiveText : "text-neutral-400";
+                const fillStyle = item.isActive ? currentActiveFill : "";
+
                 const iconContent = (
-                    <div className="relative">
+                    <div className="relative flex items-center justify-center p-2.5">
                         <item.icon
                             strokeWidth={1.5}
-                            className={`w-6 h-6 transition-colors ${item.isActive ? `${activeTextClass} ${activeFillClass}` : "text-neutral-400"
-                                }`}
+                            className={`w-[25px] h-[25px] transition-all duration-300 ${textStyle} ${fillStyle}`}
                         />
                         {item.hasBadge && cartCount > 0 && (
                             <span 
-                                className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full animate-pulse border border-white"
+                                className="absolute top-1.5 right-1.5 w-2.5 h-2.5 rounded-full animate-pulse border border-white"
                                 style={{ backgroundColor: accentColor }}
                             />
                         )}
                     </div>
-                );
-
-                const labelContent = (
-                    <span
-                        className={`text-[10px] uppercase tracking-widest font-bold ${item.isActive ? activeTextClass : "text-neutral-400"
-                            }`}
-                    >
-                        {item.name}
-                    </span>
                 );
 
                 if (item.href) {
@@ -108,10 +109,10 @@ export default function MobileBottomNav() {
                         <Link
                             key={item.name}
                             href={item.href}
-                            className="flex flex-col items-center justify-center w-full h-full space-y-1"
+                            className="flex items-center justify-center w-full h-full relative"
+                            title={item.name}
                         >
                             {iconContent}
-                            {labelContent}
                         </Link>
                     );
                 } else {
@@ -119,43 +120,36 @@ export default function MobileBottomNav() {
                         <button
                             key={item.name}
                             onClick={item.onClick}
-                            className="flex flex-col items-center justify-center w-full h-full space-y-1 focus:outline-none"
+                            className="flex items-center justify-center w-full h-full relative focus:outline-none"
+                            title={item.name}
                         >
                             {iconContent}
-                            {labelContent}
                         </button>
                     );
                 }
             })}
 
             {/* Account Tab (Handling Auth) */}
-            <div className="flex flex-col items-center justify-center w-full h-full space-y-1">
+            <div className="flex items-center justify-center w-full h-full">
                 <SignedIn>
-                    <div className="scale-75 origin-bottom">
+                    <div className="scale-90 flex items-center justify-center">
                         <UserButton afterSignOutUrl="/" />
                     </div>
                 </SignedIn>
                 <SignedOut>
                     <SignInButton mode="modal">
                         <button 
-                            className="flex flex-col items-center justify-center w-full h-full space-y-1 animate-attention focus:outline-none"
+                            className="flex items-center justify-center w-full h-full animate-attention focus:outline-none"
                             style={attentionStyles}
+                            title="Account"
                         >
                             <User
                                 strokeWidth={1.5}
-                                className="w-6 h-6 transition-colors"
+                                className="w-[25px] h-[25px] transition-colors"
                             />
-                            <span className="text-[10px] uppercase tracking-widest font-bold transition-colors">
-                                Account
-                            </span>
                         </button>
                     </SignInButton>
                 </SignedOut>
-                <SignedIn>
-                    <span className="text-[10px] uppercase tracking-widest font-bold -mt-1 text-neutral-400">
-                        Account
-                    </span>
-                </SignedIn>
             </div>
         </div>
     );
