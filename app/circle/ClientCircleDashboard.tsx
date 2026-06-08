@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { Copy, Share2, CheckCircle2, Building2, TrendingUp, Wallet, Banknote, Check, Loader2, Lock } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Copy, Share2, CheckCircle2, Building2, TrendingUp, Wallet, Banknote, Check, Loader2, Lock, MousePointerClick, Users, ShoppingCart } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { linkBankAccount, redeemReferralBalance } from "@/app/actions";
 
@@ -13,6 +13,10 @@ interface ClientCircleDashboardProps {
         totalEarnings: number;
         redeemedAmount: number;
         availableBalance: number;
+        clicksCount: number;
+        joinsCount: number;
+        cartsCount: number;
+        ordersCount: number;
     };
     initialBankDetails: {
         bankName: string;
@@ -20,13 +24,22 @@ interface ClientCircleDashboardProps {
         accountNumber: string;
         ifscCode: string;
     } | null;
+    referredPeople: Array<{
+        id: string;
+        name: string;
+        joinedAt: string;
+        email: string;
+        ordersCount: number;
+        totalSpent: number;
+    }>;
 }
 
 export default function ClientCircleDashboard({ 
     referralCode, 
     userId, 
     initialStats, 
-    initialBankDetails 
+    initialBankDetails,
+    referredPeople
 }: ClientCircleDashboardProps) {
     const [copiedLink, setCopiedLink] = useState(false);
     const [copiedCode, setCopiedCode] = useState(false);
@@ -39,12 +52,75 @@ export default function ClientCircleDashboard({
     const [isEditingBank, setIsEditingBank] = useState(!initialBankDetails);
     const [isSavingBank, setIsSavingBank] = useState(false);
     
-    // Form Inputs
+    // Form Inputs & Validation States
     const [bankName, setBankName] = useState(initialBankDetails?.bankName || "");
     const [accountHolder, setAccountHolder] = useState(initialBankDetails?.accountHolder || "");
     const [accountNumber, setAccountNumber] = useState(initialBankDetails?.accountNumber || "");
     const [ifscCode, setIfscCode] = useState(initialBankDetails?.ifscCode || "");
     const [bankError, setBankError] = useState("");
+    const [ifscError, setIfscError] = useState("");
+    const [isValidatingIFSC, setIsValidatingIFSC] = useState(false);
+    const [resolvedBankName, setResolvedBankName] = useState(initialBankDetails?.bankName || "");
+    const [accountNumberError, setAccountNumberError] = useState("");
+
+    // Real-time IFSC Verification
+    useEffect(() => {
+        const checkIFSC = async () => {
+            const cleanIFSC = ifscCode.trim().toUpperCase();
+            if (cleanIFSC.length === 11 && /^[A-Z]{4}0[A-Z0-9]{6}$/.test(cleanIFSC)) {
+                setIsValidatingIFSC(true);
+                setIfscError("");
+                try {
+                    const res = await fetch(`https://ifsc.razorpay.com/${cleanIFSC}`);
+                    if (res.ok) {
+                        const data = await res.json();
+                        setResolvedBankName(data.BANK || "Unknown Bank");
+                        setBankName(data.BANK || "");
+                        setIfscError("");
+                    } else {
+                        setIfscError("Invalid IFSC code. Bank not found.");
+                        setResolvedBankName("");
+                        setBankName("");
+                    }
+                } catch (e) {
+                    console.warn("Client IFSC fetch failed:", e);
+                } finally {
+                    setIsValidatingIFSC(false);
+                }
+            } else {
+                setResolvedBankName("");
+                if (cleanIFSC.length > 0 && cleanIFSC.length < 11) {
+                    setIfscError("IFSC must be exactly 11 characters.");
+                } else if (cleanIFSC.length === 11) {
+                    setIfscError("Invalid IFSC format (e.g. HDFC0001234).");
+                } else {
+                    setIfscError("");
+                }
+            }
+        };
+
+        checkIFSC();
+    }, [ifscCode]);
+
+    // Real-time Account Number Validation
+    const handleAccountNumberChange = (val: string) => {
+        const cleaned = val.replace(/[^0-9]/g, '');
+        setAccountNumber(cleaned);
+        
+        if (cleaned.length > 0) {
+            if (cleaned.length < 9 || cleaned.length > 18) {
+                setAccountNumberError("Account number must be 9-18 digits.");
+            } else if (/^(.)\1+$/.test(cleaned)) {
+                setAccountNumberError("Cannot consist of only repeating digits.");
+            } else if ("0123456789".includes(cleaned) || "9876543210".includes(cleaned)) {
+                setAccountNumberError("Cannot be a simple sequential sequence.");
+            } else {
+                setAccountNumberError("");
+            }
+        } else {
+            setAccountNumberError("");
+        }
+    };
 
     // Dynamic Balance State
     const [availableBalance, setAvailableBalance] = useState(initialStats.availableBalance);
@@ -80,6 +156,12 @@ export default function ClientCircleDashboard({
         e.preventDefault();
         setBankError("");
         setIsSavingBank(true);
+
+        if (ifscError || accountNumberError) {
+            setBankError("Please resolve validation errors first.");
+            setIsSavingBank(false);
+            return;
+        }
 
         if (!bankName || !accountHolder || !accountNumber || !ifscCode) {
             setBankError("All bank account fields are required.");
@@ -143,7 +225,7 @@ export default function ClientCircleDashboard({
                 <div>
                     <h3 className="font-bold text-xs uppercase tracking-[0.2em] text-[#1A1A1A] mb-1.5">Your Circle Assets</h3>
                     <p className="text-xs text-neutral-400 font-sans leading-relaxed">
-                        Share your unique invite assets. Customers receive an extra <strong className="text-[#1A1A1A] font-semibold">15% discount</strong> at checkout, and you earn <strong className="text-[#1A1A1A] font-semibold">20% commission</strong> on their entire purchase value.
+                        Share your unique invite assets. Customers receive an extra <strong className="text-[#1A1A1A] font-semibold">15% discount</strong> at checkout, and you earn <strong className="text-[#1A1A1A] font-semibold">15% commission</strong> on their entire purchase value.
                     </p>
                 </div>
 
@@ -205,7 +287,7 @@ export default function ClientCircleDashboard({
                 {/* Stat 2: Total Commission */}
                 <div className="bg-white border border-neutral-200/60 rounded-2xl p-5 shadow-sm space-y-2">
                     <div className="flex justify-between items-center text-neutral-400">
-                        <span className="text-[9px] font-bold uppercase tracking-wider">Commission (20%)</span>
+                        <span className="text-[9px] font-bold uppercase tracking-wider">Commission (15%)</span>
                         <Banknote className="w-4 h-4 text-neutral-300" />
                     </div>
                     <h3 className="font-serif text-2xl text-[#1A1A1A]">₹{initialStats.totalEarnings.toLocaleString('en-IN')}</h3>
@@ -227,6 +309,52 @@ export default function ClientCircleDashboard({
                         <Wallet className="w-4 h-4 text-neutral-400" />
                     </div>
                     <h3 className="font-serif text-2xl text-white">₹{availableBalance.toLocaleString('en-IN')}</h3>
+                </div>
+            </div>
+
+            {/* Traffic & Engagement Funnel */}
+            <div className="space-y-4">
+                <h3 className="font-bold text-xs uppercase tracking-[0.2em] text-neutral-400">Traffic & Engagement Funnel</h3>
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    {/* Funnel 1: Click Traffic */}
+                    <div className="bg-white border border-neutral-200/60 rounded-2xl p-5 shadow-sm space-y-2 relative overflow-hidden group hover:border-[#1A1A1A] transition-all">
+                        <div className="flex justify-between items-center text-neutral-400">
+                            <span className="text-[9px] font-bold uppercase tracking-wider">Link Clicks</span>
+                            <MousePointerClick className="w-4 h-4 text-neutral-300 group-hover:text-[#1A1A1A] transition-colors" />
+                        </div>
+                        <h3 className="font-serif text-2xl text-[#1A1A1A]">{initialStats.clicksCount}</h3>
+                        <p className="text-[9px] text-neutral-400 font-sans">Total referral visits</p>
+                    </div>
+
+                    {/* Funnel 2: Community Joins */}
+                    <div className="bg-white border border-neutral-200/60 rounded-2xl p-5 shadow-sm space-y-2 relative overflow-hidden group hover:border-[#1A1A1A] transition-all">
+                        <div className="flex justify-between items-center text-neutral-400">
+                            <span className="text-[9px] font-bold uppercase tracking-wider">Patrons Joined</span>
+                            <Users className="w-4 h-4 text-neutral-300 group-hover:text-[#1A1A1A] transition-colors" />
+                        </div>
+                        <h3 className="font-serif text-2xl text-[#1A1A1A]">{initialStats.joinsCount}</h3>
+                        <p className="text-[9px] text-neutral-400 font-sans">New user sign-ups</p>
+                    </div>
+
+                    {/* Funnel 3: Cart Adds */}
+                    <div className="bg-white border border-neutral-200/60 rounded-2xl p-5 shadow-sm space-y-2 relative overflow-hidden group hover:border-[#1A1A1A] transition-all">
+                        <div className="flex justify-between items-center text-neutral-400">
+                            <span className="text-[9px] font-bold uppercase tracking-wider">Items Carted</span>
+                            <ShoppingCart className="w-4 h-4 text-neutral-300 group-hover:text-[#1A1A1A] transition-colors" />
+                        </div>
+                        <h3 className="font-serif text-2xl text-[#1A1A1A]">{initialStats.cartsCount}</h3>
+                        <p className="text-[9px] text-neutral-400 font-sans">Products added to cart</p>
+                    </div>
+
+                    {/* Funnel 4: Completed Orders */}
+                    <div className="bg-white border border-neutral-200/60 rounded-2xl p-5 shadow-sm space-y-2 relative overflow-hidden group hover:border-[#1A1A1A] transition-all">
+                        <div className="flex justify-between items-center text-neutral-400">
+                            <span className="text-[9px] font-bold uppercase tracking-wider">Successful Orders</span>
+                            <CheckCircle2 className="w-4 h-4 text-emerald-600/70" />
+                        </div>
+                        <h3 className="font-serif text-2xl text-[#1A1A1A]">{initialStats.ordersCount}</h3>
+                        <p className="text-[9px] text-neutral-400 font-sans">Conversions using assets</p>
+                    </div>
                 </div>
             </div>
 
@@ -324,14 +452,18 @@ export default function ClientCircleDashboard({
                             </div>
                             <div className="space-y-1">
                                 <label className="text-[9px] font-bold uppercase tracking-wider text-neutral-400">Bank Name</label>
-                                <input
-                                    type="text"
-                                    required
-                                    placeholder="e.g. HDFC Bank"
-                                    value={bankName}
-                                    onChange={(e) => setBankName(e.target.value)}
-                                    className="w-full border border-neutral-200 rounded-xl px-4 py-2.5 text-xs font-sans focus:outline-none focus:border-black bg-neutral-50/40"
-                                />
+                                <div className="relative">
+                                    <input
+                                        type="text"
+                                        readOnly
+                                        placeholder="Auto-resolved from IFSC"
+                                        value={bankName}
+                                        className="w-full border border-neutral-200 rounded-xl px-4 py-2.5 text-xs font-sans focus:outline-none bg-neutral-100 text-neutral-500 cursor-not-allowed"
+                                    />
+                                    {resolvedBankName && (
+                                        <CheckCircle2 className="w-4 h-4 text-emerald-600 absolute right-3 top-1/2 -translate-y-1/2" />
+                                    )}
+                                </div>
                             </div>
                         </div>
 
@@ -343,20 +475,31 @@ export default function ClientCircleDashboard({
                                     required
                                     placeholder="Enter bank account number"
                                     value={accountNumber}
-                                    onChange={(e) => setAccountNumber(e.target.value.replace(/[^0-9]/g, ''))}
-                                    className="w-full border border-neutral-200 rounded-xl px-4 py-2.5 text-xs font-sans focus:outline-none focus:border-black bg-neutral-50/40"
+                                    onChange={(e) => handleAccountNumberChange(e.target.value)}
+                                    className={`w-full border ${accountNumberError ? 'border-red-300 focus:border-red-500' : 'border-neutral-200 focus:border-black'} rounded-xl px-4 py-2.5 text-xs font-sans focus:outline-none bg-neutral-50/40`}
                                 />
+                                {accountNumberError && (
+                                    <p className="text-[10px] text-red-500 font-sans mt-0.5">{accountNumberError}</p>
+                                )}
                             </div>
                             <div className="space-y-1">
                                 <label className="text-[9px] font-bold uppercase tracking-wider text-neutral-400">IFSC Code</label>
-                                <input
-                                    type="text"
-                                    required
-                                    placeholder="e.g. HDFC0001234"
-                                    value={ifscCode}
-                                    onChange={(e) => setIfscCode(e.target.value.toUpperCase())}
-                                    className="w-full border border-neutral-200 rounded-xl px-4 py-2.5 text-xs font-sans focus:outline-none focus:border-black bg-neutral-50/40"
-                                />
+                                <div className="relative">
+                                    <input
+                                        type="text"
+                                        required
+                                        placeholder="e.g. HDFC0001234"
+                                        value={ifscCode}
+                                        onChange={(e) => setIfscCode(e.target.value.toUpperCase())}
+                                        className={`w-full border ${ifscError ? 'border-red-300 focus:border-red-500' : 'border-neutral-200 focus:border-black'} rounded-xl px-4 py-2.5 text-xs font-sans focus:outline-none bg-neutral-50/40`}
+                                    />
+                                    {isValidatingIFSC && (
+                                        <Loader2 className="w-3.5 h-3.5 animate-spin absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400" />
+                                    )}
+                                </div>
+                                {ifscError && (
+                                    <p className="text-[10px] text-red-500 font-sans mt-0.5">{ifscError}</p>
+                                )}
                             </div>
                         </div>
 
@@ -387,6 +530,48 @@ export default function ClientCircleDashboard({
                             )}
                         </div>
                     </form>
+                )}
+            </div>
+
+            {/* Referred Community Section */}
+            <div className="bg-white border border-neutral-200/60 rounded-2xl p-6 xs:p-8 shadow-sm space-y-6">
+                <div className="flex items-center gap-2.5 border-b border-neutral-100 pb-4">
+                    <Users className="w-5 h-5 text-neutral-400" />
+                    <h3 className="font-bold text-xs uppercase tracking-[0.2em] text-[#1A1A1A]">Your Referred Community</h3>
+                </div>
+
+                {referredPeople.length === 0 ? (
+                    <div className="py-8 text-center text-xs text-neutral-400 font-sans leading-relaxed">
+                        No members have registered using your circle invitation key yet. Share your invite assets to build your community.
+                    </div>
+                ) : (
+                    <div className="overflow-x-auto animate-in fade-in duration-300">
+                        <table className="w-full text-left border-collapse text-xs font-sans">
+                            <thead>
+                                <tr className="border-b border-neutral-150 text-[10px] font-bold uppercase tracking-wider text-neutral-400">
+                                    <th className="py-3 px-4 pl-0 font-bold">Patron</th>
+                                    <th className="py-3 px-4 font-bold">Joined On</th>
+                                    <th className="py-3 px-4 text-center font-bold">Purchases</th>
+                                    <th className="py-3 px-4 text-right pr-0 font-bold">Net Contribution</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-neutral-100 text-[#1A1A1A]">
+                                {referredPeople.map((person) => (
+                                    <tr key={person.id} className="hover:bg-neutral-50/40 transition-colors">
+                                        <td className="py-3 px-4 pl-0">
+                                            <div className="font-medium">{person.name}</div>
+                                            <div className="text-[10px] text-neutral-400 font-mono mt-0.5">{person.email}</div>
+                                        </td>
+                                        <td className="py-3 px-4 text-neutral-500">{person.joinedAt}</td>
+                                        <td className="py-3 px-4 text-center font-medium">{person.ordersCount}</td>
+                                        <td className="py-3 px-4 text-right font-medium pr-0">
+                                            ₹{person.totalSpent.toLocaleString('en-IN')}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 )}
             </div>
         </div>

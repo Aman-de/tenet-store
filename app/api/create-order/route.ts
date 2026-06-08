@@ -38,14 +38,15 @@ export async function POST(req: Request) {
             email: email,
             products: cart.map((item: any) => ({
                 _type: 'object',
-                _key: (item.id + item.selectedSize + item.selectedColor).replace(/[^a-zA-Z0-9]/g, ''),
+                _key: (item.id + item.selectedSize + item.selectedColor + (item.selectedPiece || 'set')).replace(/[^a-zA-Z0-9]/g, ''),
                 product: {
                     _type: 'reference',
                     _ref: item.id
                 },
                 quantity: item.quantity,
                 size: item.selectedSize,
-                color: item.selectedColor
+                color: item.selectedColor,
+                piece: item.selectedPiece || 'set'
             })),
             totalPrice: totalAmount,
             status: 'pending',
@@ -74,7 +75,7 @@ export async function POST(req: Request) {
             }
         }
 
-        // 2. Reward the referrer if a referral code was used (20% commission of totalAmount)
+        // 2. Reward the referrer if a referral code was used (15% commission of totalAmount)
         if (referralCode) {
             try {
                 const clerk = await clerkClient();
@@ -85,7 +86,7 @@ export async function POST(req: Request) {
                 // Security Check: prevent self-referrals
                 if (referrer && referrer.id !== userId) {
                     const currentBalance = (referrer.unsafeMetadata.walletBalance as number) || 0;
-                    const commission = Math.round(totalAmount * 0.20);
+                    const commission = Math.round(totalAmount * 0.15);
                     await clerk.users.updateUserMetadata(referrer.id, {
                         unsafeMetadata: {
                             ...referrer.unsafeMetadata,

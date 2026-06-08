@@ -39,6 +39,18 @@ export const order = defineType({
                         {
                             name: 'color',
                             type: 'string',
+                        },
+                        {
+                            name: 'piece',
+                            title: 'Piece',
+                            type: 'string',
+                            options: {
+                                list: [
+                                    { title: 'Top', value: 'top' },
+                                    { title: 'Bottom', value: 'bottom' },
+                                    { title: 'Full Set', value: 'set' }
+                                ]
+                            }
                         }
                     ],
                 },

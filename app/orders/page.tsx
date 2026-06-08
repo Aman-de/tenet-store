@@ -100,6 +100,7 @@ export default async function OrdersPage(props: { searchParams: Promise<{ [key: 
       quantity,
       size,
       color,
+      piece,
       product->{
         title,
         "slug": slug.current,
@@ -214,7 +215,7 @@ export default async function OrdersPage(props: { searchParams: Promise<{ [key: 
                                                 <div className="flex-1 min-w-0">
                                                     <h3 className="font-serif text-sm text-[#1A1A1A] truncate">{item.product?.title || "Unknown Product"}</h3>
                                                     <p className="text-xs text-neutral-500 mt-1">
-                                                        Qty: {item.quantity} {item.size && `• Size: ${item.size}`} {item.color && `• Color: ${item.color}`}
+                                                        Qty: {item.quantity} {item.size && `• Size: ${item.size}`} {item.color && `• Color: ${item.color}`} {item.piece && item.piece !== 'set' && `• Piece: ${item.piece === 'top' ? 'Top' : 'Bottom'} only`}
                                                     </p>
                                                 </div>
                                                 <Link href={`/product/${item.product?.slug}`} className="text-xs font-bold uppercase tracking-widest text-[#1A1A1A] underline decoration-1 underline-offset-4 hover:no-underline">

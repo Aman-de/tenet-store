@@ -133,6 +133,24 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
     const displayImages = currentImages && currentImages.length > 0 ? currentImages : product.images.filter(Boolean);
 
     const [selectedSize, setSelectedSize] = useState<string | undefined>(undefined);
+    const [selectedPiece, setSelectedPiece] = useState<'top' | 'bottom' | 'set'>('set');
+
+    // Component Pricing overrides
+    let displayPrice = product.price;
+    let displayOriginalPrice = product.originalPrice;
+
+    if (product.enableSetComponents) {
+        if (selectedPiece === 'top') {
+            displayPrice = product.topPrice ?? product.price;
+            displayOriginalPrice = product.topOriginalPrice ?? product.originalPrice;
+        } else if (selectedPiece === 'bottom') {
+            displayPrice = product.bottomPrice ?? product.price;
+            displayOriginalPrice = product.bottomOriginalPrice ?? product.originalPrice;
+        } else if (selectedPiece === 'set') {
+            displayPrice = product.setPrice ?? product.price;
+            displayOriginalPrice = product.setOriginalPrice ?? product.originalPrice;
+        }
+    }
     // If variants exist, use variant color. Else fallback to product.colors
     // Actually, distinct colors might be flat in data vs variants. 
     // Let's assume selecting a variant sets the "color".
@@ -383,7 +401,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
         if (product.isOutOfStock) return;
         const selection = validateSelection();
         if (selection) {
-            addToCart(product, selection.size, selection.color);
+            addToCart(product, selection.size, selection.color, selectedPiece);
             trackAddToCart(product, 1, selection.size, selection.color);
             openCart();
         }
@@ -394,11 +412,42 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
         const selection = validateSelection();
         if (selection) {
             trackAddToCart(product, 1, selection.size, selection.color);
+
+            let finalTitle = product.title;
+            let itemPrice = product.price;
+            let itemOriginalPrice = product.originalPrice;
+
+            if (product.enableSetComponents) {
+                if (selectedPiece === 'top') {
+                    finalTitle = `${product.title} (Top Only)`;
+                    itemPrice = product.topPrice ?? product.price;
+                    itemOriginalPrice = product.topOriginalPrice ?? product.originalPrice;
+                } else if (selectedPiece === 'bottom') {
+                    finalTitle = `${product.title} (Bottom Only)`;
+                    itemPrice = product.bottomPrice ?? product.price;
+                    itemOriginalPrice = product.bottomOriginalPrice ?? product.originalPrice;
+                } else if (selectedPiece === 'set') {
+                    finalTitle = `${product.title} (Set)`;
+                    itemPrice = product.setPrice ?? product.price;
+                    itemOriginalPrice = product.setOriginalPrice ?? product.originalPrice;
+                }
+            }
+
+            let discountLabel = null;
+            if (itemOriginalPrice && itemOriginalPrice > itemPrice) {
+                discountLabel = `SAVE RS. ${itemOriginalPrice - itemPrice}`;
+            }
+
             setCheckoutItem({
                 ...product,
+                title: finalTitle,
+                price: itemPrice,
+                originalPrice: itemOriginalPrice,
+                discountLabel,
                 quantity: 1,
                 selectedSize: selection.size,
-                selectedColor: selection.color
+                selectedColor: selection.color,
+                selectedPiece
             });
             // setCheckoutItem automatically opens cart in store logic
         }
@@ -557,21 +606,21 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 </h1>
 
                 <div className="flex items-center gap-x-3 gap-y-2 mb-3 flex-wrap">
-                    {product.originalPrice && <span className="text-neutral-400 line-through text-sm xs:text-base">₹{product.originalPrice.toLocaleString('en-IN')}</span>}
-                    <span className="text-lg xs:text-xl md:text-2xl font-medium text-[#1A1A1A]">₹{product.price.toLocaleString('en-IN')}</span>
-                    {product.originalPrice && product.originalPrice > product.price && !product.isOutOfStock && (
+                    {displayOriginalPrice && <span className="text-neutral-400 line-through text-sm xs:text-base">₹{displayOriginalPrice.toLocaleString('en-IN')}</span>}
+                    <span className="text-lg xs:text-xl md:text-2xl font-medium text-[#1A1A1A]">₹{displayPrice.toLocaleString('en-IN')}</span>
+                    {displayOriginalPrice && displayOriginalPrice > displayPrice && !product.isOutOfStock && (
                         <div className="flex items-center gap-x-1.5 gap-y-1 flex-wrap">
                             <span 
                                 className="text-[9px] xs:text-[10px] font-semibold text-white px-2 py-0.5 rounded uppercase tracking-wider"
                                 style={{ backgroundColor: accentColor }}
                             >
-                                {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF
+                                {Math.round(((displayOriginalPrice - displayPrice) / displayOriginalPrice) * 100)}% OFF
                             </span>
                             <span 
                                 className="text-[9px] xs:text-[10px] font-semibold px-2 py-0.5 rounded uppercase tracking-wider border bg-neutral-50/40"
                                 style={{ color: accentColor, borderColor: `${accentColor}25` }}
                             >
-                                SAVE ₹{(product.originalPrice - product.price).toLocaleString('en-IN')}
+                                SAVE ₹{(displayOriginalPrice - displayPrice).toLocaleString('en-IN')}
                             </span>
                         </div>
                     )}
@@ -627,14 +676,87 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                             Delivery
                         </span>
                         <div className="text-[11.5px] leading-snug text-neutral-500 font-sans">
-                            {product.price >= 499 ? (
+                            {displayPrice >= 499 ? (
                                 <span><strong className="text-emerald-700 font-semibold">✓ Eligible for Free Delivery</strong> on this purchase (Orders above ₹499)</span>
                             ) : (
-                                <span>Add <strong className="text-[#1A1A1A] font-semibold">₹{499 - product.price}</strong> more to cart for <strong className="text-[#1A1A1A] font-semibold">Free Delivery</strong> (Threshold: ₹499)</span>
+                                <span>Add <strong className="text-[#1A1A1A] font-semibold">₹{499 - displayPrice}</strong> more to cart for <strong className="text-[#1A1A1A] font-semibold">Free Delivery</strong> (Threshold: ₹499)</span>
                             )}
                         </div>
                     </div>
                 </div>
+
+                {/* Piece Selector (for Set Components) */}
+                {product.enableSetComponents && (
+                    <div className="mb-5 mt-1">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block mb-2">Select Component</span>
+                        <div className="relative flex w-full bg-neutral-100/60 border border-neutral-200/50 p-1.5 rounded-[20px] gap-1 shadow-inner">
+                            {(['set', 'top', 'bottom'] as const).map((piece) => {
+                                let label = "Full Set";
+                                let priceVal = product.setPrice ?? product.price;
+                                const isSelected = selectedPiece === piece;
+                                
+                                const iconClass = cn("w-3.5 h-3.5 shrink-0 transition-all duration-300", isSelected ? "opacity-100" : "opacity-70");
+                                
+                                let Icon = () => (
+                                    <svg className={iconClass} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <path d="M4 10h16v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V10Z"/><path d="M8 10V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v4"/><path d="M8 14h8"/>
+                                    </svg>
+                                );
+
+                                if (piece === 'top') {
+                                    label = "Top Only";
+                                    priceVal = product.topPrice ?? product.price;
+                                    Icon = () => (
+                                        <svg className={iconClass} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/>
+                                        </svg>
+                                    );
+                                } else if (piece === 'bottom') {
+                                    label = "Bottom Only";
+                                    priceVal = product.bottomPrice ?? product.price;
+                                    Icon = () => (
+                                        <svg className={iconClass} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <path d="M5 4h14l-1.5 17h-4L12 13l-1.5 8h-4L5 4z"/><path d="M5 4c0 1.5 3.13 2.5 7 2.5S19 5.5 19 4"/>
+                                        </svg>
+                                    );
+                                } else if (piece === 'set') {
+                                    Icon = () => (
+                                        <svg className={iconClass} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v4h10v-4h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/>
+                                            <path d="M6 14h12l-1.5 8h-3.5L12 18l-1 4H7.5L6 14z"/>
+                                        </svg>
+                                    );
+                                }
+
+                                return (
+                                    <button
+                                        key={piece}
+                                        onClick={() => setSelectedPiece(piece)}
+                                        className={cn(
+                                            "relative flex-1 flex flex-col items-center justify-center py-2.5 px-1 rounded-[16px] transition-colors duration-300 cursor-pointer z-10",
+                                            isSelected ? "text-[#1A1A1A]" : "text-neutral-500 hover:text-neutral-800"
+                                        )}
+                                        style={isSelected ? { color: accentColor } : undefined}
+                                    >
+                                        {isSelected && (
+                                            <motion.div
+                                                layoutId="pieceSelectorBackground"
+                                                className="absolute inset-0 bg-white rounded-[16px] shadow-[0_2px_10px_rgba(0,0,0,0.06)] ring-1 ring-black/[0.04] z-[-1]"
+                                                initial={false}
+                                                transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                                            />
+                                        )}
+                                        <div className="flex items-center gap-1.5 mb-0.5">
+                                            <Icon />
+                                            <span className={cn("text-[10px] xs:text-[10.5px] tracking-wide transition-all", isSelected ? "font-bold" : "font-semibold")}>{label}</span>
+                                        </div>
+                                        <span className={cn("text-[9.5px] xs:text-[10px] font-sans transition-all", isSelected ? "font-bold opacity-90" : "font-medium opacity-80")}>₹{priceVal.toLocaleString('en-IN')}</span>
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    </div>
+                )}
 
                 {/* Color Selector (Variants) */}
                 {hasVariants ? (
@@ -1018,6 +1140,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 product={product} 
                 selectedVariant={selectedVariant} 
                 onAddToCart={handleAddToCart}
+                displayPrice={displayPrice}
             />
         </div>
     );

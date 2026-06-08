@@ -33,6 +33,16 @@ export interface Product {
     gender?: string;
     isOutOfStock?: boolean;
     description?: string;
+
+    // Set Components Fields
+    apparelType?: 'top' | 'bottom' | 'set' | 'footwear' | 'accessory';
+    enableSetComponents?: boolean;
+    topPrice?: number;
+    topOriginalPrice?: number;
+    bottomPrice?: number;
+    bottomOriginalPrice?: number;
+    setPrice?: number;
+    setOriginalPrice?: number;
 }
 
 export const products: Product[] = [

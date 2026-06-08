@@ -10,9 +10,10 @@ interface MobileStickyBarProps {
     product: Product;
     selectedVariant?: Variant;
     onAddToCart: () => void;
+    displayPrice?: number;
 }
 
-export default function MobileStickyBar({ product, selectedVariant, onAddToCart }: MobileStickyBarProps) {
+export default function MobileStickyBar({ product, selectedVariant, onAddToCart, displayPrice }: MobileStickyBarProps) {
     const { scrollY } = useScroll();
     const [isVisible, setIsVisible] = useState(false);
     const { gender } = useGender();
@@ -27,7 +28,8 @@ export default function MobileStickyBar({ product, selectedVariant, onAddToCart 
     });
 
     const imageToUse = selectedVariant?.images?.[0] || product.images[0];
-    const price = product.price.toLocaleString('en-IN');
+    const activePrice = displayPrice !== undefined ? displayPrice : product.price;
+    const priceText = activePrice.toLocaleString('en-IN');
     const targetGender = product.gender ? product.gender.toLowerCase() : gender;
     const isWoman = targetGender === "woman" || (targetGender === "unisex" && gender === "woman");
     const accentColor = isWoman ? "#E05275" : "#2B6496";
@@ -57,7 +59,7 @@ export default function MobileStickyBar({ product, selectedVariant, onAddToCart 
                         </div>
                         <div className="flex-1 min-w-0">
                             <h3 className="font-serif text-xs xs:text-sm text-[#1A1A1A] truncate">{product.title}</h3>
-                            <p className="text-[11px] xs:text-xs font-medium text-neutral-400">₹{price}</p>
+                            <p className="text-[11px] xs:text-xs font-medium text-neutral-400">₹{priceText}</p>
                         </div>
                         <button
                             onClick={onAddToCart}

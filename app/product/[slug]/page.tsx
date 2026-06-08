@@ -4,6 +4,9 @@ import ProductDetails from "@/components/ProductDetails";
 import RecommendedProducts from "@/components/RecommendedProducts";
 import Footer from "@/components/Footer";
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 interface ProductPageProps {
     params: Promise<{
         slug: string;

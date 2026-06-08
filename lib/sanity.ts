@@ -396,7 +396,15 @@ function mapProduct(p: any): Product {
         sizes: p.sizes || [],
         sizeType: p.sizeType || 'clothing',
         gender: p.gender,
-        isOutOfStock: p.isOutOfStock || false
+        isOutOfStock: p.isOutOfStock || false,
+        apparelType: p.apparelType,
+        enableSetComponents: p.enableSetComponents,
+        topPrice: p.topPrice,
+        topOriginalPrice: p.topOriginalPrice,
+        bottomPrice: p.bottomPrice,
+        bottomOriginalPrice: p.bottomOriginalPrice,
+        setPrice: p.setPrice,
+        setOriginalPrice: p.setOriginalPrice,
     };
 }
 
@@ -414,7 +422,15 @@ export async function getProducts() {
     sizes,
     sizeType,
     gender,
-    isOutOfStock
+    isOutOfStock,
+    apparelType,
+    enableSetComponents,
+    topPrice,
+    topOriginalPrice,
+    bottomPrice,
+    bottomOriginalPrice,
+    setPrice,
+    setOriginalPrice
   }`;
 
     const products = await client.fetch(query, {}, { cache: 'no-store' });
@@ -445,6 +461,14 @@ export async function getProduct(slug: string) {
     sizes,
     gender,
     isOutOfStock,
+    apparelType,
+    enableSetComponents,
+    topPrice,
+    topOriginalPrice,
+    bottomPrice,
+    bottomOriginalPrice,
+    setPrice,
+    setOriginalPrice,
     variants[]{
         colorName,
         colorHex,
@@ -495,7 +519,15 @@ export async function getProduct(slug: string) {
             gender: product.gender,
             isOutOfStock: product.isOutOfStock || false,
             images: [originalMain, originalAlt, originalThird, blueImage],
-            colors: ["#556B2F", "#4682B4"]
+            colors: ["#556B2F", "#4682B4"],
+            apparelType: product.apparelType,
+            enableSetComponents: product.enableSetComponents,
+            topPrice: product.topPrice,
+            topOriginalPrice: product.topOriginalPrice,
+            bottomPrice: product.bottomPrice,
+            bottomOriginalPrice: product.bottomOriginalPrice,
+            setPrice: product.setPrice,
+            setOriginalPrice: product.setOriginalPrice,
         };
     }
 
@@ -532,7 +564,15 @@ export async function getProduct(slug: string) {
             gender: product.gender,
             isOutOfStock: product.isOutOfStock || false,
             images: [defaultImages[0] || originalMain, originalAlt, beigeModel, beigeAlt],
-            colors: ["#CD5C5C", "#F5F5DC"]
+            colors: ["#CD5C5C", "#F5F5DC"],
+            apparelType: product.apparelType,
+            enableSetComponents: product.enableSetComponents,
+            topPrice: product.topPrice,
+            topOriginalPrice: product.topOriginalPrice,
+            bottomPrice: product.bottomPrice,
+            bottomOriginalPrice: product.bottomOriginalPrice,
+            setPrice: product.setPrice,
+            setOriginalPrice: product.setOriginalPrice,
         };
     }
 
@@ -552,6 +592,14 @@ export async function getProduct(slug: string) {
         isOutOfStock: product.isOutOfStock || false,
         images: resolveVariantImages(product.title, defaultImages),
         colors: defaultColors,
+        apparelType: product.apparelType,
+        enableSetComponents: product.enableSetComponents,
+        topPrice: product.topPrice,
+        topOriginalPrice: product.topOriginalPrice,
+        bottomPrice: product.bottomPrice,
+        bottomOriginalPrice: product.bottomOriginalPrice,
+        setPrice: product.setPrice,
+        setOriginalPrice: product.setOriginalPrice,
     };
 }
 

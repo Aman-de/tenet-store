@@ -10,7 +10,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useUser, useClerk } from "@clerk/nextjs";
-import { checkReferralCodeValidity } from "@/app/actions";
+import { checkReferralCodeValidity, trackReferralClick, trackReferralJoin } from "@/app/actions";
 
 // Helper Component for Swipeable logic with visual feedback
 const CartItemRow = ({ item, removeFromCart, updateQuantity, toggleWishlist, isInWishlist }: any) => {
@@ -42,13 +42,13 @@ const CartItemRow = ({ item, removeFromCart, updateQuantity, toggleWishlist, isI
         e.stopPropagation();
         await animate(x, 400, { duration: 0.2 });
         if (!isInWishlist(item.id)) toggleWishlist(item);
-        removeFromCart(item.id, item.selectedSize, item.selectedColor);
+        removeFromCart(item.id, item.selectedSize, item.selectedColor, item.selectedPiece);
     };
 
     const handleRemoveAction = async (e?: React.MouseEvent) => {
         if (e) e.stopPropagation();
         await animate(x, -400, { duration: 0.2 });
-        removeFromCart(item.id, item.selectedSize, item.selectedColor);
+        removeFromCart(item.id, item.selectedSize, item.selectedColor, item.selectedPiece);
     };
 
     const handleInteractiveClick = (e: React.MouseEvent, action: () => void) => {
@@ -135,11 +135,16 @@ const CartItemRow = ({ item, removeFromCart, updateQuantity, toggleWishlist, isI
                     <p className="text-sm font-sans text-neutral-500 select-none">
                         {item.selectedSize && <span className="mr-2">Size: {item.selectedSize}</span>}
                         {item.selectedColor && <span className="block w-3 h-3 rounded-full border border-gray-300 inline-block align-middle" style={{ backgroundColor: item.selectedColor }}></span>}
+                        {item.selectedPiece && item.selectedPiece !== 'set' && (
+                            <span className="block text-[10px] text-neutral-400 font-medium capitalize mt-0.5">
+                                Piece: {item.selectedPiece} only
+                            </span>
+                        )}
                     </p>
                     <div className="flex items-center justify-between mt-2">
                         <div className="flex items-center border border-neutral-200 rounded-sm bg-white pointer-events-auto">
                             <button
-                                onClick={(e) => handleInteractiveClick(e, () => updateQuantity(item.id, item.selectedSize, item.selectedColor, -1))}
+                                onClick={(e) => handleInteractiveClick(e, () => updateQuantity(item.id, item.selectedSize, item.selectedColor, -1, item.selectedPiece))}
                                 className="p-1 hover:bg-neutral-100 transition-colors"
                                 disabled={item.quantity <= 1}
                             >
@@ -147,7 +152,7 @@ const CartItemRow = ({ item, removeFromCart, updateQuantity, toggleWishlist, isI
                             </button>
                             <span className="px-2 text-xs font-sans text-[#1A1A1A] w-6 text-center select-none">{item.quantity}</span>
                             <button
-                                onClick={(e) => handleInteractiveClick(e, () => updateQuantity(item.id, item.selectedSize, item.selectedColor, 1))}
+                                onClick={(e) => handleInteractiveClick(e, () => updateQuantity(item.id, item.selectedSize, item.selectedColor, 1, item.selectedPiece))}
                                 className="p-1 hover:bg-neutral-100 transition-colors"
                             >
                                 <Plus className="w-3 h-3 text-neutral-600" />
@@ -187,11 +192,27 @@ export default function CartDrawer() {
         // Referral Tracking
         const refParam = searchParams.get('ref');
         if (refParam && typeof refParam === 'string') {
-            setReferralCode(refParam.toUpperCase());
+            const cleanCode = refParam.toUpperCase();
+            setReferralCode(cleanCode);
+            trackReferralClick(cleanCode);
             // Optional: clean up URL
             router.replace('/');
         }
     }, [searchParams, openCart, router, setReferralCode]);
+
+    // Track user join if referral code exists in store
+    useEffect(() => {
+        if (user && referralCode) {
+            const referredByCode = user.unsafeMetadata?.referredByCode;
+            if (!referredByCode && user.id) {
+                // Ensure we don't trigger join for own code
+                const ownCode = user.unsafeMetadata?.referralCode;
+                if (ownCode !== referralCode) {
+                    trackReferralJoin(user.id, referralCode);
+                }
+            }
+        }
+    }, [user, referralCode]);
 
     const [checkoutStep, setCheckoutStep] = useState<'cart' | 'address'>('cart');
     const [isEditingAddress, setIsEditingAddress] = useState(false);
@@ -421,20 +442,20 @@ export default function CartDrawer() {
     const finalTotal = totalBeforeWallet - walletDeduction;
 
     // Local wrappers for actions to handle both modes transparently
-    const handleDelete = (id: string, size?: string, color?: string) => {
+    const handleDelete = (id: string, size?: string, color?: string, piece?: 'top' | 'bottom' | 'set') => {
         if (checkoutItem) {
             clearCheckoutItem(); // Clearing the single item closes/resets the specific checkout
             closeCart(); // And close drawer
         } else {
-            removeFromCart(id, size, color);
+            removeFromCart(id, size, color, piece);
         }
     };
 
-    const handleUpdateQuantity = (id: string, size: string | undefined, color: string | undefined, delta: number) => {
+    const handleUpdateQuantity = (id: string, size: string | undefined, color: string | undefined, delta: number, piece?: 'top' | 'bottom' | 'set') => {
         if (checkoutItem) {
             updateCheckoutItemQuantity(delta);
         } else {
-            updateQuantity(id, size, color, delta);
+            updateQuantity(id, size, color, delta, piece);
         }
     };
 
@@ -672,7 +693,7 @@ export default function CartDrawer() {
                                         <AnimatePresence initial={false}>
                                             {cartItems.map((item) => (
                                                 <motion.div
-                                                    key={`${item.id}-${item.selectedSize}-${item.selectedColor}`}
+                                                    key={`${item.id}-${item.selectedSize}-${item.selectedColor}-${item.selectedPiece || 'set'}`}
                                                     layout
                                                     initial={{ opacity: 0, height: 0 }}
                                                     animate={{ opacity: 1, height: "auto" }}

@@ -8,6 +8,7 @@ export interface CartItem extends Product {
     quantity: number;
     selectedSize?: string;
     selectedColor?: string;
+    selectedPiece?: 'top' | 'bottom' | 'set';
 }
 
 export interface WishlistItem extends Product {
@@ -33,9 +34,9 @@ interface StoreState {
     openCart: () => void;
     closeCart: () => void;
     toggleCart: () => void;
-    addToCart: (product: Product, size?: string, color?: string) => void;
-    removeFromCart: (itemId: string, size?: string, color?: string) => void;
-    updateQuantity: (itemId: string, size: string | undefined, color: string | undefined, delta: number) => void;
+    addToCart: (product: Product, size?: string, color?: string, piece?: 'top' | 'bottom' | 'set') => void;
+    removeFromCart: (itemId: string, size?: string, color?: string, piece?: 'top' | 'bottom' | 'set') => void;
+    updateQuantity: (itemId: string, size: string | undefined, color: string | undefined, delta: number, piece?: 'top' | 'bottom' | 'set') => void;
     getCartTotal: () => number;
     clearCart: () => void;
 
@@ -94,14 +95,21 @@ export const useStore = create<StoreState>()(
             closeCart: () => set({ isCartOpen: false }),
             toggleCart: () => set((state) => ({ isCartOpen: !state.isCartOpen, isWishlistOpen: false })),
 
-            addToCart: (product, size, color) => {
+            addToCart: (product, size, color, piece = 'set') => {
+                const { referralCode } = get();
+                if (referralCode) {
+                    import("@/app/actions").then(({ trackReferralAddToCart }) => {
+                        trackReferralAddToCart(referralCode);
+                    });
+                }
                 set((state) => {
-                    // Check if item already exists with same variants
+                    // Check if item already exists with same variants and piece selection
                     const existingIndex = state.cart.findIndex(
                         (item) =>
                             item.id === product.id &&
                             item.selectedSize === size &&
-                            item.selectedColor === color
+                            item.selectedColor === color &&
+                            (item.selectedPiece || 'set') === piece
                     );
 
                     if (existingIndex > -1) {
@@ -119,11 +127,48 @@ export const useStore = create<StoreState>()(
                             }
                         }
 
+                        // Calculate customized title, price and originalPrice if components are enabled
+                        let finalTitle = product.title;
+                        let itemPrice = product.price;
+                        let itemOriginalPrice = product.originalPrice;
+
+                        if (product.enableSetComponents) {
+                            if (piece === 'top') {
+                                finalTitle = `${product.title} (Top Only)`;
+                                itemPrice = product.topPrice ?? product.price;
+                                itemOriginalPrice = product.topOriginalPrice ?? product.originalPrice;
+                            } else if (piece === 'bottom') {
+                                finalTitle = `${product.title} (Bottom Only)`;
+                                itemPrice = product.bottomPrice ?? product.price;
+                                itemOriginalPrice = product.bottomOriginalPrice ?? product.originalPrice;
+                            } else if (piece === 'set') {
+                                finalTitle = `${product.title} (Set)`;
+                                itemPrice = product.setPrice ?? product.price;
+                                itemOriginalPrice = product.setOriginalPrice ?? product.originalPrice;
+                            }
+                        }
+
+                        let discountLabel = null;
+                        if (itemOriginalPrice && itemOriginalPrice > itemPrice) {
+                            discountLabel = `SAVE RS. ${itemOriginalPrice - itemPrice}`;
+                        }
+
                         // Add new item
                         return {
                             cart: [
                                 ...state.cart,
-                                { ...product, images: itemImages, quantity: 1, selectedSize: size, selectedColor: color }
+                                {
+                                    ...product,
+                                    title: finalTitle,
+                                    price: itemPrice,
+                                    originalPrice: itemOriginalPrice,
+                                    discountLabel,
+                                    images: itemImages,
+                                    quantity: 1,
+                                    selectedSize: size,
+                                    selectedColor: color,
+                                    selectedPiece: piece
+                                }
                             ],
                             // isCartOpen: true  <-- Removed to prevent auto-open
                         };
@@ -131,22 +176,23 @@ export const useStore = create<StoreState>()(
                 });
             },
 
-            removeFromCart: (itemId, size, color) => {
+            removeFromCart: (itemId, size, color, piece) => {
                 set((state) => ({
                     cart: state.cart.filter(
                         (item) =>
-                            !(item.id === itemId && item.selectedSize === size && item.selectedColor === color)
+                            !(item.id === itemId && item.selectedSize === size && item.selectedColor === color && (item.selectedPiece || 'set') === (piece || 'set'))
                     ),
                 }));
             },
 
-            updateQuantity: (itemId, size, color, delta) => {
+            updateQuantity: (itemId, size, color, delta, piece) => {
                 set((state) => {
                     const newCart = state.cart.map((item) => {
                         if (
                             item.id === itemId &&
                             item.selectedSize === size &&
-                            item.selectedColor === color
+                            item.selectedColor === color &&
+                            (item.selectedPiece || 'set') === (piece || 'set')
                         ) {
                             return { ...item, quantity: Math.max(1, item.quantity + delta) };
                         }
@@ -197,6 +243,12 @@ export const useStore = create<StoreState>()(
 
             // --- Direct Checkout Implementation ---
             setCheckoutItem: (item) => {
+                const { referralCode } = get();
+                if (referralCode) {
+                    import("@/app/actions").then(({ trackReferralAddToCart }) => {
+                        trackReferralAddToCart(referralCode);
+                    });
+                }
                 // Determine the correct image based on selected color
                 let itemImages = item.images;
                 if (item.selectedColor && item.variants) {

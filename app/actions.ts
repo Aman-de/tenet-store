@@ -99,6 +99,86 @@ export async function checkReferralCodeValidity(code: string) {
 
 export async function linkBankAccount(userId: string, bankDetails: { bankName: string, accountHolder: string, accountNumber: string, ifscCode: string }) {
     if (!userId || !bankDetails) return { success: false, message: "Missing required fields" };
+    
+    const nameTrimmed = bankDetails.accountHolder.trim();
+    if (nameTrimmed.length < 3) {
+        return { success: false, message: "Account holder name must be at least 3 characters long." };
+    }
+    if (!/^[a-zA-Z\s]+$/.test(nameTrimmed)) {
+        return { success: false, message: "Account holder name must only contain letters and spaces." };
+    }
+
+    const accountNum = bankDetails.accountNumber.trim();
+    if (!/^\d{9,18}$/.test(accountNum)) {
+        return { success: false, message: "Invalid bank account number. It must contain only digits and be between 9 and 18 digits long." };
+    }
+
+    // 1. Repeating digits check (e.g. 9999999999)
+    if (/^(.)\1+$/.test(accountNum)) {
+        return { success: false, message: "Invalid bank account number. It cannot consist of only repeating digits." };
+    }
+
+    // 2. Sequential digits check (e.g. 123456789, 987654321)
+    const asc = "0123456789";
+    const desc = "9876543210";
+    if (asc.includes(accountNum) || desc.includes(accountNum)) {
+        return { success: false, message: "Invalid bank account number. Sequential digits are not allowed." };
+    }
+
+    const ifsc = bankDetails.ifscCode.trim().toUpperCase();
+    if (!/^[A-Z]{4}0[A-Z0-9]{6}$/.test(ifsc)) {
+        return { success: false, message: "Invalid IFSC code format. It must start with 4 letters, then 0, followed by 6 alphanumeric characters (e.g. HDFC0001234)." };
+    }
+
+    // 3. Bank-specific length checks based on IFSC prefix
+    const bankLengths: Record<string, number[]> = {
+        "SBIN": [11, 17], // State Bank of India
+        "HDFC": [14],     // HDFC Bank
+        "ICIC": [12],     // ICICI Bank
+        "UTIB": [15],     // Axis Bank
+        "PUNB": [16],     // Punjab National Bank
+        "BARB": [14],     // Bank of Baroda
+        "CNRB": [13],     // Canara Bank
+        "KKBK": [15],     // Kotak Mahindra Bank
+        "UBIN": [15],     // Union Bank of India
+        "IBKL": [15],     // IDBI Bank
+        "INDB": [15, 16], // IndusInd Bank
+        "YESB": [15],     // Yes Bank
+        "CBIN": [10],     // Central Bank of India
+        "IDIB": [17],     // Indian Bank
+        "UCBA": [14],     // UCO Bank
+        "BKID": [15],     // Bank of India
+        "IOBA": [15],     // Indian Overseas Bank
+    };
+
+    const ifscPrefix = ifsc.slice(0, 4);
+    if (bankLengths[ifscPrefix]) {
+        const expectedLengths = bankLengths[ifscPrefix];
+        if (!expectedLengths.includes(accountNum.length)) {
+            const lengthsStr = expectedLengths.join(" or ");
+            return {
+                success: false,
+                message: `For bank IFSC prefix ${ifscPrefix}, the account number must be exactly ${lengthsStr} digits long (your input is ${accountNum.length} digits).`
+            };
+        }
+    }
+
+    try {
+        const response = await fetch(`https://ifsc.razorpay.com/${ifsc}`);
+        if (!response.ok) {
+            return { success: false, message: "Invalid IFSC code. Please enter a valid bank IFSC." };
+        }
+        const data = await response.json();
+        // Automatically overwrite with the verified bank name from Razorpay API
+        bankDetails.bankName = data.BANK || bankDetails.bankName;
+        bankDetails.ifscCode = ifsc;
+        bankDetails.accountNumber = accountNum;
+        bankDetails.accountHolder = nameTrimmed;
+    } catch (apiError) {
+        console.warn("IFSC verification API error:", apiError);
+        // Fallback: Continue if API is down but format is valid
+    }
+
     try {
         const { clerkClient } = await import("@clerk/nextjs/server");
         const clerk = await clerkClient();
@@ -109,7 +189,7 @@ export async function linkBankAccount(userId: string, bankDetails: { bankName: s
                 bankDetails
             }
         });
-        return { success: true, message: "Bank details linked successfully" };
+        return { success: true, message: `Bank details linked successfully with ${bankDetails.bankName}.` };
     } catch (error) {
         console.error("linkBankAccount error:", error);
         return { success: false, message: "Failed to link bank details" };
@@ -144,5 +224,94 @@ export async function redeemReferralBalance(userId: string) {
     } catch (error) {
         console.error("redeemReferralBalance error:", error);
         return { success: false, message: "Redemption failed" };
+    }
+}
+
+export async function trackReferralClick(code: string) {
+    if (!code) return { success: false };
+    try {
+        const { clerkClient } = await import("@clerk/nextjs/server");
+        const clerk = await clerkClient();
+        const users = await clerk.users.getUserList({ limit: 500 });
+        const referrer = users.data.find(u => u.unsafeMetadata.referralCode === code);
+        
+        if (referrer) {
+            const clicks = (referrer.unsafeMetadata.referralClicks as number) || 0;
+            await clerk.users.updateUserMetadata(referrer.id, {
+                unsafeMetadata: {
+                    ...referrer.unsafeMetadata,
+                    referralClicks: clicks + 1
+                }
+            });
+            return { success: true };
+        }
+        return { success: false, message: "Referrer not found" };
+    } catch (error) {
+        console.error("trackReferralClick error:", error);
+        return { success: false };
+    }
+}
+
+export async function trackReferralAddToCart(code: string) {
+    if (!code) return { success: false };
+    try {
+        const { clerkClient } = await import("@clerk/nextjs/server");
+        const clerk = await clerkClient();
+        const users = await clerk.users.getUserList({ limit: 500 });
+        const referrer = users.data.find(u => u.unsafeMetadata.referralCode === code);
+        
+        if (referrer) {
+            const carts = (referrer.unsafeMetadata.referralCarts as number) || 0;
+            await clerk.users.updateUserMetadata(referrer.id, {
+                unsafeMetadata: {
+                    ...referrer.unsafeMetadata,
+                    referralCarts: carts + 1
+                }
+            });
+            return { success: true };
+        }
+        return { success: false, message: "Referrer not found" };
+    } catch (error) {
+        console.error("trackReferralAddToCart error:", error);
+        return { success: false };
+    }
+}
+
+export async function trackReferralJoin(userId: string, code: string) {
+    if (!userId || !code) return { success: false };
+    try {
+        const { clerkClient } = await import("@clerk/nextjs/server");
+        const clerk = await clerkClient();
+        
+        const currentUser = await clerk.users.getUser(userId);
+        if (currentUser.unsafeMetadata.referredByCode) {
+            return { success: false, message: "User already joined via a code" };
+        }
+
+        const users = await clerk.users.getUserList({ limit: 500 });
+        const referrer = users.data.find(u => u.unsafeMetadata.referralCode === code);
+        
+        if (referrer && referrer.id !== userId) {
+            const joins = (referrer.unsafeMetadata.referralJoins as number) || 0;
+            await clerk.users.updateUserMetadata(referrer.id, {
+                unsafeMetadata: {
+                    ...referrer.unsafeMetadata,
+                    referralJoins: joins + 1
+                }
+            });
+
+            await clerk.users.updateUserMetadata(userId, {
+                unsafeMetadata: {
+                    ...currentUser.unsafeMetadata,
+                    referredByCode: code
+                }
+            });
+
+            return { success: true };
+        }
+        return { success: false, message: "Referrer not found" };
+    } catch (error) {
+        console.error("trackReferralJoin error:", error);
+        return { success: false };
     }
 }

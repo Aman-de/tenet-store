@@ -69,6 +69,66 @@ export const product = {
             validation: (Rule: any) => Rule.required()
         },
         {
+            name: 'apparelType',
+            title: 'Apparel Type',
+            type: 'string',
+            options: {
+                list: [
+                    { title: 'Top', value: 'top' },
+                    { title: 'Bottom', value: 'bottom' },
+                    { title: 'Set', value: 'set' },
+                    { title: 'Footwear', value: 'footwear' },
+                    { title: 'Accessory', value: 'accessory' }
+                ],
+                layout: 'radio'
+            },
+            description: 'Classify whether this product is a top, bottom, set, footwear, or accessory.'
+        },
+        {
+            name: 'enableSetComponents',
+            title: 'Enable Individual Component Buying',
+            type: 'boolean',
+            description: 'Allow customers to buy top-only, bottom-only, or full set from the product page.',
+            initialValue: false,
+            hidden: ({ document }: any) => document?.apparelType !== 'set'
+        },
+        {
+            name: 'topPrice',
+            title: 'Top Only Price (INR)',
+            type: 'number',
+            hidden: ({ document }: any) => !document?.enableSetComponents || document?.apparelType !== 'set'
+        },
+        {
+            name: 'topOriginalPrice',
+            title: 'Top Only Original Price (INR)',
+            type: 'number',
+            hidden: ({ document }: any) => !document?.enableSetComponents || document?.apparelType !== 'set'
+        },
+        {
+            name: 'bottomPrice',
+            title: 'Bottom Only Price (INR)',
+            type: 'number',
+            hidden: ({ document }: any) => !document?.enableSetComponents || document?.apparelType !== 'set'
+        },
+        {
+            name: 'bottomOriginalPrice',
+            title: 'Bottom Only Original Price (INR)',
+            type: 'number',
+            hidden: ({ document }: any) => !document?.enableSetComponents || document?.apparelType !== 'set'
+        },
+        {
+            name: 'setPrice',
+            title: 'Full Set Price (INR)',
+            type: 'number',
+            hidden: ({ document }: any) => !document?.enableSetComponents || document?.apparelType !== 'set'
+        },
+        {
+            name: 'setOriginalPrice',
+            title: 'Full Set Original Price (INR)',
+            type: 'number',
+            hidden: ({ document }: any) => !document?.enableSetComponents || document?.apparelType !== 'set'
+        },
+        {
             name: 'isOutOfStock',
             title: 'Out of Stock',
             type: 'boolean',
