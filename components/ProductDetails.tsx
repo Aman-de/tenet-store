@@ -143,7 +143,6 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
     // Fallback: If variant has no images, use product default images to prevent crash
     const displayImages = currentImages && currentImages.length > 0 ? currentImages : product.images.filter(Boolean);
 
-    const [selectedPiece, setSelectedPiece] = useState<'top' | 'bottom' | 'set'>('set');
 
     // Component Pricing & Titles overrides
     let displayPrice = product.price;
