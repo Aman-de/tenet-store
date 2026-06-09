@@ -127,6 +127,9 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
     const isProgrammaticRef = useRef(false);
     const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
+    const [selectedSize, setSelectedSize] = useState<string | undefined>(undefined);
+    const [selectedPiece, setSelectedPiece] = useState<'top' | 'bottom' | 'set'>('set');
+
     // Derived State
     let currentImages = (selectedVariant ? selectedVariant.images : product.images)?.filter(Boolean);
     
@@ -139,9 +142,6 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
 
     // Fallback: If variant has no images, use product default images to prevent crash
     const displayImages = currentImages && currentImages.length > 0 ? currentImages : product.images.filter(Boolean);
-
-    const [selectedSize, setSelectedSize] = useState<string | undefined>(undefined);
-    const [selectedPiece, setSelectedPiece] = useState<'top' | 'bottom' | 'set'>('set');
 
     // Component Pricing overrides
     let displayPrice = product.price;
