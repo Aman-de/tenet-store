@@ -202,8 +202,30 @@ export async function redeemReferralBalance(userId: string) {
         const { clerkClient } = await import("@clerk/nextjs/server");
         const clerk = await clerkClient();
         const user = await clerk.users.getUser(userId);
-        const balance = (user.unsafeMetadata.walletBalance as number) || 0;
+        
+        const referralCode = user.unsafeMetadata.referralCode as string;
+        if (!referralCode) return { success: false, message: "No referral code found" };
+
+        const referralOrdersQuery = `*[_type == "order" && referralCode == $referralCode && status == "delivered"] {
+            totalPrice,
+            createdAt,
+            deliveredAt
+        }`;
+        const referralOrders = await client.fetch(referralOrdersQuery, { referralCode }) || [];
+        
+        const now = Date.now();
+        const TEN_DAYS_MS = 10 * 24 * 60 * 60 * 1000;
+        let availableCommission = 0;
+
+        referralOrders.forEach((o: any) => {
+            const deliveredTime = o.deliveredAt ? new Date(o.deliveredAt).getTime() : new Date(o.createdAt).getTime() + (48 * 60 * 60 * 1000);
+            if (now - deliveredTime >= TEN_DAYS_MS) {
+                availableCommission += Math.round((o.totalPrice || 0) * 0.15);
+            }
+        });
+
         const redeemedAmount = (user.unsafeMetadata.redeemedAmount as number) || 0;
+        const balance = Math.max(0, availableCommission - redeemedAmount);
         
         if (balance <= 0) {
             return { success: false, message: "Insufficient balance to redeem" };
@@ -215,7 +237,6 @@ export async function redeemReferralBalance(userId: string) {
         await clerk.users.updateUserMetadata(userId, {
             unsafeMetadata: {
                 ...user.unsafeMetadata,
-                walletBalance: 0,
                 redeemedAmount: redeemedAmount + balance
             }
         });

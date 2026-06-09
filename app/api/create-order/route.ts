@@ -75,29 +75,8 @@ export async function POST(req: Request) {
             }
         }
 
-        // 2. Reward the referrer if a referral code was used (15% commission of totalAmount)
-        if (referralCode) {
-            try {
-                const clerk = await clerkClient();
-                // Find user by referral code
-                const users = await clerk.users.getUserList({ limit: 500 });
-                const referrer = users.data.find(u => u.unsafeMetadata.referralCode === referralCode);
-                
-                // Security Check: prevent self-referrals
-                if (referrer && referrer.id !== userId) {
-                    const currentBalance = (referrer.unsafeMetadata.walletBalance as number) || 0;
-                    const commission = Math.round(totalAmount * 0.15);
-                    await clerk.users.updateUserMetadata(referrer.id, {
-                        unsafeMetadata: {
-                            ...referrer.unsafeMetadata,
-                            walletBalance: currentBalance + commission
-                        }
-                    });
-                }
-            } catch (err) {
-                console.error("Failed to reward referrer:", err);
-            }
-        }
+        // 2. We no longer instantly reward the referrer. Payouts are dynamically calculated in the Circle Dashboard
+        // based on a 10-day return window from the delivered date.
 
         return NextResponse.json({ orderId: createdOrder._id, message: "Order created successfully" }, { status: 201 });
 

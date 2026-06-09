@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Copy, Share2, CheckCircle2, Building2, TrendingUp, Wallet, Banknote, Check, Loader2, Lock, MousePointerClick, Users, ShoppingCart } from "lucide-react";
+import { Copy, Share2, CheckCircle2, Building2, TrendingUp, Wallet, Banknote, Check, Loader2, Lock, MousePointerClick, Users, ShoppingCart, Clock } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { linkBankAccount, redeemReferralBalance } from "@/app/actions";
 
@@ -274,7 +274,7 @@ export default function ClientCircleDashboard({
             </div>
 
             {/* Financial Overview Grid */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
                 {/* Stat 1: Total Sales */}
                 <div className="bg-white border border-neutral-200/60 rounded-2xl p-5 shadow-sm space-y-2">
                     <div className="flex justify-between items-center text-neutral-400">
@@ -293,7 +293,16 @@ export default function ClientCircleDashboard({
                     <h3 className="font-serif text-2xl text-[#1A1A1A]">₹{initialStats.totalEarnings.toLocaleString('en-IN')}</h3>
                 </div>
 
-                {/* Stat 3: Redeemed */}
+                {/* Stat 3: Pending Balance */}
+                <div className="bg-white border border-neutral-200/60 rounded-2xl p-5 shadow-sm space-y-2">
+                    <div className="flex justify-between items-center text-neutral-400">
+                        <span className="text-[9px] font-bold uppercase tracking-wider">Pending (10-Day Hold)</span>
+                        <Clock className="w-4 h-4 text-neutral-300" />
+                    </div>
+                    <h3 className="font-serif text-2xl text-[#1A1A1A]">₹{Math.max(0, initialStats.totalEarnings - availableBalance - redeemedAmount).toLocaleString('en-IN')}</h3>
+                </div>
+
+                {/* Stat 4: Redeemed */}
                 <div className="bg-white border border-neutral-200/60 rounded-2xl p-5 shadow-sm space-y-2">
                     <div className="flex justify-between items-center text-neutral-400">
                         <span className="text-[9px] font-bold uppercase tracking-wider">Redeemed</span>
@@ -302,8 +311,8 @@ export default function ClientCircleDashboard({
                     <h3 className="font-serif text-2xl text-[#1A1A1A]">₹{redeemedAmount.toLocaleString('en-IN')}</h3>
                 </div>
 
-                {/* Stat 4: Available */}
-                <div className="bg-[#1A1A1A] text-white rounded-2xl p-5 shadow-md flex flex-col justify-between h-full min-h-[110px]">
+                {/* Stat 5: Available */}
+                <div className="bg-[#1A1A1A] text-white rounded-2xl p-5 shadow-md flex flex-col justify-between h-full min-h-[110px] md:col-span-2 lg:col-span-1">
                     <div className="flex justify-between items-center text-neutral-400">
                         <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-400">Available to Redeem</span>
                         <Wallet className="w-4 h-4 text-neutral-400" />

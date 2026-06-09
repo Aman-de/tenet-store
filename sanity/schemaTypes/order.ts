@@ -97,6 +97,12 @@ export const order = defineType({
             title: 'Created At',
             type: 'datetime',
             initialValue: (new Date()).toISOString()
+        }),
+        defineField({
+            name: 'deliveredAt',
+            title: 'Delivered At',
+            type: 'datetime',
+            description: 'The date and time when the order was delivered. Used for calculating return windows and commission payouts.',
         })
     ],
 })
