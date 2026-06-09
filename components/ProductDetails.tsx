@@ -143,20 +143,26 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
     // Fallback: If variant has no images, use product default images to prevent crash
     const displayImages = currentImages && currentImages.length > 0 ? currentImages : product.images.filter(Boolean);
 
-    // Component Pricing overrides
+    const [selectedPiece, setSelectedPiece] = useState<'top' | 'bottom' | 'set'>('set');
+
+    // Component Pricing & Titles overrides
     let displayPrice = product.price;
     let displayOriginalPrice = product.originalPrice;
+    let displayTitle = product.title;
 
     if (product.enableSetComponents) {
         if (selectedPiece === 'top') {
             displayPrice = product.topPrice ?? product.price;
             displayOriginalPrice = product.topOriginalPrice ?? product.originalPrice;
+            displayTitle = product.topName || "Top Only";
         } else if (selectedPiece === 'bottom') {
             displayPrice = product.bottomPrice ?? product.price;
             displayOriginalPrice = product.bottomOriginalPrice ?? product.originalPrice;
+            displayTitle = product.bottomName || "Bottom Only";
         } else if (selectedPiece === 'set') {
             displayPrice = product.setPrice ?? product.price;
             displayOriginalPrice = product.setOriginalPrice ?? product.originalPrice;
+            displayTitle = product.title;
         }
     }
     // If variants exist, use variant color. Else fallback to product.colors
@@ -306,9 +312,10 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
 
     // Reset image index when variant changes, piece changes, or images update
     useEffect(() => {
-        setSelectedImageIndex(0);
+        const targetIdx = displayImages.length > 1 ? 1 : 0;
+        setSelectedImageIndex(targetIdx);
         if (emblaApi) {
-            emblaApi.scrollTo(0, true);
+            emblaApi.scrollTo(targetIdx, true);
         }
     }, [selectedVariant?.colorName, selectedPiece, displayImages.length, emblaApi]);
 
@@ -607,9 +614,9 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 <span className="text-[9px] xs:text-[10px] font-medium tracking-[0.15em] uppercase text-neutral-400 mb-1">{product.category}</span>
 
                 <h1 className="font-serif text-xl xs:text-2xl md:text-4xl lg:text-5xl text-[#1A1A1A] font-medium leading-[1.2] mb-1.5 flex justify-between items-start">
-                    {product.title}
+                    {displayTitle}
                     <ShareButton
-                        title={product.title}
+                        title={displayTitle}
                         className="text-neutral-400 hover:text-[#1A1A1A] mt-1"
                         iconSize={18}
                     />
