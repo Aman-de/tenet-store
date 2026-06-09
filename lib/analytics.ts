@@ -88,4 +88,15 @@ export const trackPurchase = (transactionId: string, items: any[], totalValue: n
             item_variant: [item.selectedSize, item.selectedColor].filter(Boolean).join(" / ") || undefined
         }))
     });
+
+    if (typeof window !== "undefined") {
+        const gtag = (window as any).gtag || function() { (window as any).dataLayer = (window as any).dataLayer || []; (window as any).dataLayer.push(arguments); };
+        gtag('event', 'conversion', {
+            'send_to': 'AW-18224844065/mvSiCLnK2LscEKGapPJD',
+            'value': totalValue,
+            'currency': 'INR',
+            'transaction_id': transactionId
+        });
+        console.log(`[Google Ads Conversion]: AW-18224844065/mvSiCLnK2LscEKGapPJD tracked with value ${totalValue}`);
+    }
 };
