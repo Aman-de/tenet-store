@@ -304,11 +304,13 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
         }
     }, [selectedImageIndex, emblaApi]);
 
-    // Reset image index when variant changes or images update
+    // Reset image index when variant changes, piece changes, or images update
     useEffect(() => {
         setSelectedImageIndex(0);
-        if (emblaApi) emblaApi.scrollTo(0);
-    }, [selectedVariant?.colorName, displayImages.length, emblaApi]);
+        if (emblaApi) {
+            emblaApi.scrollTo(0, true);
+        }
+    }, [selectedVariant?.colorName, selectedPiece, displayImages.length, emblaApi]);
 
     const scrollToIndex = (idx: number) => {
         setSelectedImageIndex(idx);
@@ -471,7 +473,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 <div className="flex h-full w-full">
                     {displayImages.map((img, idx) => (
                         <div 
-                            key={idx} 
+                            key={`${selectedPiece}-${idx}`} 
                             className="flex-[0_0_100%] h-full relative bg-neutral-100"
                         >
                             {img ? (
