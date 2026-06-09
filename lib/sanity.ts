@@ -469,6 +469,10 @@ export async function getProduct(slug: string) {
     bottomOriginalPrice,
     setPrice,
     setOriginalPrice,
+    topName,
+    "topImages": topImages[].asset->url,
+    bottomName,
+    "bottomImages": bottomImages[].asset->url,
     variants[]{
         colorName,
         colorHex,
@@ -573,6 +577,10 @@ export async function getProduct(slug: string) {
             bottomOriginalPrice: product.bottomOriginalPrice,
             setPrice: product.setPrice,
             setOriginalPrice: product.setOriginalPrice,
+            topName: product.topName,
+            topImages: product.topImages,
+            bottomName: product.bottomName,
+            bottomImages: product.bottomImages,
         };
     }
 
@@ -600,6 +608,10 @@ export async function getProduct(slug: string) {
         bottomOriginalPrice: product.bottomOriginalPrice,
         setPrice: product.setPrice,
         setOriginalPrice: product.setOriginalPrice,
+        topName: product.topName,
+        topImages: product.topImages,
+        bottomName: product.bottomName,
+        bottomImages: product.bottomImages,
     };
 }
 

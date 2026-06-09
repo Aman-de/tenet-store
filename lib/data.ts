@@ -43,6 +43,10 @@ export interface Product {
     bottomOriginalPrice?: number;
     setPrice?: number;
     setOriginalPrice?: number;
+    topName?: string;
+    topImages?: string[];
+    bottomName?: string;
+    bottomImages?: string[];
 }
 
 export const products: Product[] = [

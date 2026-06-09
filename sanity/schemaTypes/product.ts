@@ -129,6 +129,38 @@ export const product = {
             hidden: ({ document }: any) => !document?.enableSetComponents || document?.apparelType !== 'set'
         },
         {
+            name: 'topName',
+            title: 'Top Custom Name',
+            type: 'string',
+            description: 'Custom name for the top (e.g. "The Linen Shirt"). Defaults to "Top Only".',
+            hidden: ({ document }: any) => !document?.enableSetComponents || document?.apparelType !== 'set'
+        },
+        {
+            name: 'topImages',
+            title: 'Top Only Images',
+            type: 'array',
+            of: [{ type: 'image' }],
+            options: { hotspot: true },
+            description: 'Images to show when the Top component is selected.',
+            hidden: ({ document }: any) => !document?.enableSetComponents || document?.apparelType !== 'set'
+        },
+        {
+            name: 'bottomName',
+            title: 'Bottom Custom Name',
+            type: 'string',
+            description: 'Custom name for the bottom (e.g. "The Trousers"). Defaults to "Bottom Only".',
+            hidden: ({ document }: any) => !document?.enableSetComponents || document?.apparelType !== 'set'
+        },
+        {
+            name: 'bottomImages',
+            title: 'Bottom Only Images',
+            type: 'array',
+            of: [{ type: 'image' }],
+            options: { hotspot: true },
+            description: 'Images to show when the Bottom component is selected.',
+            hidden: ({ document }: any) => !document?.enableSetComponents || document?.apparelType !== 'set'
+        },
+        {
             name: 'isOutOfStock',
             title: 'Out of Stock',
             type: 'boolean',

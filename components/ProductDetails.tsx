@@ -128,7 +128,15 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
     const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     // Derived State
-    const currentImages = (selectedVariant ? selectedVariant.images : product.images)?.filter(Boolean);
+    let currentImages = (selectedVariant ? selectedVariant.images : product.images)?.filter(Boolean);
+    
+    // Override images based on selected piece if custom component images are defined
+    if (selectedPiece === 'top' && product.topImages && product.topImages.length > 0) {
+        currentImages = product.topImages.filter(Boolean);
+    } else if (selectedPiece === 'bottom' && product.bottomImages && product.bottomImages.length > 0) {
+        currentImages = product.bottomImages.filter(Boolean);
+    }
+
     // Fallback: If variant has no images, use product default images to prevent crash
     const displayImages = currentImages && currentImages.length > 0 ? currentImages : product.images.filter(Boolean);
 
@@ -704,7 +712,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                 );
 
                                 if (piece === 'top') {
-                                    label = "Top Only";
+                                    label = product.topName || "Top Only";
                                     priceVal = product.topPrice ?? product.price;
                                     Icon = () => (
                                         <svg className={iconClass} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -712,7 +720,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                         </svg>
                                     );
                                 } else if (piece === 'bottom') {
-                                    label = "Bottom Only";
+                                    label = product.bottomName || "Bottom Only";
                                     priceVal = product.bottomPrice ?? product.price;
                                     Icon = () => (
                                         <svg className={iconClass} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
