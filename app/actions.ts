@@ -83,17 +83,29 @@ export async function checkUserOrderHistory(email: string) {
     }
 }
 
-export async function checkReferralCodeValidity(code: string) {
-    if (!code) return { isValid: false };
+export async function checkReferralCodeValidity(code: string, email?: string) {
+    if (!code) return { isValid: false, message: "Invalid code" };
     try {
         const { clerkClient } = await import("@clerk/nextjs/server");
         const clerk = await clerkClient();
         const users = await clerk.users.getUserList({ limit: 500 });
         const referrer = users.data.find(u => u.unsafeMetadata.referralCode === code);
-        return { isValid: !!referrer };
+        
+        if (!referrer) {
+            return { isValid: false, message: "Invalid referral code" };
+        }
+
+        if (email) {
+            const count = await client.fetch(`count(*[_type == "order" && email == $email && status != 'cancelled'])`, { email });
+            if (count > 0) {
+                return { isValid: false, message: "Referral discounts are only valid for your first purchase." };
+            }
+        }
+
+        return { isValid: true, message: "" };
     } catch (error) {
         console.error("checkReferralCodeValidity error:", error);
-        return { isValid: false };
+        return { isValid: false, message: "Validation error" };
     }
 }
 

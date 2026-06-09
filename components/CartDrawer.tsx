@@ -257,12 +257,13 @@ export default function CartDrawer() {
             setCouponInput("");
         } else {
             try {
-                const res = await checkReferralCodeValidity(code);
+                const userEmail = user?.emailAddresses?.[0]?.emailAddress;
+                const res = await checkReferralCodeValidity(code, userEmail);
                 if (res.isValid) {
                     setAppliedCoupon({ code, percent: 0.15, isReferral: true });
                     setCouponInput("");
                 } else {
-                    setCouponError("Invalid coupon code");
+                    setCouponError(res.message || "Invalid coupon code");
                 }
             } catch (err) {
                 console.error("Error validating referral code:", err);

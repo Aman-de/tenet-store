@@ -29,6 +29,14 @@ export async function POST(req: Request) {
             }
         }
 
+        // Server-Side Referral Code Verification: Only allow on first purchase
+        if (referralCode) {
+            const pastOrdersCount = await client.fetch(`count(*[_type == "order" && email == $email && status != 'cancelled'])`, { email });
+            if (pastOrdersCount > 0) {
+                return NextResponse.json({ error: "Referral discounts are only valid for your first purchase." }, { status: 400 });
+            }
+        }
+
         const newOrder = {
             _type: 'order',
             orderNumber: `ORD-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
