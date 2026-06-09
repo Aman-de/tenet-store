@@ -3,10 +3,12 @@ import { Playfair_Display, Inter } from "next/font/google";
 import { Suspense } from "react";
 import "./globals.css";
 
-import CartDrawer from "@/components/CartDrawer";
-import WishlistDrawer from "@/components/WishlistDrawer";
-import OnboardingModal from "@/components/OnboardingModal";
-import WhatsAppWidget from "@/components/WhatsAppWidget";
+import dynamic from 'next/dynamic';
+
+const CartDrawer = dynamic(() => import('@/components/CartDrawer'));
+const WishlistDrawer = dynamic(() => import('@/components/WishlistDrawer'));
+const OnboardingModal = dynamic(() => import('@/components/OnboardingModal'));
+const WhatsAppWidget = dynamic(() => import('@/components/WhatsAppWidget'));
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -43,7 +45,7 @@ export default function RootLayout({
       <GenderProvider>
         <html lang="en" suppressHydrationWarning>
           <head>
-            <Script id="google-tag-manager" strategy="afterInteractive">
+            <Script id="google-tag-manager" strategy="lazyOnload">
               {`
                 (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
                 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -52,7 +54,7 @@ export default function RootLayout({
                 })(window,document,'script','dataLayer','GTM-NW4TQXSW');
               `}
             </Script>
-            <Script id="meta-pixel" strategy="afterInteractive">
+            <Script id="meta-pixel" strategy="lazyOnload">
               {`
                 !function(f,b,e,v,n,t,s)
                 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?

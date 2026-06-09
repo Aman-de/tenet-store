@@ -77,6 +77,7 @@ export default function Hero({ spotlightProducts = [] }: HeroProps) {
                         src={gender === "man" ? "/images/hero-main.webp" : "/images/hero-women.webp"}
                         alt={gender === "man" ? "The Winter Heritage Collection" : "The Spring Grace Collection"}
                         fill
+                        sizes="100vw"
                         className="object-cover object-[60%_80%] lg:object-center transform scale-105 transition-transform duration-[10s] hover:scale-100"
                         priority
                         quality={100}
@@ -134,7 +135,7 @@ export default function Hero({ spotlightProducts = [] }: HeroProps) {
                 </div>
 
                 {/* 2. Vertical 9:16 Spotlight Products */}
-                {spotlightProducts.map((product) => {
+                {spotlightProducts.map((product, index) => {
                     const hasDiscount = product.originalPrice && product.originalPrice > product.price;
                     const pct = hasDiscount ? Math.round(((product.originalPrice! - product.price) / product.originalPrice!) * 100) : 0;
                     const showBadge = hasDiscount && pct !== 16 && pct !== 17;
@@ -150,6 +151,8 @@ export default function Hero({ spotlightProducts = [] }: HeroProps) {
                                     src={product.images[0]}
                                     alt={product.title}
                                     fill
+                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                    priority={index < 2}
                                     className="object-cover object-center transition-transform duration-[8s] ease-out group-hover:scale-105"
                                     quality={90}
                                 />
