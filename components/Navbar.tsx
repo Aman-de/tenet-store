@@ -80,7 +80,7 @@ export default function Navbar() {
                 <div className="max-w-[2000px] w-full mx-auto px-6 xl:px-12 py-4 flex items-center justify-between relative z-50">
                     {/* Mobile Menu & Search (Left) -> Now mostly Desktop Left Section including Account */}
                     <div className="flex items-center gap-4 lg:gap-6 w-full lg:w-auto">
-                        <button className="lg:hidden" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                        <button className="lg:hidden p-2.5 -ml-2.5" aria-label="Toggle mobile menu" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
                             {isMobileMenuOpen ? (
                                 <X className={`w-6 h-6 transition-colors ${textColor}`} />
                             ) : (
@@ -89,7 +89,7 @@ export default function Navbar() {
                         </button>
 
                         {/* Mobile Search Icon Trigger */}
-                        <button className="lg:hidden" onClick={() => setIsSearchOpen(!isSearchOpen)}>
+                        <button className="lg:hidden p-2.5" aria-label="Toggle search" onClick={() => setIsSearchOpen(!isSearchOpen)}>
                             <Search className={`w-6 h-6 hover:opacity-70 transition-all ${textColor}`} />
                         </button>
 
@@ -100,7 +100,7 @@ export default function Navbar() {
                                 <UserButton afterSignOutUrl="/" />
                             ) : (
                                 <SignInButton mode="modal">
-                                    <button className="group">
+                                    <button className="group p-2.5" aria-label="Sign in">
                                         <User className={`w-5 h-5 text-gray-400 group-hover:text-black transition-colors`} />
                                     </button>
                                 </SignInButton>
@@ -154,7 +154,7 @@ export default function Navbar() {
                         </div>
 
                         {/* Wishlist Icon */}
-                        <button className="relative" onClick={openWishlist}>
+                        <button className="relative p-2.5" aria-label="Open wishlist" onClick={openWishlist}>
                             <motion.div
                                 key={wishlistCount}
                                 initial={{ scale: 1 }}
@@ -169,7 +169,7 @@ export default function Navbar() {
                         </button>
 
                         {/* Cart Icon */}
-                        <button className="relative" onClick={openCart}>
+                        <button className="relative p-2.5 -mr-2.5" aria-label="Open cart" onClick={openCart}>
                             <motion.div
                                 key={cartCount}
                                 initial={{ scale: 1 }}
@@ -204,7 +204,7 @@ export default function Navbar() {
                                     className="flex-1 outline-none text-sm font-sans text-[#1A1A1A] placeholder:text-gray-400"
                                     autoFocus
                                 />
-                                <button type="button" onClick={() => setIsSearchOpen(false)}>
+                                <button type="button" aria-label="Close search" className="p-2.5 -mr-2.5" onClick={() => setIsSearchOpen(false)}>
                                     <X className="w-4 h-4 text-gray-400 hover:text-black" />
                                 </button>
                             </form>

@@ -6,7 +6,8 @@ import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ChevronUp, AlertCircle, Heart, Ruler, Star, Loader2, Truck, ShieldCheck, RefreshCw, ShoppingBag, Check, Copy } from "lucide-react";
 import Image from "next/image";
-import SizeGuide from "./SizeGuide";
+import dynamic from "next/dynamic";
+const SizeGuide = dynamic(() => import("./SizeGuide"), { ssr: false });
 import ShareButton from "./ShareButton";
 import MobileStickyBar from "./MobileStickyBar";
 import { Product, Review, Variant } from "@/lib/data";
@@ -47,7 +48,7 @@ const ReviewForm = ({ productId, onCancel }: { productId: string, onCancel: () =
 
     return (
         <form action={handleSubmit} className="bg-neutral-50/70 p-6 rounded-2xl border border-neutral-100/80 shadow-sm space-y-4 mt-6 animate-in fade-in slide-in-from-top-2">
-            <h4 className="font-serif text-lg text-[#1A1A1A] font-medium">Write a Review</h4>
+            <h3 className="font-serif text-lg text-[#1A1A1A] font-medium">Write a Review</h3>
             <div className="space-y-1">
                 <label className="text-[10px] uppercase tracking-wider font-bold text-neutral-500">Name</label>
                 <input 
@@ -365,7 +366,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                     className="w-full py-3 flex items-center justify-between text-left focus:outline-none group"
                 >
                     <span className="font-serif text-base xs:text-[17px] font-medium text-[#1A1A1A] group-hover:text-neutral-600 transition-colors">{title}</span>
-                    {isOpen ? <ChevronUp className="w-4 h-4 text-neutral-400" /> : <ChevronDown className="w-4 h-4 text-neutral-400" />}
+                    {isOpen ? <ChevronUp className="w-4 h-4 text-neutral-500" /> : <ChevronDown className="w-4 h-4 text-neutral-500" />}
                 </button>
                 <AnimatePresence>
                     {isOpen && (
@@ -550,7 +551,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                 <div className={cn("w-full h-full relative bg-neutral-100", !loadedThumbnails[idx] && "animate-pulse bg-neutral-200")}>
                                     <Image
                                         src={img}
-                                        alt={`Thumbnail ${idx}`}
+                                        alt={`Product View ${idx}`}
                                         fill
                                         className="object-cover"
                                         onLoad={() => setLoadedThumbnails(prev => ({ ...prev, [idx]: true }))}
@@ -570,7 +571,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                     )}
                     <motion.div
                         key={`${selectedVariant?.colorName}-${selectedImageIndex}`} // Force re-render on variant change
-                        initial={{ opacity: 0 }}
+                        initial={false}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.3 }}
                         className="w-full h-full relative"
@@ -586,7 +587,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                             />
                         ) : (
                             <div className="w-full h-full bg-neutral-100 flex items-center justify-center">
-                                <span className="text-neutral-400 text-xs uppercase tracking-widest">No Image</span>
+                                <span className="text-neutral-500 text-xs uppercase tracking-widest">No Image</span>
                             </div>
                         )}
                     </motion.div>
@@ -610,19 +611,19 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
             {/* Right Column: Details */}
             <div className="flex flex-col pt-4 px-4 xs:px-5 sm:px-6 md:px-0 lg:max-w-[480px] xl:max-w-[540px] 2xl:max-w-[600px] w-full">
                 {/* Breadcrumb pseudo */}
-                <span className="text-[9px] xs:text-[10px] font-medium tracking-[0.15em] uppercase text-neutral-400 mb-1">{product.category}</span>
+                <span className="text-[9px] xs:text-[10px] font-medium tracking-[0.15em] uppercase text-neutral-500 mb-1">{product.category}</span>
 
                 <h1 className="font-serif text-xl xs:text-2xl md:text-4xl lg:text-5xl text-[#1A1A1A] font-medium leading-[1.2] mb-1.5 flex justify-between items-start">
                     {displayTitle}
                     <ShareButton
                         title={displayTitle}
-                        className="text-neutral-400 hover:text-[#1A1A1A] mt-1"
+                        className="text-neutral-500 hover:text-[#1A1A1A] mt-1"
                         iconSize={18}
                     />
                 </h1>
 
                 <div className="flex items-center gap-x-3 gap-y-2 mb-3 flex-wrap">
-                    {displayOriginalPrice && <span className="text-neutral-400 line-through text-sm xs:text-base">₹{displayOriginalPrice.toLocaleString('en-IN')}</span>}
+                    {displayOriginalPrice && <span className="text-neutral-500 line-through text-sm xs:text-base">₹{displayOriginalPrice.toLocaleString('en-IN')}</span>}
                     <span className="text-lg xs:text-xl md:text-2xl font-medium text-[#1A1A1A]">₹{displayPrice.toLocaleString('en-IN')}</span>
                     {displayOriginalPrice && displayOriginalPrice > displayPrice && !product.isOutOfStock && (
                         <div className="flex items-center gap-x-1.5 gap-y-1 flex-wrap">
@@ -678,9 +679,9 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                     {copied ? (
                                         <Check className="w-3 h-3 text-emerald-600 animate-in fade-in zoom-in-50 duration-200" />
                                     ) : (
-                                        <Copy className="w-3 h-3 text-neutral-400 group-hover:text-neutral-600 transition-colors" />
+                                        <Copy className="w-3 h-3 text-neutral-500 group-hover:text-neutral-600 transition-colors" />
                                     )}
-                                    <span className="text-[9px] uppercase tracking-wider text-neutral-400 font-sans group-hover:text-[#1A1A1A] transition-colors">
+                                    <span className="text-[9px] uppercase tracking-wider text-neutral-500 font-sans group-hover:text-[#1A1A1A] transition-colors">
                                         {copied ? "Copied!" : "Copy"}
                                     </span>
                                 </button>
@@ -704,7 +705,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 {/* Piece Selector (for Set Components) */}
                 {product.enableSetComponents && (
                     <div className="mb-5 mt-1">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block mb-2">Select Component</span>
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500 block mb-2">Select Component</span>
                         <div className="relative flex w-full bg-neutral-100/60 border border-neutral-200/50 p-1.5 rounded-[20px] gap-1 shadow-inner">
                             {(['set', 'top', 'bottom'] as const).map((piece) => {
                                 let label = "Full Set";
@@ -778,7 +779,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 {hasVariants ? (
                     <div className="mb-4">
                         <div className="flex justify-between items-center mb-1.5">
-                            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Color</span>
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Color</span>
                             <span className="text-xs font-serif text-[#1A1A1A]">{selectedVariant?.colorName}</span>
                         </div>
                         <div className="flex gap-2.5">
@@ -801,7 +802,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 ) : (
                     /* Legacy Colors Fallback */
                     <div className="mb-4">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block mb-1.5">Color</span>
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500 block mb-1.5">Color</span>
                         <div className="flex gap-2.5">
                             {product.colors && product.colors.map((color) => (
                                 <div
@@ -818,7 +819,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 {showSizeSelector && (
                     <div id="size-selector-section" className="mb-5">
                         <div className="flex justify-between items-center mb-1.5">
-                            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Size</span>
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Size</span>
                             <div className="flex items-center gap-3">
                                 {error && (
                                     <motion.div
@@ -896,7 +897,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         className={cn(
                             "w-[50px] h-[50px] flex items-center justify-center border shrink-0 hover:scale-[1.05] active:scale-[0.95] hover:bg-[var(--accent-color)] hover:text-white rounded-xl transition-all duration-300 cursor-pointer",
                             product.isOutOfStock
-                                ? "bg-neutral-100 text-neutral-400 border-neutral-200 cursor-not-allowed"
+                                ? "bg-neutral-100 text-neutral-500 border-neutral-200 cursor-not-allowed"
                                 : "bg-[#FDFBF7]"
                         )}
                         style={!product.isOutOfStock ? { borderColor: accentColor, color: accentColor, '--accent-color': accentColor } as React.CSSProperties : undefined}
@@ -909,7 +910,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
 
                 {/* Pincode Check */}
                 <div className="mt-5 border-t border-neutral-100/80 pt-4 mb-4">
-                    <h4 className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 mb-2">Check Delivery Details</h4>
+                    <h2 className="text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-2">Check Delivery Details</h2>
                     <div className="flex gap-2">
                         <input 
                             type="text" 
@@ -947,19 +948,19 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 {/* Micro-Trust Badges */}
                 <div className="grid grid-cols-3 gap-1 py-3 border-t border-b border-neutral-100/80 mb-5 text-center bg-transparent">
                     <div className="flex flex-col items-center justify-center gap-0.5">
-                        <Truck className="w-4 h-4 text-neutral-400 stroke-[1.2]" />
+                        <Truck className="w-4 h-4 text-neutral-500 stroke-[1.2]" />
                         <span className="font-sans text-[9px] uppercase font-semibold tracking-wider text-[#1A1A1A]">Free Shipping</span>
-                        <span className="font-sans text-[7.5px] text-neutral-400 uppercase leading-none">Express Delivery</span>
+                        <span className="font-sans text-[7.5px] text-neutral-500 uppercase leading-none">Express Delivery</span>
                     </div>
                     <div className="flex flex-col items-center justify-center gap-0.5">
-                        <ShieldCheck className="w-4 h-4 text-neutral-400 stroke-[1.2]" />
+                        <ShieldCheck className="w-4 h-4 text-neutral-500 stroke-[1.2]" />
                         <span className="font-sans text-[9px] uppercase font-semibold tracking-wider text-[#1A1A1A]">Secure Pay</span>
-                        <span className="font-sans text-[7.5px] text-neutral-400 uppercase leading-none">UPI & Cards</span>
+                        <span className="font-sans text-[7.5px] text-neutral-500 uppercase leading-none">UPI & Cards</span>
                     </div>
                     <div className="flex flex-col items-center justify-center gap-0.5">
-                        <RefreshCw className="w-4 h-4 text-neutral-400 stroke-[1.2]" />
+                        <RefreshCw className="w-4 h-4 text-neutral-500 stroke-[1.2]" />
                         <span className="font-sans text-[9px] uppercase font-semibold tracking-wider text-[#1A1A1A]">Easy Return</span>
-                        <span className="font-sans text-[7.5px] text-neutral-400 uppercase leading-none">7-day exchange</span>
+                        <span className="font-sans text-[7.5px] text-neutral-500 uppercase leading-none">7-day exchange</span>
                     </div>
                 </div>
 
@@ -983,7 +984,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                             <div className="border border-neutral-100 rounded-xl p-4 sm:p-6 bg-neutral-50/30">
                                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
                                     <div>
-                                        <h3 className="font-serif text-base xs:text-lg text-[#1A1A1A] mb-1">About Tenet</h3>
+                                        <h2 className="font-serif text-base xs:text-lg text-[#1A1A1A] mb-1">About Tenet</h2>
                                         <p className="text-[11px] xs:text-xs text-neutral-500 leading-relaxed max-w-md">
                                             TENET is defined by silent luxury—clean silhouettes, exceptional natural materials, and meticulous tailoring curated for the modern wardrobe.
                                         </p>
@@ -991,11 +992,11 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                     <div className="flex gap-4 text-center border-t md:border-t-0 md:border-l border-neutral-100/80 pt-3 md:pt-0 md:pl-6 shrink-0">
                                         <div>
                                             <div className="font-serif text-base xs:text-lg text-[#1A1A1A]">4.8★</div>
-                                            <div className="text-[8px] xs:text-[9px] text-neutral-400 uppercase tracking-wider font-bold">Patron Rating</div>
+                                            <div className="text-[8px] xs:text-[9px] text-neutral-500 uppercase tracking-wider font-bold">Patron Rating</div>
                                         </div>
                                         <div className="border-l border-neutral-100/80 pl-4">
                                             <div className="font-serif text-base xs:text-lg text-[#1A1A1A]">10k+</div>
-                                            <div className="text-[8px] xs:text-[9px] text-neutral-400 uppercase tracking-wider font-bold">Reviews</div>
+                                            <div className="text-[8px] xs:text-[9px] text-neutral-500 uppercase tracking-wider font-bold">Reviews</div>
                                         </div>
                                     </div>
                                 </div>
@@ -1023,7 +1024,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
 
                             {/* Reviews Header */}
                             <div className="text-center pb-5 pt-3 border-b border-neutral-100/80">
-                                <h3 className="font-serif text-lg xs:text-2xl text-[#1A1A1A] mb-2 font-medium">Customer Reviews</h3>
+                                <h2 className="font-serif text-lg xs:text-2xl text-[#1A1A1A] mb-2 font-medium">Customer Reviews</h2>
                                 <div className="flex justify-center items-center gap-2 mb-4">
                                     <div className="flex">
                                         {[...Array(5)].map((_, i) => (
@@ -1048,7 +1049,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
 
                             {/* Reviews List */}
                             {reviews.length === 0 ? (
-                                <p className="text-neutral-400 italic text-sm text-center py-8">No reviews yet. Be the first to review!</p>
+                                <p className="text-neutral-500 italic text-sm text-center py-8">No reviews yet. Be the first to review!</p>
                             ) : (
                                 <div className="space-y-4 pt-4">
                                     {reviews.map((review) => (
@@ -1067,7 +1068,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                                             <h4 className="font-semibold text-[#1A1A1A] text-xs xs:text-sm">{review.name}</h4>
                                                             <span className="text-[8px] xs:text-[9px] bg-emerald-50/60 text-emerald-700 border border-emerald-100/30 rounded px-1.5 py-0.5 uppercase tracking-wider font-semibold">Verified Buy</span>
                                                         </div>
-                                                        <span className="text-[9px] xs:text-[10px] text-neutral-400 block font-sans">{new Date(review.date).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                                                        <span className="text-[9px] xs:text-[10px] text-neutral-500 block font-sans">{new Date(review.date).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</span>
                                                     </div>
                                                 </div>
                                                 <div className="flex">
@@ -1101,7 +1102,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                                         <div key={idx} className="relative w-20 h-20 xs:w-24 xs:h-24 flex-shrink-0 rounded-lg overflow-hidden bg-neutral-50 border border-neutral-100/80 shadow-sm hover:scale-102 active:scale-98 transition-all duration-300 cursor-zoom-in">
                                                             <Image 
                                                                 src={img} 
-                                                                alt={`Review photo ${idx + 1}`} 
+                                                                alt={`Customer review snapshot ${idx + 1}`} 
                                                                 fill 
                                                                 className="object-cover"
                                                             />

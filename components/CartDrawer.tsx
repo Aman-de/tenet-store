@@ -122,7 +122,7 @@ const CartItemRow = ({ item, removeFromCart, updateQuantity, toggleWishlist, isI
                             className="object-cover pointer-events-none"
                         />
                     ) : (
-                        <div className="w-full h-full bg-neutral-200 flex items-center justify-center text-neutral-400 text-[10px] text-center p-1">
+                        <div className="w-full h-full bg-neutral-200 flex items-center justify-center text-neutral-500 text-[10px] text-center p-1">
                             No Image
                         </div>
                     )}
@@ -130,13 +130,13 @@ const CartItemRow = ({ item, removeFromCart, updateQuantity, toggleWishlist, isI
                 <div className="flex-1 space-y-1">
                     <div className="flex justify-between items-start">
                         <h3 className="font-serif text-sm text-[#1A1A1A] select-none">{item.title}</h3>
-                        <button onClick={(e) => handleInteractiveClick(e, handleRemoveAction)} className="text-xs text-neutral-400 hover:text-red-800 pointer-events-auto">Remove</button>
+                        <button onClick={(e) => handleInteractiveClick(e, handleRemoveAction)} className="text-xs text-neutral-500 hover:text-red-800 pointer-events-auto">Remove</button>
                     </div>
                     <p className="text-sm font-sans text-neutral-500 select-none">
                         {item.selectedSize && <span className="mr-2">Size: {item.selectedSize}</span>}
                         {item.selectedColor && <span className="block w-3 h-3 rounded-full border border-gray-300 inline-block align-middle" style={{ backgroundColor: item.selectedColor }}></span>}
                         {item.selectedPiece && item.selectedPiece !== 'set' && (
-                            <span className="block text-[10px] text-neutral-400 font-medium capitalize mt-0.5">
+                            <span className="block text-[10px] text-neutral-500 font-medium capitalize mt-0.5">
                                 Piece: {item.selectedPiece} only
                             </span>
                         )}
@@ -647,7 +647,7 @@ export default function CartDrawer() {
                         <div className="flex items-center justify-between p-6 border-b border-neutral-200 bg-white">
                             <div className="flex items-center gap-3">
                                 {checkoutStep === 'address' && (
-                                    <button onClick={() => setCheckoutStep('cart')} className="p-1 hover:bg-neutral-100 rounded-full transition-colors mr-1">
+                                    <button aria-label="Back to cart" onClick={() => setCheckoutStep('cart')} className="p-1 hover:bg-neutral-100 rounded-full transition-colors mr-1">
                                         <ArrowLeft className="w-4 h-4 text-[#1A1A1A]" />
                                     </button>
                                 )}
@@ -658,7 +658,7 @@ export default function CartDrawer() {
                                     }
                                 </h2>
                             </div>
-                            <button onClick={handleClose} className="p-2 hover:bg-neutral-100 rounded-full transition-colors">
+                            <button aria-label="Close cart" onClick={handleClose} className="p-2 hover:bg-neutral-100 rounded-full transition-colors">
                                 <X className="w-5 h-5 text-[#1A1A1A]" />
                             </button>
                         </div>
@@ -686,7 +686,7 @@ export default function CartDrawer() {
                                 {/* Items */}
                                 <div className="flex-1 overflow-y-auto p-6 space-y-6">
                                     {cartItems.length === 0 ? (
-                                        <div className="h-full flex flex-col items-center justify-center text-neutral-400 space-y-4">
+                                        <div className="h-full flex flex-col items-center justify-center text-neutral-500 space-y-4">
                                             <ShoppingBag className="w-12 h-12 opacity-20" />
                                             <p className="font-sans text-sm">Your bag is empty.</p>
                                         </div>
@@ -717,7 +717,7 @@ export default function CartDrawer() {
                                 {/* Upsell Strip - Hide during Buy Now? Or maybe suggest pairing? Let's hide to focus. */}
                                 {!checkoutItem && upsellProducts.length > 0 && (
                                     <div className="p-4 bg-neutral-50 border-t border-neutral-200">
-                                        <h4 className="text-xs font-bold uppercase tracking-widest text-neutral-500 mb-3">Pairs Well With</h4>
+                                        <h3 className="text-xs font-bold uppercase tracking-widest text-neutral-500 mb-3">Pairs Well With</h3>
                                         <div className="flex gap-3 overflow-x-auto pb-2">
                                             {upsellProducts.map((prod) => (
                                                 <div key={prod.id} className="min-w-[200px] flex items-center gap-3 bg-white p-2 border border-neutral-100 rounded-sm">
@@ -762,7 +762,7 @@ export default function CartDrawer() {
                                 <div className="p-6 border-t border-neutral-200 bg-white space-y-4 shadow-[0_-5px_20px_rgba(0,0,0,0.05)]">
                                     <div className="flex items-center justify-between font-serif text-lg">
                                         <span>Subtotal</span>
-                                        <span className="line-through text-neutral-400 mr-2 text-sm">₹{rawSubtotal.toLocaleString('en-IN')}</span>
+                                        <span className="line-through text-neutral-500 mr-2 text-sm">₹{rawSubtotal.toLocaleString('en-IN')}</span>
                                         <span>₹{subtotal.toLocaleString('en-IN')}</span>
                                     </div>
                                     {b2g1Discount > 0 && (
@@ -882,7 +882,7 @@ export default function CartDrawer() {
                                                 }}
                                                 animate={errors.name ? { x: [0, -10, 10, -5, 5, 0] } : {}}
                                                 transition={{ duration: 0.4 }}
-                                                className={`w-full border-b py-3 text-sm outline-none bg-transparent transition-all placeholder:text-neutral-400
+                                                className={`w-full border-b py-3 text-sm outline-none bg-transparent transition-all placeholder:text-neutral-500
                                                     ${errors.name
                                                         ? 'border-red-500 text-red-700 placeholder:text-red-300'
                                                         : 'border-neutral-300 focus:border-black text-[#1A1A1A]'}`}
@@ -909,7 +909,7 @@ export default function CartDrawer() {
                                                 }}
                                                 animate={errors.houseNumber ? { x: [0, -10, 10, -5, 5, 0] } : {}}
                                                 transition={{ duration: 0.4 }}
-                                                className={`w-full border-b py-3 text-sm outline-none bg-transparent transition-all placeholder:text-neutral-400
+                                                className={`w-full border-b py-3 text-sm outline-none bg-transparent transition-all placeholder:text-neutral-500
                                                     ${errors.houseNumber
                                                         ? 'border-red-500 text-red-700 placeholder:text-red-300'
                                                         : 'border-neutral-300 focus:border-black text-[#1A1A1A]'}`}
@@ -942,7 +942,7 @@ export default function CartDrawer() {
                                                 }}
                                                 animate={errors.street ? { x: [0, -10, 10, -5, 5, 0] } : {}}
                                                 transition={{ duration: 0.4 }}
-                                                className={`w-full border-b py-3 text-sm outline-none bg-transparent transition-all placeholder:text-neutral-400
+                                                className={`w-full border-b py-3 text-sm outline-none bg-transparent transition-all placeholder:text-neutral-500
                                                     ${errors.street
                                                         ? 'border-red-500 text-red-700 placeholder:text-red-300'
                                                         : 'border-neutral-300 focus:border-black text-[#1A1A1A]'}`}
@@ -970,7 +970,7 @@ export default function CartDrawer() {
                                                     }}
                                                     animate={errors.city ? { x: [0, -10, 10, -5, 5, 0] } : {}}
                                                     transition={{ duration: 0.4 }}
-                                                    className={`w-full border-b py-3 text-sm outline-none bg-transparent transition-all placeholder:text-neutral-400
+                                                    className={`w-full border-b py-3 text-sm outline-none bg-transparent transition-all placeholder:text-neutral-500
                                                         ${errors.city
                                                             ? 'border-red-500 text-red-700 placeholder:text-red-300'
                                                             : 'border-neutral-300 focus:border-black text-[#1A1A1A]'}`}
@@ -997,7 +997,7 @@ export default function CartDrawer() {
                                                     }}
                                                     animate={errors.zip ? { x: [0, -10, 10, -5, 5, 0] } : {}}
                                                     transition={{ duration: 0.4 }}
-                                                    className={`w-full border-b py-3 text-sm outline-none bg-transparent transition-all placeholder:text-neutral-400
+                                                    className={`w-full border-b py-3 text-sm outline-none bg-transparent transition-all placeholder:text-neutral-500
                                                         ${errors.zip
                                                             ? 'border-red-500 text-red-700 placeholder:text-red-300'
                                                             : 'border-neutral-300 focus:border-black text-[#1A1A1A]'}`}
@@ -1026,7 +1026,7 @@ export default function CartDrawer() {
                                                 }}
                                                 animate={errors.phone ? { x: [0, -10, 10, -5, 5, 0] } : {}}
                                                 transition={{ duration: 0.4 }}
-                                                className={`w-full border-b py-3 text-sm outline-none bg-transparent transition-all placeholder:text-neutral-400
+                                                className={`w-full border-b py-3 text-sm outline-none bg-transparent transition-all placeholder:text-neutral-500
                                                     ${errors.phone
                                                         ? 'border-red-500 text-red-700 placeholder:text-red-300'
                                                         : 'border-neutral-300 focus:border-black text-[#1A1A1A]'}`}
@@ -1092,7 +1092,7 @@ export default function CartDrawer() {
                                         <div className="mt-6 border border-black rounded-xl p-4 bg-black text-white flex items-center justify-between">
                                             <div className="flex flex-col">
                                                 <span className="text-sm font-bold tracking-widest uppercase">Circle Wallet</span>
-                                                <span className="text-xs text-neutral-400 mt-1">Available: ₹{walletBalance.toLocaleString('en-IN')}</span>
+                                                <span className="text-xs text-neutral-500 mt-1">Available: ₹{walletBalance.toLocaleString('en-IN')}</span>
                                             </div>
                                             <label className="relative inline-flex items-center cursor-pointer">
                                                 <input 

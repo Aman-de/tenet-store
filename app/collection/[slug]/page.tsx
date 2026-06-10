@@ -4,7 +4,7 @@ import { getCollection } from "@/lib/sanity";
 import { notFound, redirect } from "next/navigation";
 import type { Metadata } from 'next';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60; // ISR cache for 60 seconds
 
 export default async function CollectionPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;

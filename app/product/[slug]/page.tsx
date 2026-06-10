@@ -4,8 +4,7 @@ import ProductDetails from "@/components/ProductDetails";
 import RecommendedProducts from "@/components/RecommendedProducts";
 import Footer from "@/components/Footer";
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 60; // ISR cache for 60 seconds
 
 interface ProductPageProps {
     params: Promise<{

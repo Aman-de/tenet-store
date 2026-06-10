@@ -3,7 +3,7 @@ import TrustBar from "@/components/TrustBar";
 import Footer from "@/components/Footer";
 import { getProducts, getCollections } from "@/lib/sanity";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60; // ISR cache for 60 seconds
 
 export default async function Home() {
   const products = await getProducts();

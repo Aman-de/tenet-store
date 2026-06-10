@@ -94,7 +94,7 @@ export default function Footer() {
                                         <Check className="w-4 h-4" strokeWidth={3} />
                                     </div>
                                     <div>
-                                        <h4 className="font-serif text-sm font-semibold text-white">Welcome to the Ambassador Club</h4>
+                                        <h3 className="font-serif text-sm font-semibold text-white">Welcome to the Ambassador Club</h3>
                                         <p className="text-[11px] text-neutral-400 font-sans mt-0.5 leading-snug">You have successfully subscribed to our list.</p>
                                     </div>
                                 </motion.div>
@@ -138,7 +138,7 @@ export default function Footer() {
 
                         {/* Shop */}
                         <div className="space-y-6">
-                            <h4 className="text-[10px] font-bold uppercase tracking-[0.25em] text-neutral-500">Shop</h4>
+                            <h3 className="text-[10px] font-bold uppercase tracking-[0.25em] text-neutral-500">Shop</h3>
                             <ul className="space-y-4 text-xs font-medium tracking-wider text-neutral-400">
                                 <li>
                                     <Link href="/#new-arrivals" className="hover:text-white transition-colors relative group py-0.5 block w-fit">
@@ -163,7 +163,7 @@ export default function Footer() {
 
                         {/* Brand */}
                         <div className="space-y-6">
-                            <h4 className="text-[10px] font-bold uppercase tracking-[0.25em] text-neutral-500">Brand</h4>
+                            <h3 className="text-[10px] font-bold uppercase tracking-[0.25em] text-neutral-500">Brand</h3>
                             <ul className="space-y-4 text-xs font-medium tracking-wider text-neutral-400">
                                 <li>
                                     <Link href="/about" className="hover:text-white transition-colors relative group py-0.5 block w-fit">
@@ -194,7 +194,7 @@ export default function Footer() {
 
                         {/* Support */}
                         <div className="space-y-6">
-                            <h4 className="text-[10px] font-bold uppercase tracking-[0.25em] text-neutral-500">Support</h4>
+                            <h3 className="text-[10px] font-bold uppercase tracking-[0.25em] text-neutral-500">Support</h3>
                             <ul className="space-y-4 text-xs font-medium tracking-wider text-neutral-400">
                                 <li>
                                     <Link href="/circle" className="hover:text-white transition-colors relative group py-0.5 block w-fit">
