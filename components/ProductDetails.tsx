@@ -875,6 +875,19 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                     </div>
                 )}
 
+                {/* Urgency & Low Stock Indicators */}
+                {!product.isOutOfStock && (
+                    <div className="flex flex-col gap-2 mb-5 animate-in fade-in zoom-in-95 duration-500">
+                        <div className="flex items-start gap-3 bg-red-50 text-red-800 px-4 py-3 rounded-xl border border-red-100/50 shadow-sm">
+                            <AlertCircle className="w-4 h-4 text-red-500 shrink-0 mt-0.5" />
+                            <div className="text-[11px] xs:text-xs font-sans leading-tight">
+                                <span className="font-bold tracking-wide uppercase text-[10px] text-red-600 mb-0.5 block">High Demand</span>
+                                Only a few pieces left in stock. Order soon to secure yours.
+                            </div>
+                        </div>
+                    </div>
+                )}
+
                 {/* Action Buttons (Desktop Only) */}
                 <div className="hidden md:flex gap-3 mb-6">
                     <button

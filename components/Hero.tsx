@@ -119,17 +119,38 @@ export default function Hero({ spotlightProducts = [] }: HeroProps) {
                         >
                             <button
                                 onClick={scrollToCollection}
-                                className="lg:hidden w-full max-w-xs bg-white text-black px-8 py-4 text-xs font-bold uppercase tracking-widest transition-transform hover:scale-105 active:scale-95 shadow-xl"
+                                className="lg:hidden w-full max-w-xs bg-white text-black px-8 py-4 text-xs font-bold uppercase tracking-widest transition-transform hover:scale-105 active:scale-95 shadow-xl animate-pulse"
                             >
-                                Shop Collection
+                                Explore the Archives
                             </button>
                             <button
                                 onClick={scrollToCollection}
-                                className="hidden lg:block group/btn px-10 py-4 border border-white/80 text-white transition-all duration-300 tracking-[0.2em] text-sm font-bold uppercase backdrop-blur-sm relative overflow-hidden active:scale-95 shadow-lg"
+                                className="hidden lg:block group/btn px-10 py-4 border border-white/80 text-white transition-all duration-300 tracking-[0.2em] text-sm font-bold uppercase backdrop-blur-sm relative overflow-hidden active:scale-95 shadow-[0_0_15px_rgba(255,255,255,0.3)] hover:shadow-[0_0_25px_rgba(255,255,255,0.5)]"
                             >
-                                <span className="relative z-10 group-hover/btn:text-[#1A1A1A] transition-colors duration-300">Shop Collection</span>
+                                <span className="relative z-10 group-hover/btn:text-[#1A1A1A] transition-colors duration-300">Explore the Archives</span>
                                 <div className="absolute inset-0 bg-white transform -translate-x-full group-hover/btn:translate-x-0 transition-transform duration-300 ease-in-out z-0" />
                             </button>
+                        </motion.div>
+                        
+                        {/* Above the Fold Trust Signals */}
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.8, delay: 0.8 }}
+                            className="mt-6 flex flex-wrap justify-center lg:justify-start gap-x-6 gap-y-2 text-[9px] xs:text-[10px] md:text-[11px] uppercase tracking-widest text-white/80 font-medium max-w-md lg:max-w-none"
+                        >
+                            <div className="flex items-center gap-1.5">
+                                <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: accentColor }} />
+                                Heritage Craftsmanship
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                                <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: accentColor }} />
+                                Free Express Shipping
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                                <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: accentColor }} />
+                                Secure Checkout
+                            </div>
                         </motion.div>
                     </motion.div>
                 </div>
