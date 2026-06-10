@@ -826,7 +826,7 @@ export default function CartDrawer() {
                                         <span>₹{totalBeforeWallet.toLocaleString('en-IN')}</span>
                                     </div>
                                     <button
-                                        className="w-full bg-[#1A1A1A] text-white py-4 font-sans text-sm uppercase tracking-widest hover:bg-black transition-colors disabled:opacity-50 rounded-full"
+                                        className="w-full bg-[#1A1A1A] text-white py-4 font-sans text-[13px] font-bold uppercase tracking-widest hover:bg-black hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all duration-300 disabled:opacity-50 rounded-full flex items-center justify-center gap-2"
                                         disabled={cartItems.length === 0}
                                         onClick={() => {
                                             if (!user) {
@@ -839,6 +839,7 @@ export default function CartDrawer() {
                                         }}
                                     >
                                         Proceed to Checkout
+                                        <ShieldCheck className="w-4 h-4" />
                                     </button>
                                 </div>
                             </>

@@ -3,7 +3,7 @@
 import { useStore } from "@/lib/store";
 import { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import { ChevronDown, ChevronUp, AlertCircle, Heart, Ruler, Star, Loader2, Truck, ShieldCheck, RefreshCw, ShoppingBag, Check, Copy } from "lucide-react";
 import Image from "next/image";
 import dynamic from "next/dynamic";
@@ -129,8 +129,18 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
     const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     const [selectedSize, setSelectedSize] = useState<string | undefined>(undefined);
+    const [selectedColor, setSelectedColor] = useState<string | undefined>(undefined);
     const [selectedPiece, setSelectedPiece] = useState<'top' | 'bottom' | 'set'>('set');
+    const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
 
+    // Desktop Sticky Buy Bar Scroll State
+    const { scrollY } = useScroll();
+    const [isStickyVisible, setIsStickyVisible] = useState(false);
+    
+    useMotionValueEvent(scrollY, "change", (latest) => {
+        setIsStickyVisible(latest > 800);
+    });
+    
     // Derived State
     let currentImages = (selectedVariant ? selectedVariant.images : product.images)?.filter(Boolean);
     
@@ -471,8 +481,42 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
     };
 
     return (
-        <div className="max-w-[2000px] w-full mx-auto px-0 md:px-8 xl:px-12 pt-0 xl:pt-14 grid grid-cols-1 lg:landscape:grid-cols-[1.3fr_1fr] xl:grid-cols-[1.3fr_1fr] 2xl:grid-cols-[1.5fr_1fr] gap-0 lg:landscape:gap-[4vw] xl:gap-[6vw] 2xl:gap-[8vw]">
-            <SizeGuide isOpen={isSizeGuideOpen} onClose={() => setIsSizeGuideOpen(false)} />
+        <>
+            {/* Desktop Sticky Buy Bar (Apple Store Style) */}
+            <AnimatePresence>
+                {isStickyVisible && (
+                    <motion.div
+                        initial={{ y: "-100%" }}
+                        animate={{ y: 0 }}
+                        exit={{ y: "-100%" }}
+                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                        className="hidden md:flex fixed top-[72px] lg:top-[84px] left-0 right-0 z-[40] bg-[#FDFBF7]/90 backdrop-blur-xl border-b border-neutral-200/50 shadow-sm py-3 px-6 xl:px-12 items-center justify-between"
+                    >
+                        <div className="flex items-center gap-4">
+                            <div className="text-sm font-serif font-medium text-[#1A1A1A]">{finalTitle}</div>
+                        </div>
+                        <div className="flex items-center gap-6">
+                            <div className="flex flex-col items-end">
+                                <div className="text-sm font-medium text-[#1A1A1A]">₹{itemPrice.toLocaleString('en-IN')}</div>
+                                {itemOriginalPrice && itemOriginalPrice > itemPrice && (
+                                    <div className="text-[10px] text-neutral-400 line-through">₹{itemOriginalPrice.toLocaleString('en-IN')}</div>
+                                )}
+                            </div>
+                            <button
+                                onClick={handleBuyNow}
+                                disabled={product.isOutOfStock}
+                                className="px-8 py-2.5 text-xs font-bold uppercase tracking-widest text-white hover:opacity-90 active:scale-95 transition-all rounded-full shadow-md"
+                                style={!product.isOutOfStock ? { backgroundColor: accentColor } : { backgroundColor: '#d4d4d4', color: '#737373', cursor: 'not-allowed' }}
+                            >
+                                {product.isOutOfStock ? "Out of Stock" : "Buy Now"}
+                            </button>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            <div className="max-w-[2000px] w-full mx-auto px-0 md:px-8 xl:px-12 pt-0 xl:pt-14 grid grid-cols-1 lg:landscape:grid-cols-[1.3fr_1fr] xl:grid-cols-[1.3fr_1fr] 2xl:grid-cols-[1.5fr_1fr] gap-0 lg:landscape:gap-[4vw] xl:gap-[6vw] 2xl:gap-[8vw]">
+                <SizeGuide isOpen={isSizeGuideOpen} onClose={() => setIsSizeGuideOpen(false)} />
 
             {/* Left Column: Gallery */}
             {/* Mobile/Tablet: Infinite Looping Carousel using Embla */}
@@ -1173,5 +1217,6 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 displayPrice={displayPrice}
             />
         </div>
+        </>
     );
 }

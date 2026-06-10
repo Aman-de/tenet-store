@@ -52,35 +52,32 @@ export default function Navbar() {
         }
     };
 
-    // Glassmorphism Style: Translucent with blur for premium feel
-    const navBackground = "bg-white/80 backdrop-blur-md border-b border-white/20 shadow-sm";
-    const textColor = "text-[#1A1A1A]";
-    const logoColor = "text-[#1A1A1A]";
+    const [isScrolled, setIsScrolled] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => setIsScrolled(window.scrollY > 20);
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
+    // Apple/Patagonia Style: Transparent on top (Home), Glass on scroll
+    const isHome = pathname === "/";
+    const navBackground = isScrolled || !isHome
+        ? "bg-[#FDFBF7]/90 backdrop-blur-xl border-b border-neutral-200/50 shadow-[0_4px_30px_rgba(0,0,0,0.03)]"
+        : "bg-transparent border-b border-transparent";
+        
+    const textColor = isScrolled || !isHome ? "text-[#1A1A1A]" : "text-white";
+    const logoColor = isScrolled || !isHome ? "text-[#1A1A1A]" : "text-white";
 
     return (
         <>
-            {/* Promo Banner (Only on Home Page) */}
-            {pathname === "/" && (
-                <div className="bg-gradient-to-r from-pink-600 via-purple-600 to-pink-600 text-white py-1.5 shadow-md z-[60] relative overflow-hidden flex whitespace-nowrap w-full">
-                    <div className="animate-marquee flex items-center shrink-0 w-max">
-                        {[...Array(6)].map((_, i) => (
-                            <div key={i} className="flex items-center gap-4 sm:gap-8 px-2 sm:px-4 text-[10px] sm:text-xs font-sans tracking-[0.15em] font-bold uppercase">
-                                <span>🌸 FESTIVE SALE: FREE DELIVERY ON FIRST ORDER</span>
-                                <span className="opacity-50">|</span>
-                                <span>FLAT 20% OFF ON FIRST ORDER</span>
-                                <span className="opacity-50">|</span>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            )}
             <nav
-                className={`sticky top-0 left-0 w-full z-50 transition-all duration-300 ${navBackground}`}
+                className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-in-out ${navBackground}`}
             >
-                <div className="max-w-[2000px] w-full mx-auto px-6 xl:px-12 py-4 flex items-center justify-between relative z-50">
+                <div className="max-w-[2000px] w-full mx-auto px-6 xl:px-12 py-4 lg:py-5 flex items-center justify-between relative z-50">
                     {/* Mobile Menu & Search (Left) -> Now mostly Desktop Left Section including Account */}
                     <div className="flex items-center gap-4 lg:gap-6 w-full lg:w-auto">
-                        <button className="lg:hidden p-2.5 -ml-2.5" aria-label="Toggle mobile menu" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                        <button className="lg:hidden p-2.5 -ml-2.5 hover:scale-105 active:scale-95 transition-transform" aria-label="Toggle mobile menu" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
                             {isMobileMenuOpen ? (
                                 <X className={`w-6 h-6 transition-colors ${textColor}`} />
                             ) : (

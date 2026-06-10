@@ -78,11 +78,11 @@ export default function Hero({ spotlightProducts = [] }: HeroProps) {
                         alt={gender === "man" ? "The Winter Heritage Collection" : "The Spring Grace Collection"}
                         fill
                         sizes="100vw"
-                        className="object-cover object-[60%_80%] lg:object-center transform scale-105 transition-transform duration-[10s] hover:scale-100"
+                        className="object-cover object-[60%_80%] lg:object-center transform scale-110 transition-transform duration-[30s] ease-linear hover:scale-100"
                         priority
                         quality={100}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent lg:bg-gradient-to-r lg:from-black/60 lg:via-black/10 lg:to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent lg:bg-gradient-to-r lg:from-black/70 lg:via-black/20 lg:to-transparent" />
                     
                     {/* Content Container (Original) */}
                     <motion.div 
@@ -95,16 +95,16 @@ export default function Hero({ spotlightProducts = [] }: HeroProps) {
                         <motion.p
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: 0.2 }}
-                            className="text-xs uppercase tracking-[0.2em] text-gray-300 mb-2"
+                            transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                            className="text-[10px] lg:text-sm uppercase tracking-[0.3em] lg:tracking-[0.4em] text-white/80 mb-4 font-medium"
                         >
                             {gender === "man" ? "The Winter Heritage Collection" : "The Spring Grace Collection"}
                         </motion.p>
                         <motion.h1
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: 0.4 }}
-                            className="font-serif text-5xl lg:text-8xl font-bold tracking-tight mb-6 leading-[0.9] text-white drop-shadow-lg"
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 1.5, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                            className="font-serif text-6xl xs:text-7xl sm:text-8xl lg:text-[10rem] xl:text-[12rem] font-bold tracking-tight mb-8 leading-[0.85] text-white drop-shadow-2xl"
                         >
                             {gender === "man" ? (
                                 <>SILENT <br className="hidden lg:block" /> LUXURY</>
@@ -115,20 +115,19 @@ export default function Hero({ spotlightProducts = [] }: HeroProps) {
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: 0.6 }}
+                            transition={{ duration: 1, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
                         >
                             <button
                                 onClick={scrollToCollection}
-                                className="lg:hidden w-full max-w-xs bg-white text-black px-8 py-4 text-xs font-bold uppercase tracking-widest transition-transform hover:scale-105 active:scale-95 shadow-xl animate-pulse"
+                                className="lg:hidden w-full max-w-xs bg-white/10 backdrop-blur-md border border-white/30 text-white rounded-full px-8 py-4 text-xs font-bold uppercase tracking-widest transition-all hover:bg-white hover:text-black active:scale-95 shadow-[0_0_30px_rgba(255,255,255,0.15)]"
                             >
                                 Explore the Archives
                             </button>
                             <button
                                 onClick={scrollToCollection}
-                                className="hidden lg:block group/btn px-10 py-4 border border-white/80 text-white transition-all duration-300 tracking-[0.2em] text-sm font-bold uppercase backdrop-blur-sm relative overflow-hidden active:scale-95 shadow-[0_0_15px_rgba(255,255,255,0.3)] hover:shadow-[0_0_25px_rgba(255,255,255,0.5)]"
+                                className="hidden lg:flex items-center justify-center gap-3 group/btn px-12 py-5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white transition-all duration-500 tracking-[0.2em] text-sm font-bold uppercase overflow-hidden hover:bg-white hover:text-[#1A1A1A] hover:border-transparent active:scale-95 shadow-[0_0_40px_rgba(255,255,255,0.1)] hover:shadow-[0_0_60px_rgba(255,255,255,0.3)]"
                             >
-                                <span className="relative z-10 group-hover/btn:text-[#1A1A1A] transition-colors duration-300">Explore the Archives</span>
-                                <div className="absolute inset-0 bg-white transform -translate-x-full group-hover/btn:translate-x-0 transition-transform duration-300 ease-in-out z-0" />
+                                <span>Explore the Archives</span>
                             </button>
                         </motion.div>
                         
