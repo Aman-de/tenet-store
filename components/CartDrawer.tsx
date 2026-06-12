@@ -5,7 +5,7 @@ import { getCartUpsells } from "@/lib/sanity";
 import { trackBeginCheckout, trackPurchase, trackAddToCart } from "@/lib/analytics";
 
 import { motion, AnimatePresence, useMotionValue, useTransform, animate } from "framer-motion";
-import { X, ShoppingBag, Plus, Minus, Heart, Trash2, ArrowLeft, MapPin } from "lucide-react";
+import { X, ShoppingBag, Plus, Minus, Heart, Trash2, ArrowLeft, MapPin, ShieldCheck } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
