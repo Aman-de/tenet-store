@@ -87,10 +87,10 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
     ];
 
     return (
-        <section className="relative h-[100dvh] w-full bg-[#F8F5EF] flex flex-col lg:flex-row p-2 lg:p-6 gap-2 lg:gap-6 overflow-hidden">
+        <section className="relative h-[100dvh] w-full bg-[#F8F5EF] flex flex-col lg:flex-row p-0 lg:p-6 gap-0.5 lg:gap-6 overflow-hidden">
             
             {/* LEFT: Hero Section */}
-            <div className="relative w-full h-[45%] lg:w-7/12 xl:w-2/3 lg:h-full lg:rounded-2xl overflow-hidden group bg-neutral-200 rounded-xl">
+            <div className="relative w-full h-[45%] lg:w-7/12 xl:w-2/3 lg:h-full rounded-none lg:rounded-2xl overflow-hidden group bg-neutral-200">
                 <div ref={emblaRef} className="overflow-hidden w-full h-full">
                     <div className="flex w-full h-full">
                         {/* Slide 1: Main Editorial */}
@@ -102,6 +102,8 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                                 priority
                                 className="object-cover transform transition-transform duration-[20s] hover:scale-105"
                             />
+                            {/* Gradient for Navbar Icon Visibility */}
+                            <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-black/60 to-transparent z-10 lg:hidden pointer-events-none" />
                             <div className="absolute inset-0 bg-black/20 lg:bg-black/10" />
                             <div className="absolute inset-0 p-4 lg:p-12 flex flex-col justify-center lg:justify-end items-start pt-16 lg:pt-0">
                                 <span className="text-[#C7A379] text-[9px] lg:text-xs font-bold uppercase tracking-widest mb-2 lg:mb-4">
@@ -168,17 +170,17 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
             </div>
 
             {/* RIGHT: Categories & TrustBar (Mobile) / Categories Only (Desktop) */}
-            <div className="w-full h-[55%] lg:w-5/12 xl:w-1/3 lg:h-full flex flex-col gap-2 lg:gap-4">
+            <div className="w-full h-[55%] lg:w-5/12 xl:w-1/3 lg:h-full flex flex-col gap-0.5 lg:gap-4 px-0.5 lg:px-0">
                 
                 {/* Categories Grid - 42% height on mobile */}
-                <div className="w-full h-[78%] lg:h-full grid grid-cols-2 grid-rows-3 gap-2 lg:gap-4">
+                <div className="w-full h-[78%] lg:h-full grid grid-cols-2 grid-rows-3 gap-0.5 lg:gap-4">
                     {filteredCollections.map((collection, index) => {
                         const catKey = (collection.filterTag || collection.handle || "").toLowerCase();
                         const coverPhoto = CATEGORY_IMAGES[catKey]?.[gender] || collection.imageUrl;
                         const subtitle = CATEGORY_SUBTITLES[catKey] || "Explore the collection";
 
                         return (
-                            <Link key={collection.id} href={`/collection/${collection.handle}`} className="relative group rounded-xl lg:rounded-2xl overflow-hidden bg-neutral-100 block w-full h-full">
+                            <Link key={collection.id} href={`/collection/${collection.handle}`} className="relative group rounded-sm lg:rounded-2xl overflow-hidden bg-neutral-100 block w-full h-full">
                             <Image
                                 src={coverPhoto}
                                 alt={collection.title}
