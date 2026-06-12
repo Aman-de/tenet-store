@@ -53,10 +53,10 @@ export default function Navbar() {
 
     // Ultra-premium Apple-style segmented control (Liquid Glass)
     const GenderToggle = () => (
-        <div className={`relative flex items-center rounded-full p-1.5 transition-colors duration-500 shadow-sm backdrop-blur-2xl bg-white/10 border border-white/10`}>
+        <div className={`relative flex items-center rounded-full p-1 transition-colors duration-500 shadow-sm backdrop-blur-2xl bg-white/10 border border-white/10`}>
             <button 
                 onClick={() => setGender('man')}
-                className={`relative z-10 w-16 sm:w-20 py-1.5 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.25em] rounded-full transition-colors duration-300 ${gender === 'man' ? 'text-white' : 'text-white/60 hover:text-white'}`}
+                className={`relative z-10 w-14 sm:w-16 py-1 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.25em] rounded-full transition-colors duration-300 ${gender === 'man' ? 'text-white' : 'text-white/60 hover:text-white'}`}
             >
                 MEN
                 {gender === 'man' && (
@@ -69,7 +69,7 @@ export default function Navbar() {
             </button>
             <button 
                 onClick={() => setGender('woman')}
-                className={`relative z-10 w-16 sm:w-20 py-1.5 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.25em] rounded-full transition-colors duration-300 ${gender === 'woman' ? 'text-white' : 'text-white/60 hover:text-white'}`}
+                className={`relative z-10 w-14 sm:w-16 py-1 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.25em] rounded-full transition-colors duration-300 ${gender === 'woman' ? 'text-white' : 'text-white/60 hover:text-white'}`}
             >
                 WOMEN
                 {gender === 'woman' && (
@@ -88,8 +88,8 @@ export default function Navbar() {
     return (
         <>
             {/* The wrapper handles the floating position */}
-            <div className={`fixed top-0 left-0 w-full z-50 p-2 sm:p-4 lg:p-6 transition-all duration-500 ease-in-out pointer-events-none`}>
-                <nav className={`pointer-events-auto w-full lg:w-fit mx-auto px-4 sm:px-6 lg:px-10 py-2.5 lg:py-4 transition-all duration-500 ease-in-out rounded-[32px] lg:rounded-[40px] ${navContainerClass}`}>
+            <div className={`fixed top-0 left-0 w-full z-50 p-2 sm:p-4 transition-all duration-500 ease-in-out pointer-events-none`}>
+                <nav className={`pointer-events-auto w-full lg:w-fit mx-auto px-4 lg:px-8 py-2.5 lg:py-2 transition-all duration-500 ease-in-out rounded-full ${navContainerClass}`}>
                     
                     {/* MOBILE LAYOUT (lg:hidden) */}
                     <div className="flex lg:hidden w-full items-center justify-between">
@@ -165,82 +165,82 @@ export default function Navbar() {
                     </div>
 
                     {/* DESKTOP LAYOUT (hidden lg:flex) */}
-                    <div className="hidden lg:flex items-center justify-between gap-10 lg:gap-16 px-4">
+                    <div className="hidden lg:flex items-center justify-between gap-8 lg:gap-10 px-2">
                         
                         {/* LEFT SIDE: Account, Circle, Gender Toggle */}
-                        <div className={`flex items-center gap-6 lg:gap-8 transition-colors ${textColor} drop-shadow-md flex-1 justify-end`}>
+                        <div className={`flex items-center gap-5 lg:gap-6 transition-colors ${textColor} drop-shadow-md flex-1 justify-end`}>
                             {/* Account */}
-                            <div className="flex flex-col items-center gap-1.5 group">
+                            <div className="flex flex-col items-center gap-1 group">
                                 {isSignedIn ? (
-                                    <div className="w-6 h-6 flex items-center justify-center scale-110 origin-center opacity-90 group-hover:opacity-100 transition-opacity duration-200 cursor-pointer">
+                                    <div className="w-5 h-5 flex items-center justify-center scale-110 origin-center opacity-90 group-hover:opacity-100 transition-opacity duration-200 cursor-pointer">
                                         <UserButton afterSignOutUrl="/" />
                                     </div>
                                 ) : (
                                     <SignInButton mode="modal">
                                         <button aria-label="Sign in" className="flex items-center justify-center">
-                                            <User className="w-6 h-6 opacity-80 group-hover:opacity-100 transition-opacity duration-200" strokeWidth={2} />
+                                            <User className="w-5 h-5 opacity-80 group-hover:opacity-100 transition-opacity duration-200" strokeWidth={2} />
                                         </button>
                                     </SignInButton>
                                 )}
-                                <span className="text-[12px] font-semibold opacity-80 group-hover:opacity-100 transition-opacity duration-200">Account</span>
+                                <span className="text-[11px] font-semibold opacity-80 group-hover:opacity-100 transition-opacity duration-200">Account</span>
                             </div>
 
                             {/* Circle */}
-                            <Link href="/circle" className="flex flex-col items-center gap-1.5 group">
-                                <Crown className="w-6 h-6 opacity-80 group-hover:opacity-100 transition-opacity duration-200" strokeWidth={2} />
-                                <span className="text-[12px] font-semibold opacity-80 group-hover:opacity-100 transition-opacity duration-200">Circle</span>
+                            <Link href="/circle" className="flex flex-col items-center gap-1 group">
+                                <Crown className="w-5 h-5 opacity-80 group-hover:opacity-100 transition-opacity duration-200" strokeWidth={2} />
+                                <span className="text-[11px] font-semibold opacity-80 group-hover:opacity-100 transition-opacity duration-200">Circle</span>
                             </Link>
 
                             {/* Subtle Divider */}
-                            <div className="w-[1px] h-8 bg-white/20 mx-2" />
+                            <div className="w-[1px] h-6 bg-white/20 mx-1" />
 
                             {/* Gender Toggle */}
-                            <div className="flex-shrink-0 origin-center scale-105">
+                            <div className="flex-shrink-0 origin-center">
                                 <GenderToggle />
                             </div>
                         </div>
 
                         {/* CENTER: Logo */}
-                        <Link href="/" className="block group shrink-0 mx-4">
-                            <span className={`text-3xl font-serif font-bold tracking-[0.25em] uppercase group-hover:opacity-80 transition-opacity duration-300 ${logoColor} drop-shadow-lg`}>
+                        <Link href="/" className="block group shrink-0 mx-2">
+                            <span className={`text-2xl font-serif font-bold tracking-[0.25em] uppercase group-hover:opacity-80 transition-opacity duration-300 ${logoColor} drop-shadow-lg`}>
                                 TENET
                             </span>
                         </Link>
 
                         {/* RIGHT SIDE: Shop, Orders, Saves, Cart */}
-                        <div className={`flex items-center gap-6 lg:gap-8 transition-colors ${textColor} drop-shadow-md flex-1 justify-start`}>
+                        <div className={`flex items-center gap-5 lg:gap-6 transition-colors ${textColor} drop-shadow-md flex-1 justify-start`}>
                             {/* Shop / Collections */}
-                            <Link href="/#new-arrivals" className="flex flex-col items-center gap-1.5 group">
-                                <LayoutGrid className="w-6 h-6 opacity-80 group-hover:opacity-100 transition-opacity duration-200" strokeWidth={2} />
-                                <span className="text-[12px] font-semibold opacity-80 group-hover:opacity-100 transition-opacity duration-200">Shop</span>
+                            <Link href="/#new-arrivals" className="flex flex-col items-center gap-1 group">
+                                <LayoutGrid className="w-5 h-5 opacity-80 group-hover:opacity-100 transition-opacity duration-200" strokeWidth={2} />
+                                <span className="text-[11px] font-semibold opacity-80 group-hover:opacity-100 transition-opacity duration-200">Shop</span>
                             </Link>
 
                             {/* Orders */}
-                            <Link href="/orders" className="flex flex-col items-center gap-1.5 group">
-                                <Package className="w-6 h-6 opacity-80 group-hover:opacity-100 transition-opacity duration-200" strokeWidth={2} />
-                                <span className="text-[12px] font-semibold opacity-80 group-hover:opacity-100 transition-opacity duration-200">Orders</span>
+                            <Link href="/orders" className="flex flex-col items-center gap-1 group">
+                                <Package className="w-5 h-5 opacity-80 group-hover:opacity-100 transition-opacity duration-200" strokeWidth={2} />
+                                <span className="text-[11px] font-semibold opacity-80 group-hover:opacity-100 transition-opacity duration-200">Orders</span>
                             </Link>
 
                             {/* Wishlist */}
-                            <button className="flex flex-col items-center gap-1.5 group" aria-label="Open wishlist" onClick={openWishlist}>
+                            <button className="flex flex-col items-center gap-1 group" aria-label="Open wishlist" onClick={openWishlist}>
                                 <div className="relative flex items-center justify-center">
-                                    <Heart className="w-6 h-6 opacity-80 group-hover:opacity-100 transition-opacity duration-200" strokeWidth={2} />
+                                    <Heart className="w-5 h-5 opacity-80 group-hover:opacity-100 transition-opacity duration-200" strokeWidth={2} />
                                     {wishlistCount > 0 && (
                                         <span className="absolute -top-1 -right-2 w-3 h-3 rounded-full border-2 border-black shadow-sm" style={{ backgroundColor: accentColor }} />
                                     )}
                                 </div>
-                                <span className="text-[12px] font-semibold opacity-80 group-hover:opacity-100 transition-opacity duration-200">Saves</span>
+                                <span className="text-[11px] font-semibold opacity-80 group-hover:opacity-100 transition-opacity duration-200">Saves</span>
                             </button>
 
                             {/* Cart */}
-                            <button className="flex flex-col items-center gap-1.5 group" aria-label="Open cart" onClick={openCart}>
+                            <button className="flex flex-col items-center gap-1 group" aria-label="Open cart" onClick={openCart}>
                                 <div className="relative flex items-center justify-center">
-                                    <ShoppingBag className="w-6 h-6 opacity-80 group-hover:opacity-100 transition-opacity duration-200" strokeWidth={2} />
+                                    <ShoppingBag className="w-5 h-5 opacity-80 group-hover:opacity-100 transition-opacity duration-200" strokeWidth={2} />
                                     {cartCount > 0 && (
                                         <span className="absolute -top-1 -right-2 w-3 h-3 rounded-full border-2 border-black shadow-sm" style={{ backgroundColor: accentColor }} />
                                     )}
                                 </div>
-                                <span className="text-[12px] font-semibold opacity-80 group-hover:opacity-100 transition-opacity duration-200">Cart</span>
+                                <span className="text-[11px] font-semibold opacity-80 group-hover:opacity-100 transition-opacity duration-200">Cart</span>
                             </button>
                         </div>
                     </div>
