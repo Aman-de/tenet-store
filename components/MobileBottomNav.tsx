@@ -72,7 +72,7 @@ export default function MobileBottomNav() {
 
     // Floating pill styling - Made concise and lower to perfectly match top navbar
     return (
-        <div className={`fixed bottom-1 left-2 right-2 h-[56px] transition-colors duration-500 z-50 flex items-center justify-between px-4 rounded-full shadow-md border ${containerClass}`}>
+        <div className={`fixed bottom-1 left-2 right-2 h-[50px] transition-colors duration-500 z-50 flex items-center justify-between px-4 rounded-full shadow-md border ${containerClass}`}>
 
             {navItems.map((item) => {
                 const textStyle = item.isActive ? activeTextClass : inactiveTextClass;

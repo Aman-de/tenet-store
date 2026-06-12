@@ -209,7 +209,7 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                 </div>
 
                 {/* Mobile Integrated TrustBar - 22% of the 57% remaining height */}
-                <div className="w-full h-[22%] lg:hidden grid grid-cols-4 divide-x divide-[#1A1A1A]/10 bg-[#F8F5EF] pb-[44px] pt-0.5">
+                <div className="w-full h-[22%] lg:hidden grid grid-cols-4 divide-x divide-[#1A1A1A]/10 bg-[#F8F5EF] pb-[54px] pt-0.5">
                     {trustPillars.map((pillar, index) => (
                         <div key={index} className="flex flex-col items-center justify-center text-center px-0.5">
                             <div className="mb-0.5">{pillar.icon}</div>
