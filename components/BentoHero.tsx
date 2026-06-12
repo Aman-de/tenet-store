@@ -40,6 +40,22 @@ const CATEGORY_IMAGES: Record<string, { man?: string; woman?: string }> = {
     shorts: { man: "/images/categories/shorts-man.webp", woman: "/images/categories/shorts-woman.webp" }
 };
 
+const CATEGORY_SUBTITLES: Record<string, string> = {
+    accessories: "Elevate every detail",
+    shirts: "Effortless sophistication",
+    pants: "Comfort meets style",
+    footwear: "Step into luxury",
+    sets: "Coordinated to perfection",
+    shorts: "Chic. Modern. Effortless.",
+    knitwear: "Cozy elegance",
+    jackets: "Refined layers",
+    outerwear: "Brave the elements",
+    trousers: "Tailored perfection",
+    swimwear: "Poolside luxury",
+    shirting: "Classic staples",
+    lounge: "Relaxed luxury"
+};
+
 export default function BentoHero({ spotlightProducts, collections }: BentoHeroProps) {
     const { gender } = useGender();
     const isWoman = gender === "woman";
@@ -64,10 +80,10 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
     const mainHeroSrc = gender === "man" ? "/images/hero-main.webp" : "/images/hero-women.webp";
 
     return (
-        <section className="relative h-[100dvh] w-full bg-[#F8F5EF] flex flex-col lg:flex-row p-2 lg:p-6 gap-2 lg:gap-6 overflow-hidden">
+        <section className="relative w-full bg-[#F8F5EF] flex flex-col lg:flex-row pb-6 lg:p-6 gap-2 lg:gap-6 overflow-hidden lg:h-[100dvh]">
             
-            {/* LEFT: Hero Section (45% Mobile, 60% Desktop) */}
-            <div className="relative w-full h-[45%] lg:w-7/12 xl:w-2/3 lg:h-full rounded-xl lg:rounded-2xl overflow-hidden group bg-neutral-200">
+            {/* LEFT: Hero Section */}
+            <div className="relative w-full h-[85vh] lg:w-7/12 xl:w-2/3 lg:h-full lg:rounded-2xl overflow-hidden group bg-neutral-200">
                 <div ref={emblaRef} className="overflow-hidden w-full h-full">
                     <div className="flex w-full h-full">
                         {/* Slide 1: Main Editorial */}
@@ -79,14 +95,34 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                                 priority
                                 className="object-cover transform transition-transform duration-[20s] hover:scale-105"
                             />
-                            <div className="absolute inset-0 bg-black/10" />
-                            <div className="absolute inset-0 p-6 lg:p-12 flex flex-col justify-end items-start">
-                                <h1 className="font-serif text-5xl lg:text-7xl xl:text-[6rem] font-normal tracking-wide text-white leading-[0.9] drop-shadow-md">
-                                    {isWoman ? "Silent Elegance." : "Quiet Luxury."}
+                            <div className="absolute inset-0 bg-black/20 lg:bg-black/10" />
+                            <div className="absolute inset-0 p-6 lg:p-12 flex flex-col justify-center lg:justify-end items-start pt-20 lg:pt-0">
+                                <span className="text-[#C7A379] text-[10px] lg:text-xs font-bold uppercase tracking-widest mb-3 lg:mb-4">
+                                    FESTIVE 2025
+                                </span>
+                                <h1 className="font-serif text-5xl lg:text-7xl xl:text-[6rem] font-normal tracking-wide text-white leading-[1.1] drop-shadow-md">
+                                    {isWoman ? (
+                                        <>Timeless<br/>Elegance</>
+                                    ) : (
+                                        <>Quiet<br/>Luxury</>
+                                    )}
                                 </h1>
-                                <Link href="/#new-arrivals" className="mt-8 w-fit border-b border-white pb-1 text-white text-xs font-medium uppercase tracking-[0.2em] hover:text-white/70 hover:border-white/70 transition-colors duration-500">
-                                    Discover Collection
+                                <p className="text-white/90 text-sm lg:text-base font-sans mt-4 max-w-[280px] lg:max-w-md leading-relaxed">
+                                    {isWoman 
+                                        ? "Exquisite Banarasi Lehengas, crafted for your most cherished celebrations." 
+                                        : "Refined essentials, meticulously tailored for the modern gentleman."}
+                                </p>
+                                <Link href="/#new-arrivals" className="mt-8 flex items-center justify-between w-full max-w-[260px] bg-[#1A1A1A] text-white px-6 py-4 rounded-sm hover:bg-black transition-colors duration-300">
+                                    <span className="text-[10px] font-bold uppercase tracking-[0.2em]">Explore Collection</span>
+                                    <ArrowRight className="w-4 h-4 text-white/80" strokeWidth={1.5} />
                                 </Link>
+                                
+                                {/* Slide Indicators (Mobile) */}
+                                <div className="absolute bottom-6 left-6 flex items-center gap-2 lg:hidden">
+                                    <div className="w-6 h-1 bg-white rounded-full" />
+                                    <div className="w-1 h-1 border border-white rounded-full" />
+                                    <div className="w-1 h-1 border border-white rounded-full" />
+                                </div>
                             </div>
                         </div>
 
@@ -124,14 +160,15 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                 </button>
             </div>
 
-            {/* RIGHT: Categories Grid (55% Mobile, 40% Desktop) */}
-            <div className="w-full h-[55%] lg:w-5/12 xl:w-1/3 lg:h-full grid grid-cols-2 grid-rows-3 gap-2 lg:gap-4">
+            {/* RIGHT: Categories Grid */}
+            <div className="w-full lg:w-5/12 xl:w-1/3 lg:h-full grid grid-cols-2 grid-rows-3 gap-2 lg:gap-4 px-2 lg:px-0">
                 {filteredCollections.map((collection, index) => {
                     const catKey = (collection.filterTag || collection.handle || "").toLowerCase();
                     const coverPhoto = CATEGORY_IMAGES[catKey]?.[gender] || collection.imageUrl;
+                    const subtitle = CATEGORY_SUBTITLES[catKey] || "Explore the collection";
 
                     return (
-                        <Link key={collection.id} href={`/collection/${collection.handle}`} className="relative group rounded-xl lg:rounded-2xl overflow-hidden bg-neutral-100 block">
+                        <Link key={collection.id} href={`/collection/${collection.handle}`} className="relative group rounded-xl lg:rounded-2xl overflow-hidden bg-neutral-100 block aspect-[4/3] lg:aspect-auto lg:h-full">
                             <Image
                                 src={coverPhoto}
                                 alt={collection.title}
@@ -139,12 +176,20 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                                 sizes="(max-width: 768px) 50vw, 16vw"
                                 className="object-cover transform transition-transform duration-[2s] ease-out group-hover:scale-[1.03]"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-70 group-hover:opacity-40 transition-opacity duration-700" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-700" />
                             
-                            <div className="absolute inset-0 p-4 lg:p-6 flex flex-col justify-end items-center text-center">
-                                <h3 className="font-serif italic text-white text-xl lg:text-2xl tracking-widest drop-shadow-sm transform translate-y-2 group-hover:translate-y-0 transition-transform duration-700 leading-tight">
-                                    {collection.title}
-                                </h3>
+                            <div className="absolute inset-0 p-4 lg:p-6 flex flex-row items-end justify-between">
+                                <div className="flex flex-col text-left">
+                                    <h3 className="font-serif text-white text-lg lg:text-2xl drop-shadow-sm leading-tight">
+                                        {collection.title}
+                                    </h3>
+                                    <p className="font-sans text-[9px] lg:text-[10px] text-white/80 mt-1 lg:mt-1.5 tracking-wide">
+                                        {subtitle}
+                                    </p>
+                                </div>
+                                <div className="w-6 h-6 lg:w-8 lg:h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/10 shrink-0 transform group-hover:bg-white/30 transition-colors duration-500">
+                                    <ArrowRight className="w-3 h-3 lg:w-4 lg:h-4 text-white" strokeWidth={1.5} />
+                                </div>
                             </div>
                         </Link>
                     );

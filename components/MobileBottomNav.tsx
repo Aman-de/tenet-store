@@ -34,7 +34,7 @@ export default function MobileBottomNav() {
     const inactiveTextClass = isScrolledOrNotHome ? "text-[#1A1A1A]/40 hover:text-[#1A1A1A]" : "text-white/50 hover:text-white";
 
     const containerClass = isScrolledOrNotHome
-        ? "bg-[#F8F5EF]/95 backdrop-blur-2xl border-[#1A1A1A]/5"
+        ? "bg-[#F4F1ED]/95 backdrop-blur-3xl border-[#1A1A1A]/5 shadow-[0_4px_24px_rgba(0,0,0,0.06)]"
         : "bg-transparent backdrop-blur-sm border-white/10";
 
     const cartCount = mounted ? cart.length : 0;
@@ -82,8 +82,11 @@ export default function MobileBottomNav() {
 
                 const iconContent = (
                     <div className="relative flex items-center justify-center p-0.5">
+                        {item.isActive && (
+                            <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-[#C7A379] rounded-full" />
+                        )}
                         <item.icon
-                            strokeWidth={2}
+                            strokeWidth={1.5}
                             className={`w-[22px] h-[22px] transition-all duration-300 ${textStyle} ${fillStyle}`}
                         />
                         {item.hasBadge && cartCount > 0 && (
@@ -145,7 +148,7 @@ export default function MobileBottomNav() {
                     <SignInButton mode="modal">
                         <button className="relative flex items-center justify-center p-0.5 focus:outline-none">
                             <User
-                                strokeWidth={2}
+                                strokeWidth={1.5}
                                 className={`w-[22px] h-[22px] transition-all duration-300 ${inactiveTextClass}`}
                             />
                         </button>
