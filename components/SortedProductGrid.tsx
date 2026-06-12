@@ -100,9 +100,9 @@ export default function SortedProductGrid({ products: rawProducts, showSizeFilte
     return (
         <div>
             {/* Utility Bar */}
-            <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 border-b border-neutral-100 mb-4 pb-2.5">
+            <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-4 lg:mb-6">
                 {/* Left side: Results Count and Size Filter */}
-                <div className="flex flex-wrap items-center gap-4">
+                <div className={`${showSizeFilter ? 'flex' : 'hidden md:flex'} flex-wrap items-center gap-4`}>
                     <span className="hidden md:flex text-xs font-bold tracking-widest text-neutral-400 uppercase items-center h-9">
                         {sortedProducts.length} Results
                     </span>
@@ -136,7 +136,7 @@ export default function SortedProductGrid({ products: rawProducts, showSizeFilte
                 </div>
 
                 {/* Right side: Price Tier and Sort By stacked on mobile, inline on desktop */}
-                <div className={`flex flex-col lg:flex-row lg:items-center gap-4 w-full lg:w-auto border-t border-neutral-100 pt-3.5 lg:border-t-0 lg:pt-0 ${
+                <div className={`flex flex-col lg:flex-row lg:items-center gap-2 lg:gap-4 w-full lg:w-auto ${
                     alignFiltersWithTitle 
                         ? "lg:absolute lg:top-[56px] lg:right-6 xl:right-12 lg:-translate-y-1/2 z-30" 
                         : ""

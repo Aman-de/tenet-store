@@ -53,7 +53,7 @@ export default function Navbar() {
     const iconGlassBg = isScrolledOrNotHome ? "bg-black/5 hover:bg-black/10" : "bg-white/10 hover:bg-white/20";
 
     // Ultra-premium Apple-style segmented control (Liquid Glass)
-    const GenderToggle = () => {
+    const GenderToggle = ({ idSuffix }: { idSuffix: string }) => {
         const toggleBg = isScrolledOrNotHome ? "bg-[#1A1A1A]/5" : "bg-white/10";
         const btnText = (active: boolean) => {
             if (active) return "text-white";
@@ -68,7 +68,7 @@ export default function Navbar() {
                     MEN
                     {gender === 'man' && (
                         <motion.div
-                            layoutId="nav-gender-active"
+                            layoutId={`nav-gender-active-${idSuffix}`}
                             className="absolute inset-0 rounded-full -z-10 shadow-sm"
                             style={{ backgroundColor: accentColor }}
                             transition={{ type: "spring", stiffness: 400, damping: 30 }}
@@ -82,7 +82,7 @@ export default function Navbar() {
                     WOMEN
                     {gender === 'woman' && (
                         <motion.div
-                            layoutId="nav-gender-active"
+                            layoutId={`nav-gender-active-${idSuffix}`}
                             className="absolute inset-0 rounded-full -z-10 shadow-sm"
                             style={{ backgroundColor: accentColor }}
                             transition={{ type: "spring", stiffness: 400, damping: 30 }}
@@ -159,7 +159,7 @@ export default function Navbar() {
                                 {/* LEFT: Gender Toggle */}
                                 <div className="flex items-center justify-start flex-1 z-10">
                                     <div className="scale-[0.85] sm:scale-100 origin-left">
-                                        <GenderToggle />
+                                        <GenderToggle idSuffix="mobile" />
                                     </div>
                                 </div>
 
@@ -222,7 +222,7 @@ export default function Navbar() {
 
                             {/* Gender Toggle */}
                             <div className="flex-shrink-0 origin-center">
-                                <GenderToggle />
+                                <GenderToggle idSuffix="desktop" />
                             </div>
                         </div>
 
