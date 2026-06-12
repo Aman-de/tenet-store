@@ -64,7 +64,7 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
     const mainHeroSrc = gender === "man" ? "/images/hero-main.webp" : "/images/hero-women.webp";
 
     return (
-        <section className="relative h-[100dvh] w-full bg-[#FDFBF7] flex flex-col lg:flex-row p-2 pt-[72px] lg:p-4 lg:pt-[84px] gap-2 lg:gap-4 overflow-hidden">
+        <section className="relative h-[100dvh] w-full bg-[#FDFBF7] flex flex-col lg:flex-row p-2 pt-[60px] lg:p-4 gap-2 lg:gap-4 overflow-hidden">
             
             {/* LEFT: Hero Section (45% Mobile, 50% Desktop) */}
             <div className="relative w-full h-[45%] lg:w-1/2 lg:h-full rounded-[24px] lg:rounded-[32px] overflow-hidden group bg-neutral-200">

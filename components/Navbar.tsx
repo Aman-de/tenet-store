@@ -44,8 +44,8 @@ export default function Navbar() {
     
     // Transparent dark glass on hero image, solid light glass on scroll
     const navContainerClass = isScrolledOrNotHome 
-        ? "bg-[#FDFBF7]/90 backdrop-blur-2xl border border-black/10 shadow-[0_8px_30px_rgba(0,0,0,0.06)]" 
-        : "bg-black/20 backdrop-blur-md border border-white/10 shadow-lg";
+        ? "bg-white/95 backdrop-blur-3xl border border-black/10 shadow-[0_8px_30px_rgba(0,0,0,0.08)]" 
+        : "bg-black/40 backdrop-blur-2xl border border-white/15 shadow-[0_8px_32px_rgba(0,0,0,0.2)]";
 
     const textColor = isScrolledOrNotHome ? "text-neutral-800" : "text-white";
     const logoColor = isScrolledOrNotHome ? "text-black" : "text-white";
@@ -57,7 +57,7 @@ export default function Navbar() {
         const toggleBg = isScrolledOrNotHome ? "bg-black/5 border border-black/10" : "bg-white/10 border border-white/10";
         const btnText = (active: boolean) => {
             if (active) return "text-white";
-            return isScrolledOrNotHome ? "text-neutral-800 font-extrabold" : "text-white/80 font-extrabold";
+            return isScrolledOrNotHome ? "text-black font-extrabold" : "text-white/90 font-extrabold";
         };
         return (
             <div className={`relative flex items-center rounded-full p-1 transition-colors duration-500 shadow-sm backdrop-blur-2xl ${toggleBg}`}>
