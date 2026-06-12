@@ -45,7 +45,7 @@ export default function Navbar() {
     // Transparent dark glass on hero image, solid light glass on scroll
     const navContainerClass = isScrolledOrNotHome 
         ? "bg-[#F8F5EF]/90 backdrop-blur-2xl border border-[#1A1A1A]/5 shadow-[0_4px_24px_rgba(0,0,0,0.02)]" 
-        : "bg-transparent backdrop-blur-sm border border-white/10 shadow-none";
+        : "bg-transparent border-transparent shadow-none";
 
     const textColor = isScrolledOrNotHome ? "text-neutral-800" : "text-white";
     const logoColor = isScrolledOrNotHome ? "text-black" : "text-white";

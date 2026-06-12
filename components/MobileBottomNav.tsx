@@ -33,7 +33,7 @@ export default function MobileBottomNav() {
     const activeFillClass = "fill-[#1A1A1A]/5";
     const inactiveTextClass = "text-[#1A1A1A]/40 hover:text-[#1A1A1A]";
 
-    const containerClass = "bg-[#F8F5EF]/85 backdrop-blur-2xl backdrop-saturate-150 border border-[#1A1A1A]/10 shadow-[0_8px_32px_rgba(0,0,0,0.08)]";
+    const containerClass = "bg-[#F4F1ED]/95 backdrop-blur-3xl border-[#1A1A1A]/5 shadow-[0_4px_24px_rgba(0,0,0,0.06)]";
 
     const cartCount = mounted ? cart.length : 0;
 
