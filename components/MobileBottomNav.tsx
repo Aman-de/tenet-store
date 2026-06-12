@@ -28,14 +28,12 @@ export default function MobileBottomNav() {
 
     const isWoman = gender === "woman";
     const accentColor = "#1A1A1A";
-    // Quiet luxury states
-    const activeTextClass = isScrolledOrNotHome ? "text-[#1A1A1A]" : "text-white";
-    const activeFillClass = isScrolledOrNotHome ? "fill-[#1A1A1A]/5" : "fill-white/10";
-    const inactiveTextClass = isScrolledOrNotHome ? "text-[#1A1A1A]/40 hover:text-[#1A1A1A]" : "text-white/50 hover:text-white";
+    // Always use the solid "scrolled" style because bottom nav is over the bright TrustBar on mobile.
+    const activeTextClass = "text-[#1A1A1A]";
+    const activeFillClass = "fill-[#1A1A1A]/5";
+    const inactiveTextClass = "text-[#1A1A1A]/40 hover:text-[#1A1A1A]";
 
-    const containerClass = isScrolledOrNotHome
-        ? "bg-[#F4F1ED]/95 backdrop-blur-3xl border-[#1A1A1A]/5 shadow-[0_4px_24px_rgba(0,0,0,0.06)]"
-        : "bg-transparent backdrop-blur-sm border-white/10";
+    const containerClass = "bg-[#F4F1ED]/95 backdrop-blur-3xl border-[#1A1A1A]/5 shadow-[0_4px_24px_rgba(0,0,0,0.06)]";
 
     const cartCount = mounted ? cart.length : 0;
 
