@@ -32,7 +32,7 @@ export default function MobileStickyBar({ product, selectedVariant, onAddToCart,
     const priceText = activePrice.toLocaleString('en-IN');
     const targetGender = product.gender ? product.gender.toLowerCase() : gender;
     const isWoman = gender === "woman";
-    const accentColor = isWoman ? "#E67389" : "#5B8CD7";
+    const accentColor = isWoman ? "#FF4D6D" : "#3B82F6";
 
     return (
         <AnimatePresence>

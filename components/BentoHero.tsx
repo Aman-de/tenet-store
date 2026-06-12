@@ -78,7 +78,7 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
     const scrollNext = () => emblaApi?.scrollNext();
 
     const mainHeroSrc = gender === "man" ? "/images/hero-main.webp" : "/images/hero-women.webp";
-    const accentColor = gender === "woman" ? "#E67389" : "#5B8CD7";
+    const accentColor = gender === "woman" ? "#FF4D6D" : "#3B82F6";
 
     const trustPillars = [
         { icon: <Truck className="w-6 h-6 text-[#1A1A1A] stroke-[1]" />, title: "COMPLIMENTARY", title2: "SHIPPING", subtext: "On orders above $250" },

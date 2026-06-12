@@ -16,7 +16,7 @@ export default function Navbar() {
     const { openCart, openWishlist, cart, wishlist } = useStore();
     const { gender, setGender } = useGender();
     const isWoman = gender === "woman";
-    const accentColor = isWoman ? "#E67389" : "#5B8CD7";
+    const accentColor = isWoman ? "#FF4D6D" : "#3B82F6";
     const [mounted, setMounted] = useState(false);
     const { isSignedIn } = useUser();
 

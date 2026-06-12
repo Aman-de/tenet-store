@@ -28,7 +28,7 @@ const ReviewForm = ({ productId, onCancel }: { productId: string, onCancel: () =
     const [message, setMessage] = useState<string | null>(null);
     const { gender } = useGender();
     const isWoman = gender === "woman";
-    const accentColor = isWoman ? "#E67389" : "#5B8CD7";
+    const accentColor = isWoman ? "#FF4D6D" : "#3B82F6";
 
     async function handleSubmit(formData: FormData) {
         setIsSubmitting(true);
@@ -119,7 +119,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
     const { gender } = useGender();
     const targetGender = product.gender ? product.gender.toLowerCase() : gender;
     const isWoman = targetGender === "woman" || (targetGender === "unisex" && gender === "woman");
-    const accentColor = isWoman ? "#E67389" : "#5B8CD7";
+    const accentColor = isWoman ? "#FF4D6D" : "#3B82F6";
 
     // Variant Logic
     const hasVariants = product.variants && product.variants.length > 0;
