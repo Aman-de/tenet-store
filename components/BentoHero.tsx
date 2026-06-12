@@ -78,6 +78,7 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
     const scrollNext = () => emblaApi?.scrollNext();
 
     const mainHeroSrc = gender === "man" ? "/images/hero-main.webp" : "/images/hero-women.webp";
+    const accentColor = gender === "woman" ? "#D8A7B1" : "#A6B8C7";
 
     const trustPillars = [
         { icon: <Truck className="w-6 h-6 text-[#1A1A1A] stroke-[1]" />, title: "COMPLIMENTARY", title2: "SHIPPING", subtext: "On orders above $250" },
@@ -106,8 +107,8 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                             <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-black/60 to-transparent z-10 lg:hidden pointer-events-none" />
                             <div className="absolute inset-0 bg-black/20 lg:bg-black/10" />
                             <div className="absolute inset-0 p-4 lg:p-12 flex flex-col justify-center lg:justify-end items-start pt-16 lg:pt-0">
-                                <span className="text-[#C7A379] text-[9px] lg:text-xs font-bold uppercase tracking-widest mb-2 lg:mb-4">
-                                    FESTIVE 2025
+                                <span className="text-[9px] lg:text-xs font-bold uppercase tracking-widest mb-2 lg:mb-4" style={{ color: accentColor }}>
+                                    {gender === "man" ? "SPRING 2025" : "FESTIVE 2025"}
                                 </span>
                                 <h1 className="font-serif text-4xl lg:text-7xl xl:text-[6rem] font-normal tracking-wide text-white leading-[1.1] drop-shadow-md">
                                     {isWoman ? (

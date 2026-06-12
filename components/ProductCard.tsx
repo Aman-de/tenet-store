@@ -26,7 +26,7 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
     const { addToCart, openCart, toggleWishlist, isInWishlist } = useStore();
     const { gender } = useGender();
     const isWoman = gender === "woman";
-    const accentColor = isWoman ? "#E05275" : "#2B6496";
+    const accentColor = isWoman ? "#D8A7B1" : "#A6B8C7";
 
     const hasDiscount = product.originalPrice && product.originalPrice > product.price;
     const discountPercentage = hasDiscount

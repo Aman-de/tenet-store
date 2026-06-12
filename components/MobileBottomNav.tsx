@@ -27,7 +27,7 @@ export default function MobileBottomNav() {
     const isScrolledOrNotHome = isScrolled || !isHome;
 
     const isWoman = gender === "woman";
-    const accentColor = "#1A1A1A";
+    const accentColor = isWoman ? "#D8A7B1" : "#A6B8C7";
     // Always use the solid "scrolled" style because bottom nav is over the bright TrustBar on mobile.
     const activeTextClass = "text-[#1A1A1A]";
     const activeFillClass = "fill-[#1A1A1A]/5";
@@ -81,7 +81,7 @@ export default function MobileBottomNav() {
                 const iconContent = (
                     <div className="relative flex items-center justify-center p-0.5">
                         {item.isActive && (
-                            <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-[#C7A379] rounded-full" />
+                            <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full" style={{ backgroundColor: accentColor }} />
                         )}
                         <item.icon
                             strokeWidth={1.5}

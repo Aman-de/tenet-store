@@ -37,7 +37,7 @@ export default function Footer() {
                 {/* Top Section: Newsletter */}
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end border-b border-white/10 pb-10 mb-10 gap-12">
                     <div className="max-w-lg">
-                        <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#E05275] block mb-2.5">Exclusive Access</span>
+                        <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#C7A379] block mb-2.5">Exclusive Access</span>
                         <h2 className="font-serif text-3xl md:text-5xl mb-4 leading-tight font-medium">Join the Club.</h2>
                         <p className="text-neutral-400 font-sans text-sm leading-relaxed">
                             Subscribe to receive updates, access to exclusive deals, and more.
