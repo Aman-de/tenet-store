@@ -145,8 +145,8 @@ export default function CategoryGrid({ collections }: { collections: Collection[
                                         <h3 className="font-serif italic text-2xl md:text-3xl lg:text-4xl tracking-wide drop-shadow-sm transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500 ease-out">
                                             {collection.title}
                                         </h3>
-                                        <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500 ease-out">
-                                            <ArrowRight className="w-5 h-5 text-white" />
+                                        <div className="w-12 h-12 rounded-full bg-white/30 backdrop-blur-md border border-white/40 flex items-center justify-center transform transition-all duration-500 ease-out group-hover:bg-white group-hover:scale-110 shadow-[0_4px_20px_rgba(0,0,0,0.1)]">
+                                            <ArrowRight className="w-5 h-5 text-white group-hover:text-black transition-colors duration-500" />
                                         </div>
                                     </div>
                                 </div>

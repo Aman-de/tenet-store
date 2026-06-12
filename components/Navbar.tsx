@@ -74,7 +74,7 @@ export default function Navbar() {
             <nav
                 className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-in-out ${navBackground}`}
             >
-                <div className="max-w-[2000px] w-full mx-auto px-6 xl:px-12 py-4 lg:py-5 flex items-center justify-between relative z-50">
+                <div className="max-w-[2000px] w-full mx-auto px-6 xl:px-12 py-2 lg:py-3 flex items-center justify-between relative z-50">
                     {/* Mobile Menu & Search (Left) -> Now mostly Desktop Left Section including Account */}
                     <div className="flex items-center gap-4 lg:gap-6 w-full lg:w-auto">
                         <button className="lg:hidden p-2.5 -ml-2.5 hover:scale-105 active:scale-95 transition-transform" aria-label="Toggle mobile menu" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
@@ -87,7 +87,7 @@ export default function Navbar() {
 
                         {/* Mobile Search Icon Trigger */}
                         <button className="lg:hidden p-2.5" aria-label="Toggle search" onClick={() => setIsSearchOpen(!isSearchOpen)}>
-                            <Search className={`w-6 h-6 hover:opacity-70 transition-all ${textColor}`} />
+                            <Search className={`w-5 h-5 hover:opacity-70 transition-all ${textColor}`} />
                         </button>
 
                         {/* Desktop: Account & Search */}
@@ -98,7 +98,7 @@ export default function Navbar() {
                             ) : (
                                 <SignInButton mode="modal">
                                     <button className="group p-2.5" aria-label="Sign in">
-                                        <User className={`w-5 h-5 text-gray-400 group-hover:text-black transition-colors`} />
+                                        <User className={`w-4 h-4 text-gray-400 group-hover:text-black transition-colors`} />
                                     </button>
                                 </SignInButton>
                             )}
@@ -106,19 +106,19 @@ export default function Navbar() {
                             {/* Orders Icon */}
                             {isSignedIn && (
                                 <Link href="/orders" className="group" title="My Orders">
-                                    <Package className={`w-5 h-5 text-gray-400 group-hover:text-black transition-colors`} />
+                                    <Package className={`w-4 h-4 text-gray-400 group-hover:text-black transition-colors`} />
                                 </Link>
                             )}
 
                             {/* Search Bar */}
-                            <form onSubmit={handleSearch} className="flex items-center bg-neutral-50 rounded-full px-4 py-2 group focus-within:bg-white focus-within:ring-1 focus-within:ring-neutral-300 transition-all w-64 lg:w-96">
-                                <Search className={`w-5 h-5 mr-3 text-gray-400 group-focus-within:text-black transition-colors`} strokeWidth={1.5} />
+                            <form onSubmit={handleSearch} className="flex items-center bg-neutral-50 rounded-full px-4 py-1.5 group focus-within:bg-white focus-within:ring-1 focus-within:ring-neutral-300 transition-all w-64 lg:w-96">
+                                <Search className={`w-4 h-4 mr-3 text-gray-400 group-focus-within:text-black transition-colors`} strokeWidth={1.5} />
                                 <input
                                     type="text"
                                     placeholder="SEARCH"
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
-                                    className={`bg-transparent outline-none text-sm font-medium tracking-wide w-full placeholder:text-gray-400 ${textColor}`}
+                                    className={`bg-transparent outline-none text-[13px] font-medium tracking-wide w-full placeholder:text-gray-400 ${textColor}`}
                                 />
                             </form>
                         </div>
@@ -127,7 +127,7 @@ export default function Navbar() {
                     {/* Logo (Center) */}
                     <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
                         <Link href="/" className="block group">
-                            <span className={`text-3xl lg:text-4xl font-serif font-medium tracking-[0.2em] uppercase group-hover:opacity-80 transition-colors ${logoColor}`}>
+                            <span className={`text-2xl lg:text-3xl font-serif font-medium tracking-[0.2em] uppercase group-hover:opacity-80 transition-colors ${logoColor}`}>
                                 TENET
                             </span>
                         </Link>

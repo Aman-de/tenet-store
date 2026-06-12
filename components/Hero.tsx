@@ -63,7 +63,7 @@ export default function Hero({ spotlightProducts = [] }: HeroProps) {
     };
 
     return (
-        <section className="relative h-[85vh] lg:h-[90vh] w-full overflow-hidden bg-[#FDFBF7] group/hero">
+        <section className="relative h-[65vh] lg:h-[70vh] w-full overflow-hidden bg-[#FDFBF7] group/hero">
             {/* Horizontal Scroll Layout */}
             <div 
                 ref={emblaRef}
