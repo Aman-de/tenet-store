@@ -57,42 +57,6 @@ export default function ProductSection({ products }: ProductSectionProps) {
         return g === activeGender || g === 'unisex';
     });
 
-    // Filter Toggle Component
-    const FilterToggle = () => (
-        <div className={`flex items-center bg-white/80 backdrop-blur-md rounded-full border border-neutral-200 p-1 transition-all duration-300 ${(!hasMounted || isSticky)
-            ? 'fixed top-[100px] md:top-[120px] left-1/2 -translate-x-1/2 z-[40] shadow-lg'
-            : 'relative z-10 w-fit'
-            }`}>
-            <button
-                onClick={() => setActiveGender('man')}
-                className={`relative w-24 py-1.5 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase rounded-full transition-colors z-10 ${activeGender === 'man' ? 'text-white' : 'text-neutral-500 hover:text-[#1A1A1A]'
-                    }`}
-            >
-                Men
-                {activeGender === 'man' && (
-                    <motion.div
-                        layoutId="activeTabBackground"
-                        className="absolute inset-0 bg-[#2B6496] rounded-full -z-10"
-                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                    />
-                )}
-            </button>
-            <button
-                onClick={() => setActiveGender('woman')}
-                className={`relative w-24 py-1.5 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase rounded-full transition-colors z-10 ${activeGender === 'woman' ? 'text-white' : 'text-neutral-500 hover:text-[#1A1A1A]'
-                    }`}
-            >
-                Women
-                {activeGender === 'woman' && (
-                    <motion.div
-                        layoutId="activeTabBackground"
-                        className="absolute inset-0 bg-[#E05275] rounded-full -z-10"
-                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                    />
-                )}
-            </button>
-        </div>
-    );
 
     return (
         <section ref={sectionRef} id="new-arrivals" className="relative max-w-[2000px] w-full mx-auto px-6 xl:px-12 py-4 lg:py-8">
@@ -109,12 +73,6 @@ export default function ProductSection({ products }: ProductSectionProps) {
                         Curated Selection
                     </span>
                 </div>
-
-                <div className="flex justify-center flex-1 w-full md:w-auto">
-                    <FilterToggle />
-                </div>
-
-                <div className="hidden md:block flex-1" />
             </div>
 
             <div className="min-h-[100px]">
