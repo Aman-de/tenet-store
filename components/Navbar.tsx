@@ -42,22 +42,23 @@ export default function Navbar() {
     // Dynamically apply glassmorphism based on scroll/page state
     const isScrolledOrNotHome = isScrolled || !isHome;
     
-    // Transparent dark glass on hero image, solid light glass on scroll
+    // Transparent dark glass on hero image (mobile), solid light glass on scroll (mobile & always on desktop)
     const navContainerClass = isScrolledOrNotHome 
         ? "bg-[#F8F5EF]/90 backdrop-blur-2xl border border-[#1A1A1A]/5 shadow-[0_4px_24px_rgba(0,0,0,0.02)]" 
-        : "bg-transparent border-transparent shadow-none";
+        : "bg-transparent border-transparent shadow-none lg:bg-[#F8F5EF]/90 lg:backdrop-blur-2xl lg:border lg:border-[#1A1A1A]/5 lg:shadow-[0_4px_24px_rgba(0,0,0,0.02)]";
 
-    const textColor = isScrolledOrNotHome ? "text-neutral-800" : "text-white";
-    const logoColor = isScrolledOrNotHome ? "text-black" : "text-white";
+    const textColor = isScrolledOrNotHome ? "text-neutral-800" : "text-white lg:text-neutral-800";
+    const logoColor = isScrolledOrNotHome ? "text-black" : "text-white lg:text-black";
     const iconStroke = 2;
-    const iconGlassBg = isScrolledOrNotHome ? "bg-black/5 hover:bg-black/10" : "bg-white/10 hover:bg-white/20";
+    const iconGlassBg = isScrolledOrNotHome ? "bg-black/5 hover:bg-black/10" : "bg-white/10 hover:bg-white/20 lg:bg-black/5 lg:hover:bg-black/10";
 
     // Ultra-premium Apple-style segmented control (Liquid Glass)
-    const GenderToggle = ({ idSuffix }: { idSuffix: string }) => {
-        const toggleBg = isScrolledOrNotHome ? "bg-[#1A1A1A]/5" : "bg-white/10";
+    const GenderToggle = ({ idSuffix, isDesktop = false }: { idSuffix: string, isDesktop?: boolean }) => {
+        const solid = isScrolledOrNotHome || isDesktop;
+        const toggleBg = solid ? "bg-[#1A1A1A]/5" : "bg-white/10";
         const btnText = (active: boolean) => {
             if (active) return "text-white";
-            return isScrolledOrNotHome ? "text-[#1A1A1A] font-medium" : "text-white/80 font-medium";
+            return solid ? "text-[#1A1A1A] font-medium" : "text-white/80 font-medium";
         };
         return (
             <div className={`relative flex items-center rounded-full p-1 transition-colors duration-500 backdrop-blur-md ${toggleBg}`}>
@@ -222,7 +223,7 @@ export default function Navbar() {
 
                             {/* Gender Toggle */}
                             <div className="flex-shrink-0 origin-center">
-                                <GenderToggle idSuffix="desktop" />
+                                <GenderToggle idSuffix="desktop" isDesktop={true} />
                             </div>
                         </div>
 

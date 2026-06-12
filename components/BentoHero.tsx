@@ -88,7 +88,7 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
     ];
 
     return (
-        <section className="relative h-[100dvh] w-full bg-[#F8F5EF] flex flex-col lg:flex-row p-0 lg:p-6 gap-1 lg:gap-6 overflow-hidden">
+        <section className="relative w-full h-[calc(100dvh-54px)] lg:h-[100dvh] flex flex-col lg:flex-row p-0 lg:p-6 gap-1 lg:gap-6 overflow-hidden bg-[#F8F5EF]">
             
             {/* LEFT: Hero Section (Auto Scrolling) */}
             <div className="relative w-full h-[43%] lg:w-7/12 xl:w-2/3 lg:h-full rounded-none lg:rounded-2xl overflow-hidden group bg-neutral-200">
