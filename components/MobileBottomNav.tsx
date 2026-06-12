@@ -35,7 +35,7 @@ export default function MobileBottomNav() {
 
     const containerClass = isScrolledOrNotHome
         ? "bg-white/90 backdrop-blur-2xl border-white/50"
-        : "bg-black/40 backdrop-blur-md border-white/10";
+        : "bg-black/20 backdrop-blur-md border-white/10";
 
     const cartCount = mounted ? cart.length : 0;
 

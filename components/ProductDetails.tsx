@@ -505,7 +505,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                             <button
                                 onClick={handleBuyNow}
                                 disabled={product.isOutOfStock}
-                                className="px-8 py-2.5 text-xs font-bold uppercase tracking-widest text-white hover:opacity-90 active:scale-95 transition-all rounded-full shadow-md"
+                                className="px-8 py-2.5 text-xs font-bold uppercase tracking-widest text-white hover:opacity-90 active:scale-95 transition-all rounded-full shadow-md border border-white/20"
                                 style={!product.isOutOfStock ? { backgroundColor: accentColor } : { backgroundColor: '#d4d4d4', color: '#737373', cursor: 'not-allowed' }}
                             >
                                 {product.isOutOfStock ? "Out of Stock" : "Buy Now"}
@@ -520,7 +520,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
 
             {/* Left Column: Gallery */}
             {/* Mobile/Tablet: Infinite Looping Carousel using Embla */}
-            <div className="block lg:landscape:hidden xl:hidden relative w-full aspect-[3/4] mb-6 overflow-hidden rounded-b-[28px] sm:rounded-b-[36px] shadow-[0_8px_30px_rgba(0,0,0,0.03)] bg-neutral-100" ref={emblaRef}>
+            <div className="block lg:landscape:hidden xl:hidden relative w-[calc(100%-16px)] mx-auto mt-2 aspect-[3/4] mb-6 overflow-hidden rounded-[28px] sm:rounded-[36px] shadow-[0_8px_30px_rgba(0,0,0,0.05)] bg-neutral-100" ref={emblaRef}>
                 <div className="flex h-full w-full">
                     {displayImages.map((img, idx) => (
                         <div 
@@ -938,7 +938,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         onClick={handleBuyNow}
                         disabled={product.isOutOfStock}
                         className={cn(
-                            "flex-grow h-[50px] flex items-center justify-center font-sans uppercase tracking-[0.2em] text-xs md:text-sm font-medium shadow-md hover:scale-[1.01] hover:brightness-[1.04] hover:shadow-xl active:scale-[0.98] rounded-xl transition-all duration-300 cursor-pointer",
+                            "flex-grow h-[50px] flex items-center justify-center font-sans uppercase tracking-[0.2em] text-xs md:text-sm font-medium shadow-md hover:scale-[1.01] hover:brightness-[1.04] hover:shadow-xl active:scale-[0.98] rounded-full transition-all duration-300 cursor-pointer",
                             product.isOutOfStock
                                 ? "bg-neutral-300 text-neutral-500 cursor-not-allowed"
                                 : "text-white"
@@ -952,7 +952,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         onClick={handleAddToCart}
                         disabled={product.isOutOfStock}
                         className={cn(
-                            "w-[50px] h-[50px] flex items-center justify-center border shrink-0 hover:scale-[1.05] active:scale-[0.95] hover:bg-[var(--accent-color)] hover:text-white rounded-xl transition-all duration-300 cursor-pointer",
+                            "w-[50px] h-[50px] flex items-center justify-center border shrink-0 hover:scale-[1.05] active:scale-[0.95] hover:bg-[var(--accent-color)] hover:text-white rounded-full shadow-sm transition-all duration-300 cursor-pointer",
                             product.isOutOfStock
                                 ? "bg-neutral-100 text-neutral-500 border-neutral-200 cursor-not-allowed"
                                 : "bg-[#FDFBF7]"
@@ -1181,7 +1181,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         onClick={handleBuyNow}
                         disabled={product.isOutOfStock}
                         className={cn(
-                            "flex-grow h-[48px] flex items-center justify-center font-sans uppercase tracking-[0.2em] text-[11px] xs:text-xs font-medium shadow-md hover:scale-[1.01] hover:brightness-[1.04] active:scale-[0.98] rounded-xl transition-all duration-300 cursor-pointer",
+                            "flex-grow h-[48px] flex items-center justify-center font-sans uppercase tracking-[0.2em] text-[11px] xs:text-xs font-medium shadow-md hover:scale-[1.01] hover:brightness-[1.04] active:scale-[0.98] rounded-full transition-all duration-300 cursor-pointer",
                             product.isOutOfStock
                                 ? "bg-neutral-300 text-neutral-500 cursor-not-allowed"
                                 : "text-white"
@@ -1195,7 +1195,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         onClick={handleAddToCart}
                         disabled={product.isOutOfStock}
                         className={cn(
-                            "w-[48px] h-[48px] flex items-center justify-center border shrink-0 hover:scale-[1.05] active:scale-[0.95] hover:bg-[var(--accent-color)] hover:text-white rounded-xl transition-all duration-300 cursor-pointer",
+                            "w-[48px] h-[48px] flex items-center justify-center border shrink-0 hover:scale-[1.05] active:scale-[0.95] hover:bg-[var(--accent-color)] hover:text-white rounded-full shadow-sm transition-all duration-300 cursor-pointer",
                             product.isOutOfStock
                                 ? "bg-neutral-100 text-[#A3A3A3] border-neutral-200 cursor-not-allowed"
                                 : "bg-[#FDFBF7]"

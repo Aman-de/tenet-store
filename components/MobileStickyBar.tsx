@@ -45,7 +45,7 @@ export default function MobileStickyBar({ product, selectedVariant, onAddToCart,
                     className="fixed bottom-0 left-0 right-0 z-40 bg-[#FDFBF7]/90 backdrop-blur-md border-t border-neutral-200/50 p-3 px-4 pb-safe lg:landscape:hidden xl:hidden rounded-t-2xl shadow-[0_-6px_24px_rgba(0,0,0,0.03)]"
                 >
                     <div className="flex items-center gap-4">
-                        <div className="relative w-10 h-13 bg-neutral-100 shrink-0 rounded-md overflow-hidden">
+                        <div className="relative w-10 h-13 bg-neutral-100 shrink-0 rounded-xl overflow-hidden">
                             {imageToUse ? (
                                 <Image
                                     src={imageToUse}
@@ -64,7 +64,7 @@ export default function MobileStickyBar({ product, selectedVariant, onAddToCart,
                         <button
                             onClick={onAddToCart}
                             disabled={product.isOutOfStock}
-                            className={`px-5 py-2 text-[10px] xs:text-xs font-medium uppercase tracking-[0.15em] transition-all rounded-lg shadow-sm cursor-pointer ${
+                            className={`px-5 py-2 text-[10px] xs:text-xs font-medium uppercase tracking-[0.15em] transition-all rounded-full shadow-sm cursor-pointer ${
                                 product.isOutOfStock
                                     ? "bg-neutral-300 text-neutral-500 cursor-not-allowed"
                                     : "text-white hover:opacity-90 active:scale-95"
