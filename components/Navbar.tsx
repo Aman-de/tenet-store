@@ -45,27 +45,34 @@ export default function Navbar() {
     const textColor = isScrolled || !isHome ? "text-[#1A1A1A]" : "text-white";
     const logoColor = isScrolled || !isHome ? "text-[#1A1A1A]" : "text-white";
 
-    // Ultra-premium Apple-style segmented control
+    // Ultra-premium Apple-style segmented control (Liquid Glass)
     const GenderToggle = () => (
-        <div className={`relative flex items-center backdrop-blur-md rounded-full p-1 transition-colors border ${isScrolled || !isHome ? 'bg-black/5 border-black/10' : 'bg-white/10 border-white/20'}`}>
-            {/* Sliding Pill Background */}
-            <div 
-                className={`absolute inset-y-1 w-[calc(50%-4px)] rounded-full transition-all duration-500 ease-[0.16,1,0.3,1] ${isScrolled || !isHome ? (gender === 'man' ? 'bg-black' : 'bg-[#E05275]') : 'bg-white shadow-md'}`}
-                style={{ 
-                    left: gender === 'man' ? '4px' : 'calc(50%)' 
-                }}
-            />
+        <div className={`relative flex items-center rounded-full p-1 transition-colors duration-500 border shadow-sm backdrop-blur-2xl saturate-150 ${isScrolled || !isHome ? 'bg-black/5 border-black/10' : 'bg-white/20 border-white/30'}`}>
             <button 
                 onClick={() => setGender('man')}
                 className={`relative z-10 w-16 sm:w-20 py-1.5 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] rounded-full transition-colors duration-300 ${gender === 'man' ? (isScrolled || !isHome ? 'text-white' : 'text-black') : `text-current opacity-60 hover:opacity-100`}`}
             >
                 MEN
+                {gender === 'man' && (
+                    <motion.div
+                        layoutId="nav-gender-active"
+                        className={`absolute inset-0 rounded-full -z-10 shadow-md ${isScrolled || !isHome ? 'bg-black' : 'bg-white'}`}
+                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                    />
+                )}
             </button>
             <button 
                 onClick={() => setGender('woman')}
-                className={`relative z-10 w-16 sm:w-20 py-1.5 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] rounded-full transition-colors duration-300 ${gender === 'woman' ? (isScrolled || !isHome ? 'text-white' : 'text-[#E05275]') : `text-current opacity-60 hover:opacity-100`}`}
+                className={`relative z-10 w-16 sm:w-20 py-1.5 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] rounded-full transition-colors duration-300 ${gender === 'woman' ? 'text-white' : `text-current opacity-60 hover:opacity-100`}`}
             >
                 WOMEN
+                {gender === 'woman' && (
+                    <motion.div
+                        layoutId="nav-gender-active"
+                        className="absolute inset-0 rounded-full -z-10 shadow-md bg-[#E05275]"
+                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                    />
+                )}
             </button>
         </div>
     );
@@ -89,12 +96,12 @@ export default function Navbar() {
                             <GenderToggle />
                         </div>
 
-                        {/* RIGHT: 3 Dots Menu Button */}
+                        {/* RIGHT: Hamburger Menu Button */}
                         <button className="p-2 -mr-2 hover:scale-105 active:scale-95 transition-transform shrink-0" aria-label="Toggle mobile menu" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
                             {isMobileMenuOpen ? (
                                 <X className={`w-6 h-6 transition-colors ${textColor}`} />
                             ) : (
-                                <MoreHorizontal className={`w-6 h-6 transition-colors ${textColor}`} />
+                                <Menu className={`w-6 h-6 transition-colors ${textColor}`} />
                             )}
                         </button>
                     </div>

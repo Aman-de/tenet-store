@@ -64,7 +64,7 @@ export default function MobileBottomNav() {
     } as React.CSSProperties;
 
     return (
-        <div className="fixed bottom-0 left-0 right-0 h-16 bg-white/90 backdrop-blur-md border-t border-gray-100 z-50 flex items-center justify-around pb-safe rounded-t-2xl shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
+        <div className="fixed bottom-0 left-0 right-0 h-[68px] bg-white/60 backdrop-blur-3xl saturate-150 border-t border-white/20 z-50 flex items-center justify-around pb-safe rounded-t-[32px] shadow-[0_-8px_30px_rgba(0,0,0,0.04)]">
             <style>{`
                 @keyframes accountAttention {
                     0%, 20%, 100% {
