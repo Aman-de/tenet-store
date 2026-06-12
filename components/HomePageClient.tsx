@@ -4,8 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useGender } from "@/context/GenderContext";
-import Hero from "@/components/Hero";
-import CategoryGrid from "@/components/CategoryGrid";
+import BentoHero from "@/components/BentoHero";
 import ProductSection from "@/components/ProductSection";
 
 interface HomePageClientProps {
@@ -30,13 +29,8 @@ export default function HomePageClient({ products, collections }: HomePageClient
 
     return (
         <div className="bg-[#FDFBF7] min-h-screen">
-            {/* Dynamic Hero Banner & Spotlights */}
-            <Hero spotlightProducts={spotlightProducts} />
-
-            {/* Category Grid Section */}
-            <CategoryGrid collections={collections} />
-
-
+            {/* Unified 100vh Bento Box Hero & Categories */}
+            <BentoHero spotlightProducts={spotlightProducts} collections={collections} />
 
             {/* Product Section with Category Filter */}
             <div>
