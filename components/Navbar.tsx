@@ -100,76 +100,92 @@ export default function Navbar() {
                 <nav className={`pointer-events-auto w-full lg:w-fit mx-auto px-4 lg:px-8 py-2.5 lg:py-2 transition-all duration-500 ease-in-out rounded-full ${navContainerClass}`}>
                     
                     {/* MOBILE LAYOUT (lg:hidden) */}
-                    <div className="flex lg:hidden w-full items-center justify-between">
-                        {/* LEFT: Logo */}
-                        <Link href="/" className="block group shrink-0 ml-2">
-                            <span className={`text-xl font-serif font-medium tracking-[0.25em] uppercase group-hover:opacity-80 transition-colors duration-500 ${logoColor} drop-shadow-sm`}>
-                                TENET
-                            </span>
-                        </Link>
-
-                        {/* CENTER / RIGHT: Dynamic Mobile Header */}
-                        <div className="flex justify-end flex-1 pl-2 sm:pl-4">
-                            {isProductPage ? (
-                                <div className="flex items-center justify-between w-full max-w-[280px]">
-                                    <Link href="/#new-arrivals" className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Collections">
-                                        <LayoutGrid className={`w-5 h-5 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
-                                    </Link>
-                                    <Link href="/orders" className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Orders">
-                                        <Package className={`w-5 h-5 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
-                                    </Link>
+                    <div className="flex lg:hidden w-full items-center justify-between relative">
+                        {isProductPage ? (
+                            <>
+                                {/* LEFT SIDE: Account, Orders, Collection */}
+                                <div className="flex items-center gap-1 z-10 flex-1 justify-start">
                                     {isSignedIn ? (
-                                        <div className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`}>
-                                            <div className="scale-[0.8] origin-center flex items-center justify-center">
+                                        <div className={`w-[32px] h-[32px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`}>
+                                            <div className="scale-[0.75] origin-center flex items-center justify-center">
                                                 <UserButton afterSignOutUrl="/" />
                                             </div>
                                         </div>
                                     ) : (
                                         <SignInButton mode="modal">
-                                            <button className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Sign in">
-                                                <User className={`w-5 h-5 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
+                                            <button className={`w-[32px] h-[32px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Sign in">
+                                                <User className={`w-[18px] h-[18px] transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
                                             </button>
                                         </SignInButton>
                                     )}
-                                    <Link href="/circle" className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="The Circle">
-                                        <Crown className={`w-5 h-5 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
+                                    <Link href="/orders" className={`w-[32px] h-[32px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Orders">
+                                        <Package className={`w-[18px] h-[18px] transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
                                     </Link>
-                                    <button className={`relative w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Open wishlist" onClick={openWishlist}>
-                                        <Heart className={`w-5 h-5 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
+                                    <Link href="/#new-arrivals" className={`w-[32px] h-[32px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Collections">
+                                        <LayoutGrid className={`w-[18px] h-[18px] transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
+                                    </Link>
+                                </div>
+
+                                {/* CENTER: Logo (Absolute Centered) */}
+                                <Link href="/" className="absolute left-1/2 -translate-x-1/2 z-10">
+                                    <span className={`text-lg sm:text-xl font-serif font-bold tracking-[0.25em] uppercase group-hover:opacity-80 transition-colors duration-500 ${logoColor} drop-shadow-sm`}>
+                                        TENET
+                                    </span>
+                                </Link>
+
+                                {/* RIGHT SIDE: Circle, Wishlist, Cart */}
+                                <div className="flex items-center gap-1 z-10 flex-1 justify-end">
+                                    <Link href="/circle" className={`w-[32px] h-[32px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="The Circle">
+                                        <Crown className={`w-[18px] h-[18px] transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
+                                    </Link>
+                                    <button className={`relative w-[32px] h-[32px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Open wishlist" onClick={openWishlist}>
+                                        <Heart className={`w-[18px] h-[18px] transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
                                         {wishlistCount > 0 && (
-                                            <span className="absolute top-1 right-1 w-2 h-2 rounded-full border border-white" style={{ backgroundColor: accentColor }} />
+                                            <span className="absolute top-0.5 right-0.5 w-2 h-2 rounded-full border border-white" style={{ backgroundColor: accentColor }} />
                                         )}
                                     </button>
-                                    <button className={`relative w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Open cart" onClick={openCart}>
-                                        <ShoppingBag className={`w-5 h-5 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
+                                    <button className={`relative w-[32px] h-[32px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Open cart" onClick={openCart}>
+                                        <ShoppingBag className={`w-[18px] h-[18px] transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
                                         {cartCount > 0 && (
-                                            <span className="absolute top-1 right-1 w-2 h-2 rounded-full border border-white" style={{ backgroundColor: accentColor }} />
+                                            <span className="absolute top-0.5 right-0.5 w-2 h-2 rounded-full border border-white" style={{ backgroundColor: accentColor }} />
                                         )}
                                     </button>
                                 </div>
-                            ) : (
-                                <div className="flex items-center justify-between w-full">
-                                    <div className="flex justify-center flex-1 mx-2">
-                                        <GenderToggle />
-                                    </div>
-                                    <div className="flex items-center gap-2 shrink-0">
-                                        <button className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center relative`} aria-label="Open wishlist" onClick={openWishlist}>
-                                            <Heart className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
-                                            {wishlistCount > 0 && (
-                                                <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full border border-white" style={{ backgroundColor: accentColor }} />
-                                            )}
-                                        </button>
-                                        <button className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Toggle mobile menu" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-                                            {isMobileMenuOpen ? (
-                                                <X className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
-                                            ) : (
-                                                <Menu className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
-                                            )}
-                                        </button>
+                            </>
+                        ) : (
+                            <>
+                                {/* LEFT: Logo */}
+                                <Link href="/" className="block group shrink-0 ml-2">
+                                    <span className={`text-xl font-serif font-medium tracking-[0.25em] uppercase group-hover:opacity-80 transition-colors duration-500 ${logoColor} drop-shadow-sm`}>
+                                        TENET
+                                    </span>
+                                </Link>
+
+                                {/* CENTER / RIGHT: Dynamic Mobile Header */}
+                                <div className="flex justify-end flex-1 pl-2 sm:pl-4">
+                                    <div className="flex items-center justify-between w-full">
+                                        <div className="flex justify-center flex-1 mx-2">
+                                            <GenderToggle />
+                                        </div>
+                                        <div className="flex items-center gap-2 shrink-0">
+                                            <button className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center relative`} aria-label="Open wishlist" onClick={openWishlist}>
+                                                <Heart className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
+                                                {wishlistCount > 0 && (
+                                                    <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full border border-white" style={{ backgroundColor: accentColor }} />
+                                                )}
+                                            </button>
+                                            <button className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Toggle mobile menu" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                                                {isMobileMenuOpen ? (
+                                                    <X className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
+                                                ) : (
+                                                    <Menu className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
+                                                )}
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                            )}
-                        </div>
+                            </>
+                        )}
                     </div>
 
                     {/* DESKTOP LAYOUT (hidden lg:flex) */}
