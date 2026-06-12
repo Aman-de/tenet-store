@@ -44,8 +44,8 @@ export default function Navbar() {
     
     // Transparent dark glass on hero image, solid light glass on scroll
     const navContainerClass = isScrolledOrNotHome 
-        ? "bg-white/95 backdrop-blur-3xl border border-black/10 shadow-[0_8px_30px_rgba(0,0,0,0.08)]" 
-        : "bg-black/40 backdrop-blur-2xl border border-white/15 shadow-[0_8px_32px_rgba(0,0,0,0.2)]";
+        ? "bg-[#F8F5EF]/90 backdrop-blur-2xl border border-[#1A1A1A]/5 shadow-[0_4px_24px_rgba(0,0,0,0.02)]" 
+        : "bg-transparent backdrop-blur-sm border border-white/10 shadow-none";
 
     const textColor = isScrolledOrNotHome ? "text-neutral-800" : "text-white";
     const logoColor = isScrolledOrNotHome ? "text-black" : "text-white";
@@ -54,35 +54,35 @@ export default function Navbar() {
 
     // Ultra-premium Apple-style segmented control (Liquid Glass)
     const GenderToggle = () => {
-        const toggleBg = isScrolledOrNotHome ? "bg-black/5 border border-black/10" : "bg-white/10 border border-white/10";
+        const toggleBg = isScrolledOrNotHome ? "bg-[#1A1A1A]/5" : "bg-white/10";
         const btnText = (active: boolean) => {
             if (active) return "text-white";
-            return isScrolledOrNotHome ? "text-black font-extrabold" : "text-white/90 font-extrabold";
+            return isScrolledOrNotHome ? "text-[#1A1A1A] font-medium" : "text-white/80 font-medium";
         };
         return (
-            <div className={`relative flex items-center rounded-full p-1 transition-colors duration-500 shadow-sm backdrop-blur-2xl ${toggleBg}`}>
+            <div className={`relative flex items-center rounded-full p-1 transition-colors duration-500 backdrop-blur-md ${toggleBg}`}>
                 <button 
                     onClick={() => setGender('man')}
-                    className={`relative z-10 w-16 sm:w-20 py-1.5 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.25em] rounded-full transition-colors duration-300 ${btnText(gender === 'man')}`}
+                    className={`relative z-10 w-16 sm:w-20 py-1.5 text-[10px] sm:text-xs tracking-widest uppercase transition-colors duration-300 ${btnText(gender === 'man')}`}
                 >
                     MEN
                     {gender === 'man' && (
                         <motion.div
                             layoutId="nav-gender-active"
-                            className="absolute inset-0 rounded-full -z-10 shadow-sm bg-[#2B6496] border border-[#2B6496]/50 backdrop-blur-md"
+                            className="absolute inset-0 rounded-full -z-10 bg-[#1A1A1A] shadow-sm"
                             transition={{ type: "spring", stiffness: 400, damping: 30 }}
                         />
                     )}
                 </button>
                 <button 
                     onClick={() => setGender('woman')}
-                    className={`relative z-10 w-16 sm:w-20 py-1.5 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.25em] rounded-full transition-colors duration-300 ${btnText(gender === 'woman')}`}
+                    className={`relative w-16 sm:w-20 py-1.5 text-[10px] sm:text-xs tracking-widest uppercase transition-colors z-10 ${btnText(gender === 'woman')}`}
                 >
                     WOMEN
                     {gender === 'woman' && (
                         <motion.div
                             layoutId="nav-gender-active"
-                            className="absolute inset-0 rounded-full -z-10 shadow-sm bg-[#E05275] border border-[#E05275]/50 backdrop-blur-md"
+                            className="absolute inset-0 rounded-full -z-10 bg-[#1A1A1A] shadow-sm"
                             transition={{ type: "spring", stiffness: 400, damping: 30 }}
                         />
                     )}

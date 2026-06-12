@@ -23,9 +23,9 @@ export default function TrustBar() {
     ];
 
     return (
-        <section className="bg-[#FAFAFA] py-10 md:py-16 border-y border-neutral-200"> {/* Compact Padding & Borders */}
+        <section className="bg-transparent py-16 md:py-24 border-t border-[#1A1A1A]/10"> {/* Expansive Padding & Borders */}
             <div className="max-w-[2000px] w-full mx-auto px-6 xl:px-12">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-4 divide-y md:divide-y-0 md:divide-x divide-neutral-200"> {/* Added dividers for structure */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-4"> {/* Removed vertical dividers for cleaner look */}
                     {pillars.map((pillar, index) => (
                         <motion.div
                             key={index}
@@ -38,9 +38,9 @@ export default function TrustBar() {
                             <div className="p-3">
                                 {pillar.icon}
                             </div>
-                            <div className="space-y-1">
-                                <h3 className="font-serif text-sm font-bold tracking-[0.15em] text-[#1A1A1A] uppercase">{pillar.title}</h3>
-                                <p className="font-sans text-[11px] uppercase tracking-wide text-black/80 max-w-[200px] mx-auto hidden md:block">{pillar.subtext}</p>
+                            <div className="space-y-2">
+                                <h3 className="font-serif text-sm font-normal tracking-[0.2em] text-[#1A1A1A] uppercase">{pillar.title}</h3>
+                                <p className="font-sans text-[11px] font-light tracking-wide text-[#1A1A1A]/70 max-w-[200px] mx-auto hidden md:block">{pillar.subtext}</p>
                             </div>
                         </motion.div>
                     ))}

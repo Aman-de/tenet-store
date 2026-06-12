@@ -109,20 +109,19 @@ export default function SortedProductGrid({ products: rawProducts, showSizeFilte
                     {showSizeFilter && sizes.length > 0 && (
                         <div className="flex items-center gap-3 border-l border-neutral-200 pl-4">
                             <span className="text-[10px] font-bold uppercase tracking-widest text-[#1A1A1A] opacity-60 flex items-center h-9">Size</span>
-                            <div className="flex items-center gap-1.5">
-                                {sizes.map((size) => (
-                                    <button
-                                        key={size}
-                                        onClick={() => setSelectedSize(selectedSize === size ? null : size)}
-                                        className={`h-9 min-w-[36px] px-3 flex items-center justify-center rounded-sm text-xs font-medium transition-all border ${selectedSize === size
-                                            ? "text-white"
-                                            : "bg-white text-neutral-600 border-gray-200 hover:border-[#1A1A1A]"
-                                            }`}
-                                        style={selectedSize === size ? { backgroundColor: accentColor, borderColor: accentColor } : undefined}
-                                    >
-                                        {size}
-                                    </button>
-                                ))}
+                                <div className="flex items-center gap-4">
+                                    {sizes.map((size) => (
+                                        <button
+                                            key={size}
+                                            onClick={() => setSelectedSize(selectedSize === size ? null : size)}
+                                            className={`text-[10px] sm:text-xs font-sans tracking-widest transition-all ${selectedSize === size
+                                                ? "text-[#1A1A1A] border-b border-[#1A1A1A]"
+                                                : "text-neutral-400 hover:text-[#1A1A1A]"
+                                                }`}
+                                        >
+                                            {size}
+                                        </button>
+                                    ))}
                                 {selectedSize && (
                                     <button
                                         onClick={() => setSelectedSize(null)}
@@ -145,16 +144,15 @@ export default function SortedProductGrid({ products: rawProducts, showSizeFilte
                     {/* Price Tier */}
                     <div className="flex flex-col sm:flex-row sm:items-center gap-2 lg:gap-3 w-full lg:w-auto">
                         <span className="text-[10px] font-bold uppercase tracking-widest text-[#1A1A1A] opacity-60 flex items-center h-5 lg:h-9">Price Tier</span>
-                        <div className="flex flex-wrap lg:flex-nowrap gap-1.5 w-full lg:w-auto">
+                        <div className="flex flex-wrap lg:flex-nowrap gap-4 w-full lg:w-auto">
                             {(['all', 'standard', 'mid', 'premium'] as const).map((tier) => (
                                 <button
                                     key={tier}
                                     onClick={() => setPriceFilter(tier)}
-                                    className={`h-9 flex-1 lg:flex-none lg:px-4 flex items-center justify-center rounded-sm text-xs font-bold uppercase transition-all border cursor-pointer ${priceFilter === tier
-                                        ? "text-white"
-                                        : "bg-white text-neutral-600 border-gray-200 hover:border-[#1A1A1A]"
+                                    className={`text-[10px] sm:text-xs font-sans tracking-widest uppercase transition-all ${priceFilter === tier
+                                        ? "text-[#1A1A1A] border-b border-[#1A1A1A]"
+                                        : "text-neutral-400 hover:text-[#1A1A1A]"
                                         }`}
-                                    style={priceFilter === tier ? { backgroundColor: accentColor, borderColor: accentColor } : undefined}
                                 >
                                     {tier === 'all' && 'All'}
                                     {tier === 'standard' && 'Under ₹1K'}
@@ -174,7 +172,7 @@ export default function SortedProductGrid({ products: rawProducts, showSizeFilte
 
             {/* Grid */}
             <div
-                className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-4 gap-y-10 lg:gap-x-8 lg:gap-y-16"
+                className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-4 gap-y-16 lg:gap-x-12 lg:gap-y-24"
             >
                 {sortedProducts.map((product) => (
                     <div key={product.id}>

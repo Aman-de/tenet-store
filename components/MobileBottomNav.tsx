@@ -27,15 +27,15 @@ export default function MobileBottomNav() {
     const isScrolledOrNotHome = isScrolled || !isHome;
 
     const isWoman = gender === "woman";
-    const accentColor = isWoman ? "#E05275" : "#2B6496";
-    // High contrast active/inactive states
-    const activeTextClass = isWoman ? "text-[#E05275]" : "text-[#2B6496]";
-    const activeFillClass = isWoman ? "fill-[#E05275]/10" : "fill-[#2B6496]/10";
-    const inactiveTextClass = isScrolledOrNotHome ? "text-neutral-500 hover:text-neutral-700" : "text-white/80 hover:text-white";
+    const accentColor = "#1A1A1A";
+    // Quiet luxury states
+    const activeTextClass = isScrolledOrNotHome ? "text-[#1A1A1A]" : "text-white";
+    const activeFillClass = isScrolledOrNotHome ? "fill-[#1A1A1A]/5" : "fill-white/10";
+    const inactiveTextClass = isScrolledOrNotHome ? "text-[#1A1A1A]/40 hover:text-[#1A1A1A]" : "text-white/50 hover:text-white";
 
     const containerClass = isScrolledOrNotHome
-        ? "bg-white/90 backdrop-blur-2xl border-white/50"
-        : "bg-black/20 backdrop-blur-md border-white/10";
+        ? "bg-[#F8F5EF]/95 backdrop-blur-2xl border-[#1A1A1A]/5"
+        : "bg-transparent backdrop-blur-sm border-white/10";
 
     const cartCount = mounted ? cart.length : 0;
 

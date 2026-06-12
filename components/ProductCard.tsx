@@ -55,12 +55,12 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
 
     return (
         <div
-            className="group relative cursor-pointer rounded-xl overflow-hidden bg-white border border-neutral-100 transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
+            className="group relative cursor-pointer bg-transparent transition-all duration-500"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
             {/* Image Container */}
-            <div className="relative aspect-[3/4] w-full overflow-hidden bg-neutral-100 mb-2">
+            <div className="relative aspect-[3/4] w-full overflow-hidden bg-neutral-100 mb-3 rounded-sm">
                 <Link href={`/product/${product.handle}`} onClick={handleViewItem} className="absolute inset-0 z-0 block w-full h-full">
                     {product.images?.[0] ? (
                         <>
@@ -167,8 +167,8 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
                             }}
                             className={`
                                 pointer-events-auto
-                                w-full bg-white text-[#1A1A1A] py-3 text-xs font-bold uppercase tracking-widest shadow-lg transition-all duration-300 ease-out rounded-full
-                                hover:bg-[var(--accent-color)] hover:text-white
+                                w-full bg-white/95 backdrop-blur-sm text-[#1A1A1A] py-3 text-[10px] font-medium uppercase tracking-[0.2em] transition-all duration-500 ease-out border-t border-[#1A1A1A]/10
+                                hover:bg-[#1A1A1A] hover:text-white
                                 opacity-0 group-hover:opacity-100
                                 transform ${addingState !== 'idle' && !product.isOutOfStock ? 'translate-y-0 opacity-100' : 'translate-y-[120%] group-hover:translate-y-0'}
                             `}
@@ -189,10 +189,10 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
                                 toggleWishlist(product);
                             }}
                             className={`
-                                pointer-events-auto
-                                w-12 h-12 bg-white text-[#1A1A1A] rounded-full 
-                                flex items-center justify-center shadow-lg
-                                active:scale-90 transition-all duration-300 ease-out
+                                absolute top-4 right-4 pointer-events-auto
+                                w-8 h-8 text-[#1A1A1A]
+                                flex items-center justify-center
+                                active:scale-90 transition-all duration-500 ease-out
                                 opacity-0 group-hover:opacity-100
                             `}
                             aria-label="Wishlist"
@@ -256,22 +256,22 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
                 </div>
 
             {/* Product Info */}
-            <div className="space-y-1 p-3 pt-2"> {/* Added pt-2 for spacing */}
+            <div className="space-y-1.5 p-1 pt-2 flex flex-col items-center text-center">
                 <Link href={`/product/${product.handle}`} onClick={handleViewItem}>
-                    <h3 className="font-sans text-xs md:text-sm font-medium tracking-wide text-[#1A1A1A] uppercase truncate hover:underline underline-offset-4 decoration-1">
+                    <h3 className="font-serif text-sm md:text-base font-normal tracking-wide text-[#1A1A1A] truncate hover:text-[#1A1A1A]/70 transition-colors">
                         {product.title}
                     </h3>
                 </Link>
 
-                <div className="flex items-center gap-2 text-xs md:text-sm">
-                    <span className="font-medium text-[#1A1A1A] text-lg">
-                        ₹{product.price.toLocaleString('en-IN')}
-                    </span>
+                <div className="flex items-center justify-center gap-3 text-xs md:text-sm">
                     {product.originalPrice && (
-                        <span className="text-gray-400 line-through decoration-gray-300 text-sm ml-2">
+                        <span className="text-neutral-400 line-through decoration-neutral-300 font-sans text-xs">
                             ₹{product.originalPrice.toLocaleString('en-IN')}
                         </span>
                     )}
+                    <span className="font-sans font-medium text-[#1A1A1A] tracking-wider text-xs">
+                        ₹{product.price.toLocaleString('en-IN')}
+                    </span>
                 </div>
 
                 {/* Color Swatches */}
