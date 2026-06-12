@@ -90,7 +90,7 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
         <section className="relative h-[100dvh] w-full bg-[#F8F5EF] flex flex-col lg:flex-row p-1.5 lg:p-6 gap-1.5 lg:gap-6 overflow-hidden">
             
             {/* LEFT: Hero Section */}
-            <div className="relative w-full h-[40%] lg:w-7/12 xl:w-2/3 lg:h-full rounded-lg lg:rounded-2xl overflow-hidden group bg-neutral-200">
+            <div className="relative w-full h-[43%] lg:w-7/12 xl:w-2/3 lg:h-full rounded-lg lg:rounded-2xl overflow-hidden group bg-neutral-200">
                 <div ref={emblaRef} className="overflow-hidden w-full h-full">
                     <div className="flex w-full h-full">
                         {/* Slide 1: Main Editorial */}
@@ -170,9 +170,9 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
             </div>
 
             {/* RIGHT: Categories & TrustBar (Mobile) / Categories Only (Desktop) */}
-            <div className="w-full h-[60%] lg:w-5/12 xl:w-1/3 lg:h-full flex flex-col gap-1.5 lg:gap-4 px-0.5 lg:px-0">
+            <div className="w-full h-[57%] lg:w-5/12 xl:w-1/3 lg:h-full flex flex-col gap-1.5 lg:gap-4 px-0.5 lg:px-0">
                 
-                {/* Categories Grid - 74% of the 60% remaining height */}
+                {/* Categories Grid - 74% of the 57% remaining height */}
                 <div className="w-full h-[74%] lg:h-full grid grid-cols-2 grid-rows-3 gap-1.5 lg:gap-4">
                     {filteredCollections.map((collection, index) => {
                         const catKey = (collection.filterTag || collection.handle || "").toLowerCase();
@@ -208,7 +208,7 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                 })}
                 </div>
 
-                {/* Mobile Integrated TrustBar - 26% of the 60% remaining height */}
+                {/* Mobile Integrated TrustBar - 26% of the 57% remaining height */}
                 <div className="w-full h-[26%] lg:hidden grid grid-cols-4 gap-1 divide-x divide-[#1A1A1A]/10 bg-[#F8F5EF] rounded-xl pb-[60px] pt-1">
                     {trustPillars.map((pillar, index) => (
                         <div key={index} className="flex flex-col items-center justify-center text-center px-1">
