@@ -100,7 +100,7 @@ export default function Navbar() {
         <>
             {/* The wrapper handles the floating position */}
             <div className={`fixed top-0 left-0 w-full z-50 px-2 pt-1 pb-2 sm:p-4 transition-all duration-500 ease-in-out pointer-events-none`}>
-                <nav className={`pointer-events-auto w-full lg:w-fit mx-auto px-4 lg:px-8 py-1.5 lg:py-1 transition-all duration-500 ease-in-out rounded-full ${navContainerClass}`}>
+                <nav className={`pointer-events-auto w-full lg:w-full lg:max-w-[850px] xl:max-w-[1000px] mx-auto px-4 lg:px-8 py-1.5 lg:py-1 transition-all duration-500 ease-in-out rounded-full ${navContainerClass}`}>
                     
                     {/* MOBILE LAYOUT (lg:hidden) */}
                     <div className="flex lg:hidden w-full items-center justify-between relative">
@@ -219,7 +219,7 @@ export default function Navbar() {
                             </Link>
 
                             {/* Subtle Divider */}
-                            <div className="w-[1px] h-6 bg-white/20 mx-1" />
+                            <div className="w-[1px] h-6 bg-black/10 mx-1" />
 
                             {/* Gender Toggle */}
                             <div className="flex-shrink-0 origin-center">
