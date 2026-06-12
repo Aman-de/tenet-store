@@ -172,7 +172,7 @@ export default function SortedProductGrid({ products: rawProducts, showSizeFilte
 
             {/* Grid */}
             <div
-                className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-4 gap-y-16 lg:gap-x-12 lg:gap-y-24"
+                className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-2 gap-y-8 lg:gap-x-8 lg:gap-y-16"
             >
                 {sortedProducts.map((product) => (
                     <div key={product.id}>

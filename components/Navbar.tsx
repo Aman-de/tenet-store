@@ -162,7 +162,7 @@ export default function Navbar() {
                                 </div>
 
                                 {/* CENTER: Logo (Absolute Centered) */}
-                                <Link href="/" className="absolute left-1/2 -translate-x-1/2 z-10">
+                                <Link href="/" className="absolute left-[54%] sm:left-1/2 -translate-x-1/2 z-10">
                                     <span className={`text-2xl sm:text-3xl font-serif font-bold tracking-[0.25em] uppercase group-hover:opacity-80 transition-colors duration-500 ${logoColor} drop-shadow-sm`}>
                                         TENET
                                     </span>
