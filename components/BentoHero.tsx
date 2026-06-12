@@ -81,10 +81,10 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
     const accentColor = gender === "woman" ? "#FF4D6D" : "#3B82F6";
 
     const trustPillars = [
-        { icon: <Truck className="w-6 h-6 text-[#1A1A1A] stroke-[1]" />, title: "COMPLIMENTARY", title2: "SHIPPING", subtext: "On orders above $250" },
-        { icon: <RefreshCw className="w-6 h-6 text-[#1A1A1A] stroke-[1]" />, title: "EASY RETURNS", title2: "", subtext: "Hassle-free\nexchanges" },
-        { icon: <ShieldCheck className="w-6 h-6 text-[#1A1A1A] stroke-[1]" />, title: "SECURE PAYMENTS", title2: "", subtext: "100% protected\ncheckout" },
-        { icon: <Leaf className="w-6 h-6 text-[#1A1A1A] stroke-[1]" />, title: "CRAFTED", title2: "RESPONSIBLY", subtext: "Thoughtfully made" }
+        { icon: <Truck className="w-7 h-7 text-[#1A1A1A] stroke-[1]" />, title: "COMPLIMENTARY", title2: "SHIPPING", subtext: "On orders above $250" },
+        { icon: <RefreshCw className="w-7 h-7 text-[#1A1A1A] stroke-[1]" />, title: "EASY RETURNS", title2: "", subtext: "Hassle-free\nexchanges" },
+        { icon: <ShieldCheck className="w-7 h-7 text-[#1A1A1A] stroke-[1]" />, title: "SECURE PAYMENTS", title2: "", subtext: "100% protected\ncheckout" },
+        { icon: <Leaf className="w-7 h-7 text-[#1A1A1A] stroke-[1]" />, title: "CRAFTED", title2: "RESPONSIBLY", subtext: "Thoughtfully made" }
     ];
 
     return (
@@ -213,8 +213,8 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                 <div className="w-full h-[16%] lg:hidden grid grid-cols-4 divide-x divide-[#1A1A1A]/10 bg-[#F8F5EF] pb-2 pt-1">
                     {trustPillars.map((pillar, index) => (
                         <div key={index} className="flex flex-col items-center justify-center text-center px-0.5">
-                            <div className="mb-0.5">{pillar.icon}</div>
-                            <h3 className="font-sans text-[7px] font-bold tracking-widest text-[#1A1A1A] uppercase leading-tight">
+                            <div className="mb-1">{pillar.icon}</div>
+                            <h3 className="font-sans text-[8.5px] font-bold tracking-widest text-[#1A1A1A] uppercase leading-tight scale-x-95 origin-center">
                                 {pillar.title}<br/>{pillar.title2}
                             </h3>
                         </div>
