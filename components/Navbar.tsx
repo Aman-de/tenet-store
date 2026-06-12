@@ -102,60 +102,47 @@ export default function Navbar() {
                         </Link>
 
                         {/* CENTER / RIGHT: Dynamic Mobile Header */}
-                        <div className="flex justify-end flex-1 overflow-hidden pl-2 sm:pl-4">
+                        <div className="flex justify-end flex-1 pl-2 sm:pl-4">
                             {isProductPage ? (
-                                <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide pb-0.5 -mb-0.5 w-full justify-start snap-x snap-mandatory mask-gradient-right">
-                                    <style>{`
-                                        .scrollbar-hide::-webkit-scrollbar { display: none; }
-                                        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-                                        .mask-gradient-right { -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%); mask-image: linear-gradient(to right, black 85%, transparent 100%); }
-                                    `}</style>
-                                    
+                                <div className="flex items-center justify-between w-full max-w-[280px]">
                                     {/* Collections */}
-                                    <Link href="/#new-arrivals" className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex-shrink-0 snap-start`} aria-label="Collections">
-                                        <LayoutGrid className={`w-3.5 h-3.5 transition-colors ${textColor}`} strokeWidth={iconStroke} />
-                                        <span className={`text-[8px] font-bold uppercase tracking-[0.1em] ${textColor}`}>Shop</span>
+                                    <Link href="/#new-arrivals" className={`p-2 rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg}`} aria-label="Collections">
+                                        <LayoutGrid className={`w-5 h-5 transition-colors ${textColor}`} strokeWidth={iconStroke} />
                                     </Link>
                                     {/* Orders */}
-                                    <Link href="/orders" className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex-shrink-0 snap-start`} aria-label="Orders">
-                                        <Package className={`w-3.5 h-3.5 transition-colors ${textColor}`} strokeWidth={iconStroke} />
-                                        <span className={`text-[8px] font-bold uppercase tracking-[0.1em] ${textColor}`}>Orders</span>
+                                    <Link href="/orders" className={`p-2 rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg}`} aria-label="Orders">
+                                        <Package className={`w-5 h-5 transition-colors ${textColor}`} strokeWidth={iconStroke} />
                                     </Link>
                                     {/* Account */}
                                     {isSignedIn ? (
-                                        <div className={`flex items-center gap-1.5 pl-1.5 pr-3 py-1 rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex-shrink-0 snap-start`}>
-                                            <div className="scale-75 origin-center -ml-1">
+                                        <div className={`p-1.5 rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`}>
+                                            <div className="scale-90 origin-center">
                                                 <UserButton afterSignOutUrl="/" />
                                             </div>
-                                            <span className={`text-[8px] font-bold uppercase tracking-[0.1em] ${textColor}`}>Account</span>
                                         </div>
                                     ) : (
                                         <SignInButton mode="modal">
-                                            <button className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex-shrink-0 snap-start`} aria-label="Sign in">
-                                                <User className={`w-3.5 h-3.5 transition-colors ${textColor}`} strokeWidth={iconStroke} />
-                                                <span className={`text-[8px] font-bold uppercase tracking-[0.1em] ${textColor}`}>Login</span>
+                                            <button className={`p-2 rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg}`} aria-label="Sign in">
+                                                <User className={`w-5 h-5 transition-colors ${textColor}`} strokeWidth={iconStroke} />
                                             </button>
                                         </SignInButton>
                                     )}
                                     {/* Circle */}
-                                    <Link href="/circle" className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex-shrink-0 snap-start`} aria-label="The Circle">
-                                        <Crown className={`w-3.5 h-3.5 transition-colors ${textColor}`} strokeWidth={iconStroke} />
-                                        <span className={`text-[8px] font-bold uppercase tracking-[0.1em] ${textColor}`}>Circle</span>
+                                    <Link href="/circle" className={`p-2 rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg}`} aria-label="The Circle">
+                                        <Crown className={`w-5 h-5 transition-colors ${textColor}`} strokeWidth={iconStroke} />
                                     </Link>
                                     {/* Wishlist */}
-                                    <button className={`relative flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex-shrink-0 snap-start`} aria-label="Open wishlist" onClick={openWishlist}>
-                                        <Heart className={`w-3.5 h-3.5 transition-colors ${textColor}`} strokeWidth={iconStroke} />
-                                        <span className={`text-[8px] font-bold uppercase tracking-[0.1em] ${textColor}`}>Saves</span>
+                                    <button className={`relative p-2 rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg}`} aria-label="Open wishlist" onClick={openWishlist}>
+                                        <Heart className={`w-5 h-5 transition-colors ${textColor}`} strokeWidth={iconStroke} />
                                         {wishlistCount > 0 && (
-                                            <span className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full border border-white" style={{ backgroundColor: accentColor }} />
+                                            <span className="absolute top-1 right-1 w-2 h-2 rounded-full border border-white" style={{ backgroundColor: accentColor }} />
                                         )}
                                     </button>
                                     {/* Cart */}
-                                    <button className={`relative flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex-shrink-0 snap-start mr-4`} aria-label="Open cart" onClick={openCart}>
-                                        <ShoppingBag className={`w-3.5 h-3.5 transition-colors ${textColor}`} strokeWidth={iconStroke} />
-                                        <span className={`text-[8px] font-bold uppercase tracking-[0.1em] ${textColor}`}>Cart</span>
+                                    <button className={`relative p-2 rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg}`} aria-label="Open cart" onClick={openCart}>
+                                        <ShoppingBag className={`w-5 h-5 transition-colors ${textColor}`} strokeWidth={iconStroke} />
                                         {cartCount > 0 && (
-                                            <span className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full border border-white" style={{ backgroundColor: accentColor }} />
+                                            <span className="absolute top-1 right-1 w-2 h-2 rounded-full border border-white" style={{ backgroundColor: accentColor }} />
                                         )}
                                     </button>
                                 </div>
