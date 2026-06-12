@@ -32,7 +32,7 @@ export default function TrustBar() {
     ];
 
     return (
-        <section className="bg-[#F8F5EF] py-12 lg:py-24 border-t border-[#1A1A1A]/5 mt-4 lg:mt-0">
+        <section className="hidden lg:block bg-[#F8F5EF] py-12 lg:py-24 border-t border-[#1A1A1A]/5 mt-4 lg:mt-0">
             <div className="max-w-[2000px] w-full mx-auto px-2 lg:px-12">
                 <div className="grid grid-cols-4 gap-2 lg:gap-12 divide-x divide-[#1A1A1A]/10">
                     {pillars.map((pillar, index) => (

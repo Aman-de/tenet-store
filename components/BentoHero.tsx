@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight, Truck, RefreshCw, ShieldCheck, Leaf } from "lucide-react";
 import { useGender } from "@/context/GenderContext";
 import { motion } from "framer-motion";
 import useEmblaCarousel from "embla-carousel-react";
@@ -79,11 +79,18 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
 
     const mainHeroSrc = gender === "man" ? "/images/hero-main.webp" : "/images/hero-women.webp";
 
+    const trustPillars = [
+        { icon: <Truck className="w-5 h-5 text-[#1A1A1A] stroke-[1]" />, title: "COMPLIMENTARY", title2: "SHIPPING", subtext: "On orders above $250" },
+        { icon: <RefreshCw className="w-5 h-5 text-[#1A1A1A] stroke-[1]" />, title: "EASY RETURNS", title2: "", subtext: "Hassle-free\nexchanges" },
+        { icon: <ShieldCheck className="w-5 h-5 text-[#1A1A1A] stroke-[1]" />, title: "SECURE PAYMENTS", title2: "", subtext: "100% protected\ncheckout" },
+        { icon: <Leaf className="w-5 h-5 text-[#1A1A1A] stroke-[1]" />, title: "CRAFTED", title2: "RESPONSIBLY", subtext: "Thoughtfully made" }
+    ];
+
     return (
-        <section className="relative w-full bg-[#F8F5EF] flex flex-col lg:flex-row pb-6 lg:p-6 gap-2 lg:gap-6 overflow-hidden lg:h-[100dvh]">
+        <section className="relative h-[100dvh] w-full bg-[#F8F5EF] flex flex-col lg:flex-row p-2 lg:p-6 gap-2 lg:gap-6 overflow-hidden">
             
             {/* LEFT: Hero Section */}
-            <div className="relative w-full h-[85vh] lg:w-7/12 xl:w-2/3 lg:h-full lg:rounded-2xl overflow-hidden group bg-neutral-200">
+            <div className="relative w-full h-[45%] lg:w-7/12 xl:w-2/3 lg:h-full lg:rounded-2xl overflow-hidden group bg-neutral-200 rounded-xl">
                 <div ref={emblaRef} className="overflow-hidden w-full h-full">
                     <div className="flex w-full h-full">
                         {/* Slide 1: Main Editorial */}
@@ -96,29 +103,29 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                                 className="object-cover transform transition-transform duration-[20s] hover:scale-105"
                             />
                             <div className="absolute inset-0 bg-black/20 lg:bg-black/10" />
-                            <div className="absolute inset-0 p-6 lg:p-12 flex flex-col justify-center lg:justify-end items-start pt-20 lg:pt-0">
-                                <span className="text-[#C7A379] text-[10px] lg:text-xs font-bold uppercase tracking-widest mb-3 lg:mb-4">
+                            <div className="absolute inset-0 p-4 lg:p-12 flex flex-col justify-center lg:justify-end items-start pt-16 lg:pt-0">
+                                <span className="text-[#C7A379] text-[9px] lg:text-xs font-bold uppercase tracking-widest mb-2 lg:mb-4">
                                     FESTIVE 2025
                                 </span>
-                                <h1 className="font-serif text-5xl lg:text-7xl xl:text-[6rem] font-normal tracking-wide text-white leading-[1.1] drop-shadow-md">
+                                <h1 className="font-serif text-4xl lg:text-7xl xl:text-[6rem] font-normal tracking-wide text-white leading-[1.1] drop-shadow-md">
                                     {isWoman ? (
                                         <>Timeless<br/>Elegance</>
                                     ) : (
                                         <>Quiet<br/>Luxury</>
                                     )}
                                 </h1>
-                                <p className="text-white/90 text-sm lg:text-base font-sans mt-4 max-w-[280px] lg:max-w-md leading-relaxed">
+                                <p className="text-white/90 text-[10px] lg:text-base font-sans mt-2 max-w-[220px] lg:max-w-md leading-relaxed hidden sm:block">
                                     {isWoman 
                                         ? "Exquisite Banarasi Lehengas, crafted for your most cherished celebrations." 
                                         : "Refined essentials, meticulously tailored for the modern gentleman."}
                                 </p>
-                                <Link href="/#new-arrivals" className="mt-8 flex items-center justify-between w-full max-w-[260px] bg-[#1A1A1A] text-white px-6 py-4 rounded-sm hover:bg-black transition-colors duration-300">
-                                    <span className="text-[10px] font-bold uppercase tracking-[0.2em]">Explore Collection</span>
+                                <Link href="/#new-arrivals" className="mt-4 flex items-center justify-between w-full max-w-[180px] lg:max-w-[260px] bg-[#1A1A1A] text-white px-4 py-3 lg:px-6 lg:py-4 rounded-sm hover:bg-black transition-colors duration-300">
+                                    <span className="text-[9px] lg:text-[10px] font-bold uppercase tracking-[0.2em]">Explore</span>
                                     <ArrowRight className="w-4 h-4 text-white/80" strokeWidth={1.5} />
                                 </Link>
                                 
                                 {/* Slide Indicators (Mobile) */}
-                                <div className="absolute bottom-6 left-6 flex items-center gap-2 lg:hidden">
+                                <div className="absolute bottom-4 left-4 flex items-center gap-2 lg:hidden">
                                     <div className="w-6 h-1 bg-white rounded-full" />
                                     <div className="w-1 h-1 border border-white rounded-full" />
                                     <div className="w-1 h-1 border border-white rounded-full" />
@@ -160,15 +167,18 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                 </button>
             </div>
 
-            {/* RIGHT: Categories Grid */}
-            <div className="w-full lg:w-5/12 xl:w-1/3 lg:h-full grid grid-cols-2 grid-rows-3 gap-2 lg:gap-4 px-2 lg:px-0">
-                {filteredCollections.map((collection, index) => {
-                    const catKey = (collection.filterTag || collection.handle || "").toLowerCase();
-                    const coverPhoto = CATEGORY_IMAGES[catKey]?.[gender] || collection.imageUrl;
-                    const subtitle = CATEGORY_SUBTITLES[catKey] || "Explore the collection";
+            {/* RIGHT: Categories & TrustBar (Mobile) / Categories Only (Desktop) */}
+            <div className="w-full h-[55%] lg:w-5/12 xl:w-1/3 lg:h-full flex flex-col gap-2 lg:gap-4">
+                
+                {/* Categories Grid - 42% height on mobile */}
+                <div className="w-full h-[78%] lg:h-full grid grid-cols-2 grid-rows-3 gap-2 lg:gap-4">
+                    {filteredCollections.map((collection, index) => {
+                        const catKey = (collection.filterTag || collection.handle || "").toLowerCase();
+                        const coverPhoto = CATEGORY_IMAGES[catKey]?.[gender] || collection.imageUrl;
+                        const subtitle = CATEGORY_SUBTITLES[catKey] || "Explore the collection";
 
-                    return (
-                        <Link key={collection.id} href={`/collection/${collection.handle}`} className="relative group rounded-xl lg:rounded-2xl overflow-hidden bg-neutral-100 block aspect-[4/3] lg:aspect-auto lg:h-full">
+                        return (
+                            <Link key={collection.id} href={`/collection/${collection.handle}`} className="relative group rounded-xl lg:rounded-2xl overflow-hidden bg-neutral-100 block w-full h-full">
                             <Image
                                 src={coverPhoto}
                                 alt={collection.title}
@@ -178,22 +188,35 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-700" />
                             
-                            <div className="absolute inset-0 p-4 lg:p-6 flex flex-row items-end justify-between">
+                            <div className="absolute inset-0 p-3 lg:p-6 flex flex-row items-end justify-between">
                                 <div className="flex flex-col text-left">
-                                    <h3 className="font-serif text-white text-lg lg:text-2xl drop-shadow-sm leading-tight">
+                                    <h3 className="font-serif text-white text-[13px] lg:text-2xl drop-shadow-sm leading-tight">
                                         {collection.title}
                                     </h3>
-                                    <p className="font-sans text-[9px] lg:text-[10px] text-white/80 mt-1 lg:mt-1.5 tracking-wide">
+                                    <p className="font-sans text-[7px] lg:text-[10px] text-white/80 mt-0.5 lg:mt-1.5 tracking-wide">
                                         {subtitle}
                                     </p>
                                 </div>
-                                <div className="w-6 h-6 lg:w-8 lg:h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/10 shrink-0 transform group-hover:bg-white/30 transition-colors duration-500">
-                                    <ArrowRight className="w-3 h-3 lg:w-4 lg:h-4 text-white" strokeWidth={1.5} />
+                                <div className="w-5 h-5 lg:w-8 lg:h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/10 shrink-0 transform group-hover:bg-white/30 transition-colors duration-500">
+                                    <ArrowRight className="w-2.5 h-2.5 lg:w-4 lg:h-4 text-white" strokeWidth={1.5} />
                                 </div>
                             </div>
                         </Link>
                     );
                 })}
+                </div>
+
+                {/* Mobile Integrated TrustBar - 13% height on mobile, hidden on Desktop */}
+                <div className="w-full h-[22%] lg:hidden grid grid-cols-4 gap-1 divide-x divide-[#1A1A1A]/10 bg-[#F8F5EF] rounded-xl pb-[68px]">
+                    {trustPillars.map((pillar, index) => (
+                        <div key={index} className="flex flex-col items-center justify-center text-center px-1">
+                            <div className="mb-1">{pillar.icon}</div>
+                            <h3 className="font-sans text-[6px] font-bold tracking-widest text-[#1A1A1A] uppercase leading-tight">
+                                {pillar.title}<br/>{pillar.title2}
+                            </h3>
+                        </div>
+                    ))}
+                </div>
             </div>
             
         </section>
