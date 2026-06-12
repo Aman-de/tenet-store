@@ -80,9 +80,6 @@ export default function MobileBottomNav() {
 
                 const iconContent = (
                     <div className="relative flex items-center justify-center p-0.5">
-                        {item.isActive && (
-                            <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full" style={{ backgroundColor: accentColor }} />
-                        )}
                         <item.icon
                             strokeWidth={1.5}
                             className={`w-[20px] h-[20px] transition-all duration-300 ${textStyle} ${fillStyle}`}
