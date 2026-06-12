@@ -106,40 +106,40 @@ export default function Navbar() {
                             {isProductPage ? (
                                 <div className="flex items-center justify-between w-full max-w-[280px]">
                                     {/* Collections */}
-                                    <Link href="/#new-arrivals" className={`p-2 rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg}`} aria-label="Collections">
+                                    <Link href="/#new-arrivals" className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Collections">
                                         <LayoutGrid className={`w-5 h-5 transition-colors ${textColor}`} strokeWidth={iconStroke} />
                                     </Link>
                                     {/* Orders */}
-                                    <Link href="/orders" className={`p-2 rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg}`} aria-label="Orders">
+                                    <Link href="/orders" className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Orders">
                                         <Package className={`w-5 h-5 transition-colors ${textColor}`} strokeWidth={iconStroke} />
                                     </Link>
                                     {/* Account */}
                                     {isSignedIn ? (
-                                        <div className={`p-1.5 rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`}>
-                                            <div className="scale-90 origin-center">
+                                        <div className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`}>
+                                            <div className="scale-90 origin-center flex items-center justify-center">
                                                 <UserButton afterSignOutUrl="/" />
                                             </div>
                                         </div>
                                     ) : (
                                         <SignInButton mode="modal">
-                                            <button className={`p-2 rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg}`} aria-label="Sign in">
+                                            <button className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Sign in">
                                                 <User className={`w-5 h-5 transition-colors ${textColor}`} strokeWidth={iconStroke} />
                                             </button>
                                         </SignInButton>
                                     )}
                                     {/* Circle */}
-                                    <Link href="/circle" className={`p-2 rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg}`} aria-label="The Circle">
+                                    <Link href="/circle" className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="The Circle">
                                         <Crown className={`w-5 h-5 transition-colors ${textColor}`} strokeWidth={iconStroke} />
                                     </Link>
                                     {/* Wishlist */}
-                                    <button className={`relative p-2 rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg}`} aria-label="Open wishlist" onClick={openWishlist}>
+                                    <button className={`relative w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Open wishlist" onClick={openWishlist}>
                                         <Heart className={`w-5 h-5 transition-colors ${textColor}`} strokeWidth={iconStroke} />
                                         {wishlistCount > 0 && (
                                             <span className="absolute top-1 right-1 w-2 h-2 rounded-full border border-white" style={{ backgroundColor: accentColor }} />
                                         )}
                                     </button>
                                     {/* Cart */}
-                                    <button className={`relative p-2 rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg}`} aria-label="Open cart" onClick={openCart}>
+                                    <button className={`relative w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Open cart" onClick={openCart}>
                                         <ShoppingBag className={`w-5 h-5 transition-colors ${textColor}`} strokeWidth={iconStroke} />
                                         {cartCount > 0 && (
                                             <span className="absolute top-1 right-1 w-2 h-2 rounded-full border border-white" style={{ backgroundColor: accentColor }} />
@@ -152,13 +152,13 @@ export default function Navbar() {
                                         <GenderToggle />
                                     </div>
                                     <div className="flex items-center gap-2 shrink-0">
-                                        <button className={`p-2 rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg}`} aria-label="Open wishlist" onClick={openWishlist}>
+                                        <button className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center relative`} aria-label="Open wishlist" onClick={openWishlist}>
                                             <Heart className={`w-4 h-4 transition-colors ${textColor}`} strokeWidth={iconStroke} />
                                             {wishlistCount > 0 && (
                                                 <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full border border-white" style={{ backgroundColor: accentColor }} />
                                             )}
                                         </button>
-                                        <button className={`p-2 rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg}`} aria-label="Toggle mobile menu" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                                        <button className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Toggle mobile menu" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
                                             {isMobileMenuOpen ? (
                                                 <X className={`w-4 h-4 transition-colors ${textColor}`} strokeWidth={iconStroke} />
                                             ) : (
@@ -199,34 +199,34 @@ export default function Navbar() {
                             <div className={`flex items-center gap-3 transition-colors ${textColor} drop-shadow-sm`}>
                                 {isSignedIn ? (
                                     <>
-                                        <Link href="/orders" className={`p-2.5 rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg}`} title="My Orders">
+                                        <Link href="/orders" className={`w-[40px] h-[40px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} title="My Orders">
                                             <Package className="w-4 h-4" strokeWidth={iconStroke} />
                                         </Link>
-                                        <div className={`p-1.5 rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`}>
-                                            <div className="scale-90 origin-center">
+                                        <div className={`w-[40px] h-[40px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`}>
+                                            <div className="scale-90 origin-center flex items-center justify-center">
                                                 <UserButton afterSignOutUrl="/" />
                                             </div>
                                         </div>
                                     </>
                                 ) : (
                                     <SignInButton mode="modal">
-                                        <button className={`p-2.5 rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg}`} aria-label="Sign in">
+                                        <button className={`w-[40px] h-[40px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Sign in">
                                             <User className="w-4 h-4" strokeWidth={iconStroke} />
                                         </button>
                                     </SignInButton>
                                 )}
                                 
-                                <button className={`relative p-2.5 rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg}`} aria-label="Open wishlist" onClick={openWishlist}>
+                                <button className={`relative w-[40px] h-[40px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Open wishlist" onClick={openWishlist}>
                                     <Heart className="w-4 h-4" strokeWidth={iconStroke} />
                                     {wishlistCount > 0 && (
-                                        <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full border border-white shadow-sm" style={{ backgroundColor: accentColor }} />
+                                        <span className="absolute top-1 right-1 w-2 h-2 rounded-full border border-white shadow-sm" style={{ backgroundColor: accentColor }} />
                                     )}
                                 </button>
 
-                                <button className={`relative p-2.5 rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg}`} aria-label="Open cart" onClick={openCart}>
+                                <button className={`relative w-[40px] h-[40px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Open cart" onClick={openCart}>
                                     <ShoppingBag className="w-4 h-4" strokeWidth={iconStroke} />
                                     {cartCount > 0 && (
-                                        <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full border border-white shadow-sm" style={{ backgroundColor: accentColor }} />
+                                        <span className="absolute top-1 right-1 w-2 h-2 rounded-full border border-white shadow-sm" style={{ backgroundColor: accentColor }} />
                                     )}
                                 </button>
                             </div>
