@@ -180,7 +180,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
     // Let's assume selecting a variant sets the "color".
     const [selectedImageIndex, setSelectedImageIndex] = useState(0);
     const [error, setError] = useState<string | null>(null);
-    const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
+
     const [isReviewFormOpen, setIsReviewFormOpen] = useState(false);
     const [isMainImgLoading, setIsMainImgLoading] = useState(true);
     const [loadedImages, setLoadedImages] = useState<Record<number, boolean>>({});
