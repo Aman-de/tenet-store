@@ -434,31 +434,31 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
         }
     }
 
+    let finalTitle = product.title;
+    let itemPrice = product.price;
+    let itemOriginalPrice = product.originalPrice;
+
+    if (product.enableSetComponents) {
+        if (selectedPiece === 'top') {
+            finalTitle = `${product.title} (Top Only)`;
+            itemPrice = product.topPrice ?? product.price;
+            itemOriginalPrice = product.topOriginalPrice ?? product.originalPrice;
+        } else if (selectedPiece === 'bottom') {
+            finalTitle = `${product.title} (Bottom Only)`;
+            itemPrice = product.bottomPrice ?? product.price;
+            itemOriginalPrice = product.bottomOriginalPrice ?? product.originalPrice;
+        } else if (selectedPiece === 'set') {
+            finalTitle = `${product.title} (Set)`;
+            itemPrice = product.setPrice ?? product.price;
+            itemOriginalPrice = product.setOriginalPrice ?? product.originalPrice;
+        }
+    }
+
     const handleBuyNow = () => {
         if (product.isOutOfStock) return;
         const selection = validateSelection();
         if (selection) {
             trackAddToCart(product, 1, selection.size, selection.color);
-
-            let finalTitle = product.title;
-            let itemPrice = product.price;
-            let itemOriginalPrice = product.originalPrice;
-
-            if (product.enableSetComponents) {
-                if (selectedPiece === 'top') {
-                    finalTitle = `${product.title} (Top Only)`;
-                    itemPrice = product.topPrice ?? product.price;
-                    itemOriginalPrice = product.topOriginalPrice ?? product.originalPrice;
-                } else if (selectedPiece === 'bottom') {
-                    finalTitle = `${product.title} (Bottom Only)`;
-                    itemPrice = product.bottomPrice ?? product.price;
-                    itemOriginalPrice = product.bottomOriginalPrice ?? product.originalPrice;
-                } else if (selectedPiece === 'set') {
-                    finalTitle = `${product.title} (Set)`;
-                    itemPrice = product.setPrice ?? product.price;
-                    itemOriginalPrice = product.setOriginalPrice ?? product.originalPrice;
-                }
-            }
 
             let discountLabel = null;
             if (itemOriginalPrice && itemOriginalPrice > itemPrice) {

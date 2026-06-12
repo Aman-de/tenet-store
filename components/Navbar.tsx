@@ -1,6 +1,6 @@
 "use client";
 
-import { ShoppingBag, Menu, X, Heart, User, Package, MoreHorizontal } from "lucide-react";
+import { ShoppingBag, Menu, X, Heart, User, Package } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -38,8 +38,10 @@ export default function Navbar() {
     }, []);
 
     const isHome = pathname === "/";
+    
+    // Hyper-premium Apple glassmorphism on scroll, perfectly transparent on load
     const navBackground = isScrolled || !isHome
-        ? "bg-[#FDFBF7]/90 backdrop-blur-xl border-b border-neutral-200/50 shadow-[0_4px_30px_rgba(0,0,0,0.03)]"
+        ? "bg-[#FDFBF7]/70 backdrop-blur-3xl saturate-150 border-b border-neutral-200/50 shadow-[0_4px_40px_rgba(0,0,0,0.02)]"
         : "bg-transparent border-b border-transparent";
         
     const textColor = isScrolled || !isHome ? "text-[#1A1A1A]" : "text-white";
@@ -47,23 +49,23 @@ export default function Navbar() {
 
     // Ultra-premium Apple-style segmented control (Liquid Glass)
     const GenderToggle = () => (
-        <div className={`relative flex items-center rounded-full p-1 transition-colors duration-500 border shadow-sm backdrop-blur-2xl saturate-150 ${isScrolled || !isHome ? 'bg-black/5 border-black/10' : 'bg-white/20 border-white/30'}`}>
+        <div className={`relative flex items-center rounded-full p-1.5 transition-colors duration-500 border shadow-sm backdrop-blur-3xl saturate-150 ${isScrolled || !isHome ? 'bg-black/5 border-black/10' : 'bg-white/20 border-white/20'}`}>
             <button 
                 onClick={() => setGender('man')}
-                className={`relative z-10 w-16 sm:w-20 py-1.5 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] rounded-full transition-colors duration-300 ${gender === 'man' ? (isScrolled || !isHome ? 'text-white' : 'text-black') : `text-current opacity-60 hover:opacity-100`}`}
+                className={`relative z-10 w-20 sm:w-24 py-1.5 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.25em] rounded-full transition-colors duration-300 ${gender === 'man' ? (isScrolled || !isHome ? 'text-white' : 'text-black') : `text-current opacity-60 hover:opacity-100`}`}
             >
                 MEN
                 {gender === 'man' && (
                     <motion.div
                         layoutId="nav-gender-active"
-                        className={`absolute inset-0 rounded-full -z-10 shadow-md ${isScrolled || !isHome ? 'bg-black' : 'bg-white'}`}
+                        className={`absolute inset-0 rounded-full -z-10 shadow-md ${isScrolled || !isHome ? 'bg-[#1A1A1A]' : 'bg-white'}`}
                         transition={{ type: "spring", stiffness: 400, damping: 30 }}
                     />
                 )}
             </button>
             <button 
                 onClick={() => setGender('woman')}
-                className={`relative z-10 w-16 sm:w-20 py-1.5 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] rounded-full transition-colors duration-300 ${gender === 'woman' ? 'text-white' : `text-current opacity-60 hover:opacity-100`}`}
+                className={`relative z-10 w-20 sm:w-24 py-1.5 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.25em] rounded-full transition-colors duration-300 ${gender === 'woman' ? 'text-white' : `text-current opacity-60 hover:opacity-100`}`}
             >
                 WOMEN
                 {gender === 'woman' && (
@@ -80,7 +82,7 @@ export default function Navbar() {
     return (
         <>
             <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-in-out ${navBackground}`}>
-                <div className="max-w-[2000px] w-full mx-auto px-4 sm:px-6 xl:px-12 py-3 lg:py-4 relative z-50">
+                <div className="max-w-[2000px] w-full mx-auto px-6 sm:px-8 xl:px-16 py-4 lg:py-5 relative z-50">
                     
                     {/* MOBILE LAYOUT (lg:hidden) */}
                     <div className="flex lg:hidden w-full items-center justify-between">
@@ -99,9 +101,9 @@ export default function Navbar() {
                         {/* RIGHT: Hamburger Menu Button */}
                         <button className="p-2 -mr-2 hover:scale-105 active:scale-95 transition-transform shrink-0" aria-label="Toggle mobile menu" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
                             {isMobileMenuOpen ? (
-                                <X className={`w-6 h-6 transition-colors ${textColor}`} />
+                                <X className={`w-5 h-5 transition-colors ${textColor}`} strokeWidth={1.25} />
                             ) : (
-                                <Menu className={`w-6 h-6 transition-colors ${textColor}`} />
+                                <Menu className={`w-5 h-5 transition-colors ${textColor}`} strokeWidth={1.25} />
                             )}
                         </button>
                     </div>
@@ -109,7 +111,7 @@ export default function Navbar() {
                     {/* DESKTOP LAYOUT (hidden lg:flex) */}
                     <div className="hidden lg:flex w-full items-center justify-between">
                         {/* LEFT: Links */}
-                        <div className={`flex items-center gap-8 w-1/3 text-[11px] font-bold uppercase tracking-[0.15em] transition-colors ${textColor} drop-shadow-sm`}>
+                        <div className={`flex items-center gap-10 w-1/3 text-[11px] font-bold uppercase tracking-[0.2em] transition-colors ${textColor} drop-shadow-sm`}>
                             <Link href="/circle" className="hover:opacity-70 transition-opacity">
                                 THE CIRCLE
                             </Link>
@@ -121,21 +123,21 @@ export default function Navbar() {
                         {/* CENTER: Logo */}
                         <div className="w-1/3 flex justify-center">
                             <Link href="/" className="block group">
-                                <span className={`text-2xl lg:text-3xl font-serif font-medium tracking-[0.25em] uppercase group-hover:opacity-80 transition-colors ${logoColor} drop-shadow-md`}>
+                                <span className={`text-3xl font-serif font-medium tracking-[0.25em] uppercase group-hover:opacity-80 transition-colors ${logoColor} drop-shadow-md`}>
                                     TENET
                                 </span>
                             </Link>
                         </div>
 
                         {/* RIGHT: Gender Toggle, Account, Wishlist, Cart */}
-                        <div className="flex items-center justify-end gap-6 w-1/3">
+                        <div className="flex items-center justify-end gap-8 w-1/3">
                             <GenderToggle />
                             
-                            <div className={`flex items-center gap-4 transition-colors ${textColor} drop-shadow-sm`}>
+                            <div className={`flex items-center gap-5 transition-colors ${textColor} drop-shadow-sm`}>
                                 {isSignedIn ? (
                                     <>
                                         <Link href="/orders" className="p-2 hover:opacity-70 transition-opacity" title="My Orders">
-                                            <Package className="w-5 h-5" strokeWidth={1.5} />
+                                            <Package className="w-5 h-5" strokeWidth={1.25} />
                                         </Link>
                                         <div className="p-2 flex items-center justify-center">
                                             <UserButton afterSignOutUrl="/" />
@@ -144,20 +146,20 @@ export default function Navbar() {
                                 ) : (
                                     <SignInButton mode="modal">
                                         <button className="p-2 hover:opacity-70 transition-opacity" aria-label="Sign in">
-                                            <User className="w-5 h-5" strokeWidth={1.5} />
+                                            <User className="w-5 h-5" strokeWidth={1.25} />
                                         </button>
                                     </SignInButton>
                                 )}
                                 
                                 <button className="relative p-2 hover:opacity-70 transition-opacity" aria-label="Open wishlist" onClick={openWishlist}>
-                                    <Heart className="w-5 h-5" strokeWidth={1.5} />
+                                    <Heart className="w-5 h-5" strokeWidth={1.25} />
                                     {wishlistCount > 0 && (
                                         <span className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full" style={{ backgroundColor: accentColor }} />
                                     )}
                                 </button>
 
                                 <button className="relative p-2 -mr-2 hover:opacity-70 transition-opacity" aria-label="Open cart" onClick={openCart}>
-                                    <ShoppingBag className="w-5 h-5" strokeWidth={1.5} />
+                                    <ShoppingBag className="w-5 h-5" strokeWidth={1.25} />
                                     {cartCount > 0 && (
                                         <span className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full" style={{ backgroundColor: accentColor }} />
                                     )}
@@ -175,7 +177,7 @@ export default function Navbar() {
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -10 }}
                             transition={{ duration: 0.2 }}
-                            className="absolute top-full left-4 right-4 bg-white/95 backdrop-blur-md border border-neutral-100 shadow-xl rounded-xl overflow-hidden py-2"
+                            className="absolute top-full left-4 right-4 bg-white/95 backdrop-blur-3xl saturate-150 border border-neutral-100 shadow-2xl rounded-2xl overflow-hidden py-4"
                         >
                             <div className="flex flex-col">
                                 <Link
@@ -217,17 +219,17 @@ export default function Navbar() {
                                         </button>
                                     </SignInButton>
                                 </SignedOut>
-                                <div className="flex justify-center gap-6 py-4">
+                                <div className="flex justify-center gap-8 py-6">
                                     <button className="relative p-2" aria-label="Open wishlist" onClick={() => { setIsMobileMenuOpen(false); openWishlist(); }}>
-                                        <Heart className="w-5 h-5 text-[#1A1A1A]" />
+                                        <Heart className="w-6 h-6 text-[#1A1A1A]" strokeWidth={1.25} />
                                         {wishlistCount > 0 && (
-                                            <span className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full" style={{ backgroundColor: accentColor }} />
+                                            <span className="absolute top-1 right-1 w-2 h-2 rounded-full" style={{ backgroundColor: accentColor }} />
                                         )}
                                     </button>
                                     <button className="relative p-2" aria-label="Open cart" onClick={() => { setIsMobileMenuOpen(false); openCart(); }}>
-                                        <ShoppingBag className="w-5 h-5 text-[#1A1A1A]" />
+                                        <ShoppingBag className="w-6 h-6 text-[#1A1A1A]" strokeWidth={1.25} />
                                         {cartCount > 0 && (
-                                            <span className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full" style={{ backgroundColor: accentColor }} />
+                                            <span className="absolute top-1 right-1 w-2 h-2 rounded-full" style={{ backgroundColor: accentColor }} />
                                         )}
                                     </button>
                                 </div>
