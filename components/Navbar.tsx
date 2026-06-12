@@ -1,8 +1,8 @@
 "use client";
 
-import { ShoppingBag, Search, Menu, X, Heart, User, Package } from "lucide-react";
+import { ShoppingBag, Menu, X, Heart, User, Package } from "lucide-react";
 import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { UserButton, SignInButton, useUser, SignedIn, SignedOut } from "@clerk/nextjs";
 
@@ -12,15 +12,13 @@ import { useStore } from "@/lib/store";
 import { useGender } from "@/context/GenderContext";
 
 export default function Navbar() {
-    const router = useRouter();
     const pathname = usePathname();
     const { openCart, openWishlist, cart, wishlist } = useStore();
-    const { gender } = useGender();
+    const { gender, setGender } = useGender();
     const isWoman = gender === "woman";
     const accentColor = isWoman ? "#E05275" : "#2B6496";
     const [mounted, setMounted] = useState(false);
     const { isSignedIn } = useUser();
-
 
     useEffect(() => {
         useStore.persist.rehydrate();
@@ -32,26 +30,6 @@ export default function Navbar() {
     const wishlistCount = mounted ? wishlist.length : 0;
 
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const [isSearchOpen, setIsSearchOpen] = useState(false);
-    const [searchQuery, setSearchQuery] = useState("");
-
-    // Lock body scroll - REMOVED for small menu
-    // useEffect(() => {
-    //     if (isMobileMenuOpen) {
-    //         document.body.style.overflow = "hidden";
-    //     } else {
-    //         document.body.style.overflow = "unset";
-    //     }
-    // }, [isMobileMenuOpen]);
-
-    const handleSearch = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (searchQuery.trim()) {
-            setIsSearchOpen(false);
-            router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
-        }
-    };
-
     const [isScrolled, setIsScrolled] = useState(false);
 
     useEffect(() => {
@@ -60,7 +38,6 @@ export default function Navbar() {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    // Apple/Patagonia Style: Transparent on top (Home), Glass on scroll
     const isHome = pathname === "/";
     const navBackground = isScrolled || !isHome
         ? "bg-[#FDFBF7]/90 backdrop-blur-xl border-b border-neutral-200/50 shadow-[0_4px_30px_rgba(0,0,0,0.03)]"
@@ -69,15 +46,34 @@ export default function Navbar() {
     const textColor = isScrolled || !isHome ? "text-[#1A1A1A]" : "text-white";
     const logoColor = isScrolled || !isHome ? "text-[#1A1A1A]" : "text-white";
 
+    // Reusable Gender Switch Component
+    const GenderToggle = () => (
+        <div className={`flex items-center backdrop-blur-md rounded-full p-1 border transition-colors ${isScrolled || !isHome ? 'bg-black/5 border-black/10' : 'bg-white/10 border-white/20'}`}>
+            <button 
+                onClick={() => setGender('man')}
+                className={`px-4 py-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] rounded-full transition-all duration-300 ${gender === 'man' ? (isScrolled || !isHome ? 'bg-black text-white' : 'bg-white text-black shadow-sm') : `text-current opacity-70 hover:opacity-100`}`}
+            >
+                MEN
+            </button>
+            <button 
+                onClick={() => setGender('woman')}
+                className={`px-4 py-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] rounded-full transition-all duration-300 ${gender === 'woman' ? (isScrolled || !isHome ? 'bg-[#E05275] text-white' : 'bg-[#E05275] text-white shadow-sm') : `text-current opacity-70 hover:opacity-100`}`}
+            >
+                WOMEN
+            </button>
+        </div>
+    );
+
     return (
         <>
             <nav
                 className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-in-out ${navBackground}`}
             >
-                <div className="max-w-[2000px] w-full mx-auto px-6 xl:px-12 py-2 lg:py-3 flex items-center justify-between relative z-50">
-                    {/* Mobile Menu & Search (Left) -> Now mostly Desktop Left Section including Account */}
-                    <div className="flex items-center gap-4 lg:gap-6 w-full lg:w-auto">
-                        <button className="lg:hidden p-2.5 -ml-2.5 hover:scale-105 active:scale-95 transition-transform" aria-label="Toggle mobile menu" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                <div className="max-w-[2000px] w-full mx-auto px-4 sm:px-6 xl:px-12 py-3 lg:py-4 flex items-center justify-between relative z-50">
+                    
+                    {/* LEFT: Mobile Menu & Desktop Links */}
+                    <div className="flex items-center gap-4 lg:w-1/3">
+                        <button className="lg:hidden p-2 -ml-2 hover:scale-105 active:scale-95 transition-transform" aria-label="Toggle mobile menu" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
                             {isMobileMenuOpen ? (
                                 <X className={`w-6 h-6 transition-colors ${textColor}`} />
                             ) : (
@@ -85,129 +81,68 @@ export default function Navbar() {
                             )}
                         </button>
 
-                        {/* Mobile Search Icon Trigger */}
-                        <button className="lg:hidden p-2.5" aria-label="Toggle search" onClick={() => setIsSearchOpen(!isSearchOpen)}>
-                            <Search className={`w-5 h-5 hover:opacity-70 transition-all ${textColor}`} />
-                        </button>
-
-                        {/* Desktop: Account & Search */}
-                        <div className="hidden lg:flex items-center gap-4">
-                            {/* Account Icon */}
-                            {isSignedIn ? (
-                                <UserButton afterSignOutUrl="/" />
-                            ) : (
-                                <SignInButton mode="modal">
-                                    <button className="group p-2.5" aria-label="Sign in">
-                                        <User className={`w-4 h-4 text-gray-400 group-hover:text-black transition-colors`} />
-                                    </button>
-                                </SignInButton>
-                            )}
-
-                            {/* Orders Icon */}
-                            {isSignedIn && (
-                                <Link href="/orders" className="group" title="My Orders">
-                                    <Package className={`w-4 h-4 text-gray-400 group-hover:text-black transition-colors`} />
-                                </Link>
-                            )}
-
-                            {/* Search Bar */}
-                            <form onSubmit={handleSearch} className="flex items-center bg-neutral-50 rounded-full px-4 py-1.5 group focus-within:bg-white focus-within:ring-1 focus-within:ring-neutral-300 transition-all w-64 lg:w-96">
-                                <Search className={`w-4 h-4 mr-3 text-gray-400 group-focus-within:text-black transition-colors`} strokeWidth={1.5} />
-                                <input
-                                    type="text"
-                                    placeholder="SEARCH"
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                    className={`bg-transparent outline-none text-[13px] font-medium tracking-wide w-full placeholder:text-gray-400 ${textColor}`}
-                                />
-                            </form>
+                        <div className={`hidden lg:flex items-center gap-8 text-[11px] font-bold uppercase tracking-[0.15em] transition-colors ${textColor}`}>
+                            <Link href="/circle" className="hover:opacity-70 transition-opacity">
+                                THE CIRCLE
+                            </Link>
+                            <Link href="/support" className="hover:opacity-70 transition-opacity">
+                                SUPPORT
+                            </Link>
                         </div>
                     </div>
 
-                    {/* Logo (Center) */}
-                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                    {/* CENTER: Logo */}
+                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:w-1/3 flex justify-center">
                         <Link href="/" className="block group">
-                            <span className={`text-2xl lg:text-3xl font-serif font-medium tracking-[0.2em] uppercase group-hover:opacity-80 transition-colors ${logoColor}`}>
+                            <span className={`text-2xl lg:text-3xl font-serif font-medium tracking-[0.25em] uppercase group-hover:opacity-80 transition-colors ${logoColor} ml-1`}>
                                 TENET
                             </span>
                         </Link>
                     </div>
 
-                    {/* Navigation & Cart (Right) */}
-                    <div className="flex items-center gap-6 lg:gap-8">
-                        <div className={`hidden lg:flex items-center gap-8 text-sm font-medium tracking-wide transition-colors ${textColor}`}>
-                            <Link href="/circle" className="hover:underline underline-offset-4 decoration-current transition-all decoration-1">
-                                THE CIRCLE
-                            </Link>
-                            <Link href="/support" className="hover:underline underline-offset-4 decoration-current transition-all decoration-1">
-                                SUPPORT
-                            </Link>
-                            <Link href="/#new-arrivals" className="hover:underline underline-offset-4 decoration-current transition-all decoration-1">
-                                COLLECTIONS
-                            </Link>
-                            <Link href="/about" className="hover:underline underline-offset-4 decoration-current transition-all decoration-1">
-                                ABOUT
-                            </Link>
+                    {/* RIGHT: Gender Toggle, Account, Wishlist, Cart */}
+                    <div className="flex items-center justify-end gap-3 lg:gap-6 lg:w-1/3">
+                        
+                        {/* Gender Toggle - Hidden on extra small mobile to save space, but visible on most phones */}
+                        <div className="flex lg:flex">
+                            <GenderToggle />
                         </div>
 
-                        {/* Wishlist Icon */}
-                        <button className="relative p-2.5" aria-label="Open wishlist" onClick={openWishlist}>
-                            <motion.div
-                                key={wishlistCount}
-                                initial={{ scale: 1 }}
-                                animate={{ scale: [1, 1.2, 1] }}
-                                transition={{ duration: 0.3 }}
-                            >
-                                <Heart className={`w-5 h-5 transition-colors ${textColor}`} />
-                            </motion.div>
-                            {wishlistCount > 0 && (
-                                <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full" style={{ backgroundColor: accentColor }} />
+                        {/* Desktop Icons */}
+                        <div className={`hidden lg:flex items-center gap-4 transition-colors ${textColor}`}>
+                            {isSignedIn ? (
+                                <>
+                                    <Link href="/orders" className="p-2 hover:opacity-70 transition-opacity" title="My Orders">
+                                        <Package className="w-5 h-5" strokeWidth={1.5} />
+                                    </Link>
+                                    <div className="p-2 flex items-center justify-center">
+                                        <UserButton afterSignOutUrl="/" />
+                                    </div>
+                                </>
+                            ) : (
+                                <SignInButton mode="modal">
+                                    <button className="p-2 hover:opacity-70 transition-opacity" aria-label="Sign in">
+                                        <User className="w-5 h-5" strokeWidth={1.5} />
+                                    </button>
+                                </SignInButton>
                             )}
-                        </button>
+                            
+                            <button className="relative p-2 hover:opacity-70 transition-opacity" aria-label="Open wishlist" onClick={openWishlist}>
+                                <Heart className="w-5 h-5" strokeWidth={1.5} />
+                                {wishlistCount > 0 && (
+                                    <span className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full" style={{ backgroundColor: accentColor }} />
+                                )}
+                            </button>
 
-                        {/* Cart Icon */}
-                        <button className="relative p-2.5 -mr-2.5" aria-label="Open cart" onClick={openCart}>
-                            <motion.div
-                                key={cartCount}
-                                initial={{ scale: 1 }}
-                                animate={{ scale: [1, 1.2, 1] }}
-                                transition={{ duration: 0.3 }}
-                            >
-                                <ShoppingBag className={`w-5 h-5 transition-colors ${textColor}`} />
-                            </motion.div>
-                            {cartCount > 0 && (
-                                <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: accentColor }} />
-                            )}
-                        </button>
+                            <button className="relative p-2 -mr-2 hover:opacity-70 transition-opacity" aria-label="Open cart" onClick={openCart}>
+                                <ShoppingBag className="w-5 h-5" strokeWidth={1.5} />
+                                {cartCount > 0 && (
+                                    <span className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full" style={{ backgroundColor: accentColor }} />
+                                )}
+                            </button>
+                        </div>
                     </div>
                 </div>
-
-                {/* Search Bar Slide Down (Mobile Only primarily) */}
-                <AnimatePresence>
-                    {isSearchOpen && (
-                        <motion.div
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: "auto", opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            className="overflow-hidden border-t border-gray-100 bg-white"
-                        >
-                            <form onSubmit={handleSearch} className="max-w-[2000px] w-full mx-auto px-6 xl:px-12 py-4 flex items-center">
-                                <Search className="w-4 h-4 text-gray-400 mr-3" />
-                                <input
-                                    type="text"
-                                    placeholder="Search products..."
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                    className="flex-1 outline-none text-sm font-sans text-[#1A1A1A] placeholder:text-gray-400"
-                                    autoFocus
-                                />
-                                <button type="button" aria-label="Close search" className="p-2.5 -mr-2.5" onClick={() => setIsSearchOpen(false)}>
-                                    <X className="w-4 h-4 text-gray-400 hover:text-black" />
-                                </button>
-                            </form>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
 
                 {/* Mobile Menu Dropdown */}
                 <AnimatePresence>
@@ -217,41 +152,34 @@ export default function Navbar() {
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -10 }}
                             transition={{ duration: 0.2 }}
-                            className="absolute top-full left-4 w-48 bg-white/95 backdrop-blur-md border border-neutral-100 shadow-xl rounded-xl overflow-hidden py-2"
+                            className="absolute top-full left-4 right-4 bg-white/95 backdrop-blur-md border border-neutral-100 shadow-xl rounded-xl overflow-hidden py-2"
                         >
                             <div className="flex flex-col">
                                 <Link
                                     href="/"
                                     onClick={() => setIsMobileMenuOpen(false)}
-                                    className="px-6 py-3 text-sm font-medium text-[#1A1A1A] hover:bg-neutral-50 transition-colors text-left border-b border-neutral-50"
+                                    className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] hover:bg-neutral-50 transition-colors text-center border-b border-neutral-50"
                                 >
                                     HOME
                                 </Link>
                                 <Link
                                     href="/#new-arrivals"
                                     onClick={() => setIsMobileMenuOpen(false)}
-                                    className="px-6 py-3 text-sm font-medium text-[#1A1A1A] hover:bg-neutral-50 transition-colors text-left"
+                                    className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] hover:bg-neutral-50 transition-colors text-center border-b border-neutral-50"
                                 >
                                     COLLECTIONS
                                 </Link>
-                                 <Link
+                                <Link
                                     href="/orders"
                                     onClick={() => setIsMobileMenuOpen(false)}
-                                    className="px-6 py-3 text-sm font-medium text-[#1A1A1A] hover:bg-neutral-50 transition-colors text-left"
+                                    className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] hover:bg-neutral-50 transition-colors text-center border-b border-neutral-50"
                                 >
                                     ORDERS
                                 </Link>
-                                 <Link
-                                    href="/circle"
-                                    onClick={() => setIsMobileMenuOpen(false)}
-                                    className="px-6 py-3 text-sm font-medium text-[#1A1A1A] hover:bg-neutral-50 transition-colors text-left border-b border-neutral-50"
-                                >
-                                    THE CIRCLE
-                                </Link>
                                 <SignedIn>
-                                    <div className="px-6 py-3 text-sm font-medium text-[#1A1A1A] hover:bg-neutral-50 transition-colors text-left flex items-center justify-between">
+                                    <div className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] hover:bg-neutral-50 transition-colors flex items-center justify-center gap-4 border-b border-neutral-50">
                                         <span>ACCOUNT</span>
-                                        <div className="scale-75 origin-right">
+                                        <div className="scale-90 origin-center">
                                             <UserButton afterSignOutUrl="/" />
                                         </div>
                                     </div>
@@ -260,27 +188,26 @@ export default function Navbar() {
                                     <SignInButton mode="modal">
                                         <button 
                                             onClick={() => setIsMobileMenuOpen(false)}
-                                            className="px-6 py-3 text-sm font-medium text-[#1A1A1A] hover:bg-neutral-50 transition-colors text-left w-full"
+                                            className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] hover:bg-neutral-50 transition-colors text-center border-b border-neutral-50 w-full"
                                         >
                                             ACCOUNT (LOG IN)
                                         </button>
                                     </SignInButton>
                                 </SignedOut>
-                                <div className="border-t border-neutral-50 my-1" />
-                                <Link
-                                    href="/about"
-                                    onClick={() => setIsMobileMenuOpen(false)}
-                                    className="px-6 py-3 text-sm font-medium text-[#1A1A1A] hover:bg-neutral-50 transition-colors text-left"
-                                >
-                                    ABOUT
-                                </Link>
-                                <Link
-                                    href="/support"
-                                    onClick={() => setIsMobileMenuOpen(false)}
-                                    className="px-6 py-3 text-sm font-medium text-[#1A1A1A] hover:bg-neutral-50 transition-colors text-left"
-                                >
-                                    SUPPORT
-                                </Link>
+                                <div className="flex justify-center gap-6 py-4">
+                                    <button className="relative p-2" aria-label="Open wishlist" onClick={() => { setIsMobileMenuOpen(false); openWishlist(); }}>
+                                        <Heart className="w-5 h-5 text-[#1A1A1A]" />
+                                        {wishlistCount > 0 && (
+                                            <span className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full" style={{ backgroundColor: accentColor }} />
+                                        )}
+                                    </button>
+                                    <button className="relative p-2" aria-label="Open cart" onClick={() => { setIsMobileMenuOpen(false); openCart(); }}>
+                                        <ShoppingBag className="w-5 h-5 text-[#1A1A1A]" />
+                                        {cartCount > 0 && (
+                                            <span className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full" style={{ backgroundColor: accentColor }} />
+                                        )}
+                                    </button>
+                                </div>
                             </div>
                         </motion.div>
                     )}
