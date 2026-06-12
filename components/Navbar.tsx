@@ -1,6 +1,6 @@
 "use client";
 
-import { ShoppingBag, Menu, X, Heart, User, Package, Crown } from "lucide-react";
+import { ShoppingBag, Menu, X, Heart, User, Package, Crown, LayoutGrid } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -101,40 +101,73 @@ export default function Navbar() {
                             </span>
                         </Link>
 
-                        {/* CENTER: Dynamic Mobile Header */}
-                        <div className="flex justify-center flex-1 mx-2">
+                        {/* CENTER / RIGHT: Dynamic Mobile Header */}
+                        <div className="flex justify-end flex-1">
                             {isProductPage ? (
-                                <div className="flex items-center gap-3">
-                                    <Link href="/circle" className={`p-2 rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg}`} aria-label="The Circle">
-                                        <Crown className={`w-4 h-4 transition-colors ${textColor}`} strokeWidth={iconStroke} />
+                                <div className="flex items-center gap-1.5 sm:gap-2">
+                                    {/* Collections */}
+                                    <Link href="/#new-arrivals" className={`p-1.5 sm:p-2 rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg}`} aria-label="Collections">
+                                        <LayoutGrid className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-colors ${textColor}`} strokeWidth={iconStroke} />
                                     </Link>
-                                    <button className={`relative p-2 rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg}`} aria-label="Open cart" onClick={openCart}>
-                                        <ShoppingBag className={`w-4 h-4 transition-colors ${textColor}`} strokeWidth={iconStroke} />
+                                    {/* Orders */}
+                                    <Link href="/orders" className={`p-1.5 sm:p-2 rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg}`} aria-label="Orders">
+                                        <Package className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-colors ${textColor}`} strokeWidth={iconStroke} />
+                                    </Link>
+                                    {/* Account */}
+                                    {isSignedIn ? (
+                                        <div className={`p-1 sm:p-1.5 rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`}>
+                                            <div className="scale-75 origin-center">
+                                                <UserButton afterSignOutUrl="/" />
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <SignInButton mode="modal">
+                                            <button className={`p-1.5 sm:p-2 rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg}`} aria-label="Sign in">
+                                                <User className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-colors ${textColor}`} strokeWidth={iconStroke} />
+                                            </button>
+                                        </SignInButton>
+                                    )}
+                                    {/* Circle */}
+                                    <Link href="/circle" className={`p-1.5 sm:p-2 rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg}`} aria-label="The Circle">
+                                        <Crown className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-colors ${textColor}`} strokeWidth={iconStroke} />
+                                    </Link>
+                                    {/* Wishlist */}
+                                    <button className={`relative p-1.5 sm:p-2 rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg}`} aria-label="Open wishlist" onClick={openWishlist}>
+                                        <Heart className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-colors ${textColor}`} strokeWidth={iconStroke} />
+                                        {wishlistCount > 0 && (
+                                            <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 rounded-full border border-white" style={{ backgroundColor: accentColor }} />
+                                        )}
+                                    </button>
+                                    {/* Cart */}
+                                    <button className={`relative p-1.5 sm:p-2 rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg}`} aria-label="Open cart" onClick={openCart}>
+                                        <ShoppingBag className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-colors ${textColor}`} strokeWidth={iconStroke} />
                                         {cartCount > 0 && (
-                                            <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full border border-white" style={{ backgroundColor: accentColor }} />
+                                            <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 rounded-full border border-white" style={{ backgroundColor: accentColor }} />
                                         )}
                                     </button>
                                 </div>
                             ) : (
-                                <GenderToggle />
+                                <div className="flex items-center justify-between w-full">
+                                    <div className="flex justify-center flex-1 mx-2">
+                                        <GenderToggle />
+                                    </div>
+                                    <div className="flex items-center gap-2 shrink-0">
+                                        <button className={`p-2 rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg}`} aria-label="Open wishlist" onClick={openWishlist}>
+                                            <Heart className={`w-4 h-4 transition-colors ${textColor}`} strokeWidth={iconStroke} />
+                                            {wishlistCount > 0 && (
+                                                <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full border border-white" style={{ backgroundColor: accentColor }} />
+                                            )}
+                                        </button>
+                                        <button className={`p-2 rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg}`} aria-label="Toggle mobile menu" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                                            {isMobileMenuOpen ? (
+                                                <X className={`w-4 h-4 transition-colors ${textColor}`} strokeWidth={iconStroke} />
+                                            ) : (
+                                                <Menu className={`w-4 h-4 transition-colors ${textColor}`} strokeWidth={iconStroke} />
+                                            )}
+                                        </button>
+                                    </div>
+                                </div>
                             )}
-                        </div>
-
-                        {/* RIGHT: Wishlist & Hamburger Menu Button */}
-                        <div className="flex items-center gap-2 shrink-0">
-                            <button className={`p-2 rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg}`} aria-label="Open wishlist" onClick={openWishlist}>
-                                <Heart className={`w-4 h-4 transition-colors ${textColor}`} strokeWidth={iconStroke} />
-                                {wishlistCount > 0 && (
-                                    <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full border border-white" style={{ backgroundColor: accentColor }} />
-                                )}
-                            </button>
-                            <button className={`p-2 rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg}`} aria-label="Toggle mobile menu" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-                                {isMobileMenuOpen ? (
-                                    <X className={`w-4 h-4 transition-colors ${textColor}`} strokeWidth={iconStroke} />
-                                ) : (
-                                    <Menu className={`w-4 h-4 transition-colors ${textColor}`} strokeWidth={iconStroke} />
-                                )}
-                            </button>
                         </div>
                     </div>
 
