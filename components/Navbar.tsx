@@ -16,7 +16,7 @@ export default function Navbar() {
     const { openCart, openWishlist, cart, wishlist } = useStore();
     const { gender, setGender } = useGender();
     const isWoman = gender === "woman";
-    const accentColor = isWoman ? "#D8A7B1" : "#A6B8C7";
+    const accentColor = isWoman ? "#E67389" : "#5B8CD7";
     const [mounted, setMounted] = useState(false);
     const { isSignedIn } = useUser();
 
@@ -69,7 +69,8 @@ export default function Navbar() {
                     {gender === 'man' && (
                         <motion.div
                             layoutId="nav-gender-active"
-                            className="absolute inset-0 rounded-full -z-10 bg-[#1A1A1A] shadow-sm"
+                            className="absolute inset-0 rounded-full -z-10 shadow-sm"
+                            style={{ backgroundColor: accentColor }}
                             transition={{ type: "spring", stiffness: 400, damping: 30 }}
                         />
                     )}
@@ -82,7 +83,8 @@ export default function Navbar() {
                     {gender === 'woman' && (
                         <motion.div
                             layoutId="nav-gender-active"
-                            className="absolute inset-0 rounded-full -z-10 bg-[#1A1A1A] shadow-sm"
+                            className="absolute inset-0 rounded-full -z-10 shadow-sm"
+                            style={{ backgroundColor: accentColor }}
                             transition={{ type: "spring", stiffness: 400, damping: 30 }}
                         />
                     )}
