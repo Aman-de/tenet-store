@@ -14,16 +14,28 @@ export default function MobileBottomNav() {
     const { openCart, cart } = useStore();
     
     const [mounted, setMounted] = useState(false);
+    const [isScrolled, setIsScrolled] = useState(false);
+
     useEffect(() => {
         setMounted(true);
+        const handleScroll = () => setIsScrolled(window.scrollY > 20);
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
     }, []);
+
+    const isHome = pathname === "/";
+    const isScrolledOrNotHome = isScrolled || !isHome;
 
     const isWoman = gender === "woman";
     const accentColor = isWoman ? "#E05275" : "#2B6496";
     // High contrast active/inactive states
     const activeTextClass = isWoman ? "text-[#E05275]" : "text-[#2B6496]";
     const activeFillClass = isWoman ? "fill-[#E05275]/10" : "fill-[#2B6496]/10";
-    const inactiveTextClass = "text-neutral-500 hover:text-neutral-700";
+    const inactiveTextClass = isScrolledOrNotHome ? "text-neutral-500 hover:text-neutral-700" : "text-white/80 hover:text-white";
+
+    const containerClass = isScrolledOrNotHome
+        ? "bg-white/90 backdrop-blur-2xl border-white/50"
+        : "bg-black/40 backdrop-blur-md border-white/10";
 
     const cartCount = mounted ? cart.length : 0;
 
@@ -67,7 +79,7 @@ export default function MobileBottomNav() {
 
     // Floating pill styling
     return (
-        <div className="fixed bottom-4 left-4 right-4 h-[68px] bg-white/80 backdrop-blur-2xl border border-white/50 z-50 flex items-center justify-around pb-0 rounded-[32px] shadow-[0_8px_30px_rgba(0,0,0,0.08)]">
+        <div className={`fixed bottom-4 left-4 right-4 h-[68px] transition-colors duration-500 z-50 flex items-center justify-around pb-0 rounded-[32px] shadow-[0_8px_30px_rgba(0,0,0,0.08)] border ${containerClass}`}>
             <style>{`
                 @keyframes accountAttention {
                     0%, 20%, 100% {

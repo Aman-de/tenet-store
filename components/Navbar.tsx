@@ -39,49 +39,57 @@ export default function Navbar() {
 
     const isHome = pathname === "/";
     
-    // Dynamically apply dark glassmorphism based on scroll/page state
+    // Dynamically apply glassmorphism based on scroll/page state
     const isScrolledOrNotHome = isScrolled || !isHome;
     
+    // Transparent dark glass on hero image, solid light glass on scroll
     const navContainerClass = isScrolledOrNotHome 
-        ? "bg-black/80 backdrop-blur-2xl border border-white/20 shadow-[0_8px_30px_rgba(0,0,0,0.3)] text-white" 
-        : "bg-black/40 backdrop-blur-md border border-white/10 shadow-lg text-white";
+        ? "bg-[#FDFBF7]/90 backdrop-blur-2xl border border-black/10 shadow-[0_8px_30px_rgba(0,0,0,0.06)]" 
+        : "bg-black/40 backdrop-blur-md border border-white/10 shadow-lg";
 
-    const textColor = "text-white";
-    const logoColor = "text-white";
+    const textColor = isScrolledOrNotHome ? "text-neutral-800" : "text-white";
+    const logoColor = isScrolledOrNotHome ? "text-black" : "text-white";
     const iconStroke = 2;
-    const iconGlassBg = "bg-white/10 hover:bg-white/20";
+    const iconGlassBg = isScrolledOrNotHome ? "bg-black/5 hover:bg-black/10" : "bg-white/10 hover:bg-white/20";
 
     // Ultra-premium Apple-style segmented control (Liquid Glass)
-    const GenderToggle = () => (
-        <div className={`relative flex items-center rounded-full p-1 transition-colors duration-500 shadow-sm backdrop-blur-2xl bg-white/10 border border-white/10`}>
-            <button 
-                onClick={() => setGender('man')}
-                className={`relative z-10 w-14 sm:w-16 py-1 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.25em] rounded-full transition-colors duration-300 ${gender === 'man' ? 'text-white' : 'text-white/60 hover:text-white'}`}
-            >
-                MEN
-                {gender === 'man' && (
-                    <motion.div
-                        layoutId="nav-gender-active"
-                        className="absolute inset-0 rounded-full -z-10 shadow-sm bg-[#2B6496]/40 border border-[#2B6496]/50 backdrop-blur-md"
-                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                    />
-                )}
-            </button>
-            <button 
-                onClick={() => setGender('woman')}
-                className={`relative z-10 w-14 sm:w-16 py-1 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.25em] rounded-full transition-colors duration-300 ${gender === 'woman' ? 'text-white' : 'text-white/60 hover:text-white'}`}
-            >
-                WOMEN
-                {gender === 'woman' && (
-                    <motion.div
-                        layoutId="nav-gender-active"
-                        className="absolute inset-0 rounded-full -z-10 shadow-sm bg-[#E05275]/40 border border-[#E05275]/50 backdrop-blur-md"
-                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                    />
-                )}
-            </button>
-        </div>
-    );
+    const GenderToggle = () => {
+        const toggleBg = isScrolledOrNotHome ? "bg-black/5 border border-black/10" : "bg-white/10 border border-white/10";
+        const btnText = (active: boolean) => {
+            if (active) return isScrolledOrNotHome ? "text-white" : "text-white";
+            return isScrolledOrNotHome ? "text-black/60 hover:text-black" : "text-white/60 hover:text-white";
+        };
+        return (
+            <div className={`relative flex items-center rounded-full p-1 transition-colors duration-500 shadow-sm backdrop-blur-2xl ${toggleBg}`}>
+                <button 
+                    onClick={() => setGender('man')}
+                    className={`relative z-10 w-14 sm:w-16 py-1 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.25em] rounded-full transition-colors duration-300 ${btnText(gender === 'man')}`}
+                >
+                    MEN
+                    {gender === 'man' && (
+                        <motion.div
+                            layoutId="nav-gender-active"
+                            className="absolute inset-0 rounded-full -z-10 shadow-sm bg-[#2B6496] border border-[#2B6496]/50 backdrop-blur-md"
+                            transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                        />
+                    )}
+                </button>
+                <button 
+                    onClick={() => setGender('woman')}
+                    className={`relative z-10 w-14 sm:w-16 py-1 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.25em] rounded-full transition-colors duration-300 ${btnText(gender === 'woman')}`}
+                >
+                    WOMEN
+                    {gender === 'woman' && (
+                        <motion.div
+                            layoutId="nav-gender-active"
+                            className="absolute inset-0 rounded-full -z-10 shadow-sm bg-[#E05275] border border-[#E05275]/50 backdrop-blur-md"
+                            transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                        />
+                    )}
+                </button>
+            </div>
+        );
+    };
 
     const isProductPage = pathname.includes("/product/");
 
@@ -95,7 +103,7 @@ export default function Navbar() {
                     <div className="flex lg:hidden w-full items-center justify-between">
                         {/* LEFT: Logo */}
                         <Link href="/" className="block group shrink-0 ml-2">
-                            <span className={`text-xl font-serif font-medium tracking-[0.25em] uppercase group-hover:opacity-80 transition-colors ${logoColor} drop-shadow-sm`}>
+                            <span className={`text-xl font-serif font-medium tracking-[0.25em] uppercase group-hover:opacity-80 transition-colors duration-500 ${logoColor} drop-shadow-sm`}>
                                 TENET
                             </span>
                         </Link>
@@ -105,35 +113,35 @@ export default function Navbar() {
                             {isProductPage ? (
                                 <div className="flex items-center justify-between w-full max-w-[280px]">
                                     <Link href="/#new-arrivals" className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Collections">
-                                        <LayoutGrid className={`w-5 h-5 transition-colors ${textColor}`} strokeWidth={iconStroke} />
+                                        <LayoutGrid className={`w-5 h-5 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
                                     </Link>
                                     <Link href="/orders" className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Orders">
-                                        <Package className={`w-5 h-5 transition-colors ${textColor}`} strokeWidth={iconStroke} />
+                                        <Package className={`w-5 h-5 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
                                     </Link>
                                     {isSignedIn ? (
                                         <div className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`}>
-                                            <div className="scale-90 origin-center flex items-center justify-center">
+                                            <div className="scale-[0.8] origin-center flex items-center justify-center">
                                                 <UserButton afterSignOutUrl="/" />
                                             </div>
                                         </div>
                                     ) : (
                                         <SignInButton mode="modal">
                                             <button className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Sign in">
-                                                <User className={`w-5 h-5 transition-colors ${textColor}`} strokeWidth={iconStroke} />
+                                                <User className={`w-5 h-5 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
                                             </button>
                                         </SignInButton>
                                     )}
                                     <Link href="/circle" className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="The Circle">
-                                        <Crown className={`w-5 h-5 transition-colors ${textColor}`} strokeWidth={iconStroke} />
+                                        <Crown className={`w-5 h-5 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
                                     </Link>
                                     <button className={`relative w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Open wishlist" onClick={openWishlist}>
-                                        <Heart className={`w-5 h-5 transition-colors ${textColor}`} strokeWidth={iconStroke} />
+                                        <Heart className={`w-5 h-5 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
                                         {wishlistCount > 0 && (
                                             <span className="absolute top-1 right-1 w-2 h-2 rounded-full border border-white" style={{ backgroundColor: accentColor }} />
                                         )}
                                     </button>
                                     <button className={`relative w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Open cart" onClick={openCart}>
-                                        <ShoppingBag className={`w-5 h-5 transition-colors ${textColor}`} strokeWidth={iconStroke} />
+                                        <ShoppingBag className={`w-5 h-5 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
                                         {cartCount > 0 && (
                                             <span className="absolute top-1 right-1 w-2 h-2 rounded-full border border-white" style={{ backgroundColor: accentColor }} />
                                         )}
@@ -146,16 +154,16 @@ export default function Navbar() {
                                     </div>
                                     <div className="flex items-center gap-2 shrink-0">
                                         <button className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center relative`} aria-label="Open wishlist" onClick={openWishlist}>
-                                            <Heart className={`w-4 h-4 transition-colors ${textColor}`} strokeWidth={iconStroke} />
+                                            <Heart className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
                                             {wishlistCount > 0 && (
                                                 <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full border border-white" style={{ backgroundColor: accentColor }} />
                                             )}
                                         </button>
                                         <button className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Toggle mobile menu" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
                                             {isMobileMenuOpen ? (
-                                                <X className={`w-4 h-4 transition-colors ${textColor}`} strokeWidth={iconStroke} />
+                                                <X className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
                                             ) : (
-                                                <Menu className={`w-4 h-4 transition-colors ${textColor}`} strokeWidth={iconStroke} />
+                                                <Menu className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
                                             )}
                                         </button>
                                     </div>
@@ -168,11 +176,11 @@ export default function Navbar() {
                     <div className="hidden lg:flex items-center justify-between gap-8 lg:gap-10 px-2">
                         
                         {/* LEFT SIDE: Account, Circle, Gender Toggle */}
-                        <div className={`flex items-center gap-5 lg:gap-6 transition-colors ${textColor} drop-shadow-md flex-1 justify-end`}>
+                        <div className={`flex items-center gap-5 lg:gap-6 transition-colors duration-500 ${textColor} flex-1 justify-end`}>
                             {/* Account */}
                             <div className="flex flex-col items-center gap-1 group">
                                 {isSignedIn ? (
-                                    <div className="w-5 h-5 flex items-center justify-center scale-110 origin-center opacity-90 group-hover:opacity-100 transition-opacity duration-200 cursor-pointer">
+                                    <div className="w-5 h-5 flex items-center justify-center scale-[0.8] origin-center opacity-90 group-hover:opacity-100 transition-opacity duration-200 cursor-pointer">
                                         <UserButton afterSignOutUrl="/" />
                                     </div>
                                 ) : (
@@ -208,7 +216,7 @@ export default function Navbar() {
                         </Link>
 
                         {/* RIGHT SIDE: Shop, Orders, Saves, Cart */}
-                        <div className={`flex items-center gap-5 lg:gap-6 transition-colors ${textColor} drop-shadow-md flex-1 justify-start`}>
+                        <div className={`flex items-center gap-5 lg:gap-6 transition-colors duration-500 ${textColor} flex-1 justify-start`}>
                             {/* Shop / Collections */}
                             <Link href="/#new-arrivals" className="flex flex-col items-center gap-1 group">
                                 <LayoutGrid className="w-5 h-5 opacity-80 group-hover:opacity-100 transition-opacity duration-200" strokeWidth={2} />
@@ -226,7 +234,7 @@ export default function Navbar() {
                                 <div className="relative flex items-center justify-center">
                                     <Heart className="w-5 h-5 opacity-80 group-hover:opacity-100 transition-opacity duration-200" strokeWidth={2} />
                                     {wishlistCount > 0 && (
-                                        <span className="absolute -top-1 -right-2 w-3 h-3 rounded-full border-2 border-black shadow-sm" style={{ backgroundColor: accentColor }} />
+                                        <span className="absolute -top-1 -right-2 w-3 h-3 rounded-full border-2 border-white shadow-sm" style={{ backgroundColor: accentColor }} />
                                     )}
                                 </div>
                                 <span className="text-[11px] font-semibold opacity-80 group-hover:opacity-100 transition-opacity duration-200">Saves</span>
@@ -237,7 +245,7 @@ export default function Navbar() {
                                 <div className="relative flex items-center justify-center">
                                     <ShoppingBag className="w-5 h-5 opacity-80 group-hover:opacity-100 transition-opacity duration-200" strokeWidth={2} />
                                     {cartCount > 0 && (
-                                        <span className="absolute -top-1 -right-2 w-3 h-3 rounded-full border-2 border-black shadow-sm" style={{ backgroundColor: accentColor }} />
+                                        <span className="absolute -top-1 -right-2 w-3 h-3 rounded-full border-2 border-white shadow-sm" style={{ backgroundColor: accentColor }} />
                                     )}
                                 </div>
                                 <span className="text-[11px] font-semibold opacity-80 group-hover:opacity-100 transition-opacity duration-200">Cart</span>
