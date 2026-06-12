@@ -175,13 +175,13 @@ export default function Navbar() {
                     <div className="hidden lg:flex items-center justify-center gap-6 lg:gap-8">
                         {/* Logo */}
                         <Link href="/" className="block group shrink-0">
-                            <span className={`text-3xl font-serif font-medium tracking-[0.2em] uppercase group-hover:opacity-80 transition-colors ${logoColor} drop-shadow-sm`}>
+                            <span className={`text-2xl font-serif font-medium tracking-wide group-hover:opacity-70 transition-opacity duration-300 ${logoColor} drop-shadow-sm`}>
                                 TENET
                             </span>
                         </Link>
 
                         {/* Subtle Divider */}
-                        <div className={`w-[1px] h-8 ${isScrolled || !isHome ? 'bg-black/20' : 'bg-white/30'}`} />
+                        <div className={`w-[1px] h-6 ${isScrolled || !isHome ? 'bg-black/10' : 'bg-white/20'}`} />
 
                         {/* Gender Toggle */}
                         <div className="flex-shrink-0 scale-95 origin-center">
@@ -189,64 +189,64 @@ export default function Navbar() {
                         </div>
 
                         {/* Subtle Divider */}
-                        <div className={`w-[1px] h-8 ${isScrolled || !isHome ? 'bg-black/20' : 'bg-white/30'}`} />
+                        <div className={`w-[1px] h-6 ${isScrolled || !isHome ? 'bg-black/10' : 'bg-white/20'}`} />
 
                         {/* Icons Row */}
-                        <div className={`flex items-center gap-5 lg:gap-7 transition-colors ${textColor} drop-shadow-sm`}>
+                        <div className={`flex items-center gap-6 lg:gap-8 transition-colors ${textColor} drop-shadow-sm`}>
                             {/* Shop / Collections */}
-                            <Link href="/#new-arrivals" className="flex flex-col items-center gap-1.5 group hover:scale-105 active:scale-95 transition-all">
-                                <LayoutGrid className="w-[18px] h-[18px] opacity-80 group-hover:opacity-100 transition-opacity" strokeWidth={2} />
-                                <span className="text-[9px] font-bold uppercase tracking-[0.15em] opacity-80 group-hover:opacity-100 transition-opacity">Shop</span>
+                            <Link href="/#new-arrivals" className="flex flex-col items-center gap-1 group">
+                                <LayoutGrid className="w-5 h-5 opacity-60 group-hover:opacity-100 transition-opacity duration-200" strokeWidth={1.5} />
+                                <span className="text-[10px] font-medium opacity-60 group-hover:opacity-100 transition-opacity duration-200">Shop</span>
                             </Link>
 
                             {/* Orders */}
-                            <Link href="/orders" className="flex flex-col items-center gap-1.5 group hover:scale-105 active:scale-95 transition-all">
-                                <Package className="w-[18px] h-[18px] opacity-80 group-hover:opacity-100 transition-opacity" strokeWidth={2} />
-                                <span className="text-[9px] font-bold uppercase tracking-[0.15em] opacity-80 group-hover:opacity-100 transition-opacity">Orders</span>
+                            <Link href="/orders" className="flex flex-col items-center gap-1 group">
+                                <Package className="w-5 h-5 opacity-60 group-hover:opacity-100 transition-opacity duration-200" strokeWidth={1.5} />
+                                <span className="text-[10px] font-medium opacity-60 group-hover:opacity-100 transition-opacity duration-200">Orders</span>
                             </Link>
 
                             {/* Account */}
-                            <div className="flex flex-col items-center gap-1.5 group hover:scale-105 active:scale-95 transition-all">
+                            <div className="flex flex-col items-center gap-1 group">
                                 {isSignedIn ? (
-                                    <div className="w-[18px] h-[18px] flex items-center justify-center scale-90 origin-center opacity-90 group-hover:opacity-100 transition-opacity">
+                                    <div className="w-5 h-5 flex items-center justify-center scale-90 origin-center opacity-70 group-hover:opacity-100 transition-opacity duration-200 cursor-pointer">
                                         <UserButton afterSignOutUrl="/" />
                                     </div>
                                 ) : (
                                     <SignInButton mode="modal">
                                         <button aria-label="Sign in" className="flex items-center justify-center">
-                                            <User className="w-[18px] h-[18px] opacity-80 group-hover:opacity-100 transition-opacity" strokeWidth={2} />
+                                            <User className="w-5 h-5 opacity-60 group-hover:opacity-100 transition-opacity duration-200" strokeWidth={1.5} />
                                         </button>
                                     </SignInButton>
                                 )}
-                                <span className="text-[9px] font-bold uppercase tracking-[0.15em] opacity-80 group-hover:opacity-100 transition-opacity">Account</span>
+                                <span className="text-[10px] font-medium opacity-60 group-hover:opacity-100 transition-opacity duration-200">Account</span>
                             </div>
 
                             {/* Circle */}
-                            <Link href="/circle" className="flex flex-col items-center gap-1.5 group hover:scale-105 active:scale-95 transition-all">
-                                <Crown className="w-[18px] h-[18px] opacity-80 group-hover:opacity-100 transition-opacity" strokeWidth={2} />
-                                <span className="text-[9px] font-bold uppercase tracking-[0.15em] opacity-80 group-hover:opacity-100 transition-opacity">Circle</span>
+                            <Link href="/circle" className="flex flex-col items-center gap-1 group">
+                                <Crown className="w-5 h-5 opacity-60 group-hover:opacity-100 transition-opacity duration-200" strokeWidth={1.5} />
+                                <span className="text-[10px] font-medium opacity-60 group-hover:opacity-100 transition-opacity duration-200">Circle</span>
                             </Link>
 
                             {/* Wishlist */}
-                            <button className="flex flex-col items-center gap-1.5 group hover:scale-105 active:scale-95 transition-all" aria-label="Open wishlist" onClick={openWishlist}>
+                            <button className="flex flex-col items-center gap-1 group" aria-label="Open wishlist" onClick={openWishlist}>
                                 <div className="relative flex items-center justify-center">
-                                    <Heart className="w-[18px] h-[18px] opacity-80 group-hover:opacity-100 transition-opacity" strokeWidth={2} />
+                                    <Heart className="w-5 h-5 opacity-60 group-hover:opacity-100 transition-opacity duration-200" strokeWidth={1.5} />
                                     {wishlistCount > 0 && (
-                                        <span className="absolute -top-1 -right-1.5 w-2 h-2 rounded-full border border-white shadow-sm" style={{ backgroundColor: accentColor }} />
+                                        <span className="absolute -top-0.5 -right-1 w-2 h-2 rounded-full border border-white shadow-sm" style={{ backgroundColor: accentColor }} />
                                     )}
                                 </div>
-                                <span className="text-[9px] font-bold uppercase tracking-[0.15em] opacity-80 group-hover:opacity-100 transition-opacity">Saves</span>
+                                <span className="text-[10px] font-medium opacity-60 group-hover:opacity-100 transition-opacity duration-200">Saves</span>
                             </button>
 
                             {/* Cart */}
-                            <button className="flex flex-col items-center gap-1.5 group hover:scale-105 active:scale-95 transition-all" aria-label="Open cart" onClick={openCart}>
+                            <button className="flex flex-col items-center gap-1 group" aria-label="Open cart" onClick={openCart}>
                                 <div className="relative flex items-center justify-center">
-                                    <ShoppingBag className="w-[18px] h-[18px] opacity-80 group-hover:opacity-100 transition-opacity" strokeWidth={2} />
+                                    <ShoppingBag className="w-5 h-5 opacity-60 group-hover:opacity-100 transition-opacity duration-200" strokeWidth={1.5} />
                                     {cartCount > 0 && (
-                                        <span className="absolute -top-1 -right-1.5 w-2 h-2 rounded-full border border-white shadow-sm" style={{ backgroundColor: accentColor }} />
+                                        <span className="absolute -top-0.5 -right-1 w-2 h-2 rounded-full border border-white shadow-sm" style={{ backgroundColor: accentColor }} />
                                     )}
                                 </div>
-                                <span className="text-[9px] font-bold uppercase tracking-[0.15em] opacity-80 group-hover:opacity-100 transition-opacity">Cart</span>
+                                <span className="text-[10px] font-medium opacity-60 group-hover:opacity-100 transition-opacity duration-200">Cart</span>
                             </button>
                         </div>
                     </div>
