@@ -40,32 +40,36 @@ export default function Navbar() {
     const isHome = pathname === "/";
     
     // Hyper-premium Apple glassmorphism on scroll, perfectly transparent on load
-    const navBackground = isScrolled || !isHome
-        ? "bg-[#FDFBF7]/70 backdrop-blur-3xl saturate-150 border-b border-neutral-200/50 shadow-[0_4px_40px_rgba(0,0,0,0.02)]"
-        : "bg-transparent border-b border-transparent";
+    // Using a floating pill design (margins on left/right/top)
+    const navContainerClass = isScrolled || !isHome
+        ? "bg-[#FDFBF7]/80 backdrop-blur-3xl saturate-200 border border-white/40 shadow-[0_8px_30px_rgba(0,0,0,0.06)]"
+        : "bg-transparent border border-transparent";
         
     const textColor = isScrolled || !isHome ? "text-[#1A1A1A]" : "text-white";
     const logoColor = isScrolled || !isHome ? "text-[#1A1A1A]" : "text-white";
 
+    // High-contrast stroke width for icons
+    const iconStroke = 2;
+
     // Ultra-premium Apple-style segmented control (Liquid Glass)
     const GenderToggle = () => (
-        <div className={`relative flex items-center rounded-full p-1.5 transition-colors duration-500 border shadow-sm backdrop-blur-3xl saturate-150 ${isScrolled || !isHome ? 'bg-black/5 border-black/10' : 'bg-white/20 border-white/20'}`}>
+        <div className={`relative flex items-center rounded-full p-1.5 transition-colors duration-500 shadow-sm backdrop-blur-3xl saturate-200 ${isScrolled || !isHome ? 'bg-black/5 border border-black/10' : 'bg-white/20 border border-white/30'}`}>
             <button 
                 onClick={() => setGender('man')}
-                className={`relative z-10 w-20 sm:w-24 py-1.5 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.25em] rounded-full transition-colors duration-300 ${gender === 'man' ? (isScrolled || !isHome ? 'text-white' : 'text-black') : `text-current opacity-60 hover:opacity-100`}`}
+                className={`relative z-10 w-20 sm:w-24 py-1.5 text-[10px] font-bold uppercase tracking-[0.25em] rounded-full transition-colors duration-300 ${gender === 'man' ? 'text-white' : `text-current opacity-80 hover:opacity-100`}`}
             >
                 MEN
                 {gender === 'man' && (
                     <motion.div
                         layoutId="nav-gender-active"
-                        className={`absolute inset-0 rounded-full -z-10 shadow-md ${isScrolled || !isHome ? 'bg-[#1A1A1A]' : 'bg-white'}`}
+                        className="absolute inset-0 rounded-full -z-10 shadow-md bg-[#2B6496]"
                         transition={{ type: "spring", stiffness: 400, damping: 30 }}
                     />
                 )}
             </button>
             <button 
                 onClick={() => setGender('woman')}
-                className={`relative z-10 w-20 sm:w-24 py-1.5 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.25em] rounded-full transition-colors duration-300 ${gender === 'woman' ? 'text-white' : `text-current opacity-60 hover:opacity-100`}`}
+                className={`relative z-10 w-20 sm:w-24 py-1.5 text-[10px] font-bold uppercase tracking-[0.25em] rounded-full transition-colors duration-300 ${gender === 'woman' ? 'text-white' : `text-current opacity-80 hover:opacity-100`}`}
             >
                 WOMEN
                 {gender === 'woman' && (
@@ -81,8 +85,9 @@ export default function Navbar() {
 
     return (
         <>
-            <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-in-out ${navBackground}`}>
-                <div className="max-w-[2000px] w-full mx-auto px-6 sm:px-8 xl:px-16 py-4 lg:py-5 relative z-50">
+            {/* The wrapper handles the floating position */}
+            <div className={`fixed top-0 left-0 w-full z-50 p-2 sm:p-4 lg:p-6 transition-all duration-500 ease-in-out pointer-events-none`}>
+                <nav className={`pointer-events-auto max-w-[2000px] w-full mx-auto px-6 sm:px-8 xl:px-12 py-3 lg:py-4 transition-all duration-500 ease-in-out rounded-[32px] lg:rounded-full ${navContainerClass}`}>
                     
                     {/* MOBILE LAYOUT (lg:hidden) */}
                     <div className="flex lg:hidden w-full items-center justify-between">
@@ -101,9 +106,9 @@ export default function Navbar() {
                         {/* RIGHT: Hamburger Menu Button */}
                         <button className="p-2 -mr-2 hover:scale-105 active:scale-95 transition-transform shrink-0" aria-label="Toggle mobile menu" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
                             {isMobileMenuOpen ? (
-                                <X className={`w-5 h-5 transition-colors ${textColor}`} strokeWidth={1.25} />
+                                <X className={`w-6 h-6 transition-colors ${textColor}`} strokeWidth={iconStroke} />
                             ) : (
-                                <Menu className={`w-5 h-5 transition-colors ${textColor}`} strokeWidth={1.25} />
+                                <Menu className={`w-6 h-6 transition-colors ${textColor}`} strokeWidth={iconStroke} />
                             )}
                         </button>
                     </div>
@@ -137,7 +142,7 @@ export default function Navbar() {
                                 {isSignedIn ? (
                                     <>
                                         <Link href="/orders" className="p-2 hover:opacity-70 transition-opacity" title="My Orders">
-                                            <Package className="w-5 h-5" strokeWidth={1.25} />
+                                            <Package className="w-5 h-5" strokeWidth={iconStroke} />
                                         </Link>
                                         <div className="p-2 flex items-center justify-center">
                                             <UserButton afterSignOutUrl="/" />
@@ -146,28 +151,28 @@ export default function Navbar() {
                                 ) : (
                                     <SignInButton mode="modal">
                                         <button className="p-2 hover:opacity-70 transition-opacity" aria-label="Sign in">
-                                            <User className="w-5 h-5" strokeWidth={1.25} />
+                                            <User className="w-5 h-5" strokeWidth={iconStroke} />
                                         </button>
                                     </SignInButton>
                                 )}
                                 
                                 <button className="relative p-2 hover:opacity-70 transition-opacity" aria-label="Open wishlist" onClick={openWishlist}>
-                                    <Heart className="w-5 h-5" strokeWidth={1.25} />
+                                    <Heart className="w-5 h-5" strokeWidth={iconStroke} />
                                     {wishlistCount > 0 && (
-                                        <span className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full" style={{ backgroundColor: accentColor }} />
+                                        <span className="absolute top-1 right-1 w-2 h-2 rounded-full border border-white" style={{ backgroundColor: accentColor }} />
                                     )}
                                 </button>
 
                                 <button className="relative p-2 -mr-2 hover:opacity-70 transition-opacity" aria-label="Open cart" onClick={openCart}>
-                                    <ShoppingBag className="w-5 h-5" strokeWidth={1.25} />
+                                    <ShoppingBag className="w-5 h-5" strokeWidth={iconStroke} />
                                     {cartCount > 0 && (
-                                        <span className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full" style={{ backgroundColor: accentColor }} />
+                                        <span className="absolute top-1 right-1 w-2 h-2 rounded-full border border-white" style={{ backgroundColor: accentColor }} />
                                     )}
                                 </button>
                             </div>
                         </div>
                     </div>
-                </div>
+                </nav>
 
                 {/* Mobile Menu Dropdown */}
                 <AnimatePresence>
@@ -177,32 +182,32 @@ export default function Navbar() {
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -10 }}
                             transition={{ duration: 0.2 }}
-                            className="absolute top-full left-4 right-4 bg-white/95 backdrop-blur-3xl saturate-150 border border-neutral-100 shadow-2xl rounded-2xl overflow-hidden py-4"
+                            className="absolute top-full left-4 right-4 mt-2 pointer-events-auto bg-white/90 backdrop-blur-3xl saturate-200 border border-white/50 shadow-[0_8px_30px_rgba(0,0,0,0.12)] rounded-[32px] overflow-hidden py-4"
                         >
                             <div className="flex flex-col">
                                 <Link
                                     href="/"
                                     onClick={() => setIsMobileMenuOpen(false)}
-                                    className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] hover:bg-neutral-50 transition-colors text-center border-b border-neutral-50"
+                                    className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] hover:bg-neutral-50 transition-colors text-center border-b border-neutral-100"
                                 >
                                     HOME
                                 </Link>
                                 <Link
                                     href="/#new-arrivals"
                                     onClick={() => setIsMobileMenuOpen(false)}
-                                    className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] hover:bg-neutral-50 transition-colors text-center border-b border-neutral-50"
+                                    className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] hover:bg-neutral-50 transition-colors text-center border-b border-neutral-100"
                                 >
                                     COLLECTIONS
                                 </Link>
                                 <Link
                                     href="/orders"
                                     onClick={() => setIsMobileMenuOpen(false)}
-                                    className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] hover:bg-neutral-50 transition-colors text-center border-b border-neutral-50"
+                                    className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] hover:bg-neutral-50 transition-colors text-center border-b border-neutral-100"
                                 >
                                     ORDERS
                                 </Link>
                                 <SignedIn>
-                                    <div className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] hover:bg-neutral-50 transition-colors flex items-center justify-center gap-4 border-b border-neutral-50">
+                                    <div className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] hover:bg-neutral-50 transition-colors flex items-center justify-center gap-4 border-b border-neutral-100">
                                         <span>ACCOUNT</span>
                                         <div className="scale-90 origin-center">
                                             <UserButton afterSignOutUrl="/" />
@@ -213,7 +218,7 @@ export default function Navbar() {
                                     <SignInButton mode="modal">
                                         <button 
                                             onClick={() => setIsMobileMenuOpen(false)}
-                                            className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] hover:bg-neutral-50 transition-colors text-center border-b border-neutral-50 w-full"
+                                            className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] hover:bg-neutral-50 transition-colors text-center border-b border-neutral-100 w-full"
                                         >
                                             ACCOUNT (LOG IN)
                                         </button>
@@ -221,15 +226,15 @@ export default function Navbar() {
                                 </SignedOut>
                                 <div className="flex justify-center gap-8 py-6">
                                     <button className="relative p-2" aria-label="Open wishlist" onClick={() => { setIsMobileMenuOpen(false); openWishlist(); }}>
-                                        <Heart className="w-6 h-6 text-[#1A1A1A]" strokeWidth={1.25} />
+                                        <Heart className="w-6 h-6 text-[#1A1A1A]" strokeWidth={iconStroke} />
                                         {wishlistCount > 0 && (
-                                            <span className="absolute top-1 right-1 w-2 h-2 rounded-full" style={{ backgroundColor: accentColor }} />
+                                            <span className="absolute top-1 right-1 w-2 h-2 rounded-full border border-white" style={{ backgroundColor: accentColor }} />
                                         )}
                                     </button>
                                     <button className="relative p-2" aria-label="Open cart" onClick={() => { setIsMobileMenuOpen(false); openCart(); }}>
-                                        <ShoppingBag className="w-6 h-6 text-[#1A1A1A]" strokeWidth={1.25} />
+                                        <ShoppingBag className="w-6 h-6 text-[#1A1A1A]" strokeWidth={iconStroke} />
                                         {cartCount > 0 && (
-                                            <span className="absolute top-1 right-1 w-2 h-2 rounded-full" style={{ backgroundColor: accentColor }} />
+                                            <span className="absolute top-1 right-1 w-2 h-2 rounded-full border border-white" style={{ backgroundColor: accentColor }} />
                                         )}
                                     </button>
                                 </div>
@@ -237,7 +242,7 @@ export default function Navbar() {
                         </motion.div>
                     )}
                 </AnimatePresence>
-            </nav>
+            </div>
         </>
     );
 }

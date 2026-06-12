@@ -20,8 +20,10 @@ export default function MobileBottomNav() {
 
     const isWoman = gender === "woman";
     const accentColor = isWoman ? "#E05275" : "#2B6496";
+    // High contrast active/inactive states
     const activeTextClass = isWoman ? "text-[#E05275]" : "text-[#2B6496]";
-    const activeFillClass = isWoman ? "fill-[#E05275]/5" : "fill-[#2B6496]/5";
+    const activeFillClass = isWoman ? "fill-[#E05275]/10" : "fill-[#2B6496]/10";
+    const inactiveTextClass = "text-neutral-500 hover:text-neutral-700";
 
     const cartCount = mounted ? cart.length : 0;
 
@@ -63,8 +65,9 @@ export default function MobileBottomNav() {
         "--attention-color-glow": `${accentColor}60`
     } as React.CSSProperties;
 
+    // Floating pill styling
     return (
-        <div className="fixed bottom-0 left-0 right-0 h-[68px] bg-white/60 backdrop-blur-3xl saturate-150 border-t border-white/20 z-50 flex items-center justify-around pb-safe rounded-t-[32px] shadow-[0_-8px_30px_rgba(0,0,0,0.04)]">
+        <div className="fixed bottom-4 left-4 right-4 h-[68px] bg-white/70 backdrop-blur-3xl saturate-200 border border-white/50 z-50 flex items-center justify-around pb-0 rounded-[32px] shadow-[0_8px_30px_rgba(0,0,0,0.12)]">
             <style>{`
                 @keyframes accountAttention {
                     0%, 20%, 100% {
@@ -82,14 +85,14 @@ export default function MobileBottomNav() {
             `}</style>
 
             {navItems.map((item) => {
-                const textStyle = item.isActive ? activeTextClass : "text-neutral-400";
+                const textStyle = item.isActive ? activeTextClass : inactiveTextClass;
                 const fillStyle = item.isActive ? activeFillClass : "";
 
                 const iconContent = (
                     <div className="relative flex items-center justify-center p-0.5">
                         <item.icon
-                            strokeWidth={1.5}
-                            className={`w-[21px] h-[21px] transition-all duration-300 ${textStyle} ${fillStyle}`}
+                            strokeWidth={2}
+                            className={`w-[22px] h-[22px] transition-all duration-300 ${textStyle} ${fillStyle}`}
                         />
                         {item.hasBadge && cartCount > 0 && (
                             <span 
@@ -102,8 +105,8 @@ export default function MobileBottomNav() {
 
                 const labelContent = (
                     <span
-                        className={`text-[8px] uppercase tracking-wider font-bold transition-all duration-300 ${
-                            item.isActive ? activeTextClass : "text-neutral-400"
+                        className={`text-[9px] uppercase tracking-[0.1em] font-bold transition-all duration-300 ${
+                            item.isActive ? activeTextClass : inactiveTextClass
                         }`}
                     >
                         {item.name}
@@ -152,13 +155,13 @@ export default function MobileBottomNav() {
                             title="Account"
                         >
                             <User
-                                strokeWidth={1.5}
-                                className="w-[21px] h-[21px] transition-colors"
+                                strokeWidth={2}
+                                className={`w-[22px] h-[22px] transition-colors ${inactiveTextClass}`}
                             />
                         </button>
                     </SignInButton>
                 </SignedOut>
-                <span className="text-[8px] uppercase tracking-wider font-bold text-neutral-400">
+                <span className={`text-[9px] uppercase tracking-[0.1em] font-bold ${inactiveTextClass}`}>
                     Account
                 </span>
             </div>
