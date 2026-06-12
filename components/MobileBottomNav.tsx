@@ -67,7 +67,7 @@ export default function MobileBottomNav() {
 
     // Floating pill styling
     return (
-        <div className="fixed bottom-4 left-4 right-4 h-[68px] bg-white/70 backdrop-blur-3xl saturate-200 border border-white/50 z-50 flex items-center justify-around pb-0 rounded-[32px] shadow-[0_8px_30px_rgba(0,0,0,0.12)]">
+        <div className="fixed bottom-4 left-4 right-4 h-[68px] bg-white/80 backdrop-blur-2xl border border-white/50 z-50 flex items-center justify-around pb-0 rounded-[32px] shadow-[0_8px_30px_rgba(0,0,0,0.08)]">
             <style>{`
                 @keyframes accountAttention {
                     0%, 20%, 100% {
