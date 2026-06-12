@@ -154,35 +154,35 @@ export default function Navbar() {
                             </>
                         ) : (
                             <>
-                                {/* LEFT: Logo */}
-                                <Link href="/" className="block group shrink-0 ml-2">
-                                    <span className={`text-2xl font-serif font-medium tracking-[0.25em] uppercase group-hover:opacity-80 transition-colors duration-500 ${logoColor} drop-shadow-sm`}>
+                                {/* LEFT: Gender Toggle */}
+                                <div className="flex items-center justify-start flex-1 z-10">
+                                    <div className="scale-[0.85] sm:scale-100 origin-left">
+                                        <GenderToggle />
+                                    </div>
+                                </div>
+
+                                {/* CENTER: Logo (Absolute Centered) */}
+                                <Link href="/" className="absolute left-1/2 -translate-x-1/2 z-10">
+                                    <span className={`text-2xl sm:text-3xl font-serif font-bold tracking-[0.25em] uppercase group-hover:opacity-80 transition-colors duration-500 ${logoColor} drop-shadow-sm`}>
                                         TENET
                                     </span>
                                 </Link>
 
-                                {/* CENTER / RIGHT: Dynamic Mobile Header */}
-                                <div className="flex justify-end flex-1 pl-2 sm:pl-4">
-                                    <div className="flex items-center justify-between w-full">
-                                        <div className="flex justify-center flex-1 mx-2">
-                                            <GenderToggle />
-                                        </div>
-                                        <div className="flex items-center gap-2 shrink-0">
-                                            <button className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center relative`} aria-label="Open wishlist" onClick={openWishlist}>
-                                                <Heart className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
-                                                {wishlistCount > 0 && (
-                                                    <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full border border-white" style={{ backgroundColor: accentColor }} />
-                                                )}
-                                            </button>
-                                            <button className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Toggle mobile menu" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-                                                {isMobileMenuOpen ? (
-                                                    <X className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
-                                                ) : (
-                                                    <Menu className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
-                                                )}
-                                            </button>
-                                        </div>
-                                    </div>
+                                {/* RIGHT: Icons */}
+                                <div className="flex items-center justify-end flex-1 gap-1 sm:gap-2 z-10">
+                                    <button className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center relative`} aria-label="Open wishlist" onClick={openWishlist}>
+                                        <Heart className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
+                                        {wishlistCount > 0 && (
+                                            <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full border border-white" style={{ backgroundColor: accentColor }} />
+                                        )}
+                                    </button>
+                                    <button className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Toggle mobile menu" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                                        {isMobileMenuOpen ? (
+                                            <X className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
+                                        ) : (
+                                            <Menu className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
+                                        )}
+                                    </button>
                                 </div>
                             </>
                         )}
