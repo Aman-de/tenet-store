@@ -209,8 +209,48 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                 })}
                 </div>
 
-                {/* Mobile Integrated TrustBar - 22% of the 57% remaining height */}
-                <div className="w-full h-[22%] lg:hidden grid grid-cols-4 divide-x divide-[#1A1A1A]/10 bg-[#F8F5EF] pb-[54px] pt-0.5">
+                <div className="lg:hidden h-full w-full flex flex-col">
+                {/* Mobile Categories - 84% of the 57% remaining height */}
+                <div className="w-full h-[84%] p-2 pb-0">
+                    <div className="grid grid-cols-2 grid-rows-2 gap-2 h-full">
+                        {/* Top Left: Sets */}
+                        <Link href={`/collection/${collections[0].handle}`} className="relative block w-full h-full rounded-xl overflow-hidden group">
+                            <Image src={collections[0].imageUrl} alt={collections[0].title} fill className="object-cover transition-transform duration-700 group-hover:scale-105" />
+                            <div className="absolute inset-0 bg-black/20" />
+                            <div className="absolute inset-0 p-3 flex flex-col justify-end">
+                                <h3 className="text-white font-serif text-lg leading-none">{collections[0].title}</h3>
+                                <div className="absolute bottom-3 right-3 w-6 h-6 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center">
+                                    <ArrowRight className="w-3 h-3 text-white" />
+                                </div>
+                            </div>
+                        </Link>
+                        {/* Top Right: Shorts */}
+                        <Link href={`/collection/${collections[1].handle}`} className="relative block w-full h-full rounded-xl overflow-hidden group">
+                            <Image src={collections[1].imageUrl} alt={collections[1].title} fill className="object-cover transition-transform duration-700 group-hover:scale-105" />
+                            <div className="absolute inset-0 bg-black/20" />
+                            <div className="absolute inset-0 p-3 flex flex-col justify-end">
+                                <h3 className="text-white font-serif text-lg leading-none">{collections[1].title}</h3>
+                                <div className="absolute bottom-3 right-3 w-6 h-6 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center">
+                                    <ArrowRight className="w-3 h-3 text-white" />
+                                </div>
+                            </div>
+                        </Link>
+                        {/* Bottom Row spanning full width */}
+                        <Link href={`/collection/${collections[2].handle}`} className="col-span-2 relative block w-full h-full rounded-xl overflow-hidden group">
+                            <Image src={collections[2].imageUrl} alt={collections[2].title} fill className="object-cover object-center transition-transform duration-700 group-hover:scale-105" />
+                            <div className="absolute inset-0 bg-black/20" />
+                            <div className="absolute inset-0 p-3 flex flex-col justify-end">
+                                <h3 className="text-white font-serif text-lg leading-none">{collections[2].title}</h3>
+                                <div className="absolute bottom-3 right-3 w-6 h-6 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center">
+                                    <ArrowRight className="w-3 h-3 text-white" />
+                                </div>
+                            </div>
+                        </Link>
+                    </div>
+                </div>
+
+                {/* Mobile Integrated TrustBar - 16% of the 57% remaining height */}
+                <div className="w-full h-[16%] lg:hidden grid grid-cols-4 divide-x divide-[#1A1A1A]/10 bg-[#F8F5EF] pb-2 pt-1">
                     {trustPillars.map((pillar, index) => (
                         <div key={index} className="flex flex-col items-center justify-center text-center px-0.5">
                             <div className="mb-0.5">{pillar.icon}</div>
