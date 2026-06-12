@@ -39,52 +39,7 @@ export default function Navbar() {
 
     const isHome = pathname === "/";
     
-    // Hyper-premium Apple glassmorphism on scroll, perfectly transparent on load
-    // Using a floating pill design (margins on left/right/top)
-    const navContainerClass = isScrolled || !isHome
-        ? "bg-[#FDFBF7]/90 backdrop-blur-2xl border border-white/40 shadow-[0_8px_30px_rgba(0,0,0,0.06)]"
-        : "bg-white/10 backdrop-blur-md border border-white/20";
-        
-    const textColor = isScrolled || !isHome ? "text-[#1A1A1A]" : "text-white";
-    const logoColor = isScrolled || !isHome ? "text-[#1A1A1A]" : "text-white";
-    const iconGlassBg = isScrolled || !isHome ? "bg-white/80 border border-white shadow-sm" : "bg-black/20 border border-white/20 backdrop-blur-md";
-
-    // High-contrast stroke width for icons
-    const iconStroke = 1.5;
-
-    // Ultra-premium Apple-style segmented control (Liquid Glass)
-    const GenderToggle = () => (
-        <div className={`relative flex items-center rounded-full p-1.5 transition-colors duration-500 shadow-sm backdrop-blur-2xl ${isScrolled || !isHome ? 'bg-black/5 border border-black/10' : 'bg-black/20 border border-white/30'}`}>
-            <button 
-                onClick={() => setGender('man')}
-                className={`relative z-10 w-16 sm:w-20 py-1.5 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.25em] rounded-full transition-colors duration-300 ${gender === 'man' ? 'text-[#2B6496]' : `text-current opacity-80 hover:opacity-100`}`}
-            >
-                MEN
-                {gender === 'man' && (
-                    <motion.div
-                        layoutId="nav-gender-active"
-                        className="absolute inset-0 rounded-full -z-10 shadow-sm bg-[#2B6496]/15 border border-[#2B6496]/20 backdrop-blur-md"
-                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                    />
-                )}
-            </button>
-            <button 
-                onClick={() => setGender('woman')}
-                className={`relative z-10 w-16 sm:w-20 py-1.5 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.25em] rounded-full transition-colors duration-300 ${gender === 'woman' ? 'text-[#E05275]' : `text-current opacity-80 hover:opacity-100`}`}
-            >
-                WOMEN
-                {gender === 'woman' && (
-                    <motion.div
-                        layoutId="nav-gender-active"
-                        className="absolute inset-0 rounded-full -z-10 shadow-sm bg-[#E05275]/15 border border-[#E05275]/20 backdrop-blur-md"
-                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                    />
-                )}
-            </button>
-        </div>
-    );
-
-    const isProductPage = pathname.includes("/product/")    // Dynamically apply glassmorphism and text colors based on scroll/page state
+    // Dynamically apply dark glassmorphism based on scroll/page state
     const isScrolledOrNotHome = isScrolled || !isHome;
     
     const navContainerClass = isScrolledOrNotHome 
@@ -96,6 +51,40 @@ export default function Navbar() {
     const iconStroke = 2;
     const iconGlassBg = "bg-white/10 hover:bg-white/20";
     const accentColor = "#2B6496";
+
+    // Ultra-premium Apple-style segmented control (Liquid Glass)
+    const GenderToggle = () => (
+        <div className={`relative flex items-center rounded-full p-1.5 transition-colors duration-500 shadow-sm backdrop-blur-2xl bg-white/10 border border-white/10`}>
+            <button 
+                onClick={() => setGender('man')}
+                className={`relative z-10 w-16 sm:w-20 py-1.5 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.25em] rounded-full transition-colors duration-300 ${gender === 'man' ? 'text-white' : 'text-white/60 hover:text-white'}`}
+            >
+                MEN
+                {gender === 'man' && (
+                    <motion.div
+                        layoutId="nav-gender-active"
+                        className="absolute inset-0 rounded-full -z-10 shadow-sm bg-[#2B6496]/40 border border-[#2B6496]/50 backdrop-blur-md"
+                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                    />
+                )}
+            </button>
+            <button 
+                onClick={() => setGender('woman')}
+                className={`relative z-10 w-16 sm:w-20 py-1.5 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.25em] rounded-full transition-colors duration-300 ${gender === 'woman' ? 'text-white' : 'text-white/60 hover:text-white'}`}
+            >
+                WOMEN
+                {gender === 'woman' && (
+                    <motion.div
+                        layoutId="nav-gender-active"
+                        className="absolute inset-0 rounded-full -z-10 shadow-sm bg-[#E05275]/40 border border-[#E05275]/50 backdrop-blur-md"
+                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                    />
+                )}
+            </button>
+        </div>
+    );
+
+    const isProductPage = pathname.includes("/product/");
 
     return (
         <>
