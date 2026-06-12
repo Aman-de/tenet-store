@@ -173,8 +173,8 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
             {/* RIGHT: Categories & TrustBar (Mobile) / Categories Only (Desktop) */}
             <div className="w-full h-[57%] lg:w-5/12 xl:w-1/3 lg:h-full flex flex-col gap-1 lg:gap-4 px-1 lg:px-0">
                 
-                {/* Categories Grid - 78% of the 57% remaining height */}
-                <div className="w-full h-[78%] lg:h-full grid grid-cols-2 grid-rows-3 gap-1 lg:gap-4">
+                {/* Categories Grid - 84% of the 57% remaining height */}
+                <div className="w-full h-[84%] lg:h-full grid grid-cols-2 grid-rows-3 gap-1 lg:gap-4">
                     {filteredCollections.map((collection, index) => {
                         const catKey = (collection.filterTag || collection.handle || "").toLowerCase();
                         const coverPhoto = CATEGORY_IMAGES[catKey]?.[gender] || collection.imageUrl;
@@ -207,46 +207,6 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                         </Link>
                     );
                 })}
-                </div>
-
-                <div className="lg:hidden h-full w-full flex flex-col">
-                {/* Mobile Categories - 84% of the 57% remaining height */}
-                <div className="w-full h-[84%] p-2 pb-0">
-                    <div className="grid grid-cols-2 grid-rows-2 gap-2 h-full">
-                        {/* Top Left: Sets */}
-                        <Link href={`/collection/${collections[0].handle}`} className="relative block w-full h-full rounded-xl overflow-hidden group">
-                            <Image src={collections[0].imageUrl} alt={collections[0].title} fill className="object-cover transition-transform duration-700 group-hover:scale-105" />
-                            <div className="absolute inset-0 bg-black/20" />
-                            <div className="absolute inset-0 p-3 flex flex-col justify-end">
-                                <h3 className="text-white font-serif text-lg leading-none">{collections[0].title}</h3>
-                                <div className="absolute bottom-3 right-3 w-6 h-6 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center">
-                                    <ArrowRight className="w-3 h-3 text-white" />
-                                </div>
-                            </div>
-                        </Link>
-                        {/* Top Right: Shorts */}
-                        <Link href={`/collection/${collections[1].handle}`} className="relative block w-full h-full rounded-xl overflow-hidden group">
-                            <Image src={collections[1].imageUrl} alt={collections[1].title} fill className="object-cover transition-transform duration-700 group-hover:scale-105" />
-                            <div className="absolute inset-0 bg-black/20" />
-                            <div className="absolute inset-0 p-3 flex flex-col justify-end">
-                                <h3 className="text-white font-serif text-lg leading-none">{collections[1].title}</h3>
-                                <div className="absolute bottom-3 right-3 w-6 h-6 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center">
-                                    <ArrowRight className="w-3 h-3 text-white" />
-                                </div>
-                            </div>
-                        </Link>
-                        {/* Bottom Row spanning full width */}
-                        <Link href={`/collection/${collections[2].handle}`} className="col-span-2 relative block w-full h-full rounded-xl overflow-hidden group">
-                            <Image src={collections[2].imageUrl} alt={collections[2].title} fill className="object-cover object-center transition-transform duration-700 group-hover:scale-105" />
-                            <div className="absolute inset-0 bg-black/20" />
-                            <div className="absolute inset-0 p-3 flex flex-col justify-end">
-                                <h3 className="text-white font-serif text-lg leading-none">{collections[2].title}</h3>
-                                <div className="absolute bottom-3 right-3 w-6 h-6 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center">
-                                    <ArrowRight className="w-3 h-3 text-white" />
-                                </div>
-                            </div>
-                        </Link>
-                    </div>
                 </div>
 
                 {/* Mobile Integrated TrustBar - 16% of the 57% remaining height */}
