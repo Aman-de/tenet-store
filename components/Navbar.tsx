@@ -50,7 +50,6 @@ export default function Navbar() {
     const logoColor = "text-white";
     const iconStroke = 2;
     const iconGlassBg = "bg-white/10 hover:bg-white/20";
-    const accentColor = "#2B6496";
 
     // Ultra-premium Apple-style segmented control (Liquid Glass)
     const GenderToggle = () => (
