@@ -72,9 +72,9 @@ export default function MobileBottomNav() {
         },
     ];
 
-    // Floating pill styling
+    // Floating pill styling - Made concise and lower to match top navbar
     return (
-        <div className={`fixed bottom-4 left-4 right-4 h-[68px] transition-colors duration-500 z-50 flex items-center justify-around pb-0 rounded-[32px] shadow-[0_8px_30px_rgba(0,0,0,0.08)] border ${containerClass}`}>
+        <div className={`fixed bottom-2 left-2 right-2 h-[60px] transition-colors duration-500 z-50 flex items-center justify-around px-2 rounded-full shadow-md border ${containerClass}`}>
 
             {navItems.map((item) => {
                 const textStyle = item.isActive ? activeTextClass : inactiveTextClass;
@@ -87,7 +87,7 @@ export default function MobileBottomNav() {
                         )}
                         <item.icon
                             strokeWidth={1.5}
-                            className={`w-[22px] h-[22px] transition-all duration-300 ${textStyle} ${fillStyle}`}
+                            className={`w-[20px] h-[20px] transition-all duration-300 ${textStyle} ${fillStyle}`}
                         />
                         {item.hasBadge && cartCount > 0 && (
                             <span 
@@ -100,7 +100,7 @@ export default function MobileBottomNav() {
 
                 const labelContent = (
                     <span
-                        className={`text-[9px] uppercase tracking-[0.1em] font-bold transition-all duration-300 ${
+                        className={`text-[8px] uppercase tracking-[0.1em] font-bold transition-all duration-300 ${
                             item.isActive ? activeTextClass : inactiveTextClass
                         }`}
                     >
@@ -149,12 +149,12 @@ export default function MobileBottomNav() {
                         <button className="relative flex items-center justify-center p-0.5 focus:outline-none">
                             <User
                                 strokeWidth={1.5}
-                                className={`w-[22px] h-[22px] transition-all duration-300 ${inactiveTextClass}`}
+                                className={`w-[18px] h-[18px] transition-all duration-300 ${inactiveTextClass}`}
                             />
                         </button>
                     </SignInButton>
                 </SignedOut>
-                <span className={`text-[9px] uppercase tracking-[0.1em] font-bold transition-all duration-300 ${inactiveTextClass}`}>
+                <span className={`text-[8px] uppercase tracking-[0.1em] font-bold transition-all duration-300 ${inactiveTextClass}`}>
                     Account
                 </span>
             </div>
