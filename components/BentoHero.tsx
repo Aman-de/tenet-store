@@ -87,10 +87,10 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
     ];
 
     return (
-        <section className="relative h-[100dvh] w-full bg-[#F8F5EF] flex flex-col lg:flex-row p-1.5 lg:p-6 gap-1.5 lg:gap-6 overflow-hidden">
+        <section className="relative h-[100dvh] w-full bg-[#F8F5EF] flex flex-col lg:flex-row p-0 lg:p-6 gap-1 lg:gap-6 overflow-hidden">
             
-            {/* LEFT: Hero Section */}
-            <div className="relative w-full h-[43%] lg:w-7/12 xl:w-2/3 lg:h-full rounded-lg lg:rounded-2xl overflow-hidden group bg-neutral-200">
+            {/* LEFT: Hero Section (Auto Scrolling) */}
+            <div className="relative w-full h-[43%] lg:w-7/12 xl:w-2/3 lg:h-full rounded-none lg:rounded-2xl overflow-hidden group bg-neutral-200">
                 <div ref={emblaRef} className="overflow-hidden w-full h-full">
                     <div className="flex w-full h-full">
                         {/* Slide 1: Main Editorial */}
@@ -170,10 +170,10 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
             </div>
 
             {/* RIGHT: Categories & TrustBar (Mobile) / Categories Only (Desktop) */}
-            <div className="w-full h-[57%] lg:w-5/12 xl:w-1/3 lg:h-full flex flex-col gap-1.5 lg:gap-4 px-0.5 lg:px-0">
+            <div className="w-full h-[57%] lg:w-5/12 xl:w-1/3 lg:h-full flex flex-col gap-1 lg:gap-4 px-1 lg:px-0">
                 
-                {/* Categories Grid - 74% of the 57% remaining height */}
-                <div className="w-full h-[74%] lg:h-full grid grid-cols-2 grid-rows-3 gap-1.5 lg:gap-4">
+                {/* Categories Grid - 78% of the 57% remaining height */}
+                <div className="w-full h-[78%] lg:h-full grid grid-cols-2 grid-rows-3 gap-1 lg:gap-4">
                     {filteredCollections.map((collection, index) => {
                         const catKey = (collection.filterTag || collection.handle || "").toLowerCase();
                         const coverPhoto = CATEGORY_IMAGES[catKey]?.[gender] || collection.imageUrl;
@@ -208,11 +208,11 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                 })}
                 </div>
 
-                {/* Mobile Integrated TrustBar - 26% of the 57% remaining height */}
-                <div className="w-full h-[26%] lg:hidden grid grid-cols-4 gap-1 divide-x divide-[#1A1A1A]/10 bg-[#F8F5EF] rounded-xl pb-[60px] pt-1">
+                {/* Mobile Integrated TrustBar - 22% of the 57% remaining height */}
+                <div className="w-full h-[22%] lg:hidden grid grid-cols-4 gap-1 divide-x divide-[#1A1A1A]/10 bg-[#F8F5EF] pb-[50px] pt-1">
                     {trustPillars.map((pillar, index) => (
                         <div key={index} className="flex flex-col items-center justify-center text-center px-1">
-                            <div className="mb-1.5">{pillar.icon}</div>
+                            <div className="mb-1">{pillar.icon}</div>
                             <h3 className="font-sans text-[7px] font-bold tracking-widest text-[#1A1A1A] uppercase leading-tight">
                                 {pillar.title}<br/>{pillar.title2}
                             </h3>

@@ -59,7 +59,7 @@ export default function ProductSection({ products }: ProductSectionProps) {
 
 
     return (
-        <section ref={sectionRef} id="new-arrivals" className="relative max-w-[2000px] w-full mx-auto px-6 xl:px-12 py-4 lg:py-8">
+        <section ref={sectionRef} id="new-arrivals" className="relative max-w-[2000px] w-full mx-auto px-6 xl:px-12 pt-2 pb-6 lg:py-8">
             <div className="flex flex-col md:flex-row md:items-center justify-between mb-2 pb-0 gap-6">
                 <div className="flex items-baseline gap-3 md:gap-6 flex-1">
                     <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-[#1A1A1A]">
