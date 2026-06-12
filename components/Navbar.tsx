@@ -56,8 +56,8 @@ export default function Navbar() {
     const GenderToggle = () => {
         const toggleBg = isScrolledOrNotHome ? "bg-black/5 border border-black/10" : "bg-white/10 border border-white/10";
         const btnText = (active: boolean) => {
-            if (active) return isScrolledOrNotHome ? "text-white" : "text-white";
-            return isScrolledOrNotHome ? "text-black/60 hover:text-black" : "text-white/60 hover:text-white";
+            if (active) return "text-white";
+            return isScrolledOrNotHome ? "text-neutral-800 font-extrabold" : "text-white/80 font-extrabold";
         };
         return (
             <div className={`relative flex items-center rounded-full p-1 transition-colors duration-500 shadow-sm backdrop-blur-2xl ${toggleBg}`}>
@@ -97,7 +97,7 @@ export default function Navbar() {
         <>
             {/* The wrapper handles the floating position */}
             <div className={`fixed top-0 left-0 w-full z-50 p-2 sm:p-4 transition-all duration-500 ease-in-out pointer-events-none`}>
-                <nav className={`pointer-events-auto w-full lg:w-fit mx-auto px-4 lg:px-8 py-2.5 lg:py-2 transition-all duration-500 ease-in-out rounded-full ${navContainerClass}`}>
+                <nav className={`pointer-events-auto w-full lg:w-fit mx-auto px-4 lg:px-8 py-1.5 lg:py-1 transition-all duration-500 ease-in-out rounded-full ${navContainerClass}`}>
                     
                     {/* MOBILE LAYOUT (lg:hidden) */}
                     <div className="flex lg:hidden w-full items-center justify-between relative">
@@ -128,7 +128,7 @@ export default function Navbar() {
 
                                 {/* CENTER: Logo (Absolute Centered) */}
                                 <Link href="/" className="absolute left-1/2 -translate-x-1/2 z-10">
-                                    <span className={`text-xl sm:text-2xl font-serif font-bold tracking-[0.25em] uppercase group-hover:opacity-80 transition-colors duration-500 ${logoColor} drop-shadow-sm`}>
+                                    <span className={`text-2xl sm:text-3xl font-serif font-bold tracking-[0.25em] uppercase group-hover:opacity-80 transition-colors duration-500 ${logoColor} drop-shadow-sm`}>
                                         TENET
                                     </span>
                                 </Link>
