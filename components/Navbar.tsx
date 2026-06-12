@@ -172,89 +172,89 @@ export default function Navbar() {
                     </div>
 
                     {/* DESKTOP LAYOUT (hidden lg:flex) */}
-                    <div className="hidden lg:flex items-center justify-center gap-6 lg:gap-8">
+                    <div className="hidden lg:flex items-center justify-center gap-4 lg:gap-6">
                         {/* Logo */}
                         <Link href="/" className="block group shrink-0">
-                            <span className={`text-3xl font-serif font-medium tracking-[0.25em] uppercase group-hover:opacity-80 transition-colors ${logoColor} drop-shadow-md`}>
+                            <span className={`text-2xl font-serif font-medium tracking-[0.2em] uppercase group-hover:opacity-80 transition-colors ${logoColor} drop-shadow-sm`}>
                                 TENET
                             </span>
                         </Link>
 
                         {/* Subtle Divider */}
-                        <div className={`w-[1px] h-10 ${isScrolled || !isHome ? 'bg-black/10' : 'bg-white/20'}`} />
+                        <div className={`w-[1px] h-6 ${isScrolled || !isHome ? 'bg-black/20' : 'bg-white/30'}`} />
 
                         {/* Gender Toggle */}
-                        <div className="flex-shrink-0">
+                        <div className="flex-shrink-0 scale-90 origin-center">
                             <GenderToggle />
                         </div>
 
                         {/* Subtle Divider */}
-                        <div className={`w-[1px] h-10 ${isScrolled || !isHome ? 'bg-black/10' : 'bg-white/20'}`} />
+                        <div className={`w-[1px] h-6 ${isScrolled || !isHome ? 'bg-black/20' : 'bg-white/30'}`} />
 
-                        {/* Icons Row with Text Labels */}
-                        <div className={`flex items-center gap-4 lg:gap-6 transition-colors ${textColor} drop-shadow-sm`}>
+                        {/* Icons Row */}
+                        <div className={`flex items-center gap-2 lg:gap-3 transition-colors ${textColor} drop-shadow-sm`}>
                             {/* Shop / Collections */}
-                            <Link href="/#new-arrivals" className="flex flex-col items-center gap-1.5 group">
-                                <div className={`w-[40px] h-[40px] rounded-full transition-all group-hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`}>
-                                    <LayoutGrid className="w-4 h-4" strokeWidth={iconStroke} />
+                            <Link href="/#new-arrivals" className="relative flex flex-col items-center group">
+                                <div className={`w-[38px] h-[38px] rounded-full transition-all group-hover:scale-110 active:scale-95 ${iconGlassBg} flex items-center justify-center shadow-sm`}>
+                                    <LayoutGrid className="w-4 h-4" strokeWidth={2} />
                                 </div>
-                                <span className="text-[8px] font-bold uppercase tracking-[0.15em] opacity-80 group-hover:opacity-100 transition-opacity">Shop</span>
+                                <span className="absolute -bottom-6 opacity-0 group-hover:opacity-100 transition-opacity text-[10px] font-bold uppercase tracking-wider bg-black/80 text-white px-2 py-0.5 rounded-md pointer-events-none whitespace-nowrap">Shop</span>
                             </Link>
 
                             {/* Orders */}
-                            <Link href="/orders" className="flex flex-col items-center gap-1.5 group">
-                                <div className={`w-[40px] h-[40px] rounded-full transition-all group-hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`}>
-                                    <Package className="w-4 h-4" strokeWidth={iconStroke} />
+                            <Link href="/orders" className="relative flex flex-col items-center group">
+                                <div className={`w-[38px] h-[38px] rounded-full transition-all group-hover:scale-110 active:scale-95 ${iconGlassBg} flex items-center justify-center shadow-sm`}>
+                                    <Package className="w-4 h-4" strokeWidth={2} />
                                 </div>
-                                <span className="text-[8px] font-bold uppercase tracking-[0.15em] opacity-80 group-hover:opacity-100 transition-opacity">Orders</span>
+                                <span className="absolute -bottom-6 opacity-0 group-hover:opacity-100 transition-opacity text-[10px] font-bold uppercase tracking-wider bg-black/80 text-white px-2 py-0.5 rounded-md pointer-events-none whitespace-nowrap">Orders</span>
                             </Link>
 
                             {/* Account */}
-                            <div className="flex flex-col items-center gap-1.5 group">
+                            <div className="relative flex flex-col items-center group">
                                 {isSignedIn ? (
-                                    <div className={`w-[40px] h-[40px] rounded-full transition-all group-hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center cursor-pointer`}>
+                                    <div className={`w-[38px] h-[38px] rounded-full transition-all group-hover:scale-110 active:scale-95 ${iconGlassBg} flex items-center justify-center shadow-sm cursor-pointer`}>
                                         <div className="scale-90 origin-center flex items-center justify-center">
                                             <UserButton afterSignOutUrl="/" />
                                         </div>
                                     </div>
                                 ) : (
                                     <SignInButton mode="modal">
-                                        <button className={`w-[40px] h-[40px] rounded-full transition-all group-hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Sign in">
-                                            <User className="w-4 h-4" strokeWidth={iconStroke} />
+                                        <button className={`w-[38px] h-[38px] rounded-full transition-all group-hover:scale-110 active:scale-95 ${iconGlassBg} flex items-center justify-center shadow-sm`} aria-label="Sign in">
+                                            <User className="w-4 h-4" strokeWidth={2} />
                                         </button>
                                     </SignInButton>
                                 )}
-                                <span className="text-[8px] font-bold uppercase tracking-[0.15em] opacity-80 group-hover:opacity-100 transition-opacity">Account</span>
+                                <span className="absolute -bottom-6 opacity-0 group-hover:opacity-100 transition-opacity text-[10px] font-bold uppercase tracking-wider bg-black/80 text-white px-2 py-0.5 rounded-md pointer-events-none whitespace-nowrap">Account</span>
                             </div>
 
                             {/* Circle */}
-                            <Link href="/circle" className="flex flex-col items-center gap-1.5 group">
-                                <div className={`w-[40px] h-[40px] rounded-full transition-all group-hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`}>
-                                    <Crown className="w-4 h-4" strokeWidth={iconStroke} />
+                            <Link href="/circle" className="relative flex flex-col items-center group">
+                                <div className={`w-[38px] h-[38px] rounded-full transition-all group-hover:scale-110 active:scale-95 ${iconGlassBg} flex items-center justify-center shadow-sm`}>
+                                    <Crown className="w-4 h-4" strokeWidth={2} />
                                 </div>
-                                <span className="text-[8px] font-bold uppercase tracking-[0.15em] opacity-80 group-hover:opacity-100 transition-opacity">Circle</span>
+                                <span className="absolute -bottom-6 opacity-0 group-hover:opacity-100 transition-opacity text-[10px] font-bold uppercase tracking-wider bg-black/80 text-white px-2 py-0.5 rounded-md pointer-events-none whitespace-nowrap">Circle</span>
                             </Link>
 
                             {/* Wishlist */}
-                            <button className="flex flex-col items-center gap-1.5 group" aria-label="Open wishlist" onClick={openWishlist}>
-                                <div className={`relative w-[40px] h-[40px] rounded-full transition-all group-hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`}>
-                                    <Heart className="w-4 h-4" strokeWidth={iconStroke} />
+                            <button className="relative flex flex-col items-center group" aria-label="Open wishlist" onClick={openWishlist}>
+                                <div className={`relative w-[38px] h-[38px] rounded-full transition-all group-hover:scale-110 active:scale-95 ${iconGlassBg} flex items-center justify-center shadow-sm`}>
+                                    <Heart className="w-4 h-4" strokeWidth={2} />
                                     {wishlistCount > 0 && (
-                                        <span className="absolute top-1 right-1 w-2 h-2 rounded-full border border-white shadow-sm" style={{ backgroundColor: accentColor }} />
+                                        <span className="absolute top-0 right-0 w-2.5 h-2.5 rounded-full border border-white shadow-sm" style={{ backgroundColor: accentColor }} />
                                     )}
                                 </div>
-                                <span className="text-[8px] font-bold uppercase tracking-[0.15em] opacity-80 group-hover:opacity-100 transition-opacity">Saves</span>
+                                <span className="absolute -bottom-6 opacity-0 group-hover:opacity-100 transition-opacity text-[10px] font-bold uppercase tracking-wider bg-black/80 text-white px-2 py-0.5 rounded-md pointer-events-none whitespace-nowrap">Saves</span>
                             </button>
 
                             {/* Cart */}
-                            <button className="flex flex-col items-center gap-1.5 group" aria-label="Open cart" onClick={openCart}>
-                                <div className={`relative w-[40px] h-[40px] rounded-full transition-all group-hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`}>
-                                    <ShoppingBag className="w-4 h-4" strokeWidth={iconStroke} />
+                            <button className="relative flex flex-col items-center group" aria-label="Open cart" onClick={openCart}>
+                                <div className={`relative w-[38px] h-[38px] rounded-full transition-all group-hover:scale-110 active:scale-95 ${iconGlassBg} flex items-center justify-center shadow-sm`}>
+                                    <ShoppingBag className="w-4 h-4" strokeWidth={2} />
                                     {cartCount > 0 && (
-                                        <span className="absolute top-1 right-1 w-2 h-2 rounded-full border border-white shadow-sm" style={{ backgroundColor: accentColor }} />
+                                        <span className="absolute top-0 right-0 w-2.5 h-2.5 rounded-full border border-white shadow-sm" style={{ backgroundColor: accentColor }} />
                                     )}
                                 </div>
-                                <span className="text-[8px] font-bold uppercase tracking-[0.15em] opacity-80 group-hover:opacity-100 transition-opacity">Cart</span>
+                                <span className="absolute -bottom-6 opacity-0 group-hover:opacity-100 transition-opacity text-[10px] font-bold uppercase tracking-wider bg-black/80 text-white px-2 py-0.5 rounded-md pointer-events-none whitespace-nowrap">Cart</span>
                             </button>
                         </div>
                     </div>
