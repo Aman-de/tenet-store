@@ -96,7 +96,7 @@ export default function Navbar() {
     return (
         <>
             {/* The wrapper handles the floating position */}
-            <div className={`fixed top-0 left-0 w-full z-50 p-2 sm:p-4 transition-all duration-500 ease-in-out pointer-events-none`}>
+            <div className={`fixed top-0 left-0 w-full z-50 px-2 pt-1 pb-2 sm:p-4 transition-all duration-500 ease-in-out pointer-events-none`}>
                 <nav className={`pointer-events-auto w-full lg:w-fit mx-auto px-4 lg:px-8 py-1.5 lg:py-1 transition-all duration-500 ease-in-out rounded-full ${navContainerClass}`}>
                     
                     {/* MOBILE LAYOUT (lg:hidden) */}
