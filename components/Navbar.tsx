@@ -63,7 +63,7 @@ export default function Navbar() {
             <div className={`relative flex items-center rounded-full p-1 transition-colors duration-500 shadow-sm backdrop-blur-2xl ${toggleBg}`}>
                 <button 
                     onClick={() => setGender('man')}
-                    className={`relative z-10 w-14 sm:w-16 py-1 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.25em] rounded-full transition-colors duration-300 ${btnText(gender === 'man')}`}
+                    className={`relative z-10 w-16 sm:w-20 py-1.5 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.25em] rounded-full transition-colors duration-300 ${btnText(gender === 'man')}`}
                 >
                     MEN
                     {gender === 'man' && (
@@ -76,7 +76,7 @@ export default function Navbar() {
                 </button>
                 <button 
                     onClick={() => setGender('woman')}
-                    className={`relative z-10 w-14 sm:w-16 py-1 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.25em] rounded-full transition-colors duration-300 ${btnText(gender === 'woman')}`}
+                    className={`relative z-10 w-16 sm:w-20 py-1.5 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.25em] rounded-full transition-colors duration-300 ${btnText(gender === 'woman')}`}
                 >
                     WOMEN
                     {gender === 'woman' && (
@@ -128,7 +128,7 @@ export default function Navbar() {
 
                                 {/* CENTER: Logo (Absolute Centered) */}
                                 <Link href="/" className="absolute left-1/2 -translate-x-1/2 z-10">
-                                    <span className={`text-lg sm:text-xl font-serif font-bold tracking-[0.25em] uppercase group-hover:opacity-80 transition-colors duration-500 ${logoColor} drop-shadow-sm`}>
+                                    <span className={`text-xl sm:text-2xl font-serif font-bold tracking-[0.25em] uppercase group-hover:opacity-80 transition-colors duration-500 ${logoColor} drop-shadow-sm`}>
                                         TENET
                                     </span>
                                 </Link>
@@ -156,7 +156,7 @@ export default function Navbar() {
                             <>
                                 {/* LEFT: Logo */}
                                 <Link href="/" className="block group shrink-0 ml-2">
-                                    <span className={`text-xl font-serif font-medium tracking-[0.25em] uppercase group-hover:opacity-80 transition-colors duration-500 ${logoColor} drop-shadow-sm`}>
+                                    <span className={`text-2xl font-serif font-medium tracking-[0.25em] uppercase group-hover:opacity-80 transition-colors duration-500 ${logoColor} drop-shadow-sm`}>
                                         TENET
                                     </span>
                                 </Link>
@@ -226,7 +226,7 @@ export default function Navbar() {
 
                         {/* CENTER: Logo */}
                         <Link href="/" className="block group shrink-0 mx-2">
-                            <span className={`text-2xl font-serif font-bold tracking-[0.25em] uppercase group-hover:opacity-80 transition-opacity duration-300 ${logoColor} drop-shadow-lg`}>
+                            <span className={`text-3xl font-serif font-bold tracking-[0.25em] uppercase group-hover:opacity-80 transition-opacity duration-300 ${logoColor} drop-shadow-lg`}>
                                 TENET
                             </span>
                         </Link>
