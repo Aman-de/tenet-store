@@ -72,29 +72,9 @@ export default function MobileBottomNav() {
         },
     ];
 
-    const attentionStyles = {
-        "--attention-color": accentColor,
-        "--attention-color-glow": `${accentColor}60`
-    } as React.CSSProperties;
-
     // Floating pill styling
     return (
         <div className={`fixed bottom-4 left-4 right-4 h-[68px] transition-colors duration-500 z-50 flex items-center justify-around pb-0 rounded-[32px] shadow-[0_8px_30px_rgba(0,0,0,0.08)] border ${containerClass}`}>
-            <style>{`
-                @keyframes accountAttention {
-                    0%, 20%, 100% {
-                        color: #a3a3a3;
-                        transform: scale(1);
-                    }
-                    10% {
-                        color: var(--attention-color);
-                        transform: scale(1.08);
-                    }
-                }
-                .animate-attention {
-                    animation: accountAttention 10s infinite ease-in-out;
-                }
-            `}</style>
 
             {navItems.map((item) => {
                 const textStyle = item.isActive ? activeTextClass : inactiveTextClass;
@@ -155,25 +135,23 @@ export default function MobileBottomNav() {
             {/* Account Tab (Handling Auth) */}
             <div className="flex flex-col items-center justify-center w-full h-full space-y-0.5">
                 <SignedIn>
-                    <div className="scale-75 origin-bottom">
-                        <UserButton afterSignOutUrl="/" />
+                    <div className="relative flex items-center justify-center p-0.5">
+                        <div className="scale-[0.8] origin-center flex items-center justify-center h-[22px] w-[22px]">
+                            <UserButton afterSignOutUrl="/" />
+                        </div>
                     </div>
                 </SignedIn>
                 <SignedOut>
                     <SignInButton mode="modal">
-                        <button 
-                            className="flex flex-col items-center justify-center w-full h-full animate-attention focus:outline-none"
-                            style={attentionStyles}
-                            title="Account"
-                        >
+                        <button className="relative flex items-center justify-center p-0.5 focus:outline-none">
                             <User
                                 strokeWidth={2}
-                                className={`w-[22px] h-[22px] transition-colors ${inactiveTextClass}`}
+                                className={`w-[22px] h-[22px] transition-all duration-300 ${inactiveTextClass}`}
                             />
                         </button>
                     </SignInButton>
                 </SignedOut>
-                <span className={`text-[9px] uppercase tracking-[0.1em] font-bold ${inactiveTextClass}`}>
+                <span className={`text-[9px] uppercase tracking-[0.1em] font-bold transition-all duration-300 ${inactiveTextClass}`}>
                     Account
                 </span>
             </div>
