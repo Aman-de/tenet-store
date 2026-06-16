@@ -44,8 +44,8 @@ export default function Navbar() {
     
     // Transparent dark glass on hero image (mobile), solid light glass on scroll (mobile & always on desktop)
     const navContainerClass = isScrolledOrNotHome 
-        ? "bg-[#F8F5EF]/90 backdrop-blur-2xl border border-[#1A1A1A]/5 shadow-[0_4px_24px_rgba(0,0,0,0.02)]" 
-        : "bg-transparent border-transparent shadow-none lg:bg-[#F8F5EF]/90 lg:backdrop-blur-2xl lg:border lg:border-[#1A1A1A]/5 lg:shadow-[0_4px_24px_rgba(0,0,0,0.02)]";
+        ? "bg-[#F8F5EF]/95 backdrop-blur-3xl border-b border-[#1A1A1A]/5 shadow-[0_4px_24px_rgba(0,0,0,0.02)]" 
+        : "bg-transparent border-b border-transparent shadow-none lg:bg-[#F8F5EF]/95 lg:backdrop-blur-3xl lg:border-b lg:border-[#1A1A1A]/5 lg:shadow-[0_4px_24px_rgba(0,0,0,0.02)]";
 
     const textColor = isScrolledOrNotHome ? "text-neutral-800" : "text-white lg:text-neutral-800";
     const logoColor = isScrolledOrNotHome ? "text-black" : "text-white lg:text-black";
@@ -99,8 +99,8 @@ export default function Navbar() {
     return (
         <>
             {/* The wrapper handles the floating position */}
-            <div className={`fixed top-0 left-0 w-full z-50 px-2 pt-1 pb-2 sm:p-4 transition-all duration-500 ease-in-out pointer-events-none`}>
-                <nav className={`pointer-events-auto w-full lg:w-full lg:max-w-[850px] xl:max-w-[1000px] mx-auto px-4 lg:px-8 py-1.5 lg:py-1 transition-all duration-500 ease-in-out rounded-full ${navContainerClass}`}>
+            <div className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-in-out pointer-events-none`}>
+                <nav className={`pointer-events-auto w-full mx-auto px-4 lg:px-8 py-2 lg:py-2.5 transition-all duration-500 ease-in-out ${navContainerClass}`}>
                     
                     {/* MOBILE LAYOUT (lg:hidden) */}
                     <div className="flex lg:hidden w-full items-center justify-between relative">
