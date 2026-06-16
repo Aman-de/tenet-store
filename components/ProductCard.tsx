@@ -53,6 +53,9 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
         }, 600);
     };
 
+    const primaryImage = product.images?.[1] || product.images?.[0];
+    const secondaryImage = product.images?.[1] ? product.images[0] : null;
+
     return (
         <div
             className="group relative cursor-pointer bg-transparent transition-all duration-500"
@@ -62,13 +65,13 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
             {/* Image Container */}
             <div className="relative aspect-[3/4] w-full overflow-hidden bg-neutral-100 mb-3 rounded-sm">
                 <Link href={`/product/${product.handle}`} onClick={handleViewItem} className="absolute inset-0 z-0 block w-full h-full">
-                    {product.images?.[0] ? (
+                    {primaryImage ? (
                         <>
                             {isImg1Loading && (
                                 <div className="absolute inset-0 bg-neutral-200 animate-pulse z-10" />
                             )}
                             <Image
-                                src={product.images[0]}
+                                src={primaryImage}
                                 alt={product.title}
                                 fill
                                 className="object-cover absolute inset-0 z-0 transition-opacity duration-200 ease-in-out group-hover:opacity-0"
@@ -81,13 +84,13 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
                             No Image
                         </div>
                     )}
-                    {product.images?.[1] && !altImgError && (
+                    {secondaryImage && !altImgError && (
                         <>
                             {isImg2Loading && isHovered && (
                                 <div className="absolute inset-0 bg-neutral-200 animate-pulse z-10" />
                             )}
                             <Image
-                                src={product.images[1]}
+                                src={secondaryImage}
                                 alt={product.title}
                                 fill
                                 className="object-cover absolute inset-0 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-in-out"
