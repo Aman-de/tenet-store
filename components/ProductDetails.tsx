@@ -704,46 +704,53 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 )}
                 {reviews.length === 0 && <div className="mb-2" />}
 
-                {/* Active Promo Tags */}
-                <div className="flex flex-col gap-2.5 mb-5 mt-1 border-t border-b border-neutral-100/60 py-3">
-                    {isEligibleForFirst20 && (
-                        <div className="flex items-start gap-2.5">
-                            <span className="text-[9px] font-bold text-white px-1.5 py-0.5 rounded uppercase tracking-wider shrink-0" style={{ backgroundColor: accentColor }}>
-                                Offer
-                            </span>
-                            <div className="text-[11.5px] leading-snug text-neutral-500 font-sans flex items-center flex-wrap gap-x-1.5 gap-y-1">
-                                <span><strong className="text-[#1A1A1A] dark:text-[#F4F1ED] font-semibold">-20% OFF</strong><span className="text-neutral-600 dark:text-neutral-400 ml-1">on your first purchase. Use code</span></span>
-                                <button
-                                    onClick={handleCopyCode}
-                                    className="font-mono bg-neutral-100/80 dark:bg-[#141414] px-2 py-0.5 border border-neutral-200/60 dark:border-white/10 rounded text-neutral-800 dark:text-[#F4F1ED] text-[10.5px] flex items-center gap-1.5 hover:bg-neutral-200/50 dark:hover:bg-white/10 hover:text-black dark:hover:text-white active:scale-95 transition-all shadow-sm group cursor-pointer"
-                                    title="Click to copy coupon code"
-                                >
-                                    <span>FIRST20</span>
-                                    {copied ? (
-                                        <Check className="w-3 h-3 text-emerald-600 animate-in fade-in zoom-in-50 duration-200" />
-                                    ) : (
-                                        <Copy className="w-3 h-3 text-neutral-500 group-hover:text-neutral-600 transition-colors" />
-                                    )}
-                                    <span className="text-[9px] uppercase tracking-wider text-neutral-500 font-sans group-hover:text-[#1A1A1A] dark:text-[#F4F1ED] transition-colors">
-                                        {copied ? "Copied!" : "Copy"}
-                                    </span>
-                                </button>
-                            </div>
-                        </div>
-                    )}
-                    <div className="flex items-start gap-2.5">
-                        <span className="text-[9px] font-bold text-white px-1.5 py-0.5 rounded bg-neutral-800 uppercase tracking-wider shrink-0">
-                            Delivery
-                        </span>
-                        <div className="text-[11.5px] leading-snug text-neutral-500 font-sans">
-                            {displayPrice >= 499 ? (
-                                <span><strong className="text-emerald-700 font-semibold">✓ Eligible for Free Delivery</strong> on this purchase (Orders above ₹499)</span>
-                            ) : (
-                                <span>Add <strong className="text-[#1A1A1A] dark:text-[#F4F1ED] font-semibold">₹{499 - displayPrice}</strong> more to cart for <strong className="text-[#1A1A1A] dark:text-[#F4F1ED] font-semibold">Free Delivery</strong> (Threshold: ₹499)</span>
-                            )}
-                        </div>
+                {/* Micro-Trust Badges (Top Row) */}
+                <div className="flex flex-wrap items-center justify-between gap-2 py-3.5 mb-5 border-y border-neutral-100/80 dark:border-white/5">
+                    <div className="flex items-center gap-1.5 xs:gap-2">
+                        <Truck className="w-3.5 h-3.5 xs:w-4 xs:h-4 text-neutral-500" />
+                        <span className="text-[9px] xs:text-[10.5px] font-medium text-neutral-700 dark:text-neutral-300 tracking-wide">Free Shipping</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 xs:gap-2">
+                        <RefreshCw className="w-3.5 h-3.5 xs:w-4 xs:h-4 text-neutral-500" />
+                        <span className="text-[9px] xs:text-[10.5px] font-medium text-neutral-700 dark:text-neutral-300 tracking-wide">7 Day Returns</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 xs:gap-2">
+                        <svg className="w-3.5 h-3.5 xs:w-4 xs:h-4 text-neutral-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+                        <span className="text-[9px] xs:text-[10.5px] font-medium text-neutral-700 dark:text-neutral-300 tracking-wide">COD Available</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 xs:gap-2">
+                        <ShieldCheck className="w-3.5 h-3.5 xs:w-4 xs:h-4 text-neutral-500" />
+                        <span className="text-[9px] xs:text-[10.5px] font-medium text-neutral-700 dark:text-neutral-300 tracking-wide">Secure Pay</span>
                     </div>
                 </div>
+
+                {/* Active Promo Tags / Offer Card */}
+                {isEligibleForFirst20 && (
+                    <div className="mb-6 flex overflow-hidden border border-neutral-200/80 dark:border-white/10 rounded-xl bg-white dark:bg-[#111111] shadow-sm">
+                        <div className="w-[100px] bg-neutral-900 dark:bg-[#1A1A1A] text-white flex flex-col items-center justify-center py-3 px-2 text-center shrink-0">
+                            <span className="text-[8px] uppercase tracking-widest font-medium opacity-80 mb-0.5">First Order</span>
+                            <span className="text-xs font-bold tracking-widest uppercase">Offer</span>
+                        </div>
+                        <div className="flex-1 py-3 px-4 flex flex-col justify-center">
+                            <span className="text-[11px] xs:text-xs text-neutral-700 dark:text-neutral-300 font-medium mb-2">
+                                <strong className="text-[#1A1A1A] dark:text-[#F4F1ED] font-bold">Get 20% OFF</strong> on your first purchase
+                            </span>
+                            <button
+                                onClick={handleCopyCode}
+                                className="w-full flex items-center justify-between border border-dashed border-red-300/60 dark:border-red-900/40 bg-red-50/50 dark:bg-red-950/10 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors px-3 py-1.5 rounded-lg group cursor-pointer"
+                                style={{ borderColor: `${accentColor}40`, backgroundColor: `${accentColor}05` }}
+                            >
+                                <span className="font-mono text-xs font-bold tracking-widest" style={{ color: accentColor }}>FIRST20</span>
+                                <div className="flex items-center gap-1">
+                                    <span className="text-[9px] uppercase tracking-widest font-bold opacity-80" style={{ color: accentColor }}>
+                                        {copied ? "Copied" : "Copy"}
+                                    </span>
+                                </div>
+                            </button>
+                            <span className="text-[9px] text-neutral-400 mt-1.5 block">No min. order value</span>
+                        </div>
+                    </div>
+                )}
 
                 {/* Piece Selector (for Set Components) */}
                 {product.enableSetComponents && (
@@ -918,6 +925,30 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                     </div>
                 )}
 
+                {/* Fabric & Fit Grid */}
+                <div className="mb-5 grid grid-cols-2 md:grid-cols-4 gap-3 bg-neutral-50/50 dark:bg-[#111111] p-4 rounded-xl border border-neutral-100 dark:border-white/5 shadow-sm">
+                    <div className="flex flex-col gap-1 items-start">
+                        <svg className="w-4 h-4 text-neutral-400 mb-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+                        <span className="text-[10px] font-bold tracking-wider uppercase text-[#1A1A1A] dark:text-[#F4F1ED]">Fabric</span>
+                        <span className="text-[11px] text-neutral-500">Premium Cotton</span>
+                    </div>
+                    <div className="flex flex-col gap-1 items-start">
+                        <svg className="w-4 h-4 text-neutral-400 mb-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                        <span className="text-[10px] font-bold tracking-wider uppercase text-[#1A1A1A] dark:text-[#F4F1ED]">Fit</span>
+                        <span className="text-[11px] text-neutral-500">Straight Fit</span>
+                    </div>
+                    <div className="flex flex-col gap-1 items-start">
+                        <svg className="w-4 h-4 text-neutral-400 mb-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M21 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v3M21 16v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3M4 12h16"/></svg>
+                        <span className="text-[10px] font-bold tracking-wider uppercase text-[#1A1A1A] dark:text-[#F4F1ED]">Length</span>
+                        <span className="text-[11px] text-neutral-500">Calf Length</span>
+                    </div>
+                    <div className="flex flex-col gap-1 items-start">
+                        <svg className="w-4 h-4 text-neutral-400 mb-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                        <span className="text-[10px] font-bold tracking-wider uppercase text-[#1A1A1A] dark:text-[#F4F1ED]">Sleeve</span>
+                        <span className="text-[11px] text-neutral-500">3/4 Sleeve</span>
+                    </div>
+                </div>
+
                 {/* Urgency & Low Stock Indicators */}
                 {!product.isOutOfStock && (
                     <div className="flex flex-col gap-2 mb-5 animate-in fade-in zoom-in-95 duration-500">
@@ -965,58 +996,81 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 </div>
 
                 {/* Pincode Check */}
-                <div className="mt-5 border-t border-neutral-100/80 pt-4 mb-4">
-                    <h2 className="text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-2">Check Delivery Details</h2>
-                    <div className="flex gap-2">
-                        <input 
-                            type="text" 
-                            placeholder="Enter 6-digit Pincode" 
-                            value={pincode}
-                            onChange={handlePincodeChange}
-                            className={cn(
-                                "w-full border px-3.5 py-2 text-xs focus:outline-none transition-colors rounded-lg bg-white dark:bg-[#111111]",
-                                pincodeError ? "border-red-300 focus:border-red-500 bg-red-50" : "border-neutral-200/80 focus:border-[var(--accent-color)] focus:ring-0"
-                            )}
-                            style={{ '--accent-color': accentColor } as React.CSSProperties}
-                            maxLength={6}
-                        />
+                <div className="mb-5 bg-neutral-50 dark:bg-[#111111] border border-neutral-100/80 dark:border-white/5 p-4 rounded-xl shadow-sm flex items-start gap-3">
+                    <svg className="w-5 h-5 text-neutral-400 shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    <div className="flex-1 w-full flex flex-col gap-2 relative">
+                        <div className="text-xs font-semibold text-[#1A1A1A] dark:text-[#F4F1ED]">Enter Pincode</div>
+                        <div className="text-[10px] text-neutral-500 mt-[-6px]">Check delivery date & availability</div>
+                        
+                        <div className="flex flex-col sm:flex-row w-full gap-2 relative z-10">
+                            <input 
+                                type="text" 
+                                placeholder="Enter 6-digit Pincode" 
+                                value={pincode}
+                                onChange={handlePincodeChange}
+                                className={cn(
+                                    "w-full border px-3 py-2.5 text-[13px] font-medium tracking-wide focus:outline-none transition-colors rounded-lg bg-white dark:bg-[#141414] shadow-inner",
+                                    pincodeError ? "border-red-300 focus:border-red-500 bg-red-50/50 dark:bg-red-900/10" : "border-neutral-200/80 dark:border-white/10 focus:border-[#1A1A1A] dark:focus:border-[#F4F1ED]"
+                                )}
+                                maxLength={6}
+                            />
+                            <button
+                                onClick={() => pincode.length === 6 && handleCheckPincode(pincode)}
+                                disabled={pincode.length !== 6}
+                                className="shrink-0 bg-[#1A1A1A] dark:bg-white text-white dark:text-[#1A1A1A] px-5 py-2.5 text-[10px] font-bold tracking-widest uppercase rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-black dark:hover:bg-neutral-200 transition-colors shadow-sm cursor-pointer"
+                            >
+                                Check
+                            </button>
+                        </div>
+                        {pincodeError && (
+                            <div className="flex items-center gap-1.5 text-xs text-red-500 mt-1">
+                                <AlertCircle className="w-3.5 h-3.5" />
+                                <span>{pincodeError}</span>
+                            </div>
+                        )}
+                        {deliveryInfo && (
+                            <div className="flex items-center gap-1.5 text-xs text-emerald-600 dark:text-emerald-500 mt-1 font-medium bg-emerald-50/50 dark:bg-emerald-900/10 p-2 rounded-md border border-emerald-100/50 dark:border-emerald-900/30">
+                                <Truck className="w-3.5 h-3.5" />
+                                <span>{deliveryInfo.date}</span>
+                                {product.price >= 499 ? (
+                                    <span className="ml-1 opacity-80">(Free Shipping)</span>
+                                ) : (
+                                    <span className="ml-1 opacity-80">(₹70 Shipping)</span>
+                                )}
+                            </div>
+                        )}
                     </div>
-                    {pincodeError && (
-                        <div className="flex items-center gap-2 text-xs text-red-500 mt-2">
-                            <AlertCircle className="w-3.5 h-3.5" />
-                            <span>{pincodeError}</span>
-                        </div>
-                    )}
-                    {deliveryInfo && (
-                        <div className="flex items-center gap-2 text-xs text-[#1A1A1A] dark:text-[#F4F1ED] mt-2">
-                            <Truck className="w-3.5 h-3.5 text-green-600" />
-                            <span>{deliveryInfo.date}</span>
-                            <span className="text-neutral-300">•</span>
-                            {product.price >= 499 ? (
-                                <span className="text-green-600 font-medium">Free Shipping</span>
-                            ) : (
-                                <span className="text-neutral-500 font-medium">₹70 Shipping (Free above ₹499)</span>
-                            )}
-                        </div>
-                    )}
                 </div>
 
-                {/* Micro-Trust Badges */}
-                <div className="grid grid-cols-3 gap-1 py-3 border-t border-b border-neutral-100/80 mb-5 text-center bg-transparent">
-                    <div className="flex flex-col items-center justify-center gap-0.5">
-                        <Truck className="w-4 h-4 text-neutral-500 stroke-[1.2]" />
-                        <span className="font-sans text-[9px] uppercase font-semibold tracking-wider text-[#1A1A1A] dark:text-[#F4F1ED]">Free Shipping</span>
-                        <span className="font-sans text-[7.5px] text-neutral-500 uppercase leading-none">Express Delivery</span>
+                {/* Social Proof */}
+                <div className="flex items-center justify-between px-4 py-3 bg-neutral-50/80 dark:bg-[#111111] rounded-xl border border-neutral-100/80 dark:border-white/5 mb-6 shadow-sm">
+                    <div className="flex items-center gap-2">
+                        <div className="flex -space-x-1.5 relative z-0">
+                            <div className="w-5 h-5 rounded-full bg-neutral-200 dark:bg-neutral-700 border border-white dark:border-[#111111]" />
+                            <div className="w-5 h-5 rounded-full bg-neutral-300 dark:bg-neutral-600 border border-white dark:border-[#111111]" />
+                            <div className="w-5 h-5 rounded-full bg-neutral-400 dark:bg-neutral-500 border border-white dark:border-[#111111]" />
+                        </div>
+                        <span className="text-[11px] font-medium text-[#1A1A1A] dark:text-[#F4F1ED]">🔥 37 people viewed this today</span>
                     </div>
-                    <div className="flex flex-col items-center justify-center gap-0.5">
-                        <ShieldCheck className="w-4 h-4 text-neutral-500 stroke-[1.2]" />
-                        <span className="font-sans text-[9px] uppercase font-semibold tracking-wider text-[#1A1A1A] dark:text-[#F4F1ED]">Secure Pay</span>
-                        <span className="font-sans text-[7.5px] text-neutral-500 uppercase leading-none">UPI & Cards</span>
+                    <div className="flex items-center gap-1.5">
+                        <Heart className="w-3.5 h-3.5 text-red-500 fill-red-500" />
+                        <span className="text-[11px] font-medium text-neutral-600 dark:text-neutral-400">2,100+ sold</span>
                     </div>
-                    <div className="flex flex-col items-center justify-center gap-0.5">
-                        <RefreshCw className="w-4 h-4 text-neutral-500 stroke-[1.2]" />
-                        <span className="font-sans text-[9px] uppercase font-semibold tracking-wider text-[#1A1A1A] dark:text-[#F4F1ED]">Easy Return</span>
-                        <span className="font-sans text-[7.5px] text-neutral-500 uppercase leading-none">7-day exchange</span>
+                </div>
+
+                {/* Micro-Trust Badges (Footer row) */}
+                <div className="flex flex-col sm:flex-row divide-y sm:divide-y-0 sm:divide-x divide-neutral-200/50 dark:divide-white/10 border border-neutral-200/50 dark:border-white/10 rounded-xl mb-6 bg-white dark:bg-[#111111] shadow-sm">
+                    <div className="flex-1 flex flex-col items-center justify-center p-3 sm:py-4 gap-1.5 text-center">
+                        <ShieldCheck className="w-4 h-4 text-neutral-500" />
+                        <span className="text-[10px] font-semibold tracking-wide text-[#1A1A1A] dark:text-[#F4F1ED] leading-tight">100% Original<br/>Products</span>
+                    </div>
+                    <div className="flex-1 flex flex-col items-center justify-center p-3 sm:py-4 gap-1.5 text-center">
+                        <svg className="w-4 h-4 text-neutral-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        <span className="text-[10px] font-semibold tracking-wide text-[#1A1A1A] dark:text-[#F4F1ED] leading-tight">Trusted by 50K+<br/>Customers</span>
+                    </div>
+                    <div className="flex-1 flex flex-col items-center justify-center p-3 sm:py-4 gap-1.5 text-center">
+                        <RefreshCw className="w-4 h-4 text-neutral-500" />
+                        <span className="text-[10px] font-semibold tracking-wide text-[#1A1A1A] dark:text-[#F4F1ED] leading-tight">7 Days Easy<br/>Returns</span>
                     </div>
                 </div>
 
@@ -1208,11 +1262,12 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 </div>
             </div>
 
-            {/* Sticky Mobile Bar */}
+            {/* Mobile Sticky CTA */}
             <MobileStickyBar 
                 product={product} 
                 selectedVariant={selectedVariant} 
-                onAddToCart={handleAddToCart}
+                onAddToCart={handleAddToCart} 
+                onBuyNow={handleBuyNow}
                 displayPrice={displayPrice}
             />
         </div>
