@@ -41,7 +41,7 @@ const StatusBadge = ({ status }: { status: string }) => {
             );
         default:
             return (
-                <span className="flex items-center gap-1.5 px-3 py-1 bg-neutral-100 text-neutral-600 text-[10px] font-bold uppercase tracking-wider rounded-full border border-neutral-200">
+                <span className="flex items-center gap-1.5 px-3 py-1 bg-neutral-100 dark:bg-[#141414] text-neutral-600 text-[10px] font-bold uppercase tracking-wider rounded-full border border-neutral-200 dark:border-neutral-800">
                     <Clock className="w-3 h-3" />
                     Pending
                 </span>
@@ -63,9 +63,9 @@ const OrderStepper = ({ status }: { status: string }) => {
 
                 return (
                     <div key={step} className={`flex items-center ${isLast ? 'w-auto' : 'flex-1'}`}>
-                        <div className={`w-2 h-2 rounded-full ${isCompleted ? 'bg-black' : 'bg-neutral-200'} transition-colors duration-300`} />
+                        <div className={`w-2 h-2 rounded-full ${isCompleted ? 'bg-black' : 'bg-neutral-200 dark:bg-neutral-800'} transition-colors duration-300`} />
                         {!isLast && (
-                            <div className={`h-0.5 w-full mx-1 ${index < currentStepIndex ? 'bg-black' : 'bg-neutral-200'} transition-colors duration-300`} />
+                            <div className={`h-0.5 w-full mx-1 ${index < currentStepIndex ? 'bg-black' : 'bg-neutral-200 dark:bg-neutral-800'} transition-colors duration-300`} />
                         )}
                     </div>
                 );
@@ -115,7 +115,7 @@ export default async function OrdersPage(props: { searchParams: Promise<{ [key: 
         <div className="min-h-screen bg-[#FDFBF7] dark:bg-[#0A0A0A] pt-24 pb-12 px-4 md:px-8">
             <div className="max-w-4xl mx-auto space-y-8">
                 {/* Header */}
-                <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-neutral-200 pb-6">
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-neutral-200 dark:border-neutral-800 pb-6">
                     <div className="flex flex-col gap-4">
                         <Link href="/" className="inline-flex items-center text-sm font-medium text-neutral-500 hover:text-black transition-colors w-fit group">
                             <ChevronLeft className="w-4 h-4 mr-1 group-hover:-translate-x-1 transition-transform" />
@@ -129,8 +129,8 @@ export default async function OrdersPage(props: { searchParams: Promise<{ [key: 
                 </div>
 
                 {orders.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center py-20 bg-white border border-neutral-100 rounded-xl shadow-sm text-center">
-                        <div className="w-16 h-16 bg-neutral-50 rounded-full flex items-center justify-center mb-6">
+                    <div className="flex flex-col items-center justify-center py-20 bg-white dark:bg-[#111111] border border-neutral-100 dark:border-neutral-800 rounded-xl shadow-sm text-center">
+                        <div className="w-16 h-16 bg-neutral-50 dark:bg-[#0A0A0A] rounded-full flex items-center justify-center mb-6">
                             <ShoppingBag className="w-8 h-8 text-neutral-300" />
                         </div>
                         <h2 className="font-serif text-xl text-[#1A1A1A] dark:text-[#F4F1ED] mb-2">No active orders</h2>
@@ -163,9 +163,9 @@ export default async function OrdersPage(props: { searchParams: Promise<{ [key: 
                             }
 
                             return (
-                                <div key={order._id} className="bg-white border border-neutral-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                                <div key={order._id} className="bg-white dark:bg-[#111111] border border-neutral-200 dark:border-neutral-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                                     {/* Order Header */}
-                                    <div className="bg-neutral-50 border-b border-neutral-100 p-4 md:p-6 flex flex-wrap items-center justify-between gap-4">
+                                    <div className="bg-neutral-50 dark:bg-[#0A0A0A] border-b border-neutral-100 dark:border-neutral-800 p-4 md:p-6 flex flex-wrap items-center justify-between gap-4">
                                         <div className="space-y-1">
                                             <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-500">Order Placed</p>
                                             <p className="font-sans text-sm text-[#1A1A1A] dark:text-[#F4F1ED]">{created.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
@@ -200,7 +200,7 @@ export default async function OrdersPage(props: { searchParams: Promise<{ [key: 
                                         { }
                                         {order.products?.map((item: any, idx: number) => (
                                             <div key={idx} className="flex gap-4 items-start">
-                                                <div className="relative w-16 h-20 bg-neutral-100 rounded-sm overflow-hidden shrink-0 border border-neutral-100">
+                                                <div className="relative w-16 h-20 bg-neutral-100 dark:bg-[#141414] rounded-sm overflow-hidden shrink-0 border border-neutral-100 dark:border-neutral-800">
                                                     {item.product?.imageUrl ? (
                                                         <Image
                                                             src={item.product.imageUrl}
@@ -209,7 +209,7 @@ export default async function OrdersPage(props: { searchParams: Promise<{ [key: 
                                                             className="object-cover"
                                                         />
                                                     ) : (
-                                                        <div className="w-full h-full bg-neutral-200" />
+                                                        <div className="w-full h-full bg-neutral-200 dark:bg-neutral-800" />
                                                     )}
                                                 </div>
                                                 <div className="flex-1 min-w-0">

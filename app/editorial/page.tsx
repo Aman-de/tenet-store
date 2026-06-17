@@ -29,7 +29,7 @@ export default function EditorialPage() {
 
         {/* Men's Campaign Section */}
         <section className="mb-24 lg:mb-32">
-          <div className="bg-white border border-neutral-100 rounded-3xl overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.02)] flex flex-col lg:flex-row items-stretch group">
+          <div className="bg-white dark:bg-[#111111] border border-neutral-100 dark:border-neutral-800 rounded-3xl overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.02)] flex flex-col lg:flex-row items-stretch group">
             <div className="relative w-full lg:w-1/2 min-h-[400px] lg:min-h-[600px] overflow-hidden">
               <Image
                 src="/images/editorial_campaign.webp"
@@ -40,8 +40,8 @@ export default function EditorialPage() {
                 priority
               />
             </div>
-            <div className="w-full lg:w-1/2 p-8 md:p-16 xl:p-24 flex flex-col justify-center bg-white relative">
-              <div className="absolute top-0 left-0 w-1 h-full bg-neutral-100" />
+            <div className="w-full lg:w-1/2 p-8 md:p-16 xl:p-24 flex flex-col justify-center bg-white dark:bg-[#111111] relative">
+              <div className="absolute top-0 left-0 w-1 h-full bg-neutral-100 dark:bg-[#141414]" />
               <span className="text-xs uppercase font-bold tracking-[0.2em] text-neutral-400 mb-6 block">
                 Men's Collection
               </span>
@@ -70,7 +70,7 @@ export default function EditorialPage() {
 
         {/* Women's Campaign Section */}
         <section className="mb-12">
-          <div className="bg-white border border-neutral-100 rounded-3xl overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.02)] flex flex-col lg:flex-row-reverse items-stretch group">
+          <div className="bg-white dark:bg-[#111111] border border-neutral-100 dark:border-neutral-800 rounded-3xl overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.02)] flex flex-col lg:flex-row-reverse items-stretch group">
             <div className="relative w-full lg:w-1/2 min-h-[400px] lg:min-h-[600px] overflow-hidden">
               <Image
                 src="/images/editorial_campaign_women.webp"
@@ -80,8 +80,8 @@ export default function EditorialPage() {
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
             </div>
-            <div className="w-full lg:w-1/2 p-8 md:p-16 xl:p-24 flex flex-col justify-center bg-white relative">
-              <div className="absolute top-0 right-0 w-1 h-full bg-neutral-100" />
+            <div className="w-full lg:w-1/2 p-8 md:p-16 xl:p-24 flex flex-col justify-center bg-white dark:bg-[#111111] relative">
+              <div className="absolute top-0 right-0 w-1 h-full bg-neutral-100 dark:bg-[#141414]" />
               <span className="text-xs uppercase font-bold tracking-[0.2em] text-neutral-400 mb-6 block">
                 Women's Collection
               </span>

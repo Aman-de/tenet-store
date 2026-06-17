@@ -11,7 +11,7 @@ export default function RecommendedProducts({ products }: RecommendedProductsPro
     if (!products || products.length === 0) return null;
 
     return (
-        <section className="py-16 md:py-24 border-t border-neutral-200">
+        <section className="py-16 md:py-24 border-t border-neutral-200 dark:border-neutral-800">
             <h2 className="font-serif text-2xl md:text-3xl text-[#1A1A1A] dark:text-[#F4F1ED] mb-8 md:mb-12 text-center">
                 You May Also Like
             </h2>

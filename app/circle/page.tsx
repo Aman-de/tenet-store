@@ -20,9 +20,9 @@ export default async function InnerCirclePage() {
                     <p className="font-sans text-neutral-500 max-w-md mx-auto leading-relaxed">
                         An exclusive partnership network for Tenet patrons. Refer your peers and unlock 15% commission on their acquisitions, while offering them a 15% discount.
                     </p>
-                    <div className="bg-white border border-neutral-200 p-8 rounded-2xl shadow-sm text-left space-y-6">
+                    <div className="bg-white dark:bg-[#111111] border border-neutral-200 dark:border-neutral-800 p-8 rounded-2xl shadow-sm text-left space-y-6">
                         <div className="flex gap-4">
-                            <div className="w-10 h-10 rounded-full bg-neutral-50 flex items-center justify-center shrink-0">
+                            <div className="w-10 h-10 rounded-full bg-neutral-50 dark:bg-[#0A0A0A] flex items-center justify-center shrink-0">
                                 <span className="font-serif text-lg">1</span>
                             </div>
                             <div>
@@ -31,7 +31,7 @@ export default async function InnerCirclePage() {
                             </div>
                         </div>
                         <div className="flex gap-4">
-                            <div className="w-10 h-10 rounded-full bg-neutral-50 flex items-center justify-center shrink-0">
+                            <div className="w-10 h-10 rounded-full bg-neutral-50 dark:bg-[#0A0A0A] flex items-center justify-center shrink-0">
                                 <span className="font-serif text-lg">2</span>
                             </div>
                             <div>
@@ -40,7 +40,7 @@ export default async function InnerCirclePage() {
                             </div>
                         </div>
                         <div className="flex gap-4">
-                            <div className="w-10 h-10 rounded-full bg-neutral-50 flex items-center justify-center shrink-0">
+                            <div className="w-10 h-10 rounded-full bg-neutral-50 dark:bg-[#0A0A0A] flex items-center justify-center shrink-0">
                                 <span className="font-serif text-lg">3</span>
                             </div>
                             <div>
@@ -202,21 +202,21 @@ export default async function InnerCirclePage() {
                 />
 
                 {/* How it works */}
-                <div className="bg-neutral-50 rounded-2xl p-8 mt-8 border border-neutral-100">
+                <div className="bg-neutral-50 dark:bg-[#0A0A0A] rounded-2xl p-8 mt-8 border border-neutral-100 dark:border-neutral-800">
                     <h3 className="font-serif text-xl mb-6">The Circle Protocol</h3>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div className="space-y-3">
-                            <div className="w-8 h-8 rounded-full bg-white border border-neutral-200 flex items-center justify-center font-serif text-sm">1</div>
+                            <div className="w-8 h-8 rounded-full bg-white dark:bg-[#111111] border border-neutral-200 dark:border-neutral-800 flex items-center justify-center font-serif text-sm">1</div>
                             <h4 className="font-bold text-sm uppercase tracking-widest">Share Referral Assets</h4>
                             <p className="text-xs text-neutral-500 leading-relaxed font-sans">Distribute your unique referral link or coupon key to friends and colleagues.</p>
                         </div>
                         <div className="space-y-3">
-                            <div className="w-8 h-8 rounded-full bg-white border border-neutral-200 flex items-center justify-center font-serif text-sm">2</div>
+                            <div className="w-8 h-8 rounded-full bg-white dark:bg-[#111111] border border-neutral-200 dark:border-neutral-800 flex items-center justify-center font-serif text-sm">2</div>
                             <h4 className="font-bold text-sm uppercase tracking-widest">Welcome Discount</h4>
                             <p className="text-xs text-neutral-500 leading-relaxed font-sans">They receive 15% off their purchase value automatically at checkout when using your assets.</p>
                         </div>
                         <div className="space-y-3">
-                            <div className="w-8 h-8 rounded-full bg-white border border-neutral-200 flex items-center justify-center font-serif text-sm">3</div>
+                            <div className="w-8 h-8 rounded-full bg-white dark:bg-[#111111] border border-neutral-200 dark:border-neutral-800 flex items-center justify-center font-serif text-sm">3</div>
                             <h4 className="font-bold text-sm uppercase tracking-widest">Commission Payout</h4>
                             <p className="text-xs text-neutral-500 leading-relaxed font-sans">You receive a 15% commission on every order. Withdraw your balance directly to your linked bank account.</p>
                         </div>

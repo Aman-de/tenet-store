@@ -287,26 +287,26 @@ export default function Navbar() {
                                 <Link
                                     href="/"
                                     onClick={() => setIsMobileMenuOpen(false)}
-                                    className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED] hover:bg-neutral-50 transition-colors text-center border-b border-neutral-100"
+                                    className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED] hover:bg-neutral-50 dark:hover:bg-[#141414] dark:bg-[#0A0A0A] transition-colors text-center border-b border-neutral-100 dark:border-neutral-800"
                                 >
                                     HOME
                                 </Link>
                                 <Link
                                     href="/#new-arrivals"
                                     onClick={() => setIsMobileMenuOpen(false)}
-                                    className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED] hover:bg-neutral-50 transition-colors text-center border-b border-neutral-100"
+                                    className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED] hover:bg-neutral-50 dark:hover:bg-[#141414] dark:bg-[#0A0A0A] transition-colors text-center border-b border-neutral-100 dark:border-neutral-800"
                                 >
                                     COLLECTIONS
                                 </Link>
                                 <Link
                                     href="/orders"
                                     onClick={() => setIsMobileMenuOpen(false)}
-                                    className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED] hover:bg-neutral-50 transition-colors text-center border-b border-neutral-100"
+                                    className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED] hover:bg-neutral-50 dark:hover:bg-[#141414] dark:bg-[#0A0A0A] transition-colors text-center border-b border-neutral-100 dark:border-neutral-800"
                                 >
                                     ORDERS
                                 </Link>
                                 <SignedIn>
-                                    <div className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED] hover:bg-neutral-50 transition-colors flex items-center justify-center gap-4 border-b border-neutral-100">
+                                    <div className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED] hover:bg-neutral-50 dark:hover:bg-[#141414] dark:bg-[#0A0A0A] transition-colors flex items-center justify-center gap-4 border-b border-neutral-100 dark:border-neutral-800">
                                         <span>ACCOUNT</span>
                                         <div className="scale-90 origin-center">
                                             <UserButton afterSignOutUrl="/" />
@@ -317,7 +317,7 @@ export default function Navbar() {
                                     <SignInButton mode="modal">
                                         <button 
                                             onClick={() => setIsMobileMenuOpen(false)}
-                                            className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED] hover:bg-neutral-50 transition-colors text-center border-b border-neutral-100 w-full"
+                                            className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED] hover:bg-neutral-50 dark:hover:bg-[#141414] dark:bg-[#0A0A0A] transition-colors text-center border-b border-neutral-100 dark:border-neutral-800 w-full"
                                         >
                                             ACCOUNT (LOG IN)
                                         </button>

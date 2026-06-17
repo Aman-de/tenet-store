@@ -22,7 +22,7 @@ export default function ShippingPage() {
                     <section>
                         <h2 className="font-serif text-2xl text-black mb-4">Shipping rates & delivery estimates</h2>
                         <p className="mb-4">Shipping charges for your order will be calculated and displayed at checkout. We occasionally offer free shipping on orders over a certain threshold, which will be clearly indicated on our website.</p>
-                        <div className="bg-white border border-neutral-200 p-6 rounded-lg">
+                        <div className="bg-white dark:bg-[#111111] border border-neutral-200 dark:border-neutral-800 p-6 rounded-lg">
                             <p className="font-medium">Please Note:</p>
                             <p className="text-sm mt-2">Delivery delays can occasionally occur due to unforeseen circumstances or carrier delays.</p>
                         </div>

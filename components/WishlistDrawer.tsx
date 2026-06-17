@@ -119,7 +119,7 @@ const WishlistItemRow = ({ item, removeFromWishlist, addToCart }: any) => {
                             className="object-cover group-hover:scale-105 transition-transform duration-500 pointer-events-none"
                         />
                     ) : (
-                        <div className="w-full h-full bg-neutral-200 flex items-center justify-center text-neutral-400 text-[10px] text-center p-1">
+                        <div className="w-full h-full bg-neutral-200 dark:bg-neutral-800 flex items-center justify-center text-neutral-400 text-[10px] text-center p-1">
                             No Image
                         </div>
                     )}
@@ -205,7 +205,7 @@ export default function WishlistDrawer() {
                         {/* Header */}
                         <div className="flex items-center justify-between p-6 border-b border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#111111]">
                             <h2 className="font-serif text-xl text-[#1A1A1A] dark:text-[#F4F1ED]">Wishlist ({wishlist.length})</h2>
-                            <button onClick={closeWishlist} className="p-2 hover:bg-neutral-100 dark:bg-[#141414] rounded-full transition-colors">
+                            <button onClick={closeWishlist} className="p-2 hover:bg-neutral-100 dark:hover:bg-[#1A1A1A] dark:bg-[#141414] rounded-full transition-colors">
                                 <X className="w-5 h-5 text-[#1A1A1A] dark:text-[#F4F1ED]" />
                             </button>
                         </div>

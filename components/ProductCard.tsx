@@ -87,7 +87,7 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
                     {secondaryImage && !altImgError && (
                         <>
                             {isImg2Loading && isHovered && (
-                                <div className="absolute inset-0 bg-neutral-200 animate-pulse z-10" />
+                                <div className="absolute inset-0 bg-neutral-200 dark:bg-neutral-800 animate-pulse z-10" />
                             )}
                             <Image
                                 src={secondaryImage}
@@ -171,7 +171,7 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
                             className={`
                                 pointer-events-auto
                                 w-full bg-white/95 dark:bg-[#1A1A1A]/95 backdrop-blur-sm text-[#1A1A1A] dark:text-[#F4F1ED] py-3 text-[10px] font-medium uppercase tracking-[0.2em] transition-all duration-500 ease-out border-t border-[#1A1A1A]/10 dark:border-white/10
-                                hover:bg-[#1A1A1A] dark:hover:bg-white hover:text-white dark:hover:text-[#1A1A1A] dark:text-[#F4F1ED]
+                                hover:bg-[#1A1A1A] dark:hover:bg-white dark:bg-[#111111] hover:text-white dark:hover:text-[#1A1A1A] dark:text-[#F4F1ED]
                                 opacity-0 group-hover:opacity-100
                                 transform ${addingState !== 'idle' && !product.isOutOfStock ? 'translate-y-0 opacity-100' : 'translate-y-[120%] group-hover:translate-y-0'}
                             `}
@@ -234,7 +234,7 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
                                                 e.stopPropagation();
                                                 handleSelectSize(size);
                                             }}
-                                            className="w-8 h-8 border rounded-full flex items-center justify-center font-sans text-[10px] font-bold transition-all border-neutral-200 dark:border-neutral-700 text-[#1A1A1A] dark:text-[#F4F1ED] hover:border-[#1A1A1A] dark:hover:border-[#F4F1ED] hover:bg-neutral-50 dark:hover:bg-white/10 active:scale-95"
+                                            className="w-8 h-8 border rounded-full flex items-center justify-center font-sans text-[10px] font-bold transition-all border-neutral-200 dark:border-neutral-700 text-[#1A1A1A] dark:text-[#F4F1ED] hover:border-[#1A1A1A] dark:hover:border-[#F4F1ED] hover:bg-neutral-50 dark:hover:bg-[#141414] dark:bg-[#0A0A0A] dark:hover:bg-white/10 active:scale-95"
                                         >
                                             {size}
                                         </button>

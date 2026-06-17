@@ -169,7 +169,7 @@ export default function OnboardingModal() {
                                 </div>
                             </div>
 
-                            <div className="pt-4 border-t border-neutral-200">
+                            <div className="pt-4 border-t border-neutral-200 dark:border-neutral-800">
                                 <div className="flex items-center justify-between mb-4">
                                     <label className="block text-xs font-bold uppercase tracking-widest text-neutral-500">Delivery Address</label>
                                     <button
@@ -238,7 +238,7 @@ export default function OnboardingModal() {
                         </form>
                     </div>
                     
-                    <div className="p-6 bg-white border-t border-neutral-100 shrink-0">
+                    <div className="p-6 bg-white dark:bg-[#111111] border-t border-neutral-100 dark:border-neutral-800 shrink-0">
                         <button
                             onClick={handleSubmit}
                             disabled={isSubmitting}

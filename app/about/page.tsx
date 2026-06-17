@@ -35,7 +35,7 @@ export default function AboutPage() {
     return (
         <main className="bg-[#FDFBF7] dark:bg-[#0A0A0A] min-h-screen pb-24 text-[#1A1A1A] dark:text-[#F4F1ED]">
             {/* Hero Section */}
-            <div className="relative overflow-hidden py-32 md:py-48 px-6 border-b border-neutral-100 bg-white">
+            <div className="relative overflow-hidden py-32 md:py-48 px-6 border-b border-neutral-100 dark:border-neutral-800 bg-white dark:bg-[#111111]">
                 <div className="max-w-4xl mx-auto text-center relative z-10">
                     <motion.span 
                         initial={{ opacity: 0, letterSpacing: "0.1em" }}
@@ -90,7 +90,7 @@ export default function AboutPage() {
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8 }}
-                        className="bg-white p-8 md:p-12 border border-neutral-100 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.02)] space-y-6"
+                        className="bg-white dark:bg-[#111111] p-8 md:p-12 border border-neutral-100 dark:border-neutral-800 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.02)] space-y-6"
                     >
                         <div className="border-l-2 border-black pl-4">
                             <span className="font-serif italic text-lg text-neutral-500 block mb-2">"True quiet luxury is defined by the confidence of detail."</span>
@@ -103,7 +103,7 @@ export default function AboutPage() {
                 </div>
 
                 {/* Three Pillars Grid */}
-                <div className="border-t border-neutral-100 pt-20">
+                <div className="border-t border-neutral-100 dark:border-neutral-800 pt-20">
                     <div className="text-center mb-16">
                         <h2 className="font-serif text-3xl mb-4">Our Core Pillars</h2>
                         <p className="font-sans text-neutral-400 text-sm">The principles that guide our design and development cycle.</p>
@@ -120,7 +120,7 @@ export default function AboutPage() {
                             <motion.div
                                 key={idx}
                                 variants={fadeIn}
-                                className="bg-white border border-neutral-100 p-8 rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.01)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.03)] hover:-translate-y-1 transition-all duration-300"
+                                className="bg-white dark:bg-[#111111] border border-neutral-100 dark:border-neutral-800 p-8 rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.01)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.03)] hover:-translate-y-1 transition-all duration-300"
                             >
                                 <span className="font-serif text-xl block mb-3 text-black font-semibold">{pillar.title}</span>
                                 <p className="font-sans text-neutral-500 text-sm leading-relaxed">{pillar.description}</p>

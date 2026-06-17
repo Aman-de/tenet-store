@@ -591,7 +591,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                             )}
                         >
                             {img ? (
-                                <div className={cn("w-full h-full relative bg-neutral-100 dark:bg-[#141414]", !loadedThumbnails[idx] && "animate-pulse bg-neutral-200")}>
+                                <div className={cn("w-full h-full relative bg-neutral-100 dark:bg-[#141414]", !loadedThumbnails[idx] && "animate-pulse bg-neutral-200 dark:bg-neutral-800")}>
                                     <Image
                                         src={img}
                                         alt={`Product View ${idx}`}
@@ -610,7 +610,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 {/* Main Image */}
                 <div className="relative flex-1 aspect-[3/4] bg-neutral-100 dark:bg-[#141414] overflow-hidden">
                     {isMainImgLoading && (
-                        <div className="absolute inset-0 bg-neutral-200 animate-pulse z-10" />
+                        <div className="absolute inset-0 bg-neutral-200 dark:bg-neutral-800 animate-pulse z-10" />
                     )}
                     <motion.div
                         key={`${selectedVariant?.colorName}-${selectedImageIndex}`} // Force re-render on variant change
@@ -1037,7 +1037,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                     <AccordionItem title={`Reviews (${reviews.length})`}>
                         <div className="space-y-8 py-4">
                             {/* Brand Info Card */}
-                            <div className="border border-neutral-100 rounded-xl p-4 sm:p-6 bg-neutral-50/30">
+                            <div className="border border-neutral-100 dark:border-neutral-800 rounded-xl p-4 sm:p-6 bg-neutral-50/30">
                                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
                                     <div>
                                         <h2 className="font-serif text-base xs:text-lg text-[#1A1A1A] dark:text-[#F4F1ED] mb-1">About Tenet</h2>
@@ -1111,7 +1111,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                     {reviews.map((review) => (
                                         <div 
                                             key={review.id} 
-                                            className="bg-white dark:bg-[#111111] p-4 xs:p-5 sm:p-6 rounded-xl border border-neutral-100 shadow-sm transition-all duration-300"
+                                            className="bg-white dark:bg-[#111111] p-4 xs:p-5 sm:p-6 rounded-xl border border-neutral-100 dark:border-neutral-800 shadow-sm transition-all duration-300"
                                         >
                                             <div className="flex justify-between items-start mb-3">
                                                 <div className="flex items-center gap-2.5">

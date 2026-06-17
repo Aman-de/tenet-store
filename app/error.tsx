@@ -25,7 +25,7 @@ export default function Error({
                 className="text-center max-w-md w-full"
             >
                 <div className="mb-8 flex justify-center">
-                    <div className="w-16 h-16 bg-neutral-100 rounded-full flex items-center justify-center text-[#1A1A1A] dark:text-[#F4F1ED]">
+                    <div className="w-16 h-16 bg-neutral-100 dark:bg-[#141414] rounded-full flex items-center justify-center text-[#1A1A1A] dark:text-[#F4F1ED]">
                         <span className="font-serif italic text-3xl">!</span>
                     </div>
                 </div>
@@ -49,7 +49,7 @@ export default function Error({
 
                     <Link
                         href="/"
-                        className="w-full sm:w-auto px-8 py-3 bg-white border border-neutral-200 text-[#1A1A1A] dark:text-[#F4F1ED] text-xs font-bold uppercase tracking-widest hover:bg-neutral-50 transition-colors flex items-center justify-center gap-2"
+                        className="w-full sm:w-auto px-8 py-3 bg-white dark:bg-[#111111] border border-neutral-200 dark:border-neutral-800 text-[#1A1A1A] dark:text-[#F4F1ED] text-xs font-bold uppercase tracking-widest hover:bg-neutral-50 dark:hover:bg-[#141414] dark:bg-[#0A0A0A] transition-colors flex items-center justify-center gap-2"
                     >
                         <Home size={14} />
                         Home

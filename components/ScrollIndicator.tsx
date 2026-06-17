@@ -22,7 +22,7 @@ export default function ScrollIndicator() {
 
             <div className="relative h-16 w-[1px] bg-white/20 overflow-hidden">
                 <motion.div
-                    className="absolute top-0 left-0 w-full bg-white"
+                    className="absolute top-0 left-0 w-full bg-white dark:bg-[#111111]"
                     initial={{ height: "0%", opacity: 0 }}
                     animate={{
                         height: ["0%", "100%"],

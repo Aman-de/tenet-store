@@ -28,7 +28,7 @@ export default function SizeGuide({ isOpen, onClose }: SizeGuideProps) {
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 20 }}
                         transition={{ duration: 0.3 }}
-                        className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-lg bg-white p-6 sm:p-8 shadow-2xl z-[90] rounded-2xl"
+                        className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-lg bg-white dark:bg-[#111111] p-6 sm:p-8 shadow-2xl z-[90] rounded-2xl"
                     >
                         <div className="flex justify-between items-start mb-4 sm:mb-6">
                             <h2 className="font-serif text-xl sm:text-2xl text-[#1A1A1A] dark:text-[#F4F1ED] flex items-center gap-3">
@@ -37,7 +37,7 @@ export default function SizeGuide({ isOpen, onClose }: SizeGuideProps) {
                             </h2>
                             <button
                                 onClick={onClose}
-                                className="p-2 hover:bg-neutral-100 rounded-full transition-colors cursor-pointer"
+                                className="p-2 hover:bg-neutral-100 dark:hover:bg-[#1A1A1A] dark:bg-[#141414] rounded-full transition-colors cursor-pointer"
                             >
                                 <X className="w-5 h-5 text-[#1A1A1A] dark:text-[#F4F1ED]" />
                             </button>
@@ -49,7 +49,7 @@ export default function SizeGuide({ isOpen, onClose }: SizeGuideProps) {
 
                         <div className="overflow-x-auto">
                             <table className="w-full text-sm font-sans text-left">
-                                <thead className="bg-neutral-50 border-b border-neutral-200">
+                                <thead className="bg-neutral-50 dark:bg-[#0A0A0A] border-b border-neutral-200 dark:border-neutral-800">
                                     <tr>
                                         <th className="px-4 py-3 font-bold uppercase tracking-wider text-[#1A1A1A] dark:text-[#F4F1ED]">Size</th>
                                         <th className="px-4 py-3 font-bold uppercase tracking-wider text-[#1A1A1A] dark:text-[#F4F1ED]">Chest</th>
@@ -91,7 +91,7 @@ export default function SizeGuide({ isOpen, onClose }: SizeGuideProps) {
                             </table>
                         </div>
 
-                        <div className="mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-neutral-200">
+                        <div className="mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-neutral-200 dark:border-neutral-800">
                             <p className="text-xs text-neutral-400 text-center uppercase tracking-widest">
                                 Need more help? <a href="/support" className="border-b border-neutral-400 hover:text-[#1A1A1A] dark:text-[#F4F1ED] transition-colors">Contact Support</a>
                             </p>

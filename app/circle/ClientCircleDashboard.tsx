@@ -221,7 +221,7 @@ export default function ClientCircleDashboard({
     return (
         <div className="space-y-10">
             {/* Share and Invitation Section */}
-            <div className="bg-white border border-neutral-200/60 rounded-2xl p-6 xs:p-8 shadow-sm flex flex-col gap-6">
+            <div className="bg-white dark:bg-[#111111] border border-neutral-200/60 rounded-2xl p-6 xs:p-8 shadow-sm flex flex-col gap-6">
                 <div>
                     <h3 className="font-bold text-xs uppercase tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED] mb-1.5">Your Circle Assets</h3>
                     <p className="text-xs text-neutral-400 font-sans leading-relaxed">
@@ -234,12 +234,12 @@ export default function ClientCircleDashboard({
                     <div className="space-y-2">
                         <label className="text-[9px] font-bold uppercase tracking-wider text-neutral-400">Referral Link</label>
                         <div className="flex gap-2">
-                            <div className="flex-1 bg-neutral-50 border border-neutral-100 rounded-xl px-4 py-3 flex items-center overflow-hidden h-[46px]">
+                            <div className="flex-1 bg-neutral-50 dark:bg-[#0A0A0A] border border-neutral-100 dark:border-neutral-800 rounded-xl px-4 py-3 flex items-center overflow-hidden h-[46px]">
                                 <span className="text-xs font-mono text-neutral-500 truncate">{shareUrl}</span>
                             </div>
                             <button 
                                 onClick={handleCopyLink}
-                                className="w-[100px] flex items-center justify-center gap-1.5 px-4 h-[46px] bg-white border border-neutral-200 hover:border-[#1A1A1A] active:scale-95 transition-all rounded-xl font-bold text-[10px] uppercase tracking-widest text-[#1A1A1A] dark:text-[#F4F1ED] cursor-pointer shrink-0"
+                                className="w-[100px] flex items-center justify-center gap-1.5 px-4 h-[46px] bg-white dark:bg-[#111111] border border-neutral-200 dark:border-neutral-800 hover:border-[#1A1A1A] active:scale-95 transition-all rounded-xl font-bold text-[10px] uppercase tracking-widest text-[#1A1A1A] dark:text-[#F4F1ED] cursor-pointer shrink-0"
                             >
                                 {copiedLink ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
                                 {copiedLink ? 'Copied' : 'Copy'}
@@ -251,12 +251,12 @@ export default function ClientCircleDashboard({
                     <div className="space-y-2">
                         <label className="text-[9px] font-bold uppercase tracking-wider text-neutral-400">Referral Coupon Code</label>
                         <div className="flex gap-2">
-                            <div className="flex-1 bg-neutral-50 border border-neutral-100 rounded-xl px-4 py-3 flex items-center overflow-hidden h-[46px]">
+                            <div className="flex-1 bg-neutral-50 dark:bg-[#0A0A0A] border border-neutral-100 dark:border-neutral-800 rounded-xl px-4 py-3 flex items-center overflow-hidden h-[46px]">
                                 <span className="text-xs font-mono font-bold tracking-wider text-[#1A1A1A] dark:text-[#F4F1ED]">{referralCode}</span>
                             </div>
                             <button 
                                 onClick={handleCopyCode}
-                                className="w-[100px] flex items-center justify-center gap-1.5 px-4 h-[46px] bg-white border border-neutral-200 hover:border-[#1A1A1A] active:scale-95 transition-all rounded-xl font-bold text-[10px] uppercase tracking-widest text-[#1A1A1A] dark:text-[#F4F1ED] cursor-pointer shrink-0"
+                                className="w-[100px] flex items-center justify-center gap-1.5 px-4 h-[46px] bg-white dark:bg-[#111111] border border-neutral-200 dark:border-neutral-800 hover:border-[#1A1A1A] active:scale-95 transition-all rounded-xl font-bold text-[10px] uppercase tracking-widest text-[#1A1A1A] dark:text-[#F4F1ED] cursor-pointer shrink-0"
                             >
                                 {copiedCode ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
                                 {copiedCode ? 'Copied' : 'Copy'}
@@ -276,7 +276,7 @@ export default function ClientCircleDashboard({
             {/* Financial Overview Grid */}
             <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
                 {/* Stat 1: Total Sales */}
-                <div className="bg-white border border-neutral-200/60 rounded-2xl p-5 shadow-sm space-y-2">
+                <div className="bg-white dark:bg-[#111111] border border-neutral-200/60 rounded-2xl p-5 shadow-sm space-y-2">
                     <div className="flex justify-between items-center text-neutral-400">
                         <span className="text-[9px] font-bold uppercase tracking-wider">Total Sales Made</span>
                         <TrendingUp className="w-4 h-4 text-neutral-300" />
@@ -285,7 +285,7 @@ export default function ClientCircleDashboard({
                 </div>
 
                 {/* Stat 2: Total Commission */}
-                <div className="bg-white border border-neutral-200/60 rounded-2xl p-5 shadow-sm space-y-2">
+                <div className="bg-white dark:bg-[#111111] border border-neutral-200/60 rounded-2xl p-5 shadow-sm space-y-2">
                     <div className="flex justify-between items-center text-neutral-400">
                         <span className="text-[9px] font-bold uppercase tracking-wider">Commission (15%)</span>
                         <Banknote className="w-4 h-4 text-neutral-300" />
@@ -294,7 +294,7 @@ export default function ClientCircleDashboard({
                 </div>
 
                 {/* Stat 3: Pending Balance */}
-                <div className="bg-white border border-neutral-200/60 rounded-2xl p-5 shadow-sm space-y-2">
+                <div className="bg-white dark:bg-[#111111] border border-neutral-200/60 rounded-2xl p-5 shadow-sm space-y-2">
                     <div className="flex justify-between items-center text-neutral-400">
                         <span className="text-[9px] font-bold uppercase tracking-wider">Pending (10-Day Hold)</span>
                         <Clock className="w-4 h-4 text-neutral-300" />
@@ -303,7 +303,7 @@ export default function ClientCircleDashboard({
                 </div>
 
                 {/* Stat 4: Redeemed */}
-                <div className="bg-white border border-neutral-200/60 rounded-2xl p-5 shadow-sm space-y-2">
+                <div className="bg-white dark:bg-[#111111] border border-neutral-200/60 rounded-2xl p-5 shadow-sm space-y-2">
                     <div className="flex justify-between items-center text-neutral-400">
                         <span className="text-[9px] font-bold uppercase tracking-wider">Redeemed</span>
                         <Check className="w-4 h-4 text-neutral-300" />
@@ -326,7 +326,7 @@ export default function ClientCircleDashboard({
                 <h3 className="font-bold text-xs uppercase tracking-[0.2em] text-neutral-400">Traffic & Engagement Funnel</h3>
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                     {/* Funnel 1: Click Traffic */}
-                    <div className="bg-white border border-neutral-200/60 rounded-2xl p-5 shadow-sm space-y-2 relative overflow-hidden group hover:border-[#1A1A1A] transition-all">
+                    <div className="bg-white dark:bg-[#111111] border border-neutral-200/60 rounded-2xl p-5 shadow-sm space-y-2 relative overflow-hidden group hover:border-[#1A1A1A] transition-all">
                         <div className="flex justify-between items-center text-neutral-400">
                             <span className="text-[9px] font-bold uppercase tracking-wider">Link Clicks</span>
                             <MousePointerClick className="w-4 h-4 text-neutral-300 group-hover:text-[#1A1A1A] dark:text-[#F4F1ED] transition-colors" />
@@ -336,7 +336,7 @@ export default function ClientCircleDashboard({
                     </div>
 
                     {/* Funnel 2: Community Joins */}
-                    <div className="bg-white border border-neutral-200/60 rounded-2xl p-5 shadow-sm space-y-2 relative overflow-hidden group hover:border-[#1A1A1A] transition-all">
+                    <div className="bg-white dark:bg-[#111111] border border-neutral-200/60 rounded-2xl p-5 shadow-sm space-y-2 relative overflow-hidden group hover:border-[#1A1A1A] transition-all">
                         <div className="flex justify-between items-center text-neutral-400">
                             <span className="text-[9px] font-bold uppercase tracking-wider">Patrons Joined</span>
                             <Users className="w-4 h-4 text-neutral-300 group-hover:text-[#1A1A1A] dark:text-[#F4F1ED] transition-colors" />
@@ -346,7 +346,7 @@ export default function ClientCircleDashboard({
                     </div>
 
                     {/* Funnel 3: Cart Adds */}
-                    <div className="bg-white border border-neutral-200/60 rounded-2xl p-5 shadow-sm space-y-2 relative overflow-hidden group hover:border-[#1A1A1A] transition-all">
+                    <div className="bg-white dark:bg-[#111111] border border-neutral-200/60 rounded-2xl p-5 shadow-sm space-y-2 relative overflow-hidden group hover:border-[#1A1A1A] transition-all">
                         <div className="flex justify-between items-center text-neutral-400">
                             <span className="text-[9px] font-bold uppercase tracking-wider">Items Carted</span>
                             <ShoppingCart className="w-4 h-4 text-neutral-300 group-hover:text-[#1A1A1A] dark:text-[#F4F1ED] transition-colors" />
@@ -356,7 +356,7 @@ export default function ClientCircleDashboard({
                     </div>
 
                     {/* Funnel 4: Completed Orders */}
-                    <div className="bg-white border border-neutral-200/60 rounded-2xl p-5 shadow-sm space-y-2 relative overflow-hidden group hover:border-[#1A1A1A] transition-all">
+                    <div className="bg-white dark:bg-[#111111] border border-neutral-200/60 rounded-2xl p-5 shadow-sm space-y-2 relative overflow-hidden group hover:border-[#1A1A1A] transition-all">
                         <div className="flex justify-between items-center text-neutral-400">
                             <span className="text-[9px] font-bold uppercase tracking-wider">Successful Orders</span>
                             <CheckCircle2 className="w-4 h-4 text-emerald-600/70" />
@@ -379,7 +379,7 @@ export default function ClientCircleDashboard({
                     <button
                         onClick={handleRedeem}
                         disabled={isRedeeming || !bankDetails}
-                        className="w-full sm:w-auto px-8 py-3.5 bg-white hover:bg-neutral-100 text-black font-sans text-xs font-bold uppercase tracking-widest rounded-xl transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed shrink-0 flex items-center justify-center gap-2 cursor-pointer"
+                        className="w-full sm:w-auto px-8 py-3.5 bg-white dark:bg-[#111111] hover:bg-neutral-100 dark:hover:bg-[#1A1A1A] dark:bg-[#141414] text-black font-sans text-xs font-bold uppercase tracking-widest rounded-xl transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed shrink-0 flex items-center justify-center gap-2 cursor-pointer"
                     >
                         {isRedeeming && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
                         {!bankDetails ? "Link Bank to Redeem" : "Redeem to Bank"}
@@ -406,8 +406,8 @@ export default function ClientCircleDashboard({
             </AnimatePresence>
 
             {/* Bank Details Section */}
-            <div className="bg-white border border-neutral-200/60 rounded-2xl p-6 xs:p-8 shadow-sm space-y-6">
-                <div className="flex justify-between items-center border-b border-neutral-100 pb-4">
+            <div className="bg-white dark:bg-[#111111] border border-neutral-200/60 rounded-2xl p-6 xs:p-8 shadow-sm space-y-6">
+                <div className="flex justify-between items-center border-b border-neutral-100 dark:border-neutral-800 pb-4">
                     <div className="flex items-center gap-2.5">
                         <Building2 className="w-5 h-5 text-neutral-400" />
                         <h3 className="font-bold text-xs uppercase tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED]">Bank Settlement Account</h3>
@@ -456,7 +456,7 @@ export default function ClientCircleDashboard({
                                     placeholder="Enter full name"
                                     value={accountHolder}
                                     onChange={(e) => setAccountHolder(e.target.value)}
-                                    className="w-full border border-neutral-200 rounded-xl px-4 py-2.5 text-xs font-sans focus:outline-none focus:border-black bg-neutral-50/40"
+                                    className="w-full border border-neutral-200 dark:border-neutral-800 rounded-xl px-4 py-2.5 text-xs font-sans focus:outline-none focus:border-black bg-neutral-50/40"
                                 />
                             </div>
                             <div className="space-y-1">
@@ -467,7 +467,7 @@ export default function ClientCircleDashboard({
                                         readOnly
                                         placeholder="Auto-resolved from IFSC"
                                         value={bankName}
-                                        className="w-full border border-neutral-200 rounded-xl px-4 py-2.5 text-xs font-sans focus:outline-none bg-neutral-100 text-neutral-500 cursor-not-allowed"
+                                        className="w-full border border-neutral-200 dark:border-neutral-800 rounded-xl px-4 py-2.5 text-xs font-sans focus:outline-none bg-neutral-100 dark:bg-[#141414] text-neutral-500 cursor-not-allowed"
                                     />
                                     {resolvedBankName && (
                                         <CheckCircle2 className="w-4 h-4 text-emerald-600 absolute right-3 top-1/2 -translate-y-1/2" />
@@ -485,7 +485,7 @@ export default function ClientCircleDashboard({
                                     placeholder="Enter bank account number"
                                     value={accountNumber}
                                     onChange={(e) => handleAccountNumberChange(e.target.value)}
-                                    className={`w-full border ${accountNumberError ? 'border-red-300 focus:border-red-500' : 'border-neutral-200 focus:border-black'} rounded-xl px-4 py-2.5 text-xs font-sans focus:outline-none bg-neutral-50/40`}
+                                    className={`w-full border ${accountNumberError ? 'border-red-300 focus:border-red-500' : 'border-neutral-200 dark:border-neutral-800 focus:border-black'} rounded-xl px-4 py-2.5 text-xs font-sans focus:outline-none bg-neutral-50/40`}
                                 />
                                 {accountNumberError && (
                                     <p className="text-[10px] text-red-500 font-sans mt-0.5">{accountNumberError}</p>
@@ -500,7 +500,7 @@ export default function ClientCircleDashboard({
                                         placeholder="e.g. HDFC0001234"
                                         value={ifscCode}
                                         onChange={(e) => setIfscCode(e.target.value.toUpperCase())}
-                                        className={`w-full border ${ifscError ? 'border-red-300 focus:border-red-500' : 'border-neutral-200 focus:border-black'} rounded-xl px-4 py-2.5 text-xs font-sans focus:outline-none bg-neutral-50/40`}
+                                        className={`w-full border ${ifscError ? 'border-red-300 focus:border-red-500' : 'border-neutral-200 dark:border-neutral-800 focus:border-black'} rounded-xl px-4 py-2.5 text-xs font-sans focus:outline-none bg-neutral-50/40`}
                                     />
                                     {isValidatingIFSC && (
                                         <Loader2 className="w-3.5 h-3.5 animate-spin absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400" />
@@ -532,7 +532,7 @@ export default function ClientCircleDashboard({
                                         setIsEditingBank(false);
                                         setBankError("");
                                     }}
-                                    className="px-6 py-3 border border-neutral-200 hover:border-black text-neutral-800 font-sans text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all active:scale-95 cursor-pointer"
+                                    className="px-6 py-3 border border-neutral-200 dark:border-neutral-800 hover:border-black text-neutral-800 font-sans text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all active:scale-95 cursor-pointer"
                                 >
                                     Cancel
                                 </button>
@@ -543,8 +543,8 @@ export default function ClientCircleDashboard({
             </div>
 
             {/* Referred Community Section */}
-            <div className="bg-white border border-neutral-200/60 rounded-2xl p-6 xs:p-8 shadow-sm space-y-6">
-                <div className="flex items-center gap-2.5 border-b border-neutral-100 pb-4">
+            <div className="bg-white dark:bg-[#111111] border border-neutral-200/60 rounded-2xl p-6 xs:p-8 shadow-sm space-y-6">
+                <div className="flex items-center gap-2.5 border-b border-neutral-100 dark:border-neutral-800 pb-4">
                     <Users className="w-5 h-5 text-neutral-400" />
                     <h3 className="font-bold text-xs uppercase tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED]">Your Referred Community</h3>
                 </div>

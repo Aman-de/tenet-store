@@ -39,7 +39,7 @@ export default function SupportPage() {
     return (
         <main className="bg-[#FDFBF7] dark:bg-[#0A0A0A] min-h-screen pb-24 text-[#1A1A1A] dark:text-[#F4F1ED]">
             {/* Header */}
-            <div className="py-24 px-6 border-b border-neutral-100 bg-white text-center">
+            <div className="py-24 px-6 border-b border-neutral-100 dark:border-neutral-800 bg-white dark:bg-[#111111] text-center">
                 <div className="max-w-3xl mx-auto">
                     <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 block mb-3">Concierge</span>
                     <h1 className="font-serif text-4xl md:text-5xl text-[#1A1A1A] dark:text-[#F4F1ED] mb-4">Customer Support</h1>
@@ -56,7 +56,7 @@ export default function SupportPage() {
                     {/* Left: Contact Channels & Tracking */}
                     <div className="md:col-span-2 space-y-8">
                         {/* Order Tracking */}
-                        <div className="bg-white border border-neutral-100 p-6 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.01)]">
+                        <div className="bg-white dark:bg-[#111111] border border-neutral-100 dark:border-neutral-800 p-6 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.01)]">
                             <div className="flex items-center gap-2 mb-3 text-neutral-800">
                                 <ShieldCheck className="w-5 h-5 text-black" />
                                 <span className="font-serif text-lg font-semibold">Track Your Order</span>
@@ -70,7 +70,7 @@ export default function SupportPage() {
                                     placeholder="yourname@gmail.com"
                                     value={trackingEmail}
                                     onChange={(e) => setTrackingEmail(e.target.value)}
-                                    className="flex-1 bg-[#FDFBF7] dark:bg-[#0A0A0A] border border-neutral-200 rounded-lg px-3 py-2 text-xs font-sans focus:outline-none focus:border-black transition-colors"
+                                    className="flex-1 bg-[#FDFBF7] dark:bg-[#0A0A0A] border border-neutral-200 dark:border-neutral-800 rounded-lg px-3 py-2 text-xs font-sans focus:outline-none focus:border-black transition-colors"
                                     required
                                 />
                                 <button
@@ -107,9 +107,9 @@ export default function SupportPage() {
 
                             <a
                                 href="mailto:tenetarchives@gmail.com"
-                                className="flex items-center gap-4 p-5 bg-white border border-neutral-100 rounded-xl hover:border-neutral-300 transition-all duration-300 group"
+                                className="flex items-center gap-4 p-5 bg-white dark:bg-[#111111] border border-neutral-100 dark:border-neutral-800 rounded-xl hover:border-neutral-300 transition-all duration-300 group"
                             >
-                                <div className="bg-neutral-50 p-3 rounded-lg group-hover:bg-neutral-100 transition-colors">
+                                <div className="bg-neutral-50 dark:bg-[#0A0A0A] p-3 rounded-lg group-hover:bg-neutral-100 dark:hover:bg-[#1A1A1A] dark:bg-[#141414] transition-colors">
                                     <Mail className="w-5 h-5 text-[#1A1A1A] dark:text-[#F4F1ED]" />
                                 </div>
                                 <div className="flex-1">
@@ -121,7 +121,7 @@ export default function SupportPage() {
                     </div>
 
                     {/* Right: FAQ Accordions */}
-                    <div className="md:col-span-3 space-y-4 bg-white border border-neutral-100 p-8 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.01)]">
+                    <div className="md:col-span-3 space-y-4 bg-white dark:bg-[#111111] border border-neutral-100 dark:border-neutral-800 p-8 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.01)]">
                         <h2 className="font-serif text-2xl text-black mb-6">Frequently Asked Questions</h2>
                         
                         <div className="divide-y divide-neutral-100">

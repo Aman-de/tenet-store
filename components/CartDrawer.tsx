@@ -122,7 +122,7 @@ const CartItemRow = ({ item, removeFromCart, updateQuantity, toggleWishlist, isI
                             className="object-cover pointer-events-none"
                         />
                     ) : (
-                        <div className="w-full h-full bg-neutral-200 flex items-center justify-center text-neutral-500 text-[10px] text-center p-1">
+                        <div className="w-full h-full bg-neutral-200 dark:bg-neutral-800 flex items-center justify-center text-neutral-500 text-[10px] text-center p-1">
                             No Image
                         </div>
                     )}
@@ -145,7 +145,7 @@ const CartItemRow = ({ item, removeFromCart, updateQuantity, toggleWishlist, isI
                         <div className="flex items-center border border-neutral-200 dark:border-neutral-800 rounded-sm bg-white dark:bg-[#111111] pointer-events-auto">
                             <button
                                 onClick={(e) => handleInteractiveClick(e, () => updateQuantity(item.id, item.selectedSize, item.selectedColor, -1, item.selectedPiece))}
-                                className="p-1 hover:bg-neutral-100 dark:bg-[#141414] transition-colors"
+                                className="p-1 hover:bg-neutral-100 dark:hover:bg-[#1A1A1A] dark:bg-[#141414] transition-colors"
                                 disabled={item.quantity <= 1}
                             >
                                 <Minus className="w-3 h-3 text-neutral-600" />
@@ -153,7 +153,7 @@ const CartItemRow = ({ item, removeFromCart, updateQuantity, toggleWishlist, isI
                             <span className="px-2 text-xs font-sans text-[#1A1A1A] dark:text-[#F4F1ED] w-6 text-center select-none">{item.quantity}</span>
                             <button
                                 onClick={(e) => handleInteractiveClick(e, () => updateQuantity(item.id, item.selectedSize, item.selectedColor, 1, item.selectedPiece))}
-                                className="p-1 hover:bg-neutral-100 dark:bg-[#141414] transition-colors"
+                                className="p-1 hover:bg-neutral-100 dark:hover:bg-[#1A1A1A] dark:bg-[#141414] transition-colors"
                             >
                                 <Plus className="w-3 h-3 text-neutral-600" />
                             </button>
@@ -647,7 +647,7 @@ export default function CartDrawer() {
                         <div className="flex items-center justify-between p-6 border-b border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#111111]">
                             <div className="flex items-center gap-3">
                                 {checkoutStep === 'address' && (
-                                    <button aria-label="Back to cart" onClick={() => setCheckoutStep('cart')} className="p-1 hover:bg-neutral-100 dark:bg-[#141414] rounded-full transition-colors mr-1">
+                                    <button aria-label="Back to cart" onClick={() => setCheckoutStep('cart')} className="p-1 hover:bg-neutral-100 dark:hover:bg-[#1A1A1A] dark:bg-[#141414] rounded-full transition-colors mr-1">
                                         <ArrowLeft className="w-4 h-4 text-[#1A1A1A] dark:text-[#F4F1ED]" />
                                     </button>
                                 )}
@@ -658,7 +658,7 @@ export default function CartDrawer() {
                                     }
                                 </h2>
                             </div>
-                            <button aria-label="Close cart" onClick={handleClose} className="p-2 hover:bg-neutral-100 dark:bg-[#141414] rounded-full transition-colors">
+                            <button aria-label="Close cart" onClick={handleClose} className="p-2 hover:bg-neutral-100 dark:hover:bg-[#1A1A1A] dark:bg-[#141414] rounded-full transition-colors">
                                 <X className="w-5 h-5 text-[#1A1A1A] dark:text-[#F4F1ED]" />
                             </button>
                         </div>
@@ -674,7 +674,7 @@ export default function CartDrawer() {
                                             <span>Spend ₹{amountNeeded.toLocaleString('en-IN')} more for Free Shipping</span>
                                         )}
                                     </div>
-                                    <div className="h-1.5 w-full bg-neutral-200 rounded-full overflow-hidden">
+                                    <div className="h-1.5 w-full bg-neutral-200 dark:bg-neutral-800 rounded-full overflow-hidden">
                                         <motion.div
                                             initial={{ width: 0 }}
                                             animate={{ width: `${progress}%` }}
@@ -720,7 +720,7 @@ export default function CartDrawer() {
                                         <h3 className="text-xs font-bold uppercase tracking-widest text-neutral-500 mb-3">Pairs Well With</h3>
                                         <div className="flex gap-3 overflow-x-auto pb-2">
                                             {upsellProducts.map((prod) => (
-                                                <div key={prod.id} className="min-w-[200px] flex items-center gap-3 bg-white dark:bg-[#111111] p-2 border border-neutral-100 rounded-sm">
+                                                <div key={prod.id} className="min-w-[200px] flex items-center gap-3 bg-white dark:bg-[#111111] p-2 border border-neutral-100 dark:border-neutral-800 rounded-sm">
                                                     <div className="relative w-12 h-14 bg-neutral-100 dark:bg-[#141414] shrink-0">
                                                         {prod.images?.[0] && typeof prod.images[0] === 'string' && prod.images[0].length > 0 ? (
                                                             <Image
@@ -730,7 +730,7 @@ export default function CartDrawer() {
                                                                 className="object-cover"
                                                             />
                                                         ) : (
-                                                            <div className="w-full h-full bg-neutral-200" />
+                                                            <div className="w-full h-full bg-neutral-200 dark:bg-neutral-800" />
                                                         )}
                                                     </div>
                                                     <div className="flex-1 min-w-0">
@@ -748,7 +748,7 @@ export default function CartDrawer() {
                                                             addToCart(prod, defaultSize, prod.colors?.[0]);
                                                             trackAddToCart(prod, 1, defaultSize, prod.colors?.[0]);
                                                         }}
-                                                        className="p-1 hover:bg-neutral-100 dark:bg-[#141414] rounded-full transition-colors"
+                                                        className="p-1 hover:bg-neutral-100 dark:hover:bg-[#1A1A1A] dark:bg-[#141414] rounded-full transition-colors"
                                                     >
                                                         <Plus className="w-4 h-4 text-[#1A1A1A] dark:text-[#F4F1ED]" />
                                                     </button>
@@ -1066,7 +1066,7 @@ export default function CartDrawer() {
                                                 onClick={() => finalTotal >= COD_MIN_THRESHOLD && setPaymentMethod('cod')}
                                                 className={`flex items-center justify-between p-4 border rounded-xl transition-all ${
                                                     finalTotal < COD_MIN_THRESHOLD 
-                                                        ? 'border-neutral-100 bg-neutral-50/50 cursor-not-allowed opacity-50' 
+                                                        ? 'border-neutral-100 dark:border-neutral-800 bg-neutral-50/50 cursor-not-allowed opacity-50' 
                                                         : paymentMethod === 'cod' 
                                                             ? 'border-black bg-neutral-50 dark:bg-[#0A0A0A] cursor-pointer' 
                                                             : 'border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#111111] hover:border-neutral-300 cursor-pointer'

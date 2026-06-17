@@ -107,7 +107,7 @@ export default function SortedProductGrid({ products: rawProducts, showSizeFilte
                         {sortedProducts.length} Results
                     </span>
                     {showSizeFilter && sizes.length > 0 && (
-                        <div className="flex items-center gap-3 border-l border-neutral-200 pl-4">
+                        <div className="flex items-center gap-3 border-l border-neutral-200 dark:border-neutral-800 pl-4">
                             <span className="text-[10px] font-bold uppercase tracking-widest text-[#1A1A1A] dark:text-[#F4F1ED] opacity-60 flex items-center h-9">Size</span>
                                 <div className="flex items-center gap-4">
                                     {sizes.map((size) => (
@@ -164,7 +164,7 @@ export default function SortedProductGrid({ products: rawProducts, showSizeFilte
                     </div>
 
                     {/* Desktop Divider */}
-                    <span className="hidden lg:inline-block w-px h-4 bg-neutral-200" />
+                    <span className="hidden lg:inline-block w-px h-4 bg-neutral-200 dark:bg-neutral-800" />
 
                     {/* Removed Smart Feed Indicator as per user request */}
                 </div>
