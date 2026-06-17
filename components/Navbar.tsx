@@ -42,10 +42,10 @@ export default function Navbar() {
     // Dynamically apply glassmorphism based on scroll/page state
     const isScrolledOrNotHome = isScrolled || !isHome;
     
-    // Transparent dark glass on hero image (mobile), solid light glass on scroll (mobile & always on desktop)
+    // Authentic Apple Liquid Glass effect
     const navContainerClass = isScrolledOrNotHome 
-        ? "bg-[#F8F5EF]/70 backdrop-blur-3xl saturate-[1.5] border-b lg:border border-[#1A1A1A]/10 shadow-[0_1px_12px_rgba(0,0,0,0.03)]" 
-        : "bg-transparent border-b border-transparent shadow-none lg:bg-[#F8F5EF]/70 lg:backdrop-blur-3xl lg:saturate-[1.5] lg:border lg:border-[#1A1A1A]/10 lg:shadow-[0_1px_12px_rgba(0,0,0,0.03)]";
+        ? "bg-[#FDFBF7]/65 backdrop-blur-xl saturate-[1.8] border-b lg:border border-black/5 shadow-none" 
+        : "bg-transparent border-b border-transparent shadow-none lg:bg-[#FDFBF7]/65 lg:backdrop-blur-xl lg:saturate-[1.8] lg:border lg:border-black/5 lg:shadow-none";
 
     const textColor = isScrolledOrNotHome ? "text-neutral-800" : "text-white lg:text-neutral-800";
     const logoColor = isScrolledOrNotHome ? "text-black" : "text-white lg:text-black";
