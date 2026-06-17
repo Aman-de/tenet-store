@@ -551,7 +551,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 {/* Floating Wishlist Button on Mobile */}
                 <button
                     onClick={() => toggleWishlist(product as any)}
-                    className="absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-sm active:scale-95 transition-all text-[#1A1A1A] dark:text-[#F4F1ED]"
+                    className="absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-white/90 dark:bg-[#1A1A1A]/90 backdrop-blur-md flex items-center justify-center shadow-sm active:scale-95 transition-all text-[#1A1A1A] dark:text-[#F4F1ED]"
                     title="Add to Wishlist"
                     aria-label="Wishlist"
                 >
@@ -638,7 +638,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                     {/* Floating Wishlist Button on Desktop */}
                     <button
                         onClick={() => toggleWishlist(product as any)}
-                        className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-white/85 backdrop-blur-md flex items-center justify-center shadow-md hover:bg-white dark:bg-[#111111] active:scale-95 transition-all text-[#1A1A1A] dark:text-[#F4F1ED]"
+                        className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-white/85 dark:bg-[#1A1A1A]/85 backdrop-blur-md flex items-center justify-center shadow-md hover:bg-white hover:dark:bg-[#111111] dark:bg-[#111111] active:scale-95 transition-all text-[#1A1A1A] dark:text-[#F4F1ED]"
                         title="Add to Wishlist"
                         aria-label="Wishlist"
                     >

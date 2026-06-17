@@ -281,7 +281,7 @@ export default function Navbar() {
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -10 }}
                             transition={{ duration: 0.2 }}
-                            className="absolute top-full left-4 right-4 mt-2 pointer-events-auto bg-white/90 backdrop-blur-3xl saturate-200 border border-white/50 shadow-[0_8px_30px_rgba(0,0,0,0.12)] rounded-[32px] overflow-hidden py-4"
+                            className="absolute top-full left-4 right-4 mt-2 pointer-events-auto bg-white/90 dark:bg-[#141414]/90 backdrop-blur-3xl saturate-200 dark:saturate-100 border border-white/50 dark:border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.12)] rounded-[32px] overflow-hidden py-4"
                         >
                             <div className="flex flex-col">
                                 <Link
