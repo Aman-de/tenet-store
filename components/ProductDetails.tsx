@@ -489,7 +489,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         initial={{ y: "-100%" }}
                         animate={{ y: 0 }}
                         exit={{ y: "-100%" }}
-                        className="hidden md:flex fixed top-[48px] lg:top-[76px] left-0 right-0 z-[40] bg-[#FDFBF7]/90 backdrop-blur-xl border-b border-neutral-200/50 shadow-sm py-3 px-6 xl:px-12 items-center justify-between"
+                        className="hidden md:flex fixed top-[48px] lg:top-[92px] left-0 right-0 z-[40] bg-[#FDFBF7]/90 backdrop-blur-xl border-b border-neutral-200/50 shadow-sm py-3 px-6 xl:px-12 items-center justify-between"
                     >
                         <div className="flex items-center gap-4">
                             <div className="text-sm font-serif font-medium text-[#1A1A1A]">{finalTitle}</div>

@@ -44,8 +44,8 @@ export default function Navbar() {
     
     // Authentic Apple Liquid Glass effect
     const navContainerClass = isScrolledOrNotHome 
-        ? "bg-[#FDFBF7]/65 backdrop-blur-xl saturate-[1.8] border-b lg:border border-black/5 shadow-none" 
-        : "bg-transparent border-b border-transparent shadow-none lg:bg-[#FDFBF7]/65 lg:backdrop-blur-xl lg:saturate-[1.8] lg:border lg:border-black/5 lg:shadow-none";
+        ? "bg-white/50 backdrop-blur-[24px] saturate-[2] border-b lg:border border-white/40 shadow-[0_4px_30px_rgba(0,0,0,0.05)]" 
+        : "bg-transparent border-b border-transparent shadow-none lg:bg-white/50 lg:backdrop-blur-[24px] lg:saturate-[2] lg:border lg:border-white/40 lg:shadow-[0_4px_30px_rgba(0,0,0,0.05)]";
 
     const textColor = isScrolledOrNotHome ? "text-neutral-800" : "text-white lg:text-neutral-800";
     const logoColor = isScrolledOrNotHome ? "text-black" : "text-white lg:text-black";
@@ -99,8 +99,8 @@ export default function Navbar() {
     return (
         <>
             {/* The wrapper handles the floating position */}
-            <div className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-in-out pointer-events-none lg:pt-3 lg:pb-2 lg:px-4`}>
-                <nav className={`pointer-events-auto w-full mx-auto px-4 lg:px-8 py-2 lg:py-1.5 transition-all duration-500 ease-in-out lg:rounded-full lg:max-w-[850px] xl:max-w-[1000px] ${navContainerClass}`}>
+            <div className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-in-out pointer-events-none lg:pt-5 lg:pb-2 lg:px-6`}>
+                <nav className={`pointer-events-auto w-full mx-auto px-4 lg:px-8 py-2 lg:py-2.5 transition-all duration-500 ease-in-out lg:rounded-full lg:max-w-[800px] xl:max-w-[900px] ${navContainerClass}`}>
                     
                     {/* MOBILE LAYOUT (lg:hidden) */}
                     <div className="flex lg:hidden w-full items-center justify-between relative">
