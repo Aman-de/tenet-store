@@ -88,7 +88,7 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
     ];
 
     return (
-        <section className="relative w-full h-[calc(100dvh-54px)] lg:h-[100dvh] flex flex-col lg:flex-row p-0 lg:p-6 gap-1 lg:gap-6 overflow-hidden bg-[#F8F5EF]">
+        <section className="relative w-full h-[calc(100dvh-54px)] lg:h-[100dvh] flex flex-col lg:flex-row p-0 lg:p-6 gap-1 lg:gap-6 overflow-hidden bg-[#F8F5EF] dark:bg-[#0A0A0A]">
             
             {/* LEFT: Hero Section (Auto Scrolling) */}
             <div className="relative w-full h-[43%] lg:w-7/12 xl:w-2/3 lg:h-full rounded-none lg:rounded-2xl overflow-hidden group bg-neutral-200 dark:bg-neutral-800">
@@ -210,7 +210,7 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                 </div>
 
                 {/* Mobile Integrated TrustBar - 16% of the 57% remaining height */}
-                <div className="w-full h-[16%] lg:hidden grid grid-cols-4 divide-x divide-[#1A1A1A]/10 bg-[#F8F5EF] pb-2 pt-1">
+                <div className="w-full h-[16%] lg:hidden grid grid-cols-4 divide-x divide-[#1A1A1A]/10 dark:divide-white/10 bg-[#F8F5EF] dark:bg-[#0A0A0A] pb-2 pt-1">
                     {trustPillars.map((pillar, index) => (
                         <div key={index} className="flex flex-col items-center justify-center text-center px-0.5">
                             <div className="mb-1">{pillar.icon}</div>
