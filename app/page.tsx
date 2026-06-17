@@ -10,7 +10,7 @@ export default async function Home() {
   const collections = await getCollections();
 
   return (
-    <main className="bg-[#FDFBF7] min-h-screen">
+    <main className="bg-[#FDFBF7] dark:bg-[#0A0A0A] min-h-screen">
       <HomePageClient products={products} collections={collections} />
       <TrustBar />
       <Footer />

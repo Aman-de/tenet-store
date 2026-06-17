@@ -12,7 +12,7 @@ interface CategoryFilterProps {
 export default function CategoryFilter({ categories, activeCategory, onSelect }: CategoryFilterProps) {
     return (
         <div className="flex flex-col items-center gap-4 mb-8">
-            <h2 className="font-serif text-xl md:text-2xl font-bold uppercase tracking-wider text-[#1A1A1A]">
+            <h2 className="font-serif text-xl md:text-2xl font-bold uppercase tracking-wider text-[#1A1A1A] dark:text-[#F4F1ED]">
                 New and Popular
             </h2>
 
@@ -26,7 +26,7 @@ export default function CategoryFilter({ categories, activeCategory, onSelect }:
                                 "px-6 py-3 text-xs font-bold uppercase tracking-widest transition-all duration-300 border",
                                 activeCategory === category
                                     ? "bg-[#1A1A1A] text-white border-[#1A1A1A]"
-                                    : "bg-white text-[#1A1A1A] border-neutral-200 hover:border-[#1A1A1A]"
+                                    : "bg-white dark:bg-[#111111] text-[#1A1A1A] dark:text-[#F4F1ED] border-neutral-200 dark:border-neutral-800 hover:border-[#1A1A1A]"
                             )}
                         >
                             {category}

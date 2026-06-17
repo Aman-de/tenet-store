@@ -58,7 +58,7 @@ const WishlistItemRow = ({ item, removeFromWishlist, addToCart }: any) => {
     };
 
     return (
-        <div className="relative group overflow-hidden bg-neutral-100">
+        <div className="relative group overflow-hidden bg-neutral-100 dark:bg-[#141414]">
             {/* Left Background Layer (Swipe Right -> Move to Bag) */}
             <motion.div
                 style={{ opacity: bagOpacity, pointerEvents: bagPointerEvents }}
@@ -108,9 +108,9 @@ const WishlistItemRow = ({ item, removeFromWishlist, addToCart }: any) => {
                         setSwipeState('idle');
                     }
                 }}
-                className="relative bg-[#FDFBF7] flex gap-4 z-10 w-full cursor-grab active:cursor-grabbing"
+                className="relative bg-[#FDFBF7] dark:bg-[#0A0A0A] flex gap-4 z-10 w-full cursor-grab active:cursor-grabbing"
             >
-                <Link href={`/product/${item.handle}`} className="relative w-24 h-32 bg-neutral-100 shrink-0 block overflow-hidden group pointer-events-none">
+                <Link href={`/product/${item.handle}`} className="relative w-24 h-32 bg-neutral-100 dark:bg-[#141414] shrink-0 block overflow-hidden group pointer-events-none">
                     {item.images?.[0] && typeof item.images[0] === 'string' && item.images[0].length > 0 ? (
                         <Image
                             src={item.images[0]}
@@ -135,7 +135,7 @@ const WishlistItemRow = ({ item, removeFromWishlist, addToCart }: any) => {
                                         setSwipeState('idle');
                                     }
                                 }}
-                                className="font-serif text-sm text-[#1A1A1A] hover:underline hover:decoration-1 underline-offset-4 line-clamp-2 pointer-events-auto select-none"
+                                className="font-serif text-sm text-[#1A1A1A] dark:text-[#F4F1ED] hover:underline hover:decoration-1 underline-offset-4 line-clamp-2 pointer-events-auto select-none"
                             >
                                 {item.title}
                             </Link>
@@ -143,12 +143,12 @@ const WishlistItemRow = ({ item, removeFromWishlist, addToCart }: any) => {
                                 <X className="w-4 h-4" />
                             </button>
                         </div>
-                        <p className="text-sm font-medium text-[#1A1A1A] select-none">₹{item.price.toLocaleString('en-IN')}</p>
+                        <p className="text-sm font-medium text-[#1A1A1A] dark:text-[#F4F1ED] select-none">₹{item.price.toLocaleString('en-IN')}</p>
                     </div>
 
                     <button
                         onClick={(e) => handleInteractiveClick(e, handleMoveToCart)}
-                        className="flex items-center justify-center gap-2 w-full bg-white border border-[#1A1A1A] text-[#1A1A1A] py-2 text-xs uppercase tracking-widest hover:bg-[#1A1A1A] hover:text-white transition-colors rounded-full pointer-events-auto"
+                        className="flex items-center justify-center gap-2 w-full bg-white dark:bg-[#111111] border border-[#1A1A1A] text-[#1A1A1A] dark:text-[#F4F1ED] py-2 text-xs uppercase tracking-widest hover:bg-[#1A1A1A] hover:text-white transition-colors rounded-full pointer-events-auto"
                     >
                         <ShoppingBag className="w-3 h-3" />
                         Move to Bag
@@ -200,13 +200,13 @@ export default function WishlistDrawer() {
                         animate={{ x: 0 }}
                         exit={{ x: "100%" }}
                         transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                        className="fixed top-0 right-0 h-full w-full md:w-[450px] bg-[#FDFBF7] shadow-2xl z-[70] flex flex-col border-l border-neutral-200 md:rounded-l-2xl"
+                        className="fixed top-0 right-0 h-full w-full md:w-[450px] bg-[#FDFBF7] dark:bg-[#0A0A0A] shadow-2xl z-[70] flex flex-col border-l border-neutral-200 dark:border-neutral-800 md:rounded-l-2xl"
                     >
                         {/* Header */}
-                        <div className="flex items-center justify-between p-6 border-b border-neutral-200 bg-white">
-                            <h2 className="font-serif text-xl text-[#1A1A1A]">Wishlist ({wishlist.length})</h2>
-                            <button onClick={closeWishlist} className="p-2 hover:bg-neutral-100 rounded-full transition-colors">
-                                <X className="w-5 h-5 text-[#1A1A1A]" />
+                        <div className="flex items-center justify-between p-6 border-b border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#111111]">
+                            <h2 className="font-serif text-xl text-[#1A1A1A] dark:text-[#F4F1ED]">Wishlist ({wishlist.length})</h2>
+                            <button onClick={closeWishlist} className="p-2 hover:bg-neutral-100 dark:bg-[#141414] rounded-full transition-colors">
+                                <X className="w-5 h-5 text-[#1A1A1A] dark:text-[#F4F1ED]" />
                             </button>
                         </div>
 
@@ -241,7 +241,7 @@ export default function WishlistDrawer() {
 
                         {/* Footer */}
                         {wishlistItems.length > 0 && (
-                            <div className="p-6 border-t border-neutral-200 bg-white">
+                            <div className="p-6 border-t border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#111111]">
                                 <button
                                     onClick={closeWishlist}
                                     className="w-full bg-[#1A1A1A] text-white py-4 font-sans text-sm uppercase tracking-widest hover:bg-black transition-colors rounded-full"

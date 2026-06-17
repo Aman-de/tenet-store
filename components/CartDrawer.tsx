@@ -61,7 +61,7 @@ const CartItemRow = ({ item, removeFromCart, updateQuantity, toggleWishlist, isI
     };
 
     return (
-        <div className="relative group overflow-hidden bg-neutral-100">
+        <div className="relative group overflow-hidden bg-neutral-100 dark:bg-[#141414]">
             {/* Left Background Layer (Swipe Right -> Wishlist) */}
             <motion.div
                 style={{ opacity: wishlistOpacity, pointerEvents: wishlistPointerEvents }}
@@ -111,9 +111,9 @@ const CartItemRow = ({ item, removeFromCart, updateQuantity, toggleWishlist, isI
                         setSwipeState('idle');
                     }
                 }}
-                className="relative bg-[#FDFBF7] flex gap-4 z-10 w-full cursor-grab active:cursor-grabbing"
+                className="relative bg-[#FDFBF7] dark:bg-[#0A0A0A] flex gap-4 z-10 w-full cursor-grab active:cursor-grabbing"
             >
-                <div className="relative w-20 h-24 bg-neutral-100 shrink-0">
+                <div className="relative w-20 h-24 bg-neutral-100 dark:bg-[#141414] shrink-0">
                     {item.images?.[0] && typeof item.images[0] === 'string' && item.images[0].length > 0 ? (
                         <Image
                             src={item.images[0]}
@@ -129,7 +129,7 @@ const CartItemRow = ({ item, removeFromCart, updateQuantity, toggleWishlist, isI
                 </div>
                 <div className="flex-1 space-y-1">
                     <div className="flex justify-between items-start">
-                        <h3 className="font-serif text-sm text-[#1A1A1A] select-none">{item.title}</h3>
+                        <h3 className="font-serif text-sm text-[#1A1A1A] dark:text-[#F4F1ED] select-none">{item.title}</h3>
                         <button onClick={(e) => handleInteractiveClick(e, handleRemoveAction)} className="text-xs text-neutral-500 hover:text-red-800 pointer-events-auto">Remove</button>
                     </div>
                     <p className="text-sm font-sans text-neutral-500 select-none">
@@ -142,23 +142,23 @@ const CartItemRow = ({ item, removeFromCart, updateQuantity, toggleWishlist, isI
                         )}
                     </p>
                     <div className="flex items-center justify-between mt-2">
-                        <div className="flex items-center border border-neutral-200 rounded-sm bg-white pointer-events-auto">
+                        <div className="flex items-center border border-neutral-200 dark:border-neutral-800 rounded-sm bg-white dark:bg-[#111111] pointer-events-auto">
                             <button
                                 onClick={(e) => handleInteractiveClick(e, () => updateQuantity(item.id, item.selectedSize, item.selectedColor, -1, item.selectedPiece))}
-                                className="p-1 hover:bg-neutral-100 transition-colors"
+                                className="p-1 hover:bg-neutral-100 dark:bg-[#141414] transition-colors"
                                 disabled={item.quantity <= 1}
                             >
                                 <Minus className="w-3 h-3 text-neutral-600" />
                             </button>
-                            <span className="px-2 text-xs font-sans text-[#1A1A1A] w-6 text-center select-none">{item.quantity}</span>
+                            <span className="px-2 text-xs font-sans text-[#1A1A1A] dark:text-[#F4F1ED] w-6 text-center select-none">{item.quantity}</span>
                             <button
                                 onClick={(e) => handleInteractiveClick(e, () => updateQuantity(item.id, item.selectedSize, item.selectedColor, 1, item.selectedPiece))}
-                                className="p-1 hover:bg-neutral-100 transition-colors"
+                                className="p-1 hover:bg-neutral-100 dark:bg-[#141414] transition-colors"
                             >
                                 <Plus className="w-3 h-3 text-neutral-600" />
                             </button>
                         </div>
-                        <p className="text-sm font-medium text-[#1A1A1A] ml-auto select-none">
+                        <p className="text-sm font-medium text-[#1A1A1A] dark:text-[#F4F1ED] ml-auto select-none">
                             ₹{item.price.toLocaleString('en-IN')}
                         </p>
                     </div>
@@ -641,33 +641,33 @@ export default function CartDrawer() {
                         animate={{ x: 0 }}
                         exit={{ x: "100%" }}
                         transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                        className="fixed top-0 right-0 h-full w-full md:w-[450px] bg-[#FDFBF7] shadow-2xl z-[70] flex flex-col border-l border-neutral-200 md:rounded-l-2xl"
+                        className="fixed top-0 right-0 h-full w-full md:w-[450px] bg-[#FDFBF7] dark:bg-[#0A0A0A] shadow-2xl z-[70] flex flex-col border-l border-neutral-200 dark:border-neutral-800 md:rounded-l-2xl"
                     >
                         {/* Header */}
-                        <div className="flex items-center justify-between p-6 border-b border-neutral-200 bg-white">
+                        <div className="flex items-center justify-between p-6 border-b border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#111111]">
                             <div className="flex items-center gap-3">
                                 {checkoutStep === 'address' && (
-                                    <button aria-label="Back to cart" onClick={() => setCheckoutStep('cart')} className="p-1 hover:bg-neutral-100 rounded-full transition-colors mr-1">
-                                        <ArrowLeft className="w-4 h-4 text-[#1A1A1A]" />
+                                    <button aria-label="Back to cart" onClick={() => setCheckoutStep('cart')} className="p-1 hover:bg-neutral-100 dark:bg-[#141414] rounded-full transition-colors mr-1">
+                                        <ArrowLeft className="w-4 h-4 text-[#1A1A1A] dark:text-[#F4F1ED]" />
                                     </button>
                                 )}
-                                <h2 className="font-serif text-xl text-[#1A1A1A]">
+                                <h2 className="font-serif text-xl text-[#1A1A1A] dark:text-[#F4F1ED]">
                                     {checkoutStep === 'cart'
                                         ? (checkoutItem ? 'Buy Now' : `Shopping Bag (${cart.length})`)
                                         : 'Shipping Details'
                                     }
                                 </h2>
                             </div>
-                            <button aria-label="Close cart" onClick={handleClose} className="p-2 hover:bg-neutral-100 rounded-full transition-colors">
-                                <X className="w-5 h-5 text-[#1A1A1A]" />
+                            <button aria-label="Close cart" onClick={handleClose} className="p-2 hover:bg-neutral-100 dark:bg-[#141414] rounded-full transition-colors">
+                                <X className="w-5 h-5 text-[#1A1A1A] dark:text-[#F4F1ED]" />
                             </button>
                         </div>
 
                         {checkoutStep === 'cart' ? (
                             <>
                                 {/* Smart Progress Bar */}
-                                <div className="p-4 bg-neutral-50 border-b border-neutral-200">
-                                    <div className="mb-2 text-xs font-medium text-center uppercase tracking-wide text-[#1A1A1A]">
+                                <div className="p-4 bg-neutral-50 dark:bg-[#0A0A0A] border-b border-neutral-200 dark:border-neutral-800">
+                                    <div className="mb-2 text-xs font-medium text-center uppercase tracking-wide text-[#1A1A1A] dark:text-[#F4F1ED]">
                                         {isFreeShipping ? (
                                             <span className="text-green-800">You&apos;ve unlocked Free Shipping</span>
                                         ) : (
@@ -716,12 +716,12 @@ export default function CartDrawer() {
 
                                 {/* Upsell Strip - Hide during Buy Now? Or maybe suggest pairing? Let's hide to focus. */}
                                 {!checkoutItem && upsellProducts.length > 0 && (
-                                    <div className="p-4 bg-neutral-50 border-t border-neutral-200">
+                                    <div className="p-4 bg-neutral-50 dark:bg-[#0A0A0A] border-t border-neutral-200 dark:border-neutral-800">
                                         <h3 className="text-xs font-bold uppercase tracking-widest text-neutral-500 mb-3">Pairs Well With</h3>
                                         <div className="flex gap-3 overflow-x-auto pb-2">
                                             {upsellProducts.map((prod) => (
-                                                <div key={prod.id} className="min-w-[200px] flex items-center gap-3 bg-white p-2 border border-neutral-100 rounded-sm">
-                                                    <div className="relative w-12 h-14 bg-neutral-100 shrink-0">
+                                                <div key={prod.id} className="min-w-[200px] flex items-center gap-3 bg-white dark:bg-[#111111] p-2 border border-neutral-100 rounded-sm">
+                                                    <div className="relative w-12 h-14 bg-neutral-100 dark:bg-[#141414] shrink-0">
                                                         {prod.images?.[0] && typeof prod.images[0] === 'string' && prod.images[0].length > 0 ? (
                                                             <Image
                                                                 src={prod.images[0]}
@@ -734,7 +734,7 @@ export default function CartDrawer() {
                                                         )}
                                                     </div>
                                                     <div className="flex-1 min-w-0">
-                                                        <p className="text-xs font-serif text-[#1A1A1A] truncate">{prod.title}</p>
+                                                        <p className="text-xs font-serif text-[#1A1A1A] dark:text-[#F4F1ED] truncate">{prod.title}</p>
                                                         <p className="text-xs text-neutral-500">₹{prod.price.toLocaleString()}</p>
                                                     </div>
                                                     <button
@@ -748,9 +748,9 @@ export default function CartDrawer() {
                                                             addToCart(prod, defaultSize, prod.colors?.[0]);
                                                             trackAddToCart(prod, 1, defaultSize, prod.colors?.[0]);
                                                         }}
-                                                        className="p-1 hover:bg-neutral-100 rounded-full transition-colors"
+                                                        className="p-1 hover:bg-neutral-100 dark:bg-[#141414] rounded-full transition-colors"
                                                     >
-                                                        <Plus className="w-4 h-4 text-[#1A1A1A]" />
+                                                        <Plus className="w-4 h-4 text-[#1A1A1A] dark:text-[#F4F1ED]" />
                                                     </button>
                                                 </div>
                                             ))}
@@ -759,7 +759,7 @@ export default function CartDrawer() {
                                 )}
 
                                 {/* Footer */}
-                                <div className="p-6 border-t border-neutral-200 bg-white space-y-4 shadow-[0_-5px_20px_rgba(0,0,0,0.05)]">
+                                <div className="p-6 border-t border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#111111] space-y-4 shadow-[0_-5px_20px_rgba(0,0,0,0.05)]">
                                     <div className="flex items-center justify-between font-serif text-lg">
                                         <span>Subtotal</span>
                                         <span className="line-through text-neutral-500 mr-2 text-sm">₹{rawSubtotal.toLocaleString('en-IN')}</span>
@@ -821,7 +821,7 @@ export default function CartDrawer() {
                                             {isFreeShipping ? "FREE" : `₹${SHIPPING_COST}`}
                                         </span>
                                     </div>
-                                    <div className="flex items-center justify-between font-serif text-xl font-bold border-t border-dashed border-neutral-200 pt-4">
+                                    <div className="flex items-center justify-between font-serif text-xl font-bold border-t border-dashed border-neutral-200 dark:border-neutral-800 pt-4">
                                         <span>Total</span>
                                         <span>₹{totalBeforeWallet.toLocaleString('en-IN')}</span>
                                     </div>
@@ -848,9 +848,9 @@ export default function CartDrawer() {
                                 <div className="space-y-4 flex-1">
                                     {(!isEditingAddress && address.street && address.city) ? (
                                         <div className="space-y-6">
-                                            <div className="p-4 border border-neutral-200 rounded-2xl bg-neutral-50 relative group">
+                                            <div className="p-4 border border-neutral-200 dark:border-neutral-800 rounded-2xl bg-neutral-50 dark:bg-[#0A0A0A] relative group">
                                                 <div className="flex justify-between items-start mb-2">
-                                                    <span className="text-xs font-bold uppercase tracking-widest text-[#1A1A1A]">Main Address</span>
+                                                    <span className="text-xs font-bold uppercase tracking-widest text-[#1A1A1A] dark:text-[#F4F1ED]">Main Address</span>
                                                     <button 
                                                         onClick={() => setIsEditingAddress(true)}
                                                         className="text-[10px] uppercase tracking-widest font-bold text-neutral-500 hover:text-black transition-colors"
@@ -871,7 +871,7 @@ export default function CartDrawer() {
                                         <div className="space-y-6">
                                             {/* Full Name */}
                                         <div className="group">
-                                            <label className={`block text-xs font-bold uppercase tracking-widest mb-2 transition-colors ${errors.name ? 'text-red-600' : 'text-[#1A1A1A]'}`}>
+                                            <label className={`block text-xs font-bold uppercase tracking-widest mb-2 transition-colors ${errors.name ? 'text-red-600' : 'text-[#1A1A1A] dark:text-[#F4F1ED]'}`}>
                                                 Full Name
                                             </label>
                                             <motion.input
@@ -886,7 +886,7 @@ export default function CartDrawer() {
                                                 className={`w-full border-b py-3 text-sm outline-none bg-transparent transition-all placeholder:text-neutral-500
                                                     ${errors.name
                                                         ? 'border-red-500 text-red-700 placeholder:text-red-300'
-                                                        : 'border-neutral-300 focus:border-black text-[#1A1A1A]'}`}
+                                                        : 'border-neutral-300 focus:border-black text-[#1A1A1A] dark:text-[#F4F1ED]'}`}
                                                 placeholder="John Doe"
                                             />
                                             {errors.name && (
@@ -898,7 +898,7 @@ export default function CartDrawer() {
 
                                         {/* House Number */}
                                         <div className="group">
-                                            <label className={`block text-xs font-bold uppercase tracking-widest mb-2 transition-colors ${errors.houseNumber ? 'text-red-600' : 'text-[#1A1A1A]'}`}>
+                                            <label className={`block text-xs font-bold uppercase tracking-widest mb-2 transition-colors ${errors.houseNumber ? 'text-red-600' : 'text-[#1A1A1A] dark:text-[#F4F1ED]'}`}>
                                                 House No. / Building Name
                                             </label>
                                             <motion.input
@@ -913,7 +913,7 @@ export default function CartDrawer() {
                                                 className={`w-full border-b py-3 text-sm outline-none bg-transparent transition-all placeholder:text-neutral-500
                                                     ${errors.houseNumber
                                                         ? 'border-red-500 text-red-700 placeholder:text-red-300'
-                                                        : 'border-neutral-300 focus:border-black text-[#1A1A1A]'}`}
+                                                        : 'border-neutral-300 focus:border-black text-[#1A1A1A] dark:text-[#F4F1ED]'}`}
                                                 placeholder="Flat 101, Luxury Towers"
                                             />
                                         </div>
@@ -921,14 +921,14 @@ export default function CartDrawer() {
                                         {/* Street Address */}
                                         <div className="group">
                                             <div className="flex items-center justify-between mb-2">
-                                                <label className={`block text-xs font-bold uppercase tracking-widest transition-colors ${errors.street ? 'text-red-600' : 'text-[#1A1A1A]'}`}>
+                                                <label className={`block text-xs font-bold uppercase tracking-widest transition-colors ${errors.street ? 'text-red-600' : 'text-[#1A1A1A] dark:text-[#F4F1ED]'}`}>
                                                     Street Address
                                                 </label>
                                                 <button
                                                     type="button"
                                                     onClick={handleUseCurrentLocation}
                                                     disabled={isLocating}
-                                                    className="flex items-center gap-1.5 text-[10px] uppercase font-bold tracking-widest text-[#1A1A1A] hover:text-black transition-colors"
+                                                    className="flex items-center gap-1.5 text-[10px] uppercase font-bold tracking-widest text-[#1A1A1A] dark:text-[#F4F1ED] hover:text-black transition-colors"
                                                 >
                                                     <MapPin className="w-3 h-3" />
                                                     {isLocating ? "Locating..." : "Use Current Location"}
@@ -946,7 +946,7 @@ export default function CartDrawer() {
                                                 className={`w-full border-b py-3 text-sm outline-none bg-transparent transition-all placeholder:text-neutral-500
                                                     ${errors.street
                                                         ? 'border-red-500 text-red-700 placeholder:text-red-300'
-                                                        : 'border-neutral-300 focus:border-black text-[#1A1A1A]'}`}
+                                                        : 'border-neutral-300 focus:border-black text-[#1A1A1A] dark:text-[#F4F1ED]'}`}
                                                 placeholder="123 Fashion St"
                                             />
                                             {errors.street && (
@@ -959,7 +959,7 @@ export default function CartDrawer() {
                                         <div className="grid grid-cols-2 gap-6">
                                             {/* City */}
                                             <div className="group">
-                                                <label className={`block text-xs font-bold uppercase tracking-widest mb-2 transition-colors ${errors.city ? 'text-red-600' : 'text-[#1A1A1A]'}`}>
+                                                <label className={`block text-xs font-bold uppercase tracking-widest mb-2 transition-colors ${errors.city ? 'text-red-600' : 'text-[#1A1A1A] dark:text-[#F4F1ED]'}`}>
                                                     City
                                                 </label>
                                                 <motion.input
@@ -974,7 +974,7 @@ export default function CartDrawer() {
                                                     className={`w-full border-b py-3 text-sm outline-none bg-transparent transition-all placeholder:text-neutral-500
                                                         ${errors.city
                                                             ? 'border-red-500 text-red-700 placeholder:text-red-300'
-                                                            : 'border-neutral-300 focus:border-black text-[#1A1A1A]'}`}
+                                                            : 'border-neutral-300 focus:border-black text-[#1A1A1A] dark:text-[#F4F1ED]'}`}
                                                     placeholder="New York"
                                                 />
                                                 {errors.city && (
@@ -986,7 +986,7 @@ export default function CartDrawer() {
 
                                             {/* ZIP Code */}
                                             <div className="group">
-                                                <label className={`block text-xs font-bold uppercase tracking-widest mb-2 transition-colors ${errors.zip ? 'text-red-600' : 'text-[#1A1A1A]'}`}>
+                                                <label className={`block text-xs font-bold uppercase tracking-widest mb-2 transition-colors ${errors.zip ? 'text-red-600' : 'text-[#1A1A1A] dark:text-[#F4F1ED]'}`}>
                                                     ZIP Code
                                                 </label>
                                                 <motion.input
@@ -1001,7 +1001,7 @@ export default function CartDrawer() {
                                                     className={`w-full border-b py-3 text-sm outline-none bg-transparent transition-all placeholder:text-neutral-500
                                                         ${errors.zip
                                                             ? 'border-red-500 text-red-700 placeholder:text-red-300'
-                                                            : 'border-neutral-300 focus:border-black text-[#1A1A1A]'}`}
+                                                            : 'border-neutral-300 focus:border-black text-[#1A1A1A] dark:text-[#F4F1ED]'}`}
                                                     placeholder="10001"
                                                 />
                                                 {errors.zip && (
@@ -1014,7 +1014,7 @@ export default function CartDrawer() {
 
                                         {/* Phone Number */}
                                         <div className="group">
-                                            <label className={`block text-xs font-bold uppercase tracking-widest mb-2 transition-colors ${errors.phone ? 'text-red-600' : 'text-[#1A1A1A]'}`}>
+                                            <label className={`block text-xs font-bold uppercase tracking-widest mb-2 transition-colors ${errors.phone ? 'text-red-600' : 'text-[#1A1A1A] dark:text-[#F4F1ED]'}`}>
                                                 Phone Number
                                             </label>
                                             <motion.input
@@ -1030,7 +1030,7 @@ export default function CartDrawer() {
                                                 className={`w-full border-b py-3 text-sm outline-none bg-transparent transition-all placeholder:text-neutral-500
                                                     ${errors.phone
                                                         ? 'border-red-500 text-red-700 placeholder:text-red-300'
-                                                        : 'border-neutral-300 focus:border-black text-[#1A1A1A]'}`}
+                                                        : 'border-neutral-300 focus:border-black text-[#1A1A1A] dark:text-[#F4F1ED]'}`}
                                                 placeholder="+91 99999 99999"
                                             />
                                             {errors.phone && (
@@ -1044,19 +1044,19 @@ export default function CartDrawer() {
 
                                     {/* Payment Method Selection */}
                                     <div className="mt-6">
-                                        <label className="block text-xs font-bold uppercase tracking-widest text-[#1A1A1A] mb-4">Payment Method</label>
+                                        <label className="block text-xs font-bold uppercase tracking-widest text-[#1A1A1A] dark:text-[#F4F1ED] mb-4">Payment Method</label>
 
                                         <div className="space-y-3">
                                             {/* Online Payment */}
                                             <div
                                                 onClick={() => setPaymentMethod('razorpay')}
-                                                className={`flex items-center justify-between p-4 border rounded-xl cursor-pointer transition-all ${paymentMethod === 'razorpay' ? 'border-black bg-neutral-50' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}
+                                                className={`flex items-center justify-between p-4 border rounded-xl cursor-pointer transition-all ${paymentMethod === 'razorpay' ? 'border-black bg-neutral-50 dark:bg-[#0A0A0A]' : 'border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#111111] hover:border-neutral-300'}`}
                                             >
                                                 <div className="flex items-center gap-3">
                                                     <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${paymentMethod === 'razorpay' ? 'border-black' : 'border-neutral-300'}`}>
                                                         {paymentMethod === 'razorpay' && <div className="w-2 h-2 rounded-full bg-black" />}
                                                     </div>
-                                                    <span className="text-sm font-medium text-[#1A1A1A]">Online Payment</span>
+                                                    <span className="text-sm font-medium text-[#1A1A1A] dark:text-[#F4F1ED]">Online Payment</span>
                                                 </div>
                                                 <span className="text-[10px] font-bold uppercase tracking-widest text-green-700 bg-green-50 px-2 py-1 rounded-md">Fastest</span>
                                             </div>
@@ -1068,8 +1068,8 @@ export default function CartDrawer() {
                                                     finalTotal < COD_MIN_THRESHOLD 
                                                         ? 'border-neutral-100 bg-neutral-50/50 cursor-not-allowed opacity-50' 
                                                         : paymentMethod === 'cod' 
-                                                            ? 'border-black bg-neutral-50 cursor-pointer' 
-                                                            : 'border-neutral-200 bg-white hover:border-neutral-300 cursor-pointer'
+                                                            ? 'border-black bg-neutral-50 dark:bg-[#0A0A0A] cursor-pointer' 
+                                                            : 'border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#111111] hover:border-neutral-300 cursor-pointer'
                                                 }`}
                                             >
                                                 <div className="flex items-center gap-3">
@@ -1077,7 +1077,7 @@ export default function CartDrawer() {
                                                         {paymentMethod === 'cod' && finalTotal >= COD_MIN_THRESHOLD && <div className="w-2 h-2 rounded-full bg-black" />}
                                                     </div>
                                                     <div className="flex flex-col">
-                                                        <span className="text-sm font-medium text-[#1A1A1A]">Cash on Delivery</span>
+                                                        <span className="text-sm font-medium text-[#1A1A1A] dark:text-[#F4F1ED]">Cash on Delivery</span>
                                                         {finalTotal < COD_MIN_THRESHOLD && (
                                                             <span className="text-[10px] text-red-500 mt-1 font-sans">
                                                                 Cash on Delivery is available on orders above ₹{COD_MIN_THRESHOLD.toLocaleString()}
@@ -1102,21 +1102,21 @@ export default function CartDrawer() {
                                                     checked={useWallet}
                                                     onChange={(e) => setUseWallet(e.target.checked)}
                                                 />
-                                                <div className="w-11 h-6 bg-neutral-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-neutral-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-white"></div>
+                                                <div className="w-11 h-6 bg-neutral-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white dark:bg-[#111111] after:border-neutral-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-white dark:bg-[#111111]"></div>
                                             </label>
                                         </div>
                                     )}
 
                                 </div>
 
-                                <div className="mt-8 pt-6 border-t border-neutral-200">
+                                <div className="mt-8 pt-6 border-t border-neutral-200 dark:border-neutral-800">
                                     {walletDeduction > 0 && (
                                         <div className="flex items-center justify-between text-sm font-sans mb-3 text-green-700 font-bold">
                                             <span>Wallet Credit Applied</span>
                                             <span>-₹{walletDeduction.toLocaleString('en-IN')}</span>
                                         </div>
                                     )}
-                                    <div className="flex items-center justify-between font-serif text-lg mb-6 pt-4 border-t border-dashed border-neutral-200">
+                                    <div className="flex items-center justify-between font-serif text-lg mb-6 pt-4 border-t border-dashed border-neutral-200 dark:border-neutral-800">
                                         <span>Total Due</span>
                                         <span>₹{finalTotal.toLocaleString('en-IN')}</span>
                                     </div>

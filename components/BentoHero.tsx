@@ -81,10 +81,10 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
     const accentColor = gender === "woman" ? "#FF4D6D" : "#3B82F6";
 
     const trustPillars = [
-        { icon: <Truck className="w-7 h-7 text-[#1A1A1A] stroke-[1]" />, title: "COMPLIMENTARY", title2: "SHIPPING", subtext: "On orders above $250" },
-        { icon: <RefreshCw className="w-7 h-7 text-[#1A1A1A] stroke-[1]" />, title: "EASY RETURNS", title2: "", subtext: "Hassle-free\nexchanges" },
-        { icon: <ShieldCheck className="w-7 h-7 text-[#1A1A1A] stroke-[1]" />, title: "SECURE PAYMENTS", title2: "", subtext: "100% protected\ncheckout" },
-        { icon: <Leaf className="w-7 h-7 text-[#1A1A1A] stroke-[1]" />, title: "CRAFTED", title2: "RESPONSIBLY", subtext: "Thoughtfully made" }
+        { icon: <Truck className="w-7 h-7 text-[#1A1A1A] dark:text-[#F4F1ED] stroke-[1]" />, title: "COMPLIMENTARY", title2: "SHIPPING", subtext: "On orders above $250" },
+        { icon: <RefreshCw className="w-7 h-7 text-[#1A1A1A] dark:text-[#F4F1ED] stroke-[1]" />, title: "EASY RETURNS", title2: "", subtext: "Hassle-free\nexchanges" },
+        { icon: <ShieldCheck className="w-7 h-7 text-[#1A1A1A] dark:text-[#F4F1ED] stroke-[1]" />, title: "SECURE PAYMENTS", title2: "", subtext: "100% protected\ncheckout" },
+        { icon: <Leaf className="w-7 h-7 text-[#1A1A1A] dark:text-[#F4F1ED] stroke-[1]" />, title: "CRAFTED", title2: "RESPONSIBLY", subtext: "Thoughtfully made" }
     ];
 
     return (
@@ -129,7 +129,7 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                                 
                                 {/* Slide Indicators (Mobile) */}
                                 <div className="absolute bottom-4 left-4 flex items-center gap-2 lg:hidden">
-                                    <div className="w-6 h-1 bg-white rounded-full" />
+                                    <div className="w-6 h-1 bg-white dark:bg-[#111111] rounded-full" />
                                     <div className="w-1 h-1 border border-white rounded-full" />
                                     <div className="w-1 h-1 border border-white rounded-full" />
                                 </div>
@@ -181,7 +181,7 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                         const subtitle = CATEGORY_SUBTITLES[catKey] || "Explore the collection";
 
                         return (
-                            <Link key={collection.id} href={`/collection/${collection.handle}`} className="relative group rounded-md lg:rounded-2xl overflow-hidden bg-neutral-100 block w-full h-full">
+                            <Link key={collection.id} href={`/collection/${collection.handle}`} className="relative group rounded-md lg:rounded-2xl overflow-hidden bg-neutral-100 dark:bg-[#141414] block w-full h-full">
                             <Image
                                 src={coverPhoto}
                                 alt={collection.title}
@@ -214,7 +214,7 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                     {trustPillars.map((pillar, index) => (
                         <div key={index} className="flex flex-col items-center justify-center text-center px-0.5">
                             <div className="mb-1">{pillar.icon}</div>
-                            <h3 className="font-sans text-[8.5px] font-bold tracking-widest text-[#1A1A1A] uppercase leading-tight scale-x-95 origin-center">
+                            <h3 className="font-sans text-[8.5px] font-bold tracking-widest text-[#1A1A1A] dark:text-[#F4F1ED] uppercase leading-tight scale-x-95 origin-center">
                                 {pillar.title}<br/>{pillar.title2}
                             </h3>
                         </div>

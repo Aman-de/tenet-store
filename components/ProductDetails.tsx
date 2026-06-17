@@ -48,13 +48,13 @@ const ReviewForm = ({ productId, onCancel }: { productId: string, onCancel: () =
 
     return (
         <form action={handleSubmit} className="bg-neutral-50/70 p-6 rounded-2xl border border-neutral-100/80 shadow-sm space-y-4 mt-6 animate-in fade-in slide-in-from-top-2">
-            <h3 className="font-serif text-lg text-[#1A1A1A] font-medium">Write a Review</h3>
+            <h3 className="font-serif text-lg text-[#1A1A1A] dark:text-[#F4F1ED] font-medium">Write a Review</h3>
             <div className="space-y-1">
                 <label className="text-[10px] uppercase tracking-wider font-bold text-neutral-500">Name</label>
                 <input 
                     required 
                     name="name" 
-                    className="w-full p-3 border border-neutral-200 focus:border-[var(--accent-color)] focus:ring-1 focus:ring-[var(--accent-color)] outline-none text-sm rounded-xl transition-all bg-white" 
+                    className="w-full p-3 border border-neutral-200 dark:border-neutral-800 focus:border-[var(--accent-color)] focus:ring-1 focus:ring-[var(--accent-color)] outline-none text-sm rounded-xl transition-all bg-white dark:bg-[#111111]" 
                     style={{ '--accent-color': accentColor } as React.CSSProperties}
                     placeholder="Your name" 
                 />
@@ -64,7 +64,7 @@ const ReviewForm = ({ productId, onCancel }: { productId: string, onCancel: () =
                 <select 
                     required 
                     name="rating" 
-                    className="w-full p-3 border border-neutral-200 focus:border-[var(--accent-color)] focus:ring-1 focus:ring-[var(--accent-color)] outline-none text-sm bg-white rounded-xl transition-all cursor-pointer" 
+                    className="w-full p-3 border border-neutral-200 dark:border-neutral-800 focus:border-[var(--accent-color)] focus:ring-1 focus:ring-[var(--accent-color)] outline-none text-sm bg-white dark:bg-[#111111] rounded-xl transition-all cursor-pointer" 
                     style={{ '--accent-color': accentColor } as React.CSSProperties}
                 >
                     <option value="5">5 - Excellent</option>
@@ -80,7 +80,7 @@ const ReviewForm = ({ productId, onCancel }: { productId: string, onCancel: () =
                     required 
                     name="comment" 
                     rows={3} 
-                    className="w-full p-3 border border-neutral-200 focus:border-[var(--accent-color)] focus:ring-1 focus:ring-[var(--accent-color)] outline-none text-sm rounded-xl transition-all bg-white" 
+                    className="w-full p-3 border border-neutral-200 dark:border-neutral-800 focus:border-[var(--accent-color)] focus:ring-1 focus:ring-[var(--accent-color)] outline-none text-sm rounded-xl transition-all bg-white dark:bg-[#111111]" 
                     style={{ '--accent-color': accentColor } as React.CSSProperties}
                     placeholder="Share your thoughts..." 
                 />
@@ -105,7 +105,7 @@ const ReviewForm = ({ productId, onCancel }: { productId: string, onCancel: () =
                 <button
                     type="button"
                     onClick={onCancel}
-                    className="px-6 border border-neutral-200 text-[#1A1A1A] text-xs uppercase tracking-widest hover:bg-neutral-100/50 rounded-xl transition-all active:scale-95"
+                    className="px-6 border border-neutral-200 dark:border-neutral-800 text-[#1A1A1A] dark:text-[#F4F1ED] text-xs uppercase tracking-widest hover:bg-neutral-100/50 rounded-xl transition-all active:scale-95"
                 >
                     Cancel
                 </button>
@@ -375,7 +375,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                     onClick={() => setIsOpen(!isOpen)}
                     className="w-full py-3 flex items-center justify-between text-left focus:outline-none group"
                 >
-                    <span className="font-serif text-base xs:text-[17px] font-medium text-[#1A1A1A] group-hover:text-neutral-600 transition-colors">{title}</span>
+                    <span className="font-serif text-base xs:text-[17px] font-medium text-[#1A1A1A] dark:text-[#F4F1ED] group-hover:text-neutral-600 transition-colors">{title}</span>
                     {isOpen ? <ChevronUp className="w-4 h-4 text-neutral-500" /> : <ChevronDown className="w-4 h-4 text-neutral-500" />}
                 </button>
                 <AnimatePresence>
@@ -489,16 +489,16 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         initial={{ y: "-100%" }}
                         animate={{ y: 0 }}
                         exit={{ y: "-100%" }}
-                        className="hidden md:flex fixed top-[48px] lg:top-[92px] left-0 right-0 z-[40] bg-[#FDFBF7]/90 backdrop-blur-xl border-b border-neutral-200/50 shadow-sm py-3 px-6 xl:px-12 items-center justify-between"
+                        className="hidden md:flex fixed top-[48px] lg:top-[92px] left-0 right-0 z-[40] bg-[#FDFBF7]/90 dark:bg-[#111111]/90 backdrop-blur-xl border-b border-neutral-200/50 dark:border-white/10 shadow-sm py-3 px-6 xl:px-12 items-center justify-between"
                     >
                         <div className="flex items-center gap-4">
-                            <div className="text-sm font-serif font-medium text-[#1A1A1A]">{finalTitle}</div>
+                            <div className="text-sm font-serif font-medium text-[#1A1A1A] dark:text-[#F4F1ED]">{finalTitle}</div>
                         </div>
                         <div className="flex items-center gap-6">
                             <div className="flex flex-col items-end">
-                                <div className="text-sm font-medium text-[#1A1A1A]">₹{itemPrice.toLocaleString('en-IN')}</div>
+                                <div className="text-sm font-medium text-[#1A1A1A] dark:text-[#F4F1ED]">₹{itemPrice.toLocaleString('en-IN')}</div>
                                 {itemOriginalPrice && itemOriginalPrice > itemPrice && (
-                                    <div className="text-[10px] text-neutral-400 line-through">₹{itemOriginalPrice.toLocaleString('en-IN')}</div>
+                                    <div className="text-[10px] text-neutral-400 dark:text-neutral-500 line-through">₹{itemOriginalPrice.toLocaleString('en-IN')}</div>
                                 )}
                             </div>
                             <button
@@ -519,17 +519,17 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
 
             {/* Left Column: Gallery */}
             {/* Mobile/Tablet: Infinite Looping Carousel using Embla */}
-            <div className="block lg:landscape:hidden xl:hidden relative w-[calc(100%-16px)] mx-auto mt-2 aspect-[3/4] mb-6 overflow-hidden rounded-[28px] sm:rounded-[36px] shadow-[0_8px_30px_rgba(0,0,0,0.05)] bg-neutral-100" ref={emblaRef}>
+            <div className="block lg:landscape:hidden xl:hidden relative w-[calc(100%-16px)] mx-auto mt-2 aspect-[3/4] mb-6 overflow-hidden rounded-[28px] sm:rounded-[36px] shadow-[0_8px_30px_rgba(0,0,0,0.05)] bg-neutral-100 dark:bg-[#111111]" ref={emblaRef}>
                 <div className="flex h-full w-full">
                     {displayImages.map((img, idx) => (
                         <div 
                             key={`${selectedPiece}-${idx}`} 
-                            className="flex-[0_0_100%] h-full relative bg-neutral-100"
+                            className="flex-[0_0_100%] h-full relative bg-neutral-100 dark:bg-[#111111]"
                         >
                             {img ? (
                                 <>
                                     {!loadedImages[idx] && (
-                                        <div className="absolute inset-0 bg-neutral-200 animate-pulse z-10" />
+                                        <div className="absolute inset-0 bg-neutral-200 dark:bg-neutral-800 animate-pulse z-10" />
                                     )}
                                     <Image
                                         src={img}
@@ -542,7 +542,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                     />
                                 </>
                             ) : (
-                                <div className="w-full h-full bg-neutral-200" />
+                                <div className="w-full h-full bg-neutral-200 dark:bg-neutral-800" />
                             )}
                         </div>
                     ))}
@@ -551,7 +551,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 {/* Floating Wishlist Button on Mobile */}
                 <button
                     onClick={() => toggleWishlist(product as any)}
-                    className="absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-sm active:scale-95 transition-all text-[#1A1A1A]"
+                    className="absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-sm active:scale-95 transition-all text-[#1A1A1A] dark:text-[#F4F1ED]"
                     title="Add to Wishlist"
                     aria-label="Wishlist"
                 >
@@ -570,7 +570,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                             onClick={() => scrollToIndex(idx)}
                             className={cn(
                                 "h-1.5 rounded-full transition-all duration-300 shadow-sm",
-                                selectedImageIndex === idx ? "bg-white w-4.5" : "bg-white/40 w-1.5"
+                                selectedImageIndex === idx ? "bg-white dark:bg-[#111111] w-4.5" : "bg-white/40 w-1.5"
                             )}
                         />
                     ))}
@@ -591,7 +591,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                             )}
                         >
                             {img ? (
-                                <div className={cn("w-full h-full relative bg-neutral-100", !loadedThumbnails[idx] && "animate-pulse bg-neutral-200")}>
+                                <div className={cn("w-full h-full relative bg-neutral-100 dark:bg-[#141414]", !loadedThumbnails[idx] && "animate-pulse bg-neutral-200")}>
                                     <Image
                                         src={img}
                                         alt={`Product View ${idx}`}
@@ -601,14 +601,14 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                     />
                                 </div>
                             ) : (
-                                <div className="w-full h-full bg-neutral-100" />
+                                <div className="w-full h-full bg-neutral-100 dark:bg-[#141414]" />
                             )}
                         </button>
                     ))}
                 </div>
 
                 {/* Main Image */}
-                <div className="relative flex-1 aspect-[3/4] bg-neutral-100 overflow-hidden">
+                <div className="relative flex-1 aspect-[3/4] bg-neutral-100 dark:bg-[#141414] overflow-hidden">
                     {isMainImgLoading && (
                         <div className="absolute inset-0 bg-neutral-200 animate-pulse z-10" />
                     )}
@@ -629,7 +629,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                 onLoad={() => setIsMainImgLoading(false)}
                             />
                         ) : (
-                            <div className="w-full h-full bg-neutral-100 flex items-center justify-center">
+                            <div className="w-full h-full bg-neutral-100 dark:bg-[#141414] flex items-center justify-center">
                                 <span className="text-neutral-500 text-xs uppercase tracking-widest">No Image</span>
                             </div>
                         )}
@@ -638,7 +638,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                     {/* Floating Wishlist Button on Desktop */}
                     <button
                         onClick={() => toggleWishlist(product as any)}
-                        className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-white/85 backdrop-blur-md flex items-center justify-center shadow-md hover:bg-white active:scale-95 transition-all text-[#1A1A1A]"
+                        className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-white/85 backdrop-blur-md flex items-center justify-center shadow-md hover:bg-white dark:bg-[#111111] active:scale-95 transition-all text-[#1A1A1A] dark:text-[#F4F1ED]"
                         title="Add to Wishlist"
                         aria-label="Wishlist"
                     >
@@ -656,18 +656,18 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 {/* Breadcrumb pseudo */}
                 <span className="text-[9px] xs:text-[10px] font-medium tracking-[0.15em] uppercase text-neutral-500 mb-1">{product.category}</span>
 
-                <h1 className="font-serif text-xl xs:text-2xl md:text-4xl lg:text-5xl text-[#1A1A1A] font-medium leading-[1.2] mb-1.5 flex justify-between items-start">
+                <h1 className="font-serif text-xl xs:text-2xl md:text-4xl lg:text-5xl text-[#1A1A1A] dark:text-[#F4F1ED] font-medium leading-[1.2] mb-1.5 flex justify-between items-start">
                     {displayTitle}
                     <ShareButton
                         title={displayTitle}
-                        className="text-neutral-500 hover:text-[#1A1A1A] mt-1"
+                        className="text-neutral-500 hover:text-[#1A1A1A] dark:text-[#F4F1ED] mt-1"
                         iconSize={18}
                     />
                 </h1>
 
                 <div className="flex items-center gap-x-3 gap-y-2 mb-3 flex-wrap">
                     {displayOriginalPrice && <span className="text-neutral-500 line-through text-sm xs:text-base">₹{displayOriginalPrice.toLocaleString('en-IN')}</span>}
-                    <span className="text-lg xs:text-xl md:text-2xl font-medium text-[#1A1A1A]">₹{displayPrice.toLocaleString('en-IN')}</span>
+                    <span className="text-lg xs:text-xl md:text-2xl font-medium text-[#1A1A1A] dark:text-[#F4F1ED]">₹{displayPrice.toLocaleString('en-IN')}</span>
                     {displayOriginalPrice && displayOriginalPrice > displayPrice && !product.isOutOfStock && (
                         <div className="flex items-center gap-x-1.5 gap-y-1 flex-wrap">
                             <span 
@@ -712,7 +712,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                 Offer
                             </span>
                             <div className="text-[11.5px] leading-snug text-neutral-500 font-sans flex items-center flex-wrap gap-x-1.5 gap-y-1">
-                                <span><strong className="text-[#1A1A1A] font-semibold">-20% OFF</strong> on your first purchase. Use code</span>
+                                <span><strong className="text-[#1A1A1A] dark:text-[#F4F1ED] font-semibold">-20% OFF</strong> on your first purchase. Use code</span>
                                 <button
                                     onClick={handleCopyCode}
                                     className="font-mono bg-neutral-100/80 px-2 py-0.5 border border-neutral-200/60 rounded text-neutral-800 text-[10.5px] flex items-center gap-1.5 hover:bg-neutral-200/50 hover:text-black active:scale-95 transition-all shadow-sm group cursor-pointer"
@@ -724,7 +724,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                     ) : (
                                         <Copy className="w-3 h-3 text-neutral-500 group-hover:text-neutral-600 transition-colors" />
                                     )}
-                                    <span className="text-[9px] uppercase tracking-wider text-neutral-500 font-sans group-hover:text-[#1A1A1A] transition-colors">
+                                    <span className="text-[9px] uppercase tracking-wider text-neutral-500 font-sans group-hover:text-[#1A1A1A] dark:text-[#F4F1ED] transition-colors">
                                         {copied ? "Copied!" : "Copy"}
                                     </span>
                                 </button>
@@ -739,7 +739,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                             {displayPrice >= 499 ? (
                                 <span><strong className="text-emerald-700 font-semibold">✓ Eligible for Free Delivery</strong> on this purchase (Orders above ₹499)</span>
                             ) : (
-                                <span>Add <strong className="text-[#1A1A1A] font-semibold">₹{499 - displayPrice}</strong> more to cart for <strong className="text-[#1A1A1A] font-semibold">Free Delivery</strong> (Threshold: ₹499)</span>
+                                <span>Add <strong className="text-[#1A1A1A] dark:text-[#F4F1ED] font-semibold">₹{499 - displayPrice}</strong> more to cart for <strong className="text-[#1A1A1A] dark:text-[#F4F1ED] font-semibold">Free Delivery</strong> (Threshold: ₹499)</span>
                             )}
                         </div>
                     </div>
@@ -794,14 +794,14 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                         onClick={() => setSelectedPiece(piece)}
                                         className={cn(
                                             "relative flex-1 flex flex-col items-center justify-center py-2.5 px-1 rounded-[16px] transition-colors duration-300 cursor-pointer z-10",
-                                            isSelected ? "text-[#1A1A1A]" : "text-neutral-500 hover:text-neutral-800"
+                                            isSelected ? "text-[#1A1A1A] dark:text-[#F4F1ED]" : "text-neutral-500 hover:text-neutral-800"
                                         )}
                                         style={isSelected ? { color: accentColor } : undefined}
                                     >
                                         {isSelected && (
                                             <motion.div
                                                 layoutId="pieceSelectorBackground"
-                                                className="absolute inset-0 bg-white rounded-[16px] shadow-[0_2px_10px_rgba(0,0,0,0.06)] ring-1 ring-black/[0.04] z-[-1]"
+                                                className="absolute inset-0 bg-white dark:bg-[#111111] rounded-[16px] shadow-[0_2px_10px_rgba(0,0,0,0.06)] ring-1 ring-black/[0.04] z-[-1]"
                                                 initial={false}
                                                 transition={{ type: "spring", stiffness: 400, damping: 30 }}
                                             />
@@ -823,7 +823,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                     <div className="mb-4">
                         <div className="flex justify-between items-center mb-1.5">
                             <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Color</span>
-                            <span className="text-xs font-serif text-[#1A1A1A]">{selectedVariant?.colorName}</span>
+                            <span className="text-xs font-serif text-[#1A1A1A] dark:text-[#F4F1ED]">{selectedVariant?.colorName}</span>
                         </div>
                         <div className="flex gap-2.5">
                             {product.variants!.map((variant) => (
@@ -890,12 +890,12 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                     key={size}
                                     onClick={() => { setSelectedSize(size); setError(null); }}
                                     className={cn(
-                                        "w-10 h-10 xs:w-11 xs:h-11 border rounded-full flex items-center justify-center font-sans text-xs font-medium tracking-wide transition-all bg-white cursor-pointer active:scale-95",
+                                        "w-10 h-10 xs:w-11 xs:h-11 border rounded-full flex items-center justify-center font-sans text-xs font-medium tracking-wide transition-all bg-white dark:bg-[#111111] cursor-pointer active:scale-95",
                                         selectedSize === size
                                             ? "text-white shadow-sm scale-105"
                                             : error
                                                 ? "border-red-300 text-red-600 bg-red-50 hover:border-red-500"
-                                                : "border-neutral-200 text-[#1A1A1A] hover:border-[#1A1A1A]"
+                                                : "border-neutral-200 dark:border-neutral-800 text-[#1A1A1A] dark:text-[#F4F1ED] hover:border-[#1A1A1A]"
                                     )}
                                     style={selectedSize === size ? { backgroundColor: accentColor, borderColor: accentColor } : undefined}
                                 >
@@ -904,7 +904,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                             ))}
                         </div>
                         {selectedSize && (
-                            <div className="mt-3.5 pl-3 py-1 bg-transparent border-l-2 border-neutral-200 text-[11px] font-sans text-neutral-500 leading-normal animate-in fade-in slide-in-from-top-1">
+                            <div className="mt-3.5 pl-3 py-1 bg-transparent border-l-2 border-neutral-200 dark:border-neutral-800 text-[11px] font-sans text-neutral-500 leading-normal animate-in fade-in slide-in-from-top-1">
                                 {selectedSize === "XS" && "Product Bust 34 in • Product Waist 32 in • Product Hip 38 in"}
                                 {selectedSize === "S" && "Product Bust 36 in • Product Waist 34 in • Product Hip 40 in"}
                                 {selectedSize === "M" && "Product Bust 38 in • Product Waist 36 in • Product Hip 42 in"}
@@ -953,8 +953,8 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         className={cn(
                             "w-[50px] h-[50px] flex items-center justify-center border shrink-0 hover:scale-[1.05] active:scale-[0.95] hover:bg-[var(--accent-color)] hover:text-white rounded-full shadow-sm transition-all duration-300 cursor-pointer",
                             product.isOutOfStock
-                                ? "bg-neutral-100 text-neutral-500 border-neutral-200 cursor-not-allowed"
-                                : "bg-[#FDFBF7]"
+                                ? "bg-neutral-100 dark:bg-[#141414] text-neutral-500 border-neutral-200 dark:border-neutral-800 cursor-not-allowed"
+                                : "bg-[#FDFBF7] dark:bg-[#0A0A0A]"
                         )}
                         style={!product.isOutOfStock ? { borderColor: accentColor, color: accentColor, '--accent-color': accentColor } as React.CSSProperties : undefined}
                         title="Add to Cart"
@@ -974,7 +974,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                             value={pincode}
                             onChange={handlePincodeChange}
                             className={cn(
-                                "w-full border px-3.5 py-2 text-xs focus:outline-none transition-colors rounded-lg bg-white",
+                                "w-full border px-3.5 py-2 text-xs focus:outline-none transition-colors rounded-lg bg-white dark:bg-[#111111]",
                                 pincodeError ? "border-red-300 focus:border-red-500 bg-red-50" : "border-neutral-200/80 focus:border-[var(--accent-color)] focus:ring-0"
                             )}
                             style={{ '--accent-color': accentColor } as React.CSSProperties}
@@ -988,7 +988,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         </div>
                     )}
                     {deliveryInfo && (
-                        <div className="flex items-center gap-2 text-xs text-[#1A1A1A] mt-2">
+                        <div className="flex items-center gap-2 text-xs text-[#1A1A1A] dark:text-[#F4F1ED] mt-2">
                             <Truck className="w-3.5 h-3.5 text-green-600" />
                             <span>{deliveryInfo.date}</span>
                             <span className="text-neutral-300">•</span>
@@ -1005,17 +1005,17 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 <div className="grid grid-cols-3 gap-1 py-3 border-t border-b border-neutral-100/80 mb-5 text-center bg-transparent">
                     <div className="flex flex-col items-center justify-center gap-0.5">
                         <Truck className="w-4 h-4 text-neutral-500 stroke-[1.2]" />
-                        <span className="font-sans text-[9px] uppercase font-semibold tracking-wider text-[#1A1A1A]">Free Shipping</span>
+                        <span className="font-sans text-[9px] uppercase font-semibold tracking-wider text-[#1A1A1A] dark:text-[#F4F1ED]">Free Shipping</span>
                         <span className="font-sans text-[7.5px] text-neutral-500 uppercase leading-none">Express Delivery</span>
                     </div>
                     <div className="flex flex-col items-center justify-center gap-0.5">
                         <ShieldCheck className="w-4 h-4 text-neutral-500 stroke-[1.2]" />
-                        <span className="font-sans text-[9px] uppercase font-semibold tracking-wider text-[#1A1A1A]">Secure Pay</span>
+                        <span className="font-sans text-[9px] uppercase font-semibold tracking-wider text-[#1A1A1A] dark:text-[#F4F1ED]">Secure Pay</span>
                         <span className="font-sans text-[7.5px] text-neutral-500 uppercase leading-none">UPI & Cards</span>
                     </div>
                     <div className="flex flex-col items-center justify-center gap-0.5">
                         <RefreshCw className="w-4 h-4 text-neutral-500 stroke-[1.2]" />
-                        <span className="font-sans text-[9px] uppercase font-semibold tracking-wider text-[#1A1A1A]">Easy Return</span>
+                        <span className="font-sans text-[9px] uppercase font-semibold tracking-wider text-[#1A1A1A] dark:text-[#F4F1ED]">Easy Return</span>
                         <span className="font-sans text-[7.5px] text-neutral-500 uppercase leading-none">7-day exchange</span>
                     </div>
                 </div>
@@ -1040,18 +1040,18 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                             <div className="border border-neutral-100 rounded-xl p-4 sm:p-6 bg-neutral-50/30">
                                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
                                     <div>
-                                        <h2 className="font-serif text-base xs:text-lg text-[#1A1A1A] mb-1">About Tenet</h2>
+                                        <h2 className="font-serif text-base xs:text-lg text-[#1A1A1A] dark:text-[#F4F1ED] mb-1">About Tenet</h2>
                                         <p className="text-[11px] xs:text-xs text-neutral-500 leading-relaxed max-w-md">
                                             TENET is defined by silent luxury—clean silhouettes, exceptional natural materials, and meticulous tailoring curated for the modern wardrobe.
                                         </p>
                                     </div>
                                     <div className="flex gap-4 text-center border-t md:border-t-0 md:border-l border-neutral-100/80 pt-3 md:pt-0 md:pl-6 shrink-0">
                                         <div>
-                                            <div className="font-serif text-base xs:text-lg text-[#1A1A1A]">4.8★</div>
+                                            <div className="font-serif text-base xs:text-lg text-[#1A1A1A] dark:text-[#F4F1ED]">4.8★</div>
                                             <div className="text-[8px] xs:text-[9px] text-neutral-500 uppercase tracking-wider font-bold">Patron Rating</div>
                                         </div>
                                         <div className="border-l border-neutral-100/80 pl-4">
-                                            <div className="font-serif text-base xs:text-lg text-[#1A1A1A]">10k+</div>
+                                            <div className="font-serif text-base xs:text-lg text-[#1A1A1A] dark:text-[#F4F1ED]">10k+</div>
                                             <div className="text-[8px] xs:text-[9px] text-neutral-500 uppercase tracking-wider font-bold">Reviews</div>
                                         </div>
                                     </div>
@@ -1080,7 +1080,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
 
                             {/* Reviews Header */}
                             <div className="text-center pb-5 pt-3 border-b border-neutral-100/80">
-                                <h2 className="font-serif text-lg xs:text-2xl text-[#1A1A1A] mb-2 font-medium">Customer Reviews</h2>
+                                <h2 className="font-serif text-lg xs:text-2xl text-[#1A1A1A] dark:text-[#F4F1ED] mb-2 font-medium">Customer Reviews</h2>
                                 <div className="flex justify-center items-center gap-2 mb-4">
                                     <div className="flex">
                                         {[...Array(5)].map((_, i) => (
@@ -1111,17 +1111,17 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                     {reviews.map((review) => (
                                         <div 
                                             key={review.id} 
-                                            className="bg-white p-4 xs:p-5 sm:p-6 rounded-xl border border-neutral-100 shadow-sm transition-all duration-300"
+                                            className="bg-white dark:bg-[#111111] p-4 xs:p-5 sm:p-6 rounded-xl border border-neutral-100 shadow-sm transition-all duration-300"
                                         >
                                             <div className="flex justify-between items-start mb-3">
                                                 <div className="flex items-center gap-2.5">
                                                     {/* User Initials Avatar */}
-                                                    <div className="w-8 h-8 rounded-full flex items-center justify-center font-semibold text-xs text-neutral-600 bg-neutral-100 uppercase select-none">
+                                                    <div className="w-8 h-8 rounded-full flex items-center justify-center font-semibold text-xs text-neutral-600 bg-neutral-100 dark:bg-[#141414] uppercase select-none">
                                                         {review.name.charAt(0)}
                                                     </div>
                                                     <div>
                                                         <div className="flex items-center gap-1.5 flex-wrap">
-                                                            <h4 className="font-semibold text-[#1A1A1A] text-xs xs:text-sm">{review.name}</h4>
+                                                            <h4 className="font-semibold text-[#1A1A1A] dark:text-[#F4F1ED] text-xs xs:text-sm">{review.name}</h4>
                                                             <span className="text-[8px] xs:text-[9px] bg-emerald-50/60 text-emerald-700 border border-emerald-100/30 rounded px-1.5 py-0.5 uppercase tracking-wider font-semibold">Verified Buy</span>
                                                         </div>
                                                         <span className="text-[9px] xs:text-[10px] text-neutral-500 block font-sans">{new Date(review.date).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</span>
@@ -1146,7 +1146,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                                 const body = review.comment.substring(firstPeriodIndex + 1).trim();
                                                 return (
                                                     <>
-                                                        <p className="font-serif text-sm xs:text-base text-[#1A1A1A] mb-1.5 font-medium leading-snug">{title}</p>
+                                                        <p className="font-serif text-sm xs:text-base text-[#1A1A1A] dark:text-[#F4F1ED] mb-1.5 font-medium leading-snug">{title}</p>
                                                         {body && <p className="text-neutral-500 xs:text-neutral-600 text-xs xs:text-sm leading-relaxed mb-3">{body}</p>}
                                                     </>
                                                 );
@@ -1155,7 +1155,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                             {review.images && review.images.length > 0 && (
                                                 <div className="flex gap-2.5 mb-1 mt-3 overflow-x-auto pb-1 scrollbar-none">
                                                     {review.images.map((img, idx) => (
-                                                        <div key={idx} className="relative w-20 h-20 xs:w-24 xs:h-24 flex-shrink-0 rounded-lg overflow-hidden bg-neutral-50 border border-neutral-100/80 shadow-sm hover:scale-102 active:scale-98 transition-all duration-300 cursor-zoom-in">
+                                                        <div key={idx} className="relative w-20 h-20 xs:w-24 xs:h-24 flex-shrink-0 rounded-lg overflow-hidden bg-neutral-50 dark:bg-[#0A0A0A] border border-neutral-100/80 shadow-sm hover:scale-102 active:scale-98 transition-all duration-300 cursor-zoom-in">
                                                             <Image 
                                                                 src={img} 
                                                                 alt={`Customer review snapshot ${idx + 1}`} 
@@ -1196,8 +1196,8 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         className={cn(
                             "w-[48px] h-[48px] flex items-center justify-center border shrink-0 hover:scale-[1.05] active:scale-[0.95] hover:bg-[var(--accent-color)] hover:text-white rounded-full shadow-sm transition-all duration-300 cursor-pointer",
                             product.isOutOfStock
-                                ? "bg-neutral-100 text-[#A3A3A3] border-neutral-200 cursor-not-allowed"
-                                : "bg-[#FDFBF7]"
+                                ? "bg-neutral-100 dark:bg-[#141414] text-[#A3A3A3] border-neutral-200 dark:border-neutral-800 cursor-not-allowed"
+                                : "bg-[#FDFBF7] dark:bg-[#0A0A0A]"
                         )}
                         style={!product.isOutOfStock ? { borderColor: accentColor, color: accentColor, '--accent-color': accentColor } as React.CSSProperties : undefined}
                         title="Add to Cart"

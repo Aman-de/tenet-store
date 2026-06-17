@@ -63,12 +63,12 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
             onMouseLeave={() => setIsHovered(false)}
         >
             {/* Image Container */}
-            <div className="relative aspect-[3/4] w-full overflow-hidden bg-neutral-100 mb-3 rounded-sm">
+            <div className="relative aspect-[3/4] w-full overflow-hidden bg-neutral-100 dark:bg-[#111111] mb-3 rounded-sm">
                 <Link href={`/product/${product.handle}`} onClick={handleViewItem} className="absolute inset-0 z-0 block w-full h-full">
                     {primaryImage ? (
                         <>
                             {isImg1Loading && (
-                                <div className="absolute inset-0 bg-neutral-200 animate-pulse z-10" />
+                                <div className="absolute inset-0 bg-neutral-200 dark:bg-neutral-800 animate-pulse z-10" />
                             )}
                             <Image
                                 src={primaryImage}
@@ -80,7 +80,7 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
                             />
                         </>
                     ) : (
-                        <div className="w-full h-full bg-neutral-200 flex items-center justify-center text-neutral-400 text-xs z-0 absolute inset-0 group-hover:opacity-0 transition-opacity duration-200">
+                        <div className="w-full h-full bg-neutral-200 dark:bg-neutral-800 flex items-center justify-center text-neutral-400 text-xs z-0 absolute inset-0 group-hover:opacity-0 transition-opacity duration-200">
                             No Image
                         </div>
                     )}
@@ -129,7 +129,7 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
                         className={`
                             md:hidden absolute top-2 right-2 z-30
                             pointer-events-auto
-                            w-8 h-8 bg-white/20 backdrop-blur-md text-[#1A1A1A] rounded-full 
+                            w-8 h-8 bg-white/20 dark:bg-black/20 backdrop-blur-md text-[#1A1A1A] dark:text-white rounded-full 
                             flex items-center justify-center
                             active:scale-90 transition-all duration-200
                         `}
@@ -152,7 +152,7 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
                                 e.stopPropagation();
                                 setIsSizeSelectorOpen(true);
                             }}
-                            className="md:hidden absolute bottom-2 right-2 z-30 w-8 h-8 bg-white/90 backdrop-blur-sm text-[#1A1A1A] rounded-full flex items-center justify-center shadow-md border border-neutral-200/50 active:scale-95 transition-all duration-200"
+                            className="md:hidden absolute bottom-2 right-2 z-30 w-8 h-8 bg-white/90 dark:bg-[#1A1A1A]/90 backdrop-blur-sm text-[#1A1A1A] rounded-full flex items-center justify-center shadow-md border border-neutral-200/50 dark:border-white/10 active:scale-95 transition-all duration-200"
                         >
                             <Plus size={16} style={{ color: accentColor }} />
                         </motion.button>
@@ -170,8 +170,8 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
                             }}
                             className={`
                                 pointer-events-auto
-                                w-full bg-white/95 backdrop-blur-sm text-[#1A1A1A] py-3 text-[10px] font-medium uppercase tracking-[0.2em] transition-all duration-500 ease-out border-t border-[#1A1A1A]/10
-                                hover:bg-[#1A1A1A] hover:text-white
+                                w-full bg-white/95 dark:bg-[#1A1A1A]/95 backdrop-blur-sm text-[#1A1A1A] dark:text-[#F4F1ED] py-3 text-[10px] font-medium uppercase tracking-[0.2em] transition-all duration-500 ease-out border-t border-[#1A1A1A]/10 dark:border-white/10
+                                hover:bg-[#1A1A1A] dark:hover:bg-white hover:text-white dark:hover:text-[#1A1A1A]
                                 opacity-0 group-hover:opacity-100
                                 transform ${addingState !== 'idle' && !product.isOutOfStock ? 'translate-y-0 opacity-100' : 'translate-y-[120%] group-hover:translate-y-0'}
                             `}
@@ -216,13 +216,13 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
                                 initial={{ opacity: 0, y: 10, scale: 0.95 }}
                                 animate={{ opacity: 1, y: 0, scale: 1 }}
                                 exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                                className="absolute bottom-2 left-2 right-2 z-40 bg-white/95 backdrop-blur-md border border-neutral-200/80 p-3 rounded-lg shadow-xl flex flex-col items-center gap-2 text-center pointer-events-auto"
+                                className="absolute bottom-2 left-2 right-2 z-40 bg-white/95 dark:bg-[#1A1A1A]/95 backdrop-blur-md border border-neutral-200/80 dark:border-white/10 p-3 rounded-lg shadow-xl flex flex-col items-center gap-2 text-center pointer-events-auto"
                                 onClick={(e) => {
                                     e.preventDefault();
                                     e.stopPropagation();
                                 }}
                             >
-                                <span className="text-[9px] uppercase font-bold tracking-widest text-neutral-500">
+                                <span className="text-[9px] uppercase font-bold tracking-widest text-neutral-500 dark:text-neutral-400">
                                     Select Size
                                 </span>
                                 <div className="flex gap-1.5 flex-wrap justify-center my-1">
@@ -234,20 +234,20 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
                                                 e.stopPropagation();
                                                 handleSelectSize(size);
                                             }}
-                                            className="w-8 h-8 border rounded-full flex items-center justify-center font-sans text-[10px] font-bold transition-all border-neutral-200 hover:border-[#1A1A1A] hover:bg-neutral-50 active:scale-95"
+                                            className="w-8 h-8 border rounded-full flex items-center justify-center font-sans text-[10px] font-bold transition-all border-neutral-200 dark:border-neutral-700 text-[#1A1A1A] dark:text-[#F4F1ED] hover:border-[#1A1A1A] dark:hover:border-[#F4F1ED] hover:bg-neutral-50 dark:hover:bg-white/10 active:scale-95"
                                         >
                                             {size}
                                         </button>
                                     ))}
                                 </div>
-                                <div className="flex flex-col gap-1 w-full mt-1 border-t border-neutral-100 pt-2">
+                                <div className="flex flex-col gap-1 w-full mt-1 border-t border-neutral-100 dark:border-white/10 pt-2">
                                     <button
                                         onClick={(e) => {
                                             e.preventDefault();
                                             e.stopPropagation();
                                             setIsSizeSelectorOpen(false);
                                         }}
-                                        className="text-[9px] uppercase tracking-wider text-neutral-400 hover:text-neutral-600 transition-colors"
+                                        className="text-[9px] uppercase tracking-wider text-neutral-400 dark:text-neutral-500 hover:text-neutral-600 dark:hover:text-neutral-300 transition-colors"
                                     >
                                         Cancel
                                     </button>
@@ -261,18 +261,18 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
             {/* Product Info */}
             <div className="space-y-1.5 p-1 pt-2 flex flex-col items-center text-center">
                 <Link href={`/product/${product.handle}`} onClick={handleViewItem}>
-                    <h3 className="font-serif text-sm md:text-base font-normal tracking-wide text-[#1A1A1A] truncate hover:text-[#1A1A1A]/70 transition-colors">
+                    <h3 className="font-serif text-sm md:text-base font-normal tracking-wide text-[#1A1A1A] dark:text-[#F4F1ED] truncate hover:text-[#1A1A1A]/70 dark:hover:text-[#F4F1ED]/70 transition-colors">
                         {product.title}
                     </h3>
                 </Link>
 
                 <div className="flex items-center justify-center gap-3 text-xs md:text-sm">
                     {product.originalPrice && (
-                        <span className="text-neutral-400 line-through decoration-neutral-300 font-sans text-xs">
+                        <span className="text-neutral-400 dark:text-neutral-500 line-through decoration-neutral-300 dark:decoration-neutral-600 font-sans text-xs">
                             ₹{product.originalPrice.toLocaleString('en-IN')}
                         </span>
                     )}
-                    <span className="font-sans font-medium text-[#1A1A1A] tracking-wider text-xs">
+                    <span className="font-sans font-medium text-[#1A1A1A] dark:text-[#F4F1ED] tracking-wider text-xs">
                         ₹{product.price.toLocaleString('en-IN')}
                     </span>
                 </div>

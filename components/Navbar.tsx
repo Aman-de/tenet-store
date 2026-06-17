@@ -44,21 +44,21 @@ export default function Navbar() {
     
     // Authentic Apple Liquid Glass effect
     const navContainerClass = isScrolledOrNotHome 
-        ? "bg-[#F8F5EF]/85 backdrop-blur-[20px] saturate-[180%] border-b lg:border border-[#1A1A1A]/10 shadow-[0_2px_10px_rgba(0,0,0,0.03)]" 
-        : "bg-transparent border-b border-transparent shadow-none lg:bg-[#F8F5EF]/85 lg:backdrop-blur-[20px] lg:saturate-[180%] lg:border lg:border-[#1A1A1A]/10 lg:shadow-[0_2px_10px_rgba(0,0,0,0.03)]";
+        ? "bg-[#F8F5EF]/85 dark:bg-[#141414]/85 backdrop-blur-[20px] saturate-[180%] border-b lg:border border-[#1A1A1A]/10 dark:border-white/10 shadow-[0_2px_10px_rgba(0,0,0,0.03)]" 
+        : "bg-transparent border-b border-transparent shadow-none lg:bg-[#F8F5EF]/85 lg:dark:bg-[#141414]/85 lg:backdrop-blur-[20px] lg:saturate-[180%] lg:border lg:border-[#1A1A1A]/10 lg:dark:border-white/10 lg:shadow-[0_2px_10px_rgba(0,0,0,0.03)]";
 
-    const textColor = isScrolledOrNotHome ? "text-neutral-800" : "text-white lg:text-neutral-800";
-    const logoColor = isScrolledOrNotHome ? "text-black" : "text-white lg:text-black";
+    const textColor = isScrolledOrNotHome ? "text-neutral-800 dark:text-[#F4F1ED]" : "text-white lg:text-neutral-800 lg:dark:text-[#F4F1ED]";
+    const logoColor = isScrolledOrNotHome ? "text-black dark:text-white" : "text-white lg:text-black lg:dark:text-white";
     const iconStroke = 2;
-    const iconGlassBg = isScrolledOrNotHome ? "bg-black/5 hover:bg-black/10" : "bg-white/10 hover:bg-white/20 lg:bg-black/5 lg:hover:bg-black/10";
+    const iconGlassBg = isScrolledOrNotHome ? "bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20" : "bg-white/10 hover:bg-white/20 lg:bg-black/5 lg:dark:bg-white/10 lg:hover:bg-black/10 lg:dark:hover:bg-white/20";
 
     // Ultra-premium Apple-style segmented control (Liquid Glass)
     const GenderToggle = ({ idSuffix, isDesktop = false }: { idSuffix: string, isDesktop?: boolean }) => {
         const solid = isScrolledOrNotHome || isDesktop;
-        const toggleBg = solid ? "bg-[#1A1A1A]/5" : "bg-white/10";
+        const toggleBg = solid ? "bg-[#1A1A1A]/5 dark:bg-white/10" : "bg-white/10";
         const btnText = (active: boolean) => {
-            if (active) return "text-white";
-            return solid ? "text-[#1A1A1A] font-medium" : "text-white/80 font-medium";
+            if (active) return "text-white dark:text-[#1A1A1A]";
+            return solid ? "text-[#1A1A1A] dark:text-[#F4F1ED] font-medium" : "text-white/80 font-medium";
         };
         return (
             <div className={`relative flex items-center rounded-full p-1 transition-colors duration-500 backdrop-blur-md ${toggleBg}`}>
@@ -179,12 +179,10 @@ export default function Navbar() {
                                             <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full border border-white" style={{ backgroundColor: accentColor }} />
                                         )}
                                     </button>
-                                    <button className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Toggle mobile menu" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-                                        {isMobileMenuOpen ? (
-                                            <X className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
-                                        ) : (
-                                            <Menu className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
-                                        )}
+                                    <button className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex flex-col gap-1 items-center justify-center`} aria-label="Toggle mobile menu" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                                        <span className={`block w-5 h-0.5 bg-neutral-800 dark:bg-white transition-all duration-300 ease-in-out ${isMobileMenuOpen ? 'rotate-45 translate-y-1.5' : '-translate-y-1'}`} />
+                                        <span className={`block w-5 h-0.5 bg-neutral-800 dark:bg-white transition-all duration-300 ease-in-out ${isMobileMenuOpen ? 'opacity-0' : 'opacity-100'}`} />
+                                        <span className={`block w-5 h-0.5 bg-neutral-800 dark:bg-white transition-all duration-300 ease-in-out ${isMobileMenuOpen ? '-rotate-45 -translate-y-1.5' : 'translate-y-1'}`} />
                                     </button>
                                 </div>
                             </>
