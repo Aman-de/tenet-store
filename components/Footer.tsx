@@ -31,7 +31,7 @@ export default function Footer() {
     };
 
     return (
-        <footer className="bg-[#0A0A0A] text-white pt-24 pb-20 overflow-hidden">
+        <footer className="bg-[#0A0A0A] text-white pt-24 pb-8 overflow-hidden">
             <div className="max-w-[2000px] w-full mx-auto px-6 xl:px-12">
 
                 {/* Top Section: Newsletter */}
@@ -237,7 +237,7 @@ export default function Footer() {
                 </div>
 
                 {/* SEO Footer */}
-                <div className="mt-8 pt-6 border-t border-white/5 text-center">
+                <div className="mt-6 pt-4 border-t border-white/5 text-center">
                     <p className="text-[9px] text-neutral-600 tracking-wide font-sans">
                         Popular: <span className="hover:text-neutral-400 transition-colors cursor-pointer">Linen Shirts</span> | <span className="hover:text-neutral-400 transition-colors cursor-pointer">Polo T-Shirts</span> | <span className="hover:text-neutral-400 transition-colors cursor-pointer">Old Money Aesthetic</span> | <span className="hover:text-neutral-400 transition-colors cursor-pointer">Luxury Knitwear</span> | <span className="hover:text-neutral-400 transition-colors cursor-pointer">Cashmere Sweaters</span> | <span className="hover:text-neutral-400 transition-colors cursor-pointer">Quiet Luxury</span>
                     </p>
