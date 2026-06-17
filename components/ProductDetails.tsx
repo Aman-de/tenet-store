@@ -677,7 +677,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                 {Math.round(((displayOriginalPrice - displayPrice) / displayOriginalPrice) * 100)}% OFF
                             </span>
                             <span 
-                                className="text-[9px] xs:text-[10px] font-semibold px-2 py-0.5 rounded uppercase tracking-wider border bg-neutral-50/40"
+                                className="text-[9px] xs:text-[10px] font-semibold px-2 py-0.5 rounded uppercase tracking-wider border bg-neutral-50/40 dark:bg-[#141414] text-neutral-500 dark:text-neutral-400 border-neutral-200/80 dark:border-white/10"
                                 style={{ color: accentColor, borderColor: `${accentColor}25` }}
                             >
                                 SAVE ₹{(displayOriginalPrice - displayPrice).toLocaleString('en-IN')}
@@ -712,10 +712,10 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                 Offer
                             </span>
                             <div className="text-[11.5px] leading-snug text-neutral-500 font-sans flex items-center flex-wrap gap-x-1.5 gap-y-1">
-                                <span><strong className="text-[#1A1A1A] dark:text-[#F4F1ED] font-semibold">-20% OFF</strong> on your first purchase. Use code</span>
+                                <span><strong className="text-[#1A1A1A] dark:text-[#F4F1ED] font-semibold">-20% OFF</strong><span className="text-neutral-600 dark:text-neutral-400 ml-1">on your first purchase. Use code</span></span>
                                 <button
                                     onClick={handleCopyCode}
-                                    className="font-mono bg-neutral-100/80 px-2 py-0.5 border border-neutral-200/60 rounded text-neutral-800 text-[10.5px] flex items-center gap-1.5 hover:bg-neutral-200/50 hover:text-black active:scale-95 transition-all shadow-sm group cursor-pointer"
+                                    className="font-mono bg-neutral-100/80 dark:bg-[#141414] px-2 py-0.5 border border-neutral-200/60 dark:border-white/10 rounded text-neutral-800 dark:text-[#F4F1ED] text-[10.5px] flex items-center gap-1.5 hover:bg-neutral-200/50 dark:hover:bg-white/10 hover:text-black dark:hover:text-white active:scale-95 transition-all shadow-sm group cursor-pointer"
                                     title="Click to copy coupon code"
                                 >
                                     <span>FIRST20</span>
@@ -749,7 +749,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 {product.enableSetComponents && (
                     <div className="mb-5 mt-1">
                         <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500 block mb-2">Select Component</span>
-                        <div className="relative flex w-full bg-neutral-100/60 border border-neutral-200/50 p-1.5 rounded-[20px] gap-1 shadow-inner">
+                        <div className="relative flex w-full bg-neutral-100/60 dark:bg-[#141414]/60 border border-neutral-200/50 dark:border-white/5 p-1.5 rounded-[20px] gap-1 shadow-inner">
                             {(['set', 'top', 'bottom'] as const).map((piece) => {
                                 let label = "Full Set";
                                 let priceVal = product.setPrice ?? product.price;
@@ -921,7 +921,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 {/* Urgency & Low Stock Indicators */}
                 {!product.isOutOfStock && (
                     <div className="flex flex-col gap-2 mb-5 animate-in fade-in zoom-in-95 duration-500">
-                        <div className="flex items-start gap-3 bg-red-50 text-red-800 px-4 py-3 rounded-xl border border-red-100/50 shadow-sm">
+                        <div className="flex items-start gap-3 bg-red-50 dark:bg-red-950/20 text-red-800 dark:text-red-400 px-4 py-3 rounded-xl border border-red-100/50 dark:border-red-900/30 shadow-sm">
                             <AlertCircle className="w-4 h-4 text-red-500 shrink-0 mt-0.5" />
                             <div className="text-[11px] xs:text-xs font-sans leading-tight">
                                 <span className="font-bold tracking-wide uppercase text-[10px] text-red-600 mb-0.5 block">High Demand</span>
