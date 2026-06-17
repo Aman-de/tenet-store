@@ -44,8 +44,8 @@ export default function Navbar() {
     
     // Authentic Apple Liquid Glass effect
     const navContainerClass = isScrolledOrNotHome 
-        ? "bg-[#F8F5EF]/85 dark:bg-[#141414]/85 backdrop-blur-[20px] saturate-[180%] border-b lg:border border-[#1A1A1A]/10 dark:border-white/10 shadow-[0_2px_10px_rgba(0,0,0,0.03)]" 
-        : "bg-transparent border-b border-transparent shadow-none lg:bg-[#F8F5EF]/85 lg:dark:bg-[#141414]/85 lg:backdrop-blur-[20px] lg:saturate-[180%] lg:border lg:border-[#1A1A1A]/10 lg:dark:border-white/10 lg:shadow-[0_2px_10px_rgba(0,0,0,0.03)]";
+        ? "bg-[#F8F5EF]/85 dark:bg-[#141414]/85 backdrop-blur-[20px] saturate-[180%] dark:saturate-100 border-b lg:border border-[#1A1A1A]/10 dark:border-white/10 shadow-[0_2px_10px_rgba(0,0,0,0.03)]" 
+        : "bg-transparent border-b border-transparent shadow-none lg:bg-[#F8F5EF]/85 lg:dark:bg-[#141414]/85 lg:backdrop-blur-[20px] lg:saturate-[180%] dark:saturate-100 lg:border lg:border-[#1A1A1A]/10 lg:dark:border-white/10 lg:shadow-[0_2px_10px_rgba(0,0,0,0.03)]";
 
     const textColor = isScrolledOrNotHome ? "text-neutral-800 dark:text-[#F4F1ED]" : "text-white lg:text-neutral-800 lg:dark:text-[#F4F1ED]";
     const logoColor = isScrolledOrNotHome ? "text-black dark:text-white" : "text-white lg:text-black lg:dark:text-white";
@@ -57,7 +57,7 @@ export default function Navbar() {
         const solid = isScrolledOrNotHome || isDesktop;
         const toggleBg = solid ? "bg-[#1A1A1A]/5 dark:bg-white/10" : "bg-white/10";
         const btnText = (active: boolean) => {
-            if (active) return "text-white dark:text-[#1A1A1A]";
+            if (active) return "text-white dark:text-[#1A1A1A] dark:text-[#F4F1ED]";
             return solid ? "text-[#1A1A1A] dark:text-[#F4F1ED] font-medium" : "text-white/80 font-medium";
         };
         return (
@@ -287,26 +287,26 @@ export default function Navbar() {
                                 <Link
                                     href="/"
                                     onClick={() => setIsMobileMenuOpen(false)}
-                                    className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] hover:bg-neutral-50 transition-colors text-center border-b border-neutral-100"
+                                    className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED] hover:bg-neutral-50 transition-colors text-center border-b border-neutral-100"
                                 >
                                     HOME
                                 </Link>
                                 <Link
                                     href="/#new-arrivals"
                                     onClick={() => setIsMobileMenuOpen(false)}
-                                    className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] hover:bg-neutral-50 transition-colors text-center border-b border-neutral-100"
+                                    className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED] hover:bg-neutral-50 transition-colors text-center border-b border-neutral-100"
                                 >
                                     COLLECTIONS
                                 </Link>
                                 <Link
                                     href="/orders"
                                     onClick={() => setIsMobileMenuOpen(false)}
-                                    className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] hover:bg-neutral-50 transition-colors text-center border-b border-neutral-100"
+                                    className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED] hover:bg-neutral-50 transition-colors text-center border-b border-neutral-100"
                                 >
                                     ORDERS
                                 </Link>
                                 <SignedIn>
-                                    <div className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] hover:bg-neutral-50 transition-colors flex items-center justify-center gap-4 border-b border-neutral-100">
+                                    <div className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED] hover:bg-neutral-50 transition-colors flex items-center justify-center gap-4 border-b border-neutral-100">
                                         <span>ACCOUNT</span>
                                         <div className="scale-90 origin-center">
                                             <UserButton afterSignOutUrl="/" />
@@ -317,7 +317,7 @@ export default function Navbar() {
                                     <SignInButton mode="modal">
                                         <button 
                                             onClick={() => setIsMobileMenuOpen(false)}
-                                            className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] hover:bg-neutral-50 transition-colors text-center border-b border-neutral-100 w-full"
+                                            className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED] hover:bg-neutral-50 transition-colors text-center border-b border-neutral-100 w-full"
                                         >
                                             ACCOUNT (LOG IN)
                                         </button>
@@ -325,13 +325,13 @@ export default function Navbar() {
                                 </SignedOut>
                                 <div className="flex justify-center gap-8 py-6">
                                     <button className="relative p-2" aria-label="Open wishlist" onClick={() => { setIsMobileMenuOpen(false); openWishlist(); }}>
-                                        <Heart className="w-6 h-6 text-[#1A1A1A]" strokeWidth={iconStroke} />
+                                        <Heart className="w-6 h-6 text-[#1A1A1A] dark:text-[#F4F1ED]" strokeWidth={iconStroke} />
                                         {wishlistCount > 0 && (
                                             <span className="absolute top-1 right-1 w-2 h-2 rounded-full border border-white" style={{ backgroundColor: accentColor }} />
                                         )}
                                     </button>
                                     <button className="relative p-2" aria-label="Open cart" onClick={() => { setIsMobileMenuOpen(false); openCart(); }}>
-                                        <ShoppingBag className="w-6 h-6 text-[#1A1A1A]" strokeWidth={iconStroke} />
+                                        <ShoppingBag className="w-6 h-6 text-[#1A1A1A] dark:text-[#F4F1ED]" strokeWidth={iconStroke} />
                                         {cartCount > 0 && (
                                             <span className="absolute top-1 right-1 w-2 h-2 rounded-full border border-white" style={{ backgroundColor: accentColor }} />
                                         )}

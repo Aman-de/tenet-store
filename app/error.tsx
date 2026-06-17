@@ -25,12 +25,12 @@ export default function Error({
                 className="text-center max-w-md w-full"
             >
                 <div className="mb-8 flex justify-center">
-                    <div className="w-16 h-16 bg-neutral-100 rounded-full flex items-center justify-center text-[#1A1A1A]">
+                    <div className="w-16 h-16 bg-neutral-100 rounded-full flex items-center justify-center text-[#1A1A1A] dark:text-[#F4F1ED]">
                         <span className="font-serif italic text-3xl">!</span>
                     </div>
                 </div>
 
-                <h1 className="font-serif text-3xl md:text-5xl text-[#1A1A1A] mb-4">
+                <h1 className="font-serif text-3xl md:text-5xl text-[#1A1A1A] dark:text-[#F4F1ED] mb-4">
                     Something went wrong
                 </h1>
 
@@ -49,7 +49,7 @@ export default function Error({
 
                     <Link
                         href="/"
-                        className="w-full sm:w-auto px-8 py-3 bg-white border border-neutral-200 text-[#1A1A1A] text-xs font-bold uppercase tracking-widest hover:bg-neutral-50 transition-colors flex items-center justify-center gap-2"
+                        className="w-full sm:w-auto px-8 py-3 bg-white border border-neutral-200 text-[#1A1A1A] dark:text-[#F4F1ED] text-xs font-bold uppercase tracking-widest hover:bg-neutral-50 transition-colors flex items-center justify-center gap-2"
                     >
                         <Home size={14} />
                         Home

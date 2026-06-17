@@ -2,7 +2,7 @@ import { Loader2 } from "lucide-react";
 
 export default function ProductLoading() {
     return (
-        <main className="bg-[#FDFBF7] min-h-screen pb-20 animate-pulse">
+        <main className="bg-[#FDFBF7] dark:bg-[#0A0A0A] min-h-screen pb-20 animate-pulse">
             <div className="max-w-[2000px] w-full mx-auto px-0 md:px-6 xl:px-12 pt-0 md:pt-14 grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-12 lg:gap-24">
                 
                 {/* Left Column: Gallery Skeleton */}

@@ -13,11 +13,11 @@ export default function NotFound() {
                 transition={{ duration: 0.5 }}
                 className="text-center max-w-lg w-full relative z-10"
             >
-                <h1 className="font-serif text-[8rem] md:text-[14rem] leading-none text-[#1A1A1A] opacity-[0.03] font-bold select-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-10 tracking-tighter">
+                <h1 className="font-serif text-[8rem] md:text-[14rem] leading-none text-[#1A1A1A] dark:text-[#F4F1ED] opacity-[0.03] font-bold select-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-10 tracking-tighter">
                     404
                 </h1>
 
-                <h2 className="font-serif text-3xl md:text-5xl text-[#1A1A1A] mb-6">
+                <h2 className="font-serif text-3xl md:text-5xl text-[#1A1A1A] dark:text-[#F4F1ED] mb-6">
                     Page Not Found
                 </h2>
 

@@ -33,7 +33,7 @@ export default function AboutPage() {
     ];
 
     return (
-        <main className="bg-[#FDFBF7] min-h-screen pb-24 text-[#1A1A1A]">
+        <main className="bg-[#FDFBF7] dark:bg-[#0A0A0A] min-h-screen pb-24 text-[#1A1A1A] dark:text-[#F4F1ED]">
             {/* Hero Section */}
             <div className="relative overflow-hidden py-32 md:py-48 px-6 border-b border-neutral-100 bg-white">
                 <div className="max-w-4xl mx-auto text-center relative z-10">
@@ -49,7 +49,7 @@ export default function AboutPage() {
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, ease: "easeOut" }}
-                        className="font-serif text-4xl md:text-6xl text-[#1A1A1A] mb-8 leading-tight"
+                        className="font-serif text-4xl md:text-6xl text-[#1A1A1A] dark:text-[#F4F1ED] mb-8 leading-tight"
                     >
                         Heritage in Every Thread,<br />Innovation in Every Fit
                     </motion.h1>

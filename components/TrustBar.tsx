@@ -6,25 +6,25 @@ import { motion } from "framer-motion";
 export default function TrustBar() {
     const pillars = [
         {
-            icon: <Truck className="w-6 h-6 lg:w-8 lg:h-8 text-[#1A1A1A] stroke-[1]" />,
+            icon: <Truck className="w-6 h-6 lg:w-8 lg:h-8 text-[#1A1A1A] dark:text-[#F4F1ED] stroke-[1]" />,
             title: "COMPLIMENTARY",
             title2: "SHIPPING",
             subtext: "On orders above $250"
         },
         {
-            icon: <RefreshCw className="w-6 h-6 lg:w-8 lg:h-8 text-[#1A1A1A] stroke-[1]" />,
+            icon: <RefreshCw className="w-6 h-6 lg:w-8 lg:h-8 text-[#1A1A1A] dark:text-[#F4F1ED] stroke-[1]" />,
             title: "EASY RETURNS",
             title2: "",
             subtext: "Hassle-free\nexchanges"
         },
         {
-            icon: <ShieldCheck className="w-6 h-6 lg:w-8 lg:h-8 text-[#1A1A1A] stroke-[1]" />,
+            icon: <ShieldCheck className="w-6 h-6 lg:w-8 lg:h-8 text-[#1A1A1A] dark:text-[#F4F1ED] stroke-[1]" />,
             title: "SECURE PAYMENTS",
             title2: "",
             subtext: "100% protected\ncheckout"
         },
         {
-            icon: <Leaf className="w-6 h-6 lg:w-8 lg:h-8 text-[#1A1A1A] stroke-[1]" />,
+            icon: <Leaf className="w-6 h-6 lg:w-8 lg:h-8 text-[#1A1A1A] dark:text-[#F4F1ED] stroke-[1]" />,
             title: "CRAFTED",
             title2: "RESPONSIBLY",
             subtext: "Thoughtfully made"
@@ -48,7 +48,7 @@ export default function TrustBar() {
                                 {pillar.icon}
                             </div>
                             <div className="space-y-1 lg:space-y-2">
-                                <h3 className="font-sans text-[7px] lg:text-xs font-bold tracking-widest text-[#1A1A1A] uppercase leading-tight">
+                                <h3 className="font-sans text-[7px] lg:text-xs font-bold tracking-widest text-[#1A1A1A] dark:text-[#F4F1ED] uppercase leading-tight">
                                     {pillar.title}<br/>{pillar.title2}
                                 </h3>
                                 <p className="font-sans text-[8px] lg:text-[11px] font-normal text-neutral-500 whitespace-pre-line leading-relaxed">

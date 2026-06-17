@@ -37,12 +37,12 @@ export default function SupportPage() {
     };
 
     return (
-        <main className="bg-[#FDFBF7] min-h-screen pb-24 text-[#1A1A1A]">
+        <main className="bg-[#FDFBF7] dark:bg-[#0A0A0A] min-h-screen pb-24 text-[#1A1A1A] dark:text-[#F4F1ED]">
             {/* Header */}
             <div className="py-24 px-6 border-b border-neutral-100 bg-white text-center">
                 <div className="max-w-3xl mx-auto">
                     <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 block mb-3">Concierge</span>
-                    <h1 className="font-serif text-4xl md:text-5xl text-[#1A1A1A] mb-4">Customer Support</h1>
+                    <h1 className="font-serif text-4xl md:text-5xl text-[#1A1A1A] dark:text-[#F4F1ED] mb-4">Customer Support</h1>
                     <p className="font-sans text-neutral-500 max-w-lg mx-auto text-sm leading-relaxed">
                         Have questions about sizing, delivery, or custom orders? Reach out to our concierge desk, open Monday to Saturday, 10 AM — 7 PM IST.
                     </p>
@@ -70,7 +70,7 @@ export default function SupportPage() {
                                     placeholder="yourname@gmail.com"
                                     value={trackingEmail}
                                     onChange={(e) => setTrackingEmail(e.target.value)}
-                                    className="flex-1 bg-[#FDFBF7] border border-neutral-200 rounded-lg px-3 py-2 text-xs font-sans focus:outline-none focus:border-black transition-colors"
+                                    className="flex-1 bg-[#FDFBF7] dark:bg-[#0A0A0A] border border-neutral-200 rounded-lg px-3 py-2 text-xs font-sans focus:outline-none focus:border-black transition-colors"
                                     required
                                 />
                                 <button
@@ -110,7 +110,7 @@ export default function SupportPage() {
                                 className="flex items-center gap-4 p-5 bg-white border border-neutral-100 rounded-xl hover:border-neutral-300 transition-all duration-300 group"
                             >
                                 <div className="bg-neutral-50 p-3 rounded-lg group-hover:bg-neutral-100 transition-colors">
-                                    <Mail className="w-5 h-5 text-[#1A1A1A]" />
+                                    <Mail className="w-5 h-5 text-[#1A1A1A] dark:text-[#F4F1ED]" />
                                 </div>
                                 <div className="flex-1">
                                     <span className="text-xs uppercase font-bold tracking-wider text-neutral-400 block">Email Support</span>
@@ -131,7 +131,7 @@ export default function SupportPage() {
                                     <div key={index} className="py-4 first:pt-0 last:pb-0">
                                         <button
                                             onClick={() => setActiveFaq(isOpen ? null : index)}
-                                            className="w-full flex items-center justify-between text-left py-2 font-sans font-medium text-sm text-[#1A1A1A] hover:opacity-85 transition-opacity"
+                                            className="w-full flex items-center justify-between text-left py-2 font-sans font-medium text-sm text-[#1A1A1A] dark:text-[#F4F1ED] hover:opacity-85 transition-opacity"
                                         >
                                             <span>{faq.question}</span>
                                             <ChevronDown className={`w-4 h-4 text-neutral-400 transition-transform ${isOpen ? "rotate-180" : ""}`} />

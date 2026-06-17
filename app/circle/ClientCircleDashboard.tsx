@@ -223,9 +223,9 @@ export default function ClientCircleDashboard({
             {/* Share and Invitation Section */}
             <div className="bg-white border border-neutral-200/60 rounded-2xl p-6 xs:p-8 shadow-sm flex flex-col gap-6">
                 <div>
-                    <h3 className="font-bold text-xs uppercase tracking-[0.2em] text-[#1A1A1A] mb-1.5">Your Circle Assets</h3>
+                    <h3 className="font-bold text-xs uppercase tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED] mb-1.5">Your Circle Assets</h3>
                     <p className="text-xs text-neutral-400 font-sans leading-relaxed">
-                        Share your unique invite assets. Customers receive an extra <strong className="text-[#1A1A1A] font-semibold">15% discount</strong> at checkout, and you earn <strong className="text-[#1A1A1A] font-semibold">15% commission</strong> on their entire purchase value.
+                        Share your unique invite assets. Customers receive an extra <strong className="text-[#1A1A1A] dark:text-[#F4F1ED] font-semibold">15% discount</strong> at checkout, and you earn <strong className="text-[#1A1A1A] dark:text-[#F4F1ED] font-semibold">15% commission</strong> on their entire purchase value.
                     </p>
                 </div>
 
@@ -239,7 +239,7 @@ export default function ClientCircleDashboard({
                             </div>
                             <button 
                                 onClick={handleCopyLink}
-                                className="w-[100px] flex items-center justify-center gap-1.5 px-4 h-[46px] bg-white border border-neutral-200 hover:border-[#1A1A1A] active:scale-95 transition-all rounded-xl font-bold text-[10px] uppercase tracking-widest text-[#1A1A1A] cursor-pointer shrink-0"
+                                className="w-[100px] flex items-center justify-center gap-1.5 px-4 h-[46px] bg-white border border-neutral-200 hover:border-[#1A1A1A] active:scale-95 transition-all rounded-xl font-bold text-[10px] uppercase tracking-widest text-[#1A1A1A] dark:text-[#F4F1ED] cursor-pointer shrink-0"
                             >
                                 {copiedLink ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
                                 {copiedLink ? 'Copied' : 'Copy'}
@@ -252,11 +252,11 @@ export default function ClientCircleDashboard({
                         <label className="text-[9px] font-bold uppercase tracking-wider text-neutral-400">Referral Coupon Code</label>
                         <div className="flex gap-2">
                             <div className="flex-1 bg-neutral-50 border border-neutral-100 rounded-xl px-4 py-3 flex items-center overflow-hidden h-[46px]">
-                                <span className="text-xs font-mono font-bold tracking-wider text-[#1A1A1A]">{referralCode}</span>
+                                <span className="text-xs font-mono font-bold tracking-wider text-[#1A1A1A] dark:text-[#F4F1ED]">{referralCode}</span>
                             </div>
                             <button 
                                 onClick={handleCopyCode}
-                                className="w-[100px] flex items-center justify-center gap-1.5 px-4 h-[46px] bg-white border border-neutral-200 hover:border-[#1A1A1A] active:scale-95 transition-all rounded-xl font-bold text-[10px] uppercase tracking-widest text-[#1A1A1A] cursor-pointer shrink-0"
+                                className="w-[100px] flex items-center justify-center gap-1.5 px-4 h-[46px] bg-white border border-neutral-200 hover:border-[#1A1A1A] active:scale-95 transition-all rounded-xl font-bold text-[10px] uppercase tracking-widest text-[#1A1A1A] dark:text-[#F4F1ED] cursor-pointer shrink-0"
                             >
                                 {copiedCode ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
                                 {copiedCode ? 'Copied' : 'Copy'}
@@ -281,7 +281,7 @@ export default function ClientCircleDashboard({
                         <span className="text-[9px] font-bold uppercase tracking-wider">Total Sales Made</span>
                         <TrendingUp className="w-4 h-4 text-neutral-300" />
                     </div>
-                    <h3 className="font-serif text-2xl text-[#1A1A1A]">₹{initialStats.totalSales.toLocaleString('en-IN')}</h3>
+                    <h3 className="font-serif text-2xl text-[#1A1A1A] dark:text-[#F4F1ED]">₹{initialStats.totalSales.toLocaleString('en-IN')}</h3>
                 </div>
 
                 {/* Stat 2: Total Commission */}
@@ -290,7 +290,7 @@ export default function ClientCircleDashboard({
                         <span className="text-[9px] font-bold uppercase tracking-wider">Commission (15%)</span>
                         <Banknote className="w-4 h-4 text-neutral-300" />
                     </div>
-                    <h3 className="font-serif text-2xl text-[#1A1A1A]">₹{initialStats.totalEarnings.toLocaleString('en-IN')}</h3>
+                    <h3 className="font-serif text-2xl text-[#1A1A1A] dark:text-[#F4F1ED]">₹{initialStats.totalEarnings.toLocaleString('en-IN')}</h3>
                 </div>
 
                 {/* Stat 3: Pending Balance */}
@@ -299,7 +299,7 @@ export default function ClientCircleDashboard({
                         <span className="text-[9px] font-bold uppercase tracking-wider">Pending (10-Day Hold)</span>
                         <Clock className="w-4 h-4 text-neutral-300" />
                     </div>
-                    <h3 className="font-serif text-2xl text-[#1A1A1A]">₹{Math.max(0, initialStats.totalEarnings - availableBalance - redeemedAmount).toLocaleString('en-IN')}</h3>
+                    <h3 className="font-serif text-2xl text-[#1A1A1A] dark:text-[#F4F1ED]">₹{Math.max(0, initialStats.totalEarnings - availableBalance - redeemedAmount).toLocaleString('en-IN')}</h3>
                 </div>
 
                 {/* Stat 4: Redeemed */}
@@ -308,7 +308,7 @@ export default function ClientCircleDashboard({
                         <span className="text-[9px] font-bold uppercase tracking-wider">Redeemed</span>
                         <Check className="w-4 h-4 text-neutral-300" />
                     </div>
-                    <h3 className="font-serif text-2xl text-[#1A1A1A]">₹{redeemedAmount.toLocaleString('en-IN')}</h3>
+                    <h3 className="font-serif text-2xl text-[#1A1A1A] dark:text-[#F4F1ED]">₹{redeemedAmount.toLocaleString('en-IN')}</h3>
                 </div>
 
                 {/* Stat 5: Available */}
@@ -329,9 +329,9 @@ export default function ClientCircleDashboard({
                     <div className="bg-white border border-neutral-200/60 rounded-2xl p-5 shadow-sm space-y-2 relative overflow-hidden group hover:border-[#1A1A1A] transition-all">
                         <div className="flex justify-between items-center text-neutral-400">
                             <span className="text-[9px] font-bold uppercase tracking-wider">Link Clicks</span>
-                            <MousePointerClick className="w-4 h-4 text-neutral-300 group-hover:text-[#1A1A1A] transition-colors" />
+                            <MousePointerClick className="w-4 h-4 text-neutral-300 group-hover:text-[#1A1A1A] dark:text-[#F4F1ED] transition-colors" />
                         </div>
-                        <h3 className="font-serif text-2xl text-[#1A1A1A]">{initialStats.clicksCount}</h3>
+                        <h3 className="font-serif text-2xl text-[#1A1A1A] dark:text-[#F4F1ED]">{initialStats.clicksCount}</h3>
                         <p className="text-[9px] text-neutral-400 font-sans">Total referral visits</p>
                     </div>
 
@@ -339,9 +339,9 @@ export default function ClientCircleDashboard({
                     <div className="bg-white border border-neutral-200/60 rounded-2xl p-5 shadow-sm space-y-2 relative overflow-hidden group hover:border-[#1A1A1A] transition-all">
                         <div className="flex justify-between items-center text-neutral-400">
                             <span className="text-[9px] font-bold uppercase tracking-wider">Patrons Joined</span>
-                            <Users className="w-4 h-4 text-neutral-300 group-hover:text-[#1A1A1A] transition-colors" />
+                            <Users className="w-4 h-4 text-neutral-300 group-hover:text-[#1A1A1A] dark:text-[#F4F1ED] transition-colors" />
                         </div>
-                        <h3 className="font-serif text-2xl text-[#1A1A1A]">{initialStats.joinsCount}</h3>
+                        <h3 className="font-serif text-2xl text-[#1A1A1A] dark:text-[#F4F1ED]">{initialStats.joinsCount}</h3>
                         <p className="text-[9px] text-neutral-400 font-sans">New user sign-ups</p>
                     </div>
 
@@ -349,9 +349,9 @@ export default function ClientCircleDashboard({
                     <div className="bg-white border border-neutral-200/60 rounded-2xl p-5 shadow-sm space-y-2 relative overflow-hidden group hover:border-[#1A1A1A] transition-all">
                         <div className="flex justify-between items-center text-neutral-400">
                             <span className="text-[9px] font-bold uppercase tracking-wider">Items Carted</span>
-                            <ShoppingCart className="w-4 h-4 text-neutral-300 group-hover:text-[#1A1A1A] transition-colors" />
+                            <ShoppingCart className="w-4 h-4 text-neutral-300 group-hover:text-[#1A1A1A] dark:text-[#F4F1ED] transition-colors" />
                         </div>
-                        <h3 className="font-serif text-2xl text-[#1A1A1A]">{initialStats.cartsCount}</h3>
+                        <h3 className="font-serif text-2xl text-[#1A1A1A] dark:text-[#F4F1ED]">{initialStats.cartsCount}</h3>
                         <p className="text-[9px] text-neutral-400 font-sans">Products added to cart</p>
                     </div>
 
@@ -361,7 +361,7 @@ export default function ClientCircleDashboard({
                             <span className="text-[9px] font-bold uppercase tracking-wider">Successful Orders</span>
                             <CheckCircle2 className="w-4 h-4 text-emerald-600/70" />
                         </div>
-                        <h3 className="font-serif text-2xl text-[#1A1A1A]">{initialStats.ordersCount}</h3>
+                        <h3 className="font-serif text-2xl text-[#1A1A1A] dark:text-[#F4F1ED]">{initialStats.ordersCount}</h3>
                         <p className="text-[9px] text-neutral-400 font-sans">Conversions using assets</p>
                     </div>
                 </div>
@@ -410,7 +410,7 @@ export default function ClientCircleDashboard({
                 <div className="flex justify-between items-center border-b border-neutral-100 pb-4">
                     <div className="flex items-center gap-2.5">
                         <Building2 className="w-5 h-5 text-neutral-400" />
-                        <h3 className="font-bold text-xs uppercase tracking-[0.2em] text-[#1A1A1A]">Bank Settlement Account</h3>
+                        <h3 className="font-bold text-xs uppercase tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED]">Bank Settlement Account</h3>
                     </div>
                     {bankDetails && !isEditingBank && (
                         <button
@@ -426,19 +426,19 @@ export default function ClientCircleDashboard({
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-8 text-sm font-sans leading-relaxed text-neutral-600">
                         <div>
                             <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-400 block mb-0.5">Beneficiary Name</span>
-                            <span className="text-sm font-medium text-[#1A1A1A]">{bankDetails.accountHolder}</span>
+                            <span className="text-sm font-medium text-[#1A1A1A] dark:text-[#F4F1ED]">{bankDetails.accountHolder}</span>
                         </div>
                         <div>
                             <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-400 block mb-0.5">Bank Name</span>
-                            <span className="text-sm font-medium text-[#1A1A1A]">{bankDetails.bankName}</span>
+                            <span className="text-sm font-medium text-[#1A1A1A] dark:text-[#F4F1ED]">{bankDetails.bankName}</span>
                         </div>
                         <div>
                             <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-400 block mb-0.5">Account Number</span>
-                            <span className="text-sm font-mono text-[#1A1A1A]">{getObscuredAccountNumber(bankDetails.accountNumber)}</span>
+                            <span className="text-sm font-mono text-[#1A1A1A] dark:text-[#F4F1ED]">{getObscuredAccountNumber(bankDetails.accountNumber)}</span>
                         </div>
                         <div>
                             <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-400 block mb-0.5">IFSC Code</span>
-                            <span className="text-sm font-mono text-[#1A1A1A]">{bankDetails.ifscCode}</span>
+                            <span className="text-sm font-mono text-[#1A1A1A] dark:text-[#F4F1ED]">{bankDetails.ifscCode}</span>
                         </div>
                     </div>
                 ) : (
@@ -546,7 +546,7 @@ export default function ClientCircleDashboard({
             <div className="bg-white border border-neutral-200/60 rounded-2xl p-6 xs:p-8 shadow-sm space-y-6">
                 <div className="flex items-center gap-2.5 border-b border-neutral-100 pb-4">
                     <Users className="w-5 h-5 text-neutral-400" />
-                    <h3 className="font-bold text-xs uppercase tracking-[0.2em] text-[#1A1A1A]">Your Referred Community</h3>
+                    <h3 className="font-bold text-xs uppercase tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED]">Your Referred Community</h3>
                 </div>
 
                 {referredPeople.length === 0 ? (
@@ -564,7 +564,7 @@ export default function ClientCircleDashboard({
                                     <th className="py-3 px-4 text-right pr-0 font-bold">Net Contribution</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-neutral-100 text-[#1A1A1A]">
+                            <tbody className="divide-y divide-neutral-100 text-[#1A1A1A] dark:text-[#F4F1ED]">
                                 {referredPeople.map((person) => (
                                     <tr key={person.id} className="hover:bg-neutral-50/40 transition-colors">
                                         <td className="py-3 px-4 pl-0">

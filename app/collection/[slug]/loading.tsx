@@ -1,6 +1,6 @@
 export default function CollectionLoading() {
     return (
-        <main className="bg-[#FDFBF7] min-h-screen pb-20 animate-pulse">
+        <main className="bg-[#FDFBF7] dark:bg-[#0A0A0A] min-h-screen pb-20 animate-pulse">
             <section className="max-w-7xl mx-auto px-4 md:px-6 pt-6">
                 {/* Title and Description Skeletons */}
                 <div className="w-48 h-8 md:h-10 bg-neutral-200 mb-4 rounded" />

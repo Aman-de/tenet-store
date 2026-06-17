@@ -12,7 +12,7 @@ export default function RecommendedProducts({ products }: RecommendedProductsPro
 
     return (
         <section className="py-16 md:py-24 border-t border-neutral-200">
-            <h2 className="font-serif text-2xl md:text-3xl text-[#1A1A1A] mb-8 md:mb-12 text-center">
+            <h2 className="font-serif text-2xl md:text-3xl text-[#1A1A1A] dark:text-[#F4F1ED] mb-8 md:mb-12 text-center">
                 You May Also Like
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-4 md:gap-x-8 gap-y-10 lg:gap-y-16">

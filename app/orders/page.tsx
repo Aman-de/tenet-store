@@ -112,7 +112,7 @@ export default async function OrdersPage(props: { searchParams: Promise<{ [key: 
     const orders = await client.fetch(query, { email });
 
     return (
-        <div className="min-h-screen bg-[#FDFBF7] pt-24 pb-12 px-4 md:px-8">
+        <div className="min-h-screen bg-[#FDFBF7] dark:bg-[#0A0A0A] pt-24 pb-12 px-4 md:px-8">
             <div className="max-w-4xl mx-auto space-y-8">
                 {/* Header */}
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-neutral-200 pb-6">
@@ -122,7 +122,7 @@ export default async function OrdersPage(props: { searchParams: Promise<{ [key: 
                             Back to Shop
                         </Link>
                         <div>
-                            <h1 className="font-serif text-3xl md:text-4xl text-[#1A1A1A] mb-2">My Orders</h1>
+                            <h1 className="font-serif text-3xl md:text-4xl text-[#1A1A1A] dark:text-[#F4F1ED] mb-2">My Orders</h1>
                             <p className="font-sans text-neutral-500 text-sm">Track your past purchases and returns.</p>
                         </div>
                     </div>
@@ -133,7 +133,7 @@ export default async function OrdersPage(props: { searchParams: Promise<{ [key: 
                         <div className="w-16 h-16 bg-neutral-50 rounded-full flex items-center justify-center mb-6">
                             <ShoppingBag className="w-8 h-8 text-neutral-300" />
                         </div>
-                        <h2 className="font-serif text-xl text-[#1A1A1A] mb-2">No active orders</h2>
+                        <h2 className="font-serif text-xl text-[#1A1A1A] dark:text-[#F4F1ED] mb-2">No active orders</h2>
                         <p className="text-neutral-500 text-sm mb-6 max-w-xs mx-auto">It looks like you haven&apos;t placed any orders yet.</p>
                         <Link href="/" className="px-8 py-3 bg-[#1A1A1A] text-white font-sans text-xs uppercase tracking-widest hover:bg-black transition-colors rounded-full">
                             Start Shopping
@@ -168,25 +168,25 @@ export default async function OrdersPage(props: { searchParams: Promise<{ [key: 
                                     <div className="bg-neutral-50 border-b border-neutral-100 p-4 md:p-6 flex flex-wrap items-center justify-between gap-4">
                                         <div className="space-y-1">
                                             <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-500">Order Placed</p>
-                                            <p className="font-sans text-sm text-[#1A1A1A]">{created.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+                                            <p className="font-sans text-sm text-[#1A1A1A] dark:text-[#F4F1ED]">{created.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
                                         </div>
                                         <div className="space-y-1">
                                             <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-500">Total</p>
-                                            <p className="font-sans text-sm text-[#1A1A1A]">₹{order.totalPrice?.toLocaleString('en-IN')}</p>
+                                            <p className="font-sans text-sm text-[#1A1A1A] dark:text-[#F4F1ED]">₹{order.totalPrice?.toLocaleString('en-IN')}</p>
                                         </div>
                                         <div className="space-y-1">
                                             <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-500">Order #</p>
-                                            <p className="font-sans text-sm text-[#1A1A1A]">{order.orderNumber}</p>
+                                            <p className="font-sans text-sm text-[#1A1A1A] dark:text-[#F4F1ED]">{order.orderNumber}</p>
                                         </div>
                                         <div className="ml-auto flex flex-col items-end gap-2">
                                             <StatusBadge status={displayStatus} />
                                             {displayStatus === 'delivered' ? (
                                                 <p className="text-[10px] text-green-600 font-medium">
-                                                    Delivered on: <span className="text-[#1A1A1A]">{expected.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+                                                    Delivered on: <span className="text-[#1A1A1A] dark:text-[#F4F1ED]">{expected.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
                                                 </p>
                                             ) : (
                                                 <p className="text-[10px] text-neutral-400 font-medium">
-                                                    Est. Delivery: <span className="text-[#1A1A1A]">{expected.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+                                                    Est. Delivery: <span className="text-[#1A1A1A] dark:text-[#F4F1ED]">{expected.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
                                                 </p>
                                             )}
                                             <div className="mt-1">
@@ -213,12 +213,12 @@ export default async function OrdersPage(props: { searchParams: Promise<{ [key: 
                                                     )}
                                                 </div>
                                                 <div className="flex-1 min-w-0">
-                                                    <h3 className="font-serif text-sm text-[#1A1A1A] truncate">{item.product?.title || "Unknown Product"}</h3>
+                                                    <h3 className="font-serif text-sm text-[#1A1A1A] dark:text-[#F4F1ED] truncate">{item.product?.title || "Unknown Product"}</h3>
                                                     <p className="text-xs text-neutral-500 mt-1">
                                                         Qty: {item.quantity} {item.size && `• Size: ${item.size}`} {item.color && `• Color: ${item.color}`} {item.piece && item.piece !== 'set' && `• Piece: ${item.piece === 'top' ? 'Top' : 'Bottom'} only`}
                                                     </p>
                                                 </div>
-                                                <Link href={`/product/${item.product?.slug}`} className="text-xs font-bold uppercase tracking-widest text-[#1A1A1A] underline decoration-1 underline-offset-4 hover:no-underline">
+                                                <Link href={`/product/${item.product?.slug}`} className="text-xs font-bold uppercase tracking-widest text-[#1A1A1A] dark:text-[#F4F1ED] underline decoration-1 underline-offset-4 hover:no-underline">
                                                     View
                                                 </Link>
                                             </div>

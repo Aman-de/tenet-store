@@ -21,12 +21,12 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     const products = query ? await searchProducts(query) : [];
 
     return (
-        <main className="bg-[#FDFBF7] min-h-screen">
+        <main className="bg-[#FDFBF7] dark:bg-[#0A0A0A] min-h-screen">
             {/* Header */}
             <section className="max-w-7xl mx-auto px-4 md:px-6 pt-32 pb-8">
                 <div className="flex flex-col gap-2">
-                    <span className="text-xs font-bold uppercase tracking-widest text-[#1A1A1A]/60">Search Results</span>
-                    <h1 className="text-3xl md:text-4xl font-serif text-[#1A1A1A]">
+                    <span className="text-xs font-bold uppercase tracking-widest text-[#1A1A1A] dark:text-[#F4F1ED]/60">Search Results</span>
+                    <h1 className="text-3xl md:text-4xl font-serif text-[#1A1A1A] dark:text-[#F4F1ED]">
                         {query ? `"${query}"` : "All Products"}
                     </h1>
                     <p className="text-neutral-500 font-sans text-sm mt-1">

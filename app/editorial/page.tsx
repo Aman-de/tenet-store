@@ -15,11 +15,11 @@ export const metadata: Metadata = {
 
 export default function EditorialPage() {
   return (
-    <main className="bg-[#FDFBF7] min-h-screen pt-24 pb-20">
+    <main className="bg-[#FDFBF7] dark:bg-[#0A0A0A] min-h-screen pt-24 pb-20">
       <div className="max-w-[2000px] mx-auto px-6 xl:px-12">
         {/* Page Header */}
         <header className="text-center mb-16 md:mb-24">
-          <h1 className="font-serif text-4xl md:text-6xl text-[#1A1A1A] mb-6">
+          <h1 className="font-serif text-4xl md:text-6xl text-[#1A1A1A] dark:text-[#F4F1ED] mb-6">
             The Editorial Campaign
           </h1>
           <p className="font-sans text-neutral-500 max-w-2xl mx-auto text-lg">
@@ -45,7 +45,7 @@ export default function EditorialPage() {
               <span className="text-xs uppercase font-bold tracking-[0.2em] text-neutral-400 mb-6 block">
                 Men's Collection
               </span>
-              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-[#1A1A1A] leading-[1.1] mb-8">
+              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-[#1A1A1A] dark:text-[#F4F1ED] leading-[1.1] mb-8">
                 A Quiet Luxury <br />Design Language
               </h2>
               <div className="prose prose-neutral prose-lg">
@@ -85,7 +85,7 @@ export default function EditorialPage() {
               <span className="text-xs uppercase font-bold tracking-[0.2em] text-neutral-400 mb-6 block">
                 Women's Collection
               </span>
-              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-[#1A1A1A] leading-[1.1] mb-8">
+              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-[#1A1A1A] dark:text-[#F4F1ED] leading-[1.1] mb-8">
                 An Effortless <br />Elegance & Grace
               </h2>
               <div className="prose prose-neutral prose-lg">

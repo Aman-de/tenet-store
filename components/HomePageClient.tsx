@@ -28,7 +28,7 @@ export default function HomePageClient({ products, collections }: HomePageClient
         .slice(0, 10);
 
     return (
-        <div className="bg-[#FDFBF7] min-h-screen">
+        <div className="bg-[#FDFBF7] dark:bg-[#0A0A0A] min-h-screen">
             {/* Unified 100vh Bento Box Hero & Categories */}
             <BentoHero spotlightProducts={spotlightProducts} collections={collections} />
 

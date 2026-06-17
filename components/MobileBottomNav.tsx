@@ -31,9 +31,9 @@ export default function MobileBottomNav() {
     // Always use the solid "scrolled" style because bottom nav is over the bright TrustBar on mobile.
     const activeTextClass = "text-[#1A1A1A] dark:text-[#F4F1ED]";
     const activeFillClass = "fill-[#1A1A1A]/5 dark:fill-white/10";
-    const inactiveTextClass = "text-[#1A1A1A]/60 dark:text-[#F4F1ED]/60 hover:text-[#1A1A1A] dark:hover:text-[#F4F1ED]";
+    const inactiveTextClass = "text-[#1A1A1A] dark:text-[#F4F1ED]/60 dark:text-[#F4F1ED]/60 hover:text-[#1A1A1A] dark:text-[#F4F1ED] dark:hover:text-[#F4F1ED]";
 
-    const containerClass = "bg-[#F8F5EF]/85 dark:bg-[#141414]/85 backdrop-blur-[20px] saturate-[180%] border border-[#1A1A1A]/10 dark:border-white/10 shadow-[0_2px_10px_rgba(0,0,0,0.03)]";
+    const containerClass = "bg-[#F8F5EF]/85 dark:bg-[#141414]/85 backdrop-blur-[20px] saturate-[180%] dark:saturate-100 border border-[#1A1A1A]/10 dark:border-white/10 shadow-[0_2px_10px_rgba(0,0,0,0.03)]";
 
     const cartCount = mounted ? cart.length : 0;
 

@@ -70,7 +70,7 @@ export default function RootLayout({
             </Script>
           </head>
           <body
-            className={`${playfair.variable} ${inter.variable} antialiased bg-[#FDFBF7] text-[#1A1A1A] dark:bg-[#0A0A0A] dark:text-[#F4F1ED] dark:selection:bg-white dark:selection:text-black font-sans relative pb-20 lg:pb-0`}
+            className={`${playfair.variable} ${inter.variable} antialiased bg-[#FDFBF7] text-[#1A1A1A] dark:text-[#F4F1ED] dark:bg-[#0A0A0A] dark:text-[#F4F1ED] dark:selection:bg-white dark:selection:text-black font-sans relative pb-20 lg:pb-0`}
           >
             <noscript>
               <img

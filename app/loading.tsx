@@ -1,6 +1,6 @@
 export default function Loading() {
     return (
-        <main className="bg-[#FDFBF7] min-h-screen animate-pulse">
+        <main className="bg-[#FDFBF7] dark:bg-[#0A0A0A] min-h-screen animate-pulse">
             {/* Hero Banner Skeleton */}
             <div className="w-full h-[55vh] md:h-[75vh] bg-neutral-200 relative overflow-hidden flex items-center justify-center">
                 <div className="w-24 h-1 bg-neutral-300 rounded-full" />

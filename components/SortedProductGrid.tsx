@@ -91,7 +91,7 @@ export default function SortedProductGrid({ products: rawProducts, showSizeFilte
     if (products.length === 0) {
         return (
             <div className="flex flex-col items-center justify-center py-32 text-center">
-                <h3 className="font-serif text-2xl text-[#1A1A1A] mb-2">This collection is currently being curated.</h3>
+                <h3 className="font-serif text-2xl text-[#1A1A1A] dark:text-[#F4F1ED] mb-2">This collection is currently being curated.</h3>
                 <p className="font-sans text-neutral-400 text-sm">Check back soon for new arrivals.</p>
             </div>
         );
@@ -108,15 +108,15 @@ export default function SortedProductGrid({ products: rawProducts, showSizeFilte
                     </span>
                     {showSizeFilter && sizes.length > 0 && (
                         <div className="flex items-center gap-3 border-l border-neutral-200 pl-4">
-                            <span className="text-[10px] font-bold uppercase tracking-widest text-[#1A1A1A] opacity-60 flex items-center h-9">Size</span>
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-[#1A1A1A] dark:text-[#F4F1ED] opacity-60 flex items-center h-9">Size</span>
                                 <div className="flex items-center gap-4">
                                     {sizes.map((size) => (
                                         <button
                                             key={size}
                                             onClick={() => setSelectedSize(selectedSize === size ? null : size)}
                                             className={`text-[10px] sm:text-xs font-sans tracking-widest transition-all ${selectedSize === size
-                                                ? "text-[#1A1A1A] border-b border-[#1A1A1A]"
-                                                : "text-neutral-400 hover:text-[#1A1A1A]"
+                                                ? "text-[#1A1A1A] dark:text-[#F4F1ED] border-b border-[#1A1A1A]"
+                                                : "text-neutral-400 hover:text-[#1A1A1A] dark:text-[#F4F1ED]"
                                                 }`}
                                         >
                                             {size}
@@ -125,7 +125,7 @@ export default function SortedProductGrid({ products: rawProducts, showSizeFilte
                                 {selectedSize && (
                                     <button
                                         onClick={() => setSelectedSize(null)}
-                                        className="h-9 px-3 flex items-center justify-center text-[10px] uppercase font-bold text-neutral-400 hover:text-[#1A1A1A]"
+                                        className="h-9 px-3 flex items-center justify-center text-[10px] uppercase font-bold text-neutral-400 hover:text-[#1A1A1A] dark:text-[#F4F1ED]"
                                     >
                                         Clear
                                     </button>
@@ -143,15 +143,15 @@ export default function SortedProductGrid({ products: rawProducts, showSizeFilte
                 }`}>
                     {/* Price Tier */}
                     <div className="flex flex-col sm:flex-row sm:items-center gap-2 lg:gap-3 w-full lg:w-auto">
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-[#1A1A1A] opacity-60 flex items-center h-5 lg:h-9">Price Tier</span>
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-[#1A1A1A] dark:text-[#F4F1ED] opacity-60 flex items-center h-5 lg:h-9">Price Tier</span>
                         <div className="flex flex-wrap lg:flex-nowrap gap-4 w-full lg:w-auto">
                             {(['all', 'standard', 'mid', 'premium'] as const).map((tier) => (
                                 <button
                                     key={tier}
                                     onClick={() => setPriceFilter(tier)}
                                     className={`text-[10px] sm:text-xs font-sans tracking-widest uppercase transition-all ${priceFilter === tier
-                                        ? "text-[#1A1A1A] border-b border-[#1A1A1A]"
-                                        : "text-neutral-400 hover:text-[#1A1A1A]"
+                                        ? "text-[#1A1A1A] dark:text-[#F4F1ED] border-b border-[#1A1A1A]"
+                                        : "text-neutral-400 hover:text-[#1A1A1A] dark:text-[#F4F1ED]"
                                         }`}
                                 >
                                     {tier === 'all' && 'All'}

@@ -58,7 +58,7 @@ export default function MobileStickyBar({ product, selectedVariant, onAddToCart,
                             )}
                         </div>
                         <div className="flex-1 min-w-0">
-                            <h3 className="font-serif text-xs xs:text-sm text-[#1A1A1A] truncate">{product.title}</h3>
+                            <h3 className="font-serif text-xs xs:text-sm text-[#1A1A1A] dark:text-[#F4F1ED] truncate">{product.title}</h3>
                             <p className="text-[11px] xs:text-xs font-medium text-neutral-400">₹{priceText}</p>
                         </div>
                         <button

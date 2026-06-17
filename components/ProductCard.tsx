@@ -152,7 +152,7 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
                                 e.stopPropagation();
                                 setIsSizeSelectorOpen(true);
                             }}
-                            className="md:hidden absolute bottom-2 right-2 z-30 w-8 h-8 bg-white/90 dark:bg-[#1A1A1A]/90 backdrop-blur-sm text-[#1A1A1A] rounded-full flex items-center justify-center shadow-md border border-neutral-200/50 dark:border-white/10 active:scale-95 transition-all duration-200"
+                            className="md:hidden absolute bottom-2 right-2 z-30 w-8 h-8 bg-white/90 dark:bg-[#1A1A1A]/90 backdrop-blur-sm text-[#1A1A1A] dark:text-[#F4F1ED] rounded-full flex items-center justify-center shadow-md border border-neutral-200/50 dark:border-white/10 active:scale-95 transition-all duration-200"
                         >
                             <Plus size={16} style={{ color: accentColor }} />
                         </motion.button>
@@ -171,7 +171,7 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
                             className={`
                                 pointer-events-auto
                                 w-full bg-white/95 dark:bg-[#1A1A1A]/95 backdrop-blur-sm text-[#1A1A1A] dark:text-[#F4F1ED] py-3 text-[10px] font-medium uppercase tracking-[0.2em] transition-all duration-500 ease-out border-t border-[#1A1A1A]/10 dark:border-white/10
-                                hover:bg-[#1A1A1A] dark:hover:bg-white hover:text-white dark:hover:text-[#1A1A1A]
+                                hover:bg-[#1A1A1A] dark:hover:bg-white hover:text-white dark:hover:text-[#1A1A1A] dark:text-[#F4F1ED]
                                 opacity-0 group-hover:opacity-100
                                 transform ${addingState !== 'idle' && !product.isOutOfStock ? 'translate-y-0 opacity-100' : 'translate-y-[120%] group-hover:translate-y-0'}
                             `}
@@ -193,7 +193,7 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
                             }}
                             className={`
                                 absolute top-4 right-4 pointer-events-auto
-                                w-8 h-8 text-[#1A1A1A]
+                                w-8 h-8 text-[#1A1A1A] dark:text-[#F4F1ED]
                                 flex items-center justify-center
                                 active:scale-90 transition-all duration-500 ease-out
                                 opacity-0 group-hover:opacity-100
@@ -261,7 +261,7 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
             {/* Product Info */}
             <div className="space-y-1.5 p-1 pt-2 flex flex-col items-center text-center">
                 <Link href={`/product/${product.handle}`} onClick={handleViewItem}>
-                    <h3 className="font-serif text-sm md:text-base font-normal tracking-wide text-[#1A1A1A] dark:text-[#F4F1ED] truncate hover:text-[#1A1A1A]/70 dark:hover:text-[#F4F1ED]/70 transition-colors">
+                    <h3 className="font-serif text-sm md:text-base font-normal tracking-wide text-[#1A1A1A] dark:text-[#F4F1ED] truncate hover:text-[#1A1A1A] dark:text-[#F4F1ED]/70 dark:hover:text-[#F4F1ED]/70 transition-colors">
                         {product.title}
                     </h3>
                 </Link>

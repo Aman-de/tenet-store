@@ -129,7 +129,7 @@ export default function OnboardingModal() {
                 <motion.div
                     initial={{ scale: 0.95, opacity: 0, y: 20 }}
                     animate={{ scale: 1, opacity: 1, y: 0 }}
-                    className="bg-[#FDFBF7] w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
+                    className="bg-[#FDFBF7] dark:bg-[#0A0A0A] w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
                 >
                     <div className="p-6 md:p-8 overflow-y-auto flex-1">
                         <h2 className="font-serif text-3xl mb-2">Complete Profile</h2>
