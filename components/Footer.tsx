@@ -31,7 +31,7 @@ export default function Footer() {
     };
 
     return (
-        <footer className="bg-[#000000] text-white pt-24 pb-20 overflow-hidden">
+        <footer className="bg-[#0A0A0A] text-white pt-24 pb-20 overflow-hidden">
             <div className="max-w-[2000px] w-full mx-auto px-6 xl:px-12">
 
                 {/* Top Section: Newsletter */}
@@ -68,7 +68,7 @@ export default function Footer() {
                                         />
                                         <button 
                                             type="submit" 
-                                            className="absolute right-0 bottom-0 bg-white text-black px-6 py-3.5 text-[10px] font-bold tracking-widest uppercase hover:bg-neutral-200 active:scale-95 transition-all cursor-pointer"
+                                            className="absolute right-0 bottom-0 bg-white/10 border-l border-white/20 text-white px-6 py-[15px] text-[10px] font-bold tracking-widest uppercase hover:bg-white/20 active:scale-95 transition-all cursor-pointer backdrop-blur-sm"
                                         >
                                             Join
                                         </button>
