@@ -31,9 +31,9 @@ export default function MobileBottomNav() {
     // Always use the solid "scrolled" style because bottom nav is over the bright TrustBar on mobile.
     const activeTextClass = "text-[#1A1A1A]";
     const activeFillClass = "fill-[#1A1A1A]/5";
-    const inactiveTextClass = "text-[#1A1A1A]/40 hover:text-[#1A1A1A]";
+    const inactiveTextClass = "text-[#1A1A1A]/60 hover:text-[#1A1A1A]";
 
-    const containerClass = "bg-white/50 backdrop-blur-[24px] saturate-[2] border border-white/40 shadow-[0_4px_30px_rgba(0,0,0,0.05)]";
+    const containerClass = "bg-[#F8F5EF]/85 backdrop-blur-[20px] saturate-[180%] border border-[#1A1A1A]/10 shadow-[0_2px_10px_rgba(0,0,0,0.03)]";
 
     const cartCount = mounted ? cart.length : 0;
 
@@ -81,8 +81,8 @@ export default function MobileBottomNav() {
                 const iconContent = (
                     <div className="relative flex items-center justify-center p-0.5">
                         <item.icon
-                            strokeWidth={1.5}
-                            className={`w-[20px] h-[20px] transition-all duration-300 ${textStyle} ${fillStyle}`}
+                            strokeWidth={2}
+                            className={`w-[22px] h-[22px] transition-all duration-300 ${textStyle} ${fillStyle}`}
                         />
                         {item.hasBadge && cartCount > 0 && (
                             <span 
@@ -95,7 +95,7 @@ export default function MobileBottomNav() {
 
                 const labelContent = (
                     <span
-                        className={`text-[8px] uppercase tracking-[0.1em] font-bold transition-all duration-300 ${
+                        className={`text-[9px] uppercase tracking-[0.1em] font-extrabold transition-all duration-300 ${
                             item.isActive ? activeTextClass : inactiveTextClass
                         }`}
                     >
@@ -143,13 +143,13 @@ export default function MobileBottomNav() {
                     <SignInButton mode="modal">
                         <button className="relative flex items-center justify-center p-0.5 focus:outline-none">
                             <User
-                                strokeWidth={1.5}
-                                className={`w-[18px] h-[18px] transition-all duration-300 ${inactiveTextClass}`}
+                                strokeWidth={2}
+                                className={`w-[20px] h-[20px] transition-all duration-300 ${inactiveTextClass}`}
                             />
                         </button>
                     </SignInButton>
                 </SignedOut>
-                <span className={`text-[8px] uppercase tracking-[0.1em] font-bold transition-all duration-300 ${inactiveTextClass}`}>
+                <span className={`text-[9px] uppercase tracking-[0.1em] font-extrabold transition-all duration-300 ${inactiveTextClass}`}>
                     Account
                 </span>
             </div>

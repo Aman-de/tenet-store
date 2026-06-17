@@ -44,8 +44,8 @@ export default function Navbar() {
     
     // Authentic Apple Liquid Glass effect
     const navContainerClass = isScrolledOrNotHome 
-        ? "bg-white/50 backdrop-blur-[24px] saturate-[2] border-b lg:border border-white/40 shadow-[0_4px_30px_rgba(0,0,0,0.05)]" 
-        : "bg-transparent border-b border-transparent shadow-none lg:bg-white/50 lg:backdrop-blur-[24px] lg:saturate-[2] lg:border lg:border-white/40 lg:shadow-[0_4px_30px_rgba(0,0,0,0.05)]";
+        ? "bg-[#F8F5EF]/85 backdrop-blur-[20px] saturate-[180%] border-b lg:border border-[#1A1A1A]/10 shadow-[0_2px_10px_rgba(0,0,0,0.03)]" 
+        : "bg-transparent border-b border-transparent shadow-none lg:bg-[#F8F5EF]/85 lg:backdrop-blur-[20px] lg:saturate-[180%] lg:border lg:border-[#1A1A1A]/10 lg:shadow-[0_2px_10px_rgba(0,0,0,0.03)]";
 
     const textColor = isScrolledOrNotHome ? "text-neutral-800" : "text-white lg:text-neutral-800";
     const logoColor = isScrolledOrNotHome ? "text-black" : "text-white lg:text-black";
