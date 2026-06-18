@@ -88,9 +88,10 @@ export default function Navbar() {
     const isScrolledOrNotHome = isScrolled || !isHome;
     
     // Authentic Apple Liquid Glass effect
+    // Only show borders on product page as requested by user
     const navContainerClass = isScrolledOrNotHome 
-        ? "bg-[#F8F5EF]/85 dark:bg-[#141414]/85 backdrop-blur-[20px] saturate-[180%] dark:saturate-100 border-b lg:border border-[#1A1A1A]/10 dark:border-white/10 shadow-[0_2px_10px_rgba(0,0,0,0.03)]" 
-        : "bg-transparent border-b border-transparent shadow-none lg:bg-[#F8F5EF]/85 lg:dark:bg-[#141414]/85 lg:backdrop-blur-[20px] lg:saturate-[180%] dark:saturate-100 lg:border lg:border-[#1A1A1A]/10 lg:dark:border-white/10 lg:shadow-[0_2px_10px_rgba(0,0,0,0.03)]";
+        ? `bg-[#F8F5EF]/85 dark:bg-[#141414]/85 backdrop-blur-[20px] saturate-[180%] dark:saturate-100 ${isProductPage ? 'border-b lg:border border-[#1A1A1A]/10 dark:border-white/10' : 'border-none'} shadow-[0_2px_10px_rgba(0,0,0,0.03)]` 
+        : `bg-transparent border-transparent shadow-none lg:bg-[#F8F5EF]/85 lg:dark:bg-[#141414]/85 lg:backdrop-blur-[20px] lg:saturate-[180%] dark:saturate-100 ${isProductPage ? 'lg:border lg:border-[#1A1A1A]/10 lg:dark:border-white/10' : 'lg:border-none'} lg:shadow-[0_2px_10px_rgba(0,0,0,0.03)]`;
 
     const textColor = isScrolledOrNotHome ? "text-neutral-800 dark:text-[#F4F1ED]" : "text-white lg:text-neutral-800 lg:dark:text-[#F4F1ED]";
     const logoColor = isScrolledOrNotHome ? "text-black dark:text-white" : "text-white lg:text-black lg:dark:text-white";
@@ -193,7 +194,11 @@ export default function Navbar() {
                                     <Menu className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
                                 )}
                             </button>
-                            {!isProductPage && (
+                            {isProductPage ? (
+                                <Link href="/" className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center ml-0.5`}>
+                                    <Home className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
+                                </Link>
+                            ) : (
                                 <div className="scale-[0.85] sm:scale-100 origin-left ml-1">
                                     <GenderToggle idSuffix="mobile" />
                                 </div>
