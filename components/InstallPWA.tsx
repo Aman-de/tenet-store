@@ -58,8 +58,8 @@ export default function InstallPWA() {
             }
             setDeferredPrompt(null);
         } else {
-            // Fallback for Android if prompt isn't ready
-            alert("To install the app:\n\n1. Tap the 3-dot menu in your browser\n2. Select 'Install app' or 'Add to Home screen'");
+            // Fallback if prompt isn't ready or unsupported
+            alert("To install the app natively:\n\n• On iOS/Mac Safari: Click the Share icon, then 'Add to Home Screen' or 'Add to Dock'.\n• On Chrome/Android: Tap the 3-dot menu and select 'Install app'.\n\n(Note: The 1-click install button only works on the live production site, not on localhost!)");
         }
     };
 
