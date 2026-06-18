@@ -9,25 +9,29 @@ export default function TrustBar() {
             icon: <Truck className="w-4 h-4 lg:w-8 lg:h-8 text-[#1A1A1A] dark:text-[#F4F1ED] stroke-[1]" />,
             title: "COMPLIMENTARY",
             title2: "SHIPPING",
-            subtext: "Free on all orders"
+            subtext: "Free on all orders",
+            mobileTitle: "FREE SHIP"
         },
         {
             icon: <RefreshCw className="w-4 h-4 lg:w-8 lg:h-8 text-[#1A1A1A] dark:text-[#F4F1ED] stroke-[1]" />,
             title: "EASY RETURNS",
             title2: "",
-            subtext: "Hassle-free\nexchanges"
+            subtext: "Hassle-free\nexchanges",
+            mobileTitle: "RETURNS"
         },
         {
             icon: <ShieldCheck className="w-4 h-4 lg:w-8 lg:h-8 text-[#1A1A1A] dark:text-[#F4F1ED] stroke-[1]" />,
             title: "SECURE PAYMENTS",
             title2: "",
-            subtext: "100% protected\ncheckout"
+            subtext: "100% protected\ncheckout",
+            mobileTitle: "SECURE"
         },
         {
             icon: <Leaf className="w-4 h-4 lg:w-8 lg:h-8 text-[#1A1A1A] dark:text-[#F4F1ED] stroke-[1]" />,
             title: "CRAFTED",
             title2: "RESPONSIBLY",
-            subtext: "Thoughtfully made"
+            subtext: "Thoughtfully made",
+            mobileTitle: "PREMIUM"
         }
     ];
 
@@ -61,15 +65,15 @@ export default function TrustBar() {
                     ))}
                 </div>
 
-                {/* Mobile Static Layout (Always Visible) */}
-                <div className="lg:hidden w-full px-4 pt-2 pb-1">
-                    <div className="grid grid-cols-2 gap-y-4 gap-x-4">
+                {/* Mobile Static Layout (Single Line Bar) */}
+                <div className="lg:hidden w-full px-2 py-2">
+                    <div className="flex justify-between items-center w-full max-w-[400px] mx-auto">
                         {pillars.map((pillar, index) => (
-                            <div key={index} className="flex items-center gap-2.5">
+                            <div key={index} className="flex flex-col items-center gap-1.5 text-center flex-1">
                                 <div className="shrink-0">{pillar.icon}</div>
-                                <h3 className="font-sans text-[9px] font-bold tracking-widest text-[#1A1A1A] dark:text-[#F4F1ED] uppercase leading-[1.15]">
-                                    {pillar.title}<br />{pillar.title2}
-                                </h3>
+                                <span className="font-sans text-[8px] sm:text-[9px] font-extrabold tracking-wider text-[#1A1A1A] dark:text-[#F4F1ED] uppercase whitespace-nowrap">
+                                    {pillar.mobileTitle}
+                                </span>
                             </div>
                         ))}
                     </div>
