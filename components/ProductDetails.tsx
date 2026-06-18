@@ -1440,28 +1440,9 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                             </h3>
                             <p className="text-[11px] xs:text-xs text-neutral-500 leading-relaxed">
                                 Free express shipping across all major Indian pin codes.<br />
-                                Hassle-free 7-day exchanges and returns. Reverse pickup coordinated automatically.
+                                Hassle-free 10-day exchanges and returns. Reverse pickup coordinated automatically.
                             </p>
                         </div>
-                    </div>
-                </div>
-
-                <div className="mb-8 grid grid-cols-2 md:grid-cols-4 gap-4 bg-neutral-50 dark:bg-[#111111] border border-neutral-100 dark:border-white/5 rounded-2xl p-6">
-                    <div className="flex flex-col items-center text-center gap-2">
-                        <div className="w-10 h-10 rounded-full bg-white dark:bg-[#1A1A1A] shadow-sm flex items-center justify-center border border-neutral-100 dark:border-white/5"><RefreshCw className="w-4 h-4 text-neutral-600 dark:text-neutral-400" /></div>
-                        <span className="text-[11px] font-bold text-[#1A1A1A] dark:text-[#F4F1ED]">Easy Returns</span>
-                    </div>
-                    <div className="flex flex-col items-center text-center gap-2">
-                        <div className="w-10 h-10 rounded-full bg-white dark:bg-[#1A1A1A] shadow-sm flex items-center justify-center border border-neutral-100 dark:border-white/5"><svg className="w-4 h-4 text-neutral-600 dark:text-neutral-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></div>
-                        <span className="text-[11px] font-bold text-[#1A1A1A] dark:text-[#F4F1ED]">COD Available</span>
-                    </div>
-                    <div className="flex flex-col items-center text-center gap-2">
-                        <div className="w-10 h-10 rounded-full bg-white dark:bg-[#1A1A1A] shadow-sm flex items-center justify-center border border-neutral-100 dark:border-white/5"><Sparkles className="w-4 h-4 text-neutral-600 dark:text-neutral-400" /></div>
-                        <span className="text-[11px] font-bold text-[#1A1A1A] dark:text-[#F4F1ED]">Premium Fabric</span>
-                    </div>
-                    <div className="flex flex-col items-center text-center gap-2">
-                        <div className="w-10 h-10 rounded-full bg-white dark:bg-[#1A1A1A] shadow-sm flex items-center justify-center border border-neutral-100 dark:border-white/5"><Check className="w-4 h-4 text-neutral-600 dark:text-neutral-400" /></div>
-                        <span className="text-[11px] font-bold text-[#1A1A1A] dark:text-[#F4F1ED]">Quality Checked</span>
                     </div>
                 </div>
 
