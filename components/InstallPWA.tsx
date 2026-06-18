@@ -33,11 +33,15 @@ export default function InstallPWA() {
 
         window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
 
-        // Show banner automatically after 3 seconds if not installed
-        const timer = setTimeout(() => setIsVisible(true), 3000);
-        return () => clearTimeout(timer);
+        // Show banner automatically after 1 second if not installed
+        const timer = setTimeout(() => {
+            setIsVisible(true);
+        }, 1000);
 
-        return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+        return () => {
+            clearTimeout(timer);
+            window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+        };
     }, []);
 
     const handleInstallClick = async () => {
