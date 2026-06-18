@@ -68,7 +68,7 @@ export default function InstallPWA() {
     return (
         <div className="fixed bottom-24 left-4 md:bottom-8 md:left-8 z-[100] flex items-center gap-1.5 p-1.5 pr-2 bg-white/80 dark:bg-[#141414]/80 backdrop-blur-[20px] saturate-[180%] border border-[#1A1A1A]/10 dark:border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.12)] rounded-full animate-in slide-in-from-bottom-5 fade-in duration-500">
             <div className="w-7 h-7 rounded-full overflow-hidden shrink-0 shadow-sm border border-neutral-100 dark:border-neutral-800">
-                <img src="/icon-192x192.png" alt="App Icon" className="w-full h-full object-cover" />
+                <img src="/icon-192x192.png" alt="App Icon" className="w-full h-full object-cover saturate-[1.5] contrast-[1.1]" />
             </div>
             
             <span className="text-[9.5px] font-bold tracking-wide text-[#1A1A1A] dark:text-[#F4F1ED] px-1 whitespace-nowrap">
