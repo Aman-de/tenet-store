@@ -1231,12 +1231,32 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                     </div>
                 </div>
 
-                {/* Single Trust Strip */}
-                <div className="flex items-center justify-between px-4 py-3.5 bg-neutral-50/50 dark:bg-[#111111] rounded-lg border border-neutral-100/80 dark:border-white/5 mb-6 text-[10px] font-bold tracking-wider uppercase text-[#1A1A1A] dark:text-[#F4F1ED]">
-                    <span className="flex items-center gap-1.5"><ShieldCheck className="w-4 h-4 text-neutral-400" /> Premium Fabric</span>
-                    <span className="flex items-center gap-1.5"><Heart className="w-4 h-4 text-neutral-400" /> Hand Finished</span>
-                    <span className="flex items-center gap-1.5"><Check className="w-4 h-4 text-neutral-400" /> Quality Checked</span>
-                    <span className="flex items-center gap-1.5"><RefreshCw className="w-4 h-4 text-neutral-400" /> Easy Returns</span>
+                {/* Core Trust Guarantees */}
+                <div className="grid grid-cols-2 gap-y-3 gap-x-4 mb-6 mt-2 px-1 text-[12px] sm:text-[13px] font-semibold text-[#1A1A1A] dark:text-[#F4F1ED]">
+                    <div className="flex items-center gap-2">
+                        <div className="bg-emerald-100 dark:bg-emerald-900/30 p-0.5 rounded-full shrink-0">
+                            <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" strokeWidth={3} />
+                        </div>
+                        Free Shipping
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <div className="bg-emerald-100 dark:bg-emerald-900/30 p-0.5 rounded-full shrink-0">
+                            <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" strokeWidth={3} />
+                        </div>
+                        Easy Returns
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <div className="bg-emerald-100 dark:bg-emerald-900/30 p-0.5 rounded-full shrink-0">
+                            <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" strokeWidth={3} />
+                        </div>
+                        COD Available
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <div className="bg-emerald-100 dark:bg-emerald-900/30 p-0.5 rounded-full shrink-0">
+                            <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" strokeWidth={3} />
+                        </div>
+                        Secure Checkout
+                    </div>
                 </div>
 
                 {/* Luxury Coupon Block */}
