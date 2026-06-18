@@ -745,7 +745,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 </button>
 
                 {/* Mobile Image Dots */}
-                <div className="absolute bottom-6 right-5 z-20 bg-black/25 dark:bg-black/80 backdrop-blur-md px-3 py-2 rounded-full border border-white/10 dark:border-white/5 shadow-sm flex items-center justify-center">
+                <div className="absolute bottom-6 right-5 z-20 bg-[#141414]/90 backdrop-blur-xl px-3 py-2 rounded-full border border-white/10 shadow-[0_8px_16px_rgba(0,0,0,0.12)] flex items-center justify-center">
                     <div className="flex items-center gap-1.5">
                         {displayImages.map((_, idx) => (
                             <button
