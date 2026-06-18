@@ -132,11 +132,18 @@ const SOCIAL_PROOF_TAGS = [
         subtitle: 'Bespoke tailoring'
     },
     {
-        type: 'delivery',
-        icon: <Truck className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" />,
-        bgIcon: 'bg-sky-50 dark:bg-sky-950/20 border border-sky-100 dark:border-sky-900/30',
-        title: 'Free Delivery',
-        subtitle: 'Ships in 24 hours'
+        type: 'quality',
+        icon: <ShieldCheck className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" />,
+        bgIcon: 'bg-indigo-50 dark:bg-indigo-950/20 border border-indigo-100 dark:border-indigo-900/30',
+        title: 'Premium Quality',
+        subtitle: 'Hand-finished detailing'
+    },
+    {
+        type: 'exclusive',
+        icon: <Sparkles className="w-3.5 h-3.5 text-purple-500 dark:text-purple-400" />,
+        bgIcon: 'bg-purple-50 dark:bg-purple-950/20 border border-purple-100 dark:border-purple-900/30',
+        title: 'Limited Edition',
+        subtitle: 'Exclusively crafted'
     }
 ];
 
@@ -220,13 +227,13 @@ const DynamicSocialProof = ({ gender }: { gender?: string }) => {
         return () => clearInterval(interval);
     }, []);
 
-    // Cycle through indices: 0 (Rating), 1 (Customers), 2 (Delivery), 3 (Purchase)
+    // Cycle through indices: 0 to 4
     useEffect(() => {
         const cycleTimer = setInterval(() => {
             setCurrentIndex((prev) => {
-                const nextIndex = (prev + 1) % 4;
-                if (nextIndex === 3) {
-                    // Generate a new purchase event when transitioning to index 3
+                const nextIndex = (prev + 1) % 5;
+                if (nextIndex === 4) {
+                    // Generate a new purchase event when transitioning to index 4
                     setCurrentPurchase(generateRandomPurchase(gender));
                 }
                 return nextIndex;
@@ -236,7 +243,7 @@ const DynamicSocialProof = ({ gender }: { gender?: string }) => {
     }, [gender]);
 
     const getTag = () => {
-        if (currentIndex < 3) {
+        if (currentIndex < 4) {
             return SOCIAL_PROOF_TAGS[currentIndex];
         }
         
