@@ -54,35 +54,48 @@ export default function MobileStickyBar({ product, selectedVariant, onAddToCart,
                                     )}
                                 </div>
                             </div>
-                            <button
-                                onClick={onBuyNow}
-                                disabled={product.isOutOfStock}
-                                className={cn(
-                                    "h-[44px] px-6 flex items-center justify-center shadow-[0_4px_12px_rgba(0,0,0,0.1)] active:scale-[0.97] rounded-xl transition-all duration-300 cursor-pointer overflow-hidden relative group shrink-0 text-white",
-                                    product.isOutOfStock
-                                        ? "bg-neutral-200 dark:bg-neutral-800 text-neutral-500 cursor-not-allowed shadow-none"
-                                        : "hover:opacity-95"
-                                )}
-                                style={!product.isOutOfStock ? { backgroundColor: accentColor } : {}}
-                            >
-                            {!product.isOutOfStock && (
-                                <div className="absolute inset-0 bg-white/10 dark:bg-black/5 w-full translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-in-out skew-x-[-20deg]" />
-                            )}
-                            <div className="relative z-10 flex items-center gap-2">
-                                <span className="font-sans uppercase tracking-[0.15em] text-[11px] font-bold leading-none">
-                                    {product.isOutOfStock ? "Out of Stock" : "ADD TO CART"}
-                                </span>
-                                {!product.isOutOfStock && (
-                                    <>
-                                        <span className="text-[11px] text-white/40">|</span>
-                                        <span className="text-[9px] font-semibold tracking-widest uppercase leading-none text-white/95">
-                                            Free Shipping
+                            <div className="flex items-center gap-2">
+                                <a 
+                                    href="https://wa.me/917737796817?text=Hello%20Tenet%20Archives%2C%20I%20have%20a%20question%20about%20your%20collection..."
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="w-[44px] h-[44px] flex items-center justify-center rounded-xl opacity-30 hover:opacity-100 transition-all duration-300 shrink-0"
+                                >
+                                    <img src="/whatsapp-logo.svg" className="w-5 h-5 grayscale hover:grayscale-0" alt="WhatsApp" />
+                                </a>
+                                <button
+                                    onClick={onBuyNow}
+                                    disabled={product.isOutOfStock}
+                                    className={cn(
+                                        "h-[44px] px-6 flex items-center justify-center shadow-lg active:scale-[0.97] rounded-xl transition-all duration-300 cursor-pointer overflow-hidden relative group shrink-0 text-white",
+                                        product.isOutOfStock
+                                            ? "bg-neutral-200 dark:bg-neutral-800 text-neutral-500 cursor-not-allowed shadow-none"
+                                            : "hover:brightness-[1.1]"
+                                    )}
+                                    style={!product.isOutOfStock ? { 
+                                        background: `linear-gradient(135deg, ${accentColor}, ${isWoman ? '#E03154' : '#1D4ED8'})`,
+                                        boxShadow: `0 8px 25px -6px ${accentColor}90`
+                                    } : {}}
+                                >
+                                    {!product.isOutOfStock && (
+                                        <div className="absolute inset-0 bg-white/20 dark:bg-white/10 w-full translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-in-out skew-x-[-20deg]" />
+                                    )}
+                                    <div className="relative z-10 flex items-center gap-2">
+                                        <span className="font-sans uppercase tracking-[0.15em] text-[11px] font-bold leading-none">
+                                            {product.isOutOfStock ? "Out of Stock" : "BUY NOW"}
                                         </span>
-                                    </>
-                                )}
+                                        {!product.isOutOfStock && (
+                                            <>
+                                                <span className="text-[11px] text-white/40">|</span>
+                                                <span className="text-[9px] font-semibold tracking-widest uppercase leading-none text-white/95">
+                                                    Free Shipping
+                                                </span>
+                                            </>
+                                        )}
+                                    </div>
+                                </button>
                             </div>
-                        </button>
-                    </div>
+                        </div>
                 </motion.div>
             )}
         </AnimatePresence>

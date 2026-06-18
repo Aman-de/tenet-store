@@ -17,6 +17,7 @@ import { trackViewItem, trackAddToCart } from "@/lib/analytics";
 import { useUser } from "@clerk/nextjs";
 import useEmblaCarousel from "embla-carousel-react";
 import { useGender } from "@/context/GenderContext";
+import posthog from "posthog-js";
 
 interface ProductDetailsProps {
     product: Product;
@@ -641,6 +642,12 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
         if (product.isOutOfStock) return;
         const selection = validateSelection();
         if (selection) {
+            posthog.capture('buy_now_clicked', {
+                product_id: product.id,
+                product_name: finalTitle,
+                price: itemPrice,
+                currency: "INR"
+            });
             trackAddToCart(product, 1, selection.size, selection.color);
 
             let discountLabel = null;
@@ -1173,17 +1180,23 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                             onClick={handleBuyNow}
                             disabled={product.isOutOfStock}
                             className={cn(
-                                "flex-grow h-[54px] flex flex-col items-center justify-center font-sans tracking-wide text-sm font-bold shadow-md hover:scale-[1.01] hover:brightness-[1.04] hover:shadow-xl active:scale-[0.98] rounded-xl transition-all duration-300 cursor-pointer leading-tight",
+                                "relative flex-grow h-[54px] flex flex-col items-center justify-center font-sans tracking-wide text-sm font-bold hover:scale-[1.02] hover:brightness-[1.1] active:scale-[0.98] rounded-xl transition-all duration-300 cursor-pointer leading-tight overflow-hidden group",
                                 product.isOutOfStock
                                     ? "bg-neutral-300 text-neutral-500 cursor-not-allowed"
                                     : "text-white"
                             )}
-                            style={!product.isOutOfStock ? { backgroundColor: accentColor } : undefined}
+                            style={!product.isOutOfStock ? { 
+                                background: `linear-gradient(135deg, ${accentColor}, ${isWoman ? '#E03154' : '#1D4ED8'})`,
+                                boxShadow: `0 8px 25px -6px ${accentColor}90`
+                            } : undefined}
                         >
+                            {!product.isOutOfStock && (
+                                <div className="absolute inset-0 bg-white/20 w-full translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-in-out skew-x-[-20deg]" />
+                            )}
                             {product.isOutOfStock ? "Out of Stock" : (
                                 <>
-                                    <span className="text-[13px] tracking-widest flex items-center gap-1.5">⚡ BUY NOW</span>
-                                    <span className="text-[9px] uppercase tracking-widest font-medium opacity-90 mt-0.5">
+                                    <span className="text-[14px] tracking-widest flex items-center gap-1.5 relative z-10">BUY NOW</span>
+                                    <span className="text-[9px] uppercase tracking-widest font-medium opacity-90 mt-0.5 relative z-10">
                                         {deliveryInfo ? `Order Today • ${deliveryInfo.date}` : "Order Today • Get in 3 Days"}
                                     </span>
                                 </>
@@ -1205,6 +1218,16 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         >
                             <ShoppingBag className="w-5 h-5 stroke-[1.5]" />
                         </button>
+
+                        <a 
+                            href="https://wa.me/917737796817?text=Hello%20Tenet%20Archives%2C%20I%20have%20a%20question%20about%20your%20collection..."
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-[54px] h-[54px] flex items-center justify-center rounded-xl opacity-20 hover:opacity-100 hover:scale-[1.05] active:scale-[0.95] transition-all duration-300 shrink-0"
+                            title="Contact on WhatsApp"
+                        >
+                            <img src="/whatsapp-logo.svg" className="w-4 h-4 opacity-70 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-300" alt="WhatsApp" />
+                        </a>
                     </div>
                 </div>
 
