@@ -33,11 +33,9 @@ export default function InstallPWA() {
 
         window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
 
-        // Show banner for iOS automatically after 3 seconds if not installed
-        if (isIosDevice) {
-            const timer = setTimeout(() => setIsVisible(true), 3000);
-            return () => clearTimeout(timer);
-        }
+        // Show banner automatically after 3 seconds if not installed
+        const timer = setTimeout(() => setIsVisible(true), 3000);
+        return () => clearTimeout(timer);
 
         return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
     }, []);
@@ -55,13 +53,16 @@ export default function InstallPWA() {
                 setIsVisible(false);
             }
             setDeferredPrompt(null);
+        } else {
+            // Fallback for Android if prompt isn't ready
+            alert("To install the app:\n\n1. Tap the 3-dot menu in your browser\n2. Select 'Install app' or 'Add to Home screen'");
         }
     };
 
     if (!isVisible) return null;
 
     return (
-        <div className="fixed bottom-24 md:bottom-8 left-4 right-4 md:left-auto md:right-8 md:w-80 z-[100] flex items-center justify-between gap-4 p-4 bg-white/95 dark:bg-[#1A1A1A]/95 backdrop-blur-xl border border-neutral-200/60 dark:border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.12)] rounded-2xl animate-in slide-in-from-bottom-10 fade-in duration-500">
+        <div className="fixed bottom-24 md:bottom-8 left-4 right-4 md:left-auto md:right-8 md:w-80 z-[100] flex items-center justify-between gap-4 p-4 bg-white/80 dark:bg-[#141414]/80 backdrop-blur-[20px] saturate-[180%] border border-[#1A1A1A]/10 dark:border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.12)] rounded-2xl animate-in slide-in-from-bottom-10 fade-in duration-500">
             <div className="flex items-center gap-3">
                 <div className="w-11 h-11 rounded-xl overflow-hidden shadow-sm shrink-0 border border-neutral-100 dark:border-neutral-800">
                     <img src="/icon-192x192.png" alt="App Icon" className="w-full h-full object-cover" />
