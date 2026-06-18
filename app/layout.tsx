@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import { Suspense } from "react";
 import "./globals.css";
@@ -25,6 +25,16 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "TENET | Silent Luxury",
   description: "Premium, Old Money aesthetic e-commerce store for men.",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "TENET",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#F8F5EF",
 };
 
 import { ClerkProvider } from "@clerk/nextjs";

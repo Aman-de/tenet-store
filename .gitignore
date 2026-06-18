@@ -44,3 +44,6 @@ scratch/
 server.log
 test-ui.js
 
+# Serwist
+public/sw.js
+public/sw.js.map
