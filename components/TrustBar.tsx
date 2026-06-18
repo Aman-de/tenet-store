@@ -10,28 +10,32 @@ export default function TrustBar() {
             title: "COMPLIMENTARY",
             title2: "SHIPPING",
             subtext: "Free on all orders",
-            mobileTitle: "FREE SHIP"
+            mobileTitle: "FREE",
+            mobileTitle2: "SHIPPING"
         },
         {
             icon: <RefreshCw className="w-4 h-4 lg:w-8 lg:h-8 text-[#1A1A1A] dark:text-[#F4F1ED] stroke-[1]" />,
-            title: "EASY RETURNS",
-            title2: "",
+            title: "10 DAY",
+            title2: "REPLACEMENT",
             subtext: "Hassle-free\nexchanges",
-            mobileTitle: "RETURNS"
+            mobileTitle: "10 DAY",
+            mobileTitle2: "REPLACEMENT"
         },
         {
             icon: <ShieldCheck className="w-4 h-4 lg:w-8 lg:h-8 text-[#1A1A1A] dark:text-[#F4F1ED] stroke-[1]" />,
-            title: "SECURE PAYMENTS",
-            title2: "",
+            title: "SECURE",
+            title2: "PAYMENTS",
             subtext: "100% protected\ncheckout",
-            mobileTitle: "SECURE"
+            mobileTitle: "SECURE",
+            mobileTitle2: "CHECKOUT"
         },
         {
             icon: <Leaf className="w-4 h-4 lg:w-8 lg:h-8 text-[#1A1A1A] dark:text-[#F4F1ED] stroke-[1]" />,
             title: "CRAFTED",
             title2: "RESPONSIBLY",
             subtext: "Thoughtfully made",
-            mobileTitle: "PREMIUM"
+            mobileTitle: "PREMIUM",
+            mobileTitle2: "QUALITY"
         }
     ];
 
@@ -67,12 +71,12 @@ export default function TrustBar() {
 
                 {/* Mobile Static Layout (Single Line Bar) */}
                 <div className="lg:hidden w-full px-2 py-2">
-                    <div className="flex justify-between items-center w-full max-w-[400px] mx-auto">
+                    <div className="flex justify-between items-start w-full max-w-[400px] mx-auto bg-white/40 dark:bg-[#141414]/40 border border-neutral-200/60 dark:border-white/5 rounded-2xl py-3 px-2 shadow-sm backdrop-blur-md divide-x divide-neutral-200/50 dark:divide-white/5">
                         {pillars.map((pillar, index) => (
-                            <div key={index} className="flex flex-col items-center gap-1.5 text-center flex-1">
-                                <div className="shrink-0">{pillar.icon}</div>
-                                <span className="font-sans text-[8px] sm:text-[9px] font-extrabold tracking-wider text-[#1A1A1A] dark:text-[#F4F1ED] uppercase whitespace-nowrap">
-                                    {pillar.mobileTitle}
+                            <div key={index} className="flex flex-col items-center gap-1.5 text-center flex-1 px-1">
+                                <div className="shrink-0 mb-0.5">{pillar.icon}</div>
+                                <span className="font-sans text-[8.5px] font-extrabold tracking-widest text-[#1A1A1A] dark:text-[#F4F1ED] uppercase leading-[1.2]">
+                                    {pillar.mobileTitle}<br/>{pillar.mobileTitle2}
                                 </span>
                             </div>
                         ))}
