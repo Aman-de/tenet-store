@@ -40,7 +40,7 @@ export default function TrustBar() {
     ];
 
     return (
-        <section className="bg-transparent lg:bg-[#F8F5EF] lg:dark:bg-[#0A0A0A] py-3 lg:py-24 border-y lg:border-t lg:border-b-0 border-neutral-200/50 dark:border-white/5 my-2 lg:my-0 lg:mt-0 overflow-hidden">
+        <section className="bg-transparent lg:bg-[#F8F5EF] lg:dark:bg-[#0A0A0A] py-0 lg:py-24 lg:border-t border-neutral-200/50 dark:border-white/5 my-1 lg:my-0 overflow-hidden">
             <div className="max-w-[2000px] w-full mx-auto px-0 lg:px-12">
                 
                 {/* Desktop Grid Layout */}
@@ -70,12 +70,12 @@ export default function TrustBar() {
                 </div>
 
                 {/* Mobile Static Layout (Single Line Bar) */}
-                <div className="lg:hidden w-full px-2 py-2">
-                    <div className="flex justify-between items-start w-full max-w-[400px] mx-auto bg-white/40 dark:bg-[#141414]/40 border border-neutral-200/60 dark:border-white/5 rounded-2xl py-3 px-2 shadow-sm backdrop-blur-md divide-x divide-neutral-200/50 dark:divide-white/5">
+                <div className="lg:hidden w-full px-2 py-0">
+                    <div className="flex justify-between items-start w-full max-w-[400px] mx-auto bg-white/40 dark:bg-[#141414]/40 border border-neutral-200/60 dark:border-white/5 rounded-xl py-2 px-1 shadow-sm backdrop-blur-md divide-x divide-neutral-200/50 dark:divide-white/5">
                         {pillars.map((pillar, index) => (
-                            <div key={index} className="flex flex-col items-center gap-1.5 text-center flex-1 px-1">
+                            <div key={index} className="flex flex-col items-center gap-1 text-center flex-1 px-1">
                                 <div className="shrink-0 mb-0.5">{pillar.icon}</div>
-                                <span className="font-sans text-[8.5px] font-extrabold tracking-widest text-[#1A1A1A] dark:text-[#F4F1ED] uppercase leading-[1.2]">
+                                <span className="font-sans text-[8px] font-extrabold tracking-widest text-[#1A1A1A] dark:text-[#F4F1ED] uppercase leading-[1.2]">
                                     {pillar.mobileTitle}<br/>{pillar.mobileTitle2}
                                 </span>
                             </div>
