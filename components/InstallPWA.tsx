@@ -66,21 +66,21 @@ export default function InstallPWA() {
     if (!isVisible) return null;
 
     return (
-        <div className="fixed bottom-24 md:bottom-8 left-4 right-4 md:left-auto md:right-8 md:w-80 z-[100] flex items-center justify-between gap-4 p-4 bg-white/80 dark:bg-[#141414]/80 backdrop-blur-[20px] saturate-[180%] border border-[#1A1A1A]/10 dark:border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.12)] rounded-2xl animate-in slide-in-from-bottom-10 fade-in duration-500">
-            <div className="flex items-center gap-3">
-                <div className="w-11 h-11 rounded-xl overflow-hidden shadow-sm shrink-0 border border-neutral-100 dark:border-neutral-800">
+        <div className="fixed bottom-24 left-4 md:bottom-8 md:left-8 right-auto w-[280px] z-[100] flex items-center justify-between gap-3 p-3 bg-white/80 dark:bg-[#141414]/80 backdrop-blur-[20px] saturate-[180%] border border-[#1A1A1A]/10 dark:border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.12)] rounded-2xl animate-in slide-in-from-bottom-10 fade-in duration-500">
+            <div className="flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-[10px] overflow-hidden shadow-sm shrink-0 border border-neutral-100 dark:border-neutral-800">
                     <img src="/icon-192x192.png" alt="App Icon" className="w-full h-full object-cover" />
                 </div>
                 <div className="flex flex-col">
-                    <span className="text-xs font-bold text-[#1A1A1A] dark:text-[#F4F1ED]">TENET App</span>
-                    <span className="text-[10px] text-neutral-500">Faster & seamless</span>
+                    <span className="text-[11px] font-bold text-[#1A1A1A] dark:text-[#F4F1ED]">TENET App</span>
+                    <span className="text-[9px] text-neutral-500">Faster & seamless</span>
                 </div>
             </div>
             
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
                 <button 
                     onClick={handleInstallClick}
-                    className="px-4 py-2 text-[11px] font-bold text-white rounded-full transition-transform active:scale-95 shadow-md"
+                    className="px-3 py-1.5 text-[10px] font-bold text-white rounded-full transition-transform active:scale-95 shadow-md"
                     style={{ backgroundColor: accentColor }}
                 >
                     GET
@@ -90,7 +90,7 @@ export default function InstallPWA() {
                     className="p-1 -ml-1 text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-200 transition-colors"
                     aria-label="Close"
                 >
-                    <X className="w-4 h-4" />
+                    <X className="w-3.5 h-3.5" />
                 </button>
             </div>
         </div>
