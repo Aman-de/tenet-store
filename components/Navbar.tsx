@@ -83,6 +83,7 @@ export default function Navbar() {
     }, []);
 
     const isHome = pathname === "/";
+    const isProductPage = pathname.includes("/product/");
     
     // Dynamically apply glassmorphism based on scroll/page state
     const isScrolledOrNotHome = isScrolled || !isHome;
@@ -174,8 +175,6 @@ export default function Navbar() {
             </div>
         );
     };
-
-    const isProductPage = pathname.includes("/product/");
 
     return (
         <>
