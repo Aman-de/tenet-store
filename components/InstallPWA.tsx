@@ -66,33 +66,30 @@ export default function InstallPWA() {
     if (!isVisible) return null;
 
     return (
-        <div className="fixed bottom-24 left-4 md:bottom-8 md:left-8 right-auto w-[280px] z-[100] flex items-center justify-between gap-3 p-3 bg-white/80 dark:bg-[#141414]/80 backdrop-blur-[20px] saturate-[180%] border border-[#1A1A1A]/10 dark:border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.12)] rounded-2xl animate-in slide-in-from-bottom-10 fade-in duration-500">
-            <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-[10px] overflow-hidden shadow-sm shrink-0 border border-neutral-100 dark:border-neutral-800">
-                    <img src="/icon-192x192.png" alt="App Icon" className="w-full h-full object-cover" />
-                </div>
-                <div className="flex flex-col">
-                    <span className="text-[11px] font-bold text-[#1A1A1A] dark:text-[#F4F1ED]">TENET App</span>
-                    <span className="text-[9px] text-neutral-500">Faster & seamless</span>
-                </div>
+        <div className="fixed bottom-24 left-4 md:bottom-8 md:left-8 z-[100] flex items-center gap-1.5 p-1.5 pr-2 bg-white/80 dark:bg-[#141414]/80 backdrop-blur-[20px] saturate-[180%] border border-[#1A1A1A]/10 dark:border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.12)] rounded-full animate-in slide-in-from-bottom-5 fade-in duration-500">
+            <div className="w-7 h-7 rounded-full overflow-hidden shrink-0 shadow-sm border border-neutral-100 dark:border-neutral-800">
+                <img src="/icon-192x192.png" alt="App Icon" className="w-full h-full object-cover" />
             </div>
             
-            <div className="flex items-center gap-2">
-                <button 
-                    onClick={handleInstallClick}
-                    className="px-3 py-1.5 text-[10px] font-bold text-white rounded-full transition-transform active:scale-95 shadow-md"
-                    style={{ backgroundColor: accentColor }}
-                >
-                    GET
-                </button>
-                <button 
-                    onClick={() => setIsVisible(false)}
-                    className="p-1 -ml-1 text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-200 transition-colors"
-                    aria-label="Close"
-                >
-                    <X className="w-3.5 h-3.5" />
-                </button>
-            </div>
+            <span className="text-[9.5px] font-bold tracking-wide text-[#1A1A1A] dark:text-[#F4F1ED] px-1 whitespace-nowrap">
+                TENET APP
+            </span>
+            
+            <button 
+                onClick={handleInstallClick}
+                className="ml-1 px-3 py-1.5 text-[9px] font-bold text-white rounded-full transition-transform active:scale-95 shadow-sm"
+                style={{ backgroundColor: accentColor }}
+            >
+                GET
+            </button>
+            
+            <button 
+                onClick={() => setIsVisible(false)}
+                className="p-1 text-neutral-400 hover:text-neutral-600 dark:hover:text-white transition-colors shrink-0"
+                aria-label="Close"
+            >
+                <X className="w-3 h-3" />
+            </button>
         </div>
     );
 }
