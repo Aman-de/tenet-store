@@ -18,7 +18,7 @@ export default function GuestOrderForm() {
     };
 
     return (
-        <div className="min-h-[70vh] flex flex-col items-center justify-center py-20 px-4 bg-[#FDFBF7] dark:bg-[#0A0A0A]">
+        <div className="min-h-[70vh] flex flex-col items-center justify-center py-20 px-4">
             <div className="max-w-md w-full bg-white dark:bg-[#111111] border border-neutral-200 dark:border-neutral-800 rounded-xl p-8 shadow-sm">
                 <h1 className="font-serif text-2xl text-[#1A1A1A] dark:text-[#F4F1ED] mb-2 text-center">Track Your Orders</h1>
                 <p className="text-neutral-500 text-sm mb-6 text-center">

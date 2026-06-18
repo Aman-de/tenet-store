@@ -33,7 +33,7 @@ export default function AboutPage() {
     ];
 
     return (
-        <main className="bg-[#FDFBF7] dark:bg-[#0A0A0A] min-h-screen pb-24 text-[#1A1A1A] dark:text-[#F4F1ED]">
+        <main className="min-h-screen pb-24 text-[#1A1A1A] dark:text-[#F4F1ED]">
             {/* Hero Section */}
             <div className="relative overflow-hidden py-32 md:py-48 px-6 border-b border-neutral-100 dark:border-neutral-800 bg-white dark:bg-[#111111]">
                 <div className="max-w-4xl mx-auto text-center relative z-10">
@@ -76,7 +76,7 @@ export default function AboutPage() {
                         transition={{ duration: 0.8 }}
                         className="space-y-6 text-neutral-600 leading-relaxed font-sans text-base md:text-lg"
                     >
-                        <h2 className="font-serif text-3xl text-black mb-4">The TENET Standard</h2>
+                        <h2 className="font-serif text-3xl text-[#1A1A1A] dark:text-[#F4F1ED] mb-4">The TENET Standard</h2>
                         <p>
                             Every collection we design is a study in texture. From breathable premium Italian linen popovers to structured wool trousers and Japanese pique knits, we focus on fabrics that adapt gracefully to both tropical humidity and cool evenings.
                         </p>
@@ -122,7 +122,7 @@ export default function AboutPage() {
                                 variants={fadeIn}
                                 className="bg-white dark:bg-[#111111] border border-neutral-100 dark:border-neutral-800 p-8 rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.01)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.03)] hover:-translate-y-1 transition-all duration-300"
                             >
-                                <span className="font-serif text-xl block mb-3 text-black font-semibold">{pillar.title}</span>
+                                <span className="font-serif text-xl block mb-3 text-[#1A1A1A] dark:text-[#F4F1ED] font-semibold">{pillar.title}</span>
                                 <p className="font-sans text-neutral-500 text-sm leading-relaxed">{pillar.description}</p>
                             </motion.div>
                         ))}

@@ -5,12 +5,13 @@ import { getCartUpsells } from "@/lib/sanity";
 import { trackBeginCheckout, trackPurchase, trackAddToCart } from "@/lib/analytics";
 
 import { motion, AnimatePresence, useMotionValue, useTransform, animate } from "framer-motion";
-import { X, ShoppingBag, Plus, Minus, Heart, Trash2, ArrowLeft, MapPin, ShieldCheck } from "lucide-react";
+import { X, ShoppingBag, Plus, Minus, Heart, Trash2, ArrowLeft, MapPin, ShieldCheck, Truck, Zap } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useUser, useClerk } from "@clerk/nextjs";
 import { checkReferralCodeValidity, trackReferralClick, trackReferralJoin } from "@/app/actions";
+import { useGender } from "@/context/GenderContext";
 
 // Helper Component for Swipeable logic with visual feedback
 const CartItemRow = ({ item, removeFromCart, updateQuantity, toggleWishlist, isInWishlist }: any) => {
@@ -176,6 +177,9 @@ export default function CartDrawer() {
         checkoutItem, clearCheckoutItem, updateCheckoutItemQuantity,
         referralCode, setReferralCode
     } = useStore();
+    const { gender } = useGender();
+    const isWoman = gender === "woman";
+    const accentColor = isWoman ? "#FF4D6D" : "#3B82F6";
     const [mounted, setMounted] = useState(false);
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -226,6 +230,7 @@ export default function CartDrawer() {
         phone: ""
     });
     const [paymentMethod, setPaymentMethod] = useState<'razorpay' | 'cod'>('razorpay');
+    const [shippingSpeed, setShippingSpeed] = useState<'standard' | 'express'>('standard');
     const [errors, setErrors] = useState({
         name: false,
         houseNumber: false,
@@ -331,7 +336,7 @@ export default function CartDrawer() {
 
     const FREE_SHIPPING_THRESHOLD = 499;
     const SHIPPING_COST = 70;
-    const COD_MIN_THRESHOLD = 2000;
+    const COD_MIN_THRESHOLD = 0;
 
     useEffect(() => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -435,8 +440,13 @@ export default function CartDrawer() {
     const walletBalance = user?.unsafeMetadata?.walletBalance as number || 0;
     const [useWallet, setUseWallet] = useState(false);
     
-    const isFreeShipping = subtotal >= FREE_SHIPPING_THRESHOLD;
-    const shippingAmount = isFreeShipping ? 0 : SHIPPING_COST;
+    // Shipping Calculation based on payment method and speed:
+    // Online prepay: standard = FREE, express = ₹40
+    // COD: standard = ₹80, express = ₹120
+    const shippingAmount = paymentMethod === 'razorpay'
+        ? (shippingSpeed === 'express' ? 40 : 0)
+        : (shippingSpeed === 'express' ? 120 : 80);
+    
     const totalBeforeWallet = subtotal + shippingAmount;
     
     const walletDeduction = useWallet ? Math.min(walletBalance, totalBeforeWallet) : 0;
@@ -471,8 +481,9 @@ export default function CartDrawer() {
 
     // Calculate Offers above has `const totalBeforeWallet` and `finalTotal`...
 
-    const progress = Math.min((subtotal / FREE_SHIPPING_THRESHOLD) * 100, 100);
-    const amountNeeded = FREE_SHIPPING_THRESHOLD - subtotal;
+    const isFreeShipping = paymentMethod === 'razorpay' && shippingSpeed === 'standard';
+    const progress = isFreeShipping ? 100 : 0;
+    const amountNeeded = 0;
 
     // Prevent body scroll when cart is open
     useEffect(() => {
@@ -512,9 +523,9 @@ export default function CartDrawer() {
         }
 
         // Determine amount to charge via Razorpay
-        // For COD, charge 15% upfront
+        // For COD, charge the dynamic shipping fee upfront (or the entire total if finalTotal is less than shippingAmount)
         const amountToCharge = paymentMethod === 'cod' 
-            ? Math.round(finalTotal * 0.15) 
+            ? Math.min(shippingAmount, finalTotal) 
             : finalTotal;
 
         // 1. Load Razorpay Script
@@ -557,7 +568,7 @@ export default function CartDrawer() {
             amount: data.amount,
             currency: data.currency,
             name: "TENET ARCHIVES",
-            description: paymentMethod === 'cod' ? "15% Advance (COD Confirmation)" : "Luxury Transaction",
+            description: paymentMethod === 'cod' ? "COD Prepay Shipping Fee" : "Luxury Transaction",
             order_id: data.id,
              
             handler: async function (response: any) {
@@ -669,9 +680,9 @@ export default function CartDrawer() {
                                 <div className="p-4 bg-neutral-50 dark:bg-[#0A0A0A] border-b border-neutral-200 dark:border-neutral-800">
                                     <div className="mb-2 text-xs font-medium text-center uppercase tracking-wide text-[#1A1A1A] dark:text-[#F4F1ED]">
                                         {isFreeShipping ? (
-                                            <span className="text-green-800">You&apos;ve unlocked Free Shipping</span>
+                                            <span className="text-green-800 dark:text-green-400 font-bold">🎉 FREE Standard Shipping Unlocked (Pay Online)</span>
                                         ) : (
-                                            <span>Spend ₹{amountNeeded.toLocaleString('en-IN')} more for Free Shipping</span>
+                                            <span className="text-red-700 font-bold">₹{shippingAmount} Shipping Fee ({paymentMethod === 'cod' ? 'COD' : 'Express'} Mode)</span>
                                         )}
                                     </div>
                                     <div className="h-1.5 w-full bg-neutral-200 dark:bg-neutral-800 rounded-full overflow-hidden">
@@ -801,24 +812,24 @@ export default function CartDrawer() {
                                                         setCouponInput(e.target.value);
                                                         setCouponError("");
                                                     }}
-                                                    className="flex-1 border border-neutral-300 rounded-sm px-3 py-2 text-xs font-sans outline-none focus:border-black uppercase"
+                                                    className="flex-1 border border-neutral-300 dark:border-white/20 bg-transparent text-[#1A1A1A] dark:text-[#F4F1ED] rounded-sm px-3 py-2 text-xs font-sans outline-none focus:border-black dark:focus:border-white/50 uppercase placeholder:text-neutral-400 dark:placeholder:text-neutral-500"
                                                 />
                                                 <button 
                                                     onClick={handleApplyCoupon}
                                                     disabled={!couponInput.trim()}
-                                                    className="bg-black text-white px-4 text-xs font-bold tracking-widest uppercase rounded-sm disabled:opacity-50"
+                                                    className="bg-black dark:bg-[#F4F1ED] text-white dark:text-[#1A1A1A] px-4 text-xs font-bold tracking-widest uppercase rounded-sm disabled:opacity-50"
                                                 >
                                                     Apply
                                                 </button>
                                             </div>
-                                            {couponError && <span className="text-[10px] text-red-500">{couponError}</span>}
+                                            {couponError && <span className="text-[10px] text-red-500 font-medium">{couponError}</span>}
                                         </div>
                                     )}
 
                                     <div className="flex items-center justify-between text-xs font-sans text-neutral-500">
                                         <span>Shipping</span>
-                                        <span className={isFreeShipping ? "text-green-700 font-bold" : ""}>
-                                            {isFreeShipping ? "FREE" : `₹${SHIPPING_COST}`}
+                                        <span className={isFreeShipping ? "text-green-700 font-bold" : "text-red-600 font-bold"}>
+                                            {isFreeShipping ? "FREE" : `₹${shippingAmount}`}
                                         </span>
                                     </div>
                                     <div className="flex items-center justify-between font-serif text-xl font-bold border-t border-dashed border-neutral-200 dark:border-neutral-800 pt-4">
@@ -826,7 +837,8 @@ export default function CartDrawer() {
                                         <span>₹{totalBeforeWallet.toLocaleString('en-IN')}</span>
                                     </div>
                                     <button
-                                        className="w-full bg-[#1A1A1A] text-white py-4 font-sans text-[13px] font-bold uppercase tracking-widest hover:bg-black hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all duration-300 disabled:opacity-50 rounded-full flex items-center justify-center gap-2"
+                                        className="w-full text-white py-4 font-sans text-[13px] font-bold uppercase tracking-widest hover:opacity-95 active:scale-[0.98] transition-all duration-300 disabled:opacity-50 rounded-full flex items-center justify-center gap-2"
+                                        style={{ backgroundColor: accentColor }}
                                         disabled={cartItems.length === 0}
                                         onClick={() => {
                                             if (!user) {
@@ -853,13 +865,13 @@ export default function CartDrawer() {
                                                     <span className="text-xs font-bold uppercase tracking-widest text-[#1A1A1A] dark:text-[#F4F1ED]">Main Address</span>
                                                     <button 
                                                         onClick={() => setIsEditingAddress(true)}
-                                                        className="text-[10px] uppercase tracking-widest font-bold text-neutral-500 hover:text-black transition-colors"
+                                                        className="text-[10px] uppercase tracking-widest font-bold text-neutral-500 hover:text-black dark:hover:text-white transition-colors"
                                                     >
                                                         Edit / Change
                                                     </button>
                                                 </div>
                                                 <div className="text-sm text-neutral-700 leading-relaxed font-sans">
-                                                    <p className="font-bold text-black">{address.name}</p>
+                                                    <p className="font-bold text-[#1A1A1A] dark:text-[#F4F1ED]">{address.name}</p>
                                                     {address.houseNumber && <p>{address.houseNumber}</p>}
                                                     <p>{address.street}</p>
                                                     <p>{address.city} - {address.zip}</p>
@@ -928,7 +940,7 @@ export default function CartDrawer() {
                                                     type="button"
                                                     onClick={handleUseCurrentLocation}
                                                     disabled={isLocating}
-                                                    className="flex items-center gap-1.5 text-[10px] uppercase font-bold tracking-widest text-[#1A1A1A] dark:text-[#F4F1ED] hover:text-black transition-colors"
+                                                    className="flex items-center gap-1.5 text-[10px] uppercase font-bold tracking-widest text-[#1A1A1A] dark:text-[#F4F1ED] hover:text-black dark:hover:text-white transition-colors"
                                                 >
                                                     <MapPin className="w-3 h-3" />
                                                     {isLocating ? "Locating..." : "Use Current Location"}
@@ -1043,46 +1055,89 @@ export default function CartDrawer() {
                                     )}
 
                                     {/* Payment Method Selection */}
+                                    {/* Delivery Option Selection */}
+                                    <div className="mt-6 flex flex-col gap-2">
+                                        <div className="flex items-center justify-between">
+                                            <label className="block text-xs font-bold uppercase tracking-widest text-[#1A1A1A] dark:text-[#F4F1ED]">Delivery Option</label>
+                                            <span className="text-[10px] text-neutral-500 dark:text-neutral-400 font-sans">
+                                                {shippingSpeed === 'express' ? "Delivered in 2 days" : "Delivered in 3-7 days"}
+                                            </span>
+                                        </div>
+                                        <div className="flex gap-1.5 bg-neutral-100/60 dark:bg-[#141414] p-1 rounded-xl border border-neutral-200/50 dark:border-neutral-800">
+                                            {/* Standard Delivery */}
+                                            <button
+                                                onClick={() => setShippingSpeed('standard')}
+                                                className={`flex-1 py-2.5 text-[11px] font-bold uppercase tracking-wider rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                                                    shippingSpeed === 'standard'
+                                                        ? 'bg-white dark:bg-[#222] text-[#1A1A1A] dark:text-[#F4F1ED] shadow-sm'
+                                                        : 'text-neutral-500 hover:text-[#1A1A1A] dark:hover:text-white'
+                                                }`}
+                                            >
+                                                <Truck className="w-3.5 h-3.5 opacity-80" />
+                                                Standard ({paymentMethod === 'razorpay' ? "FREE" : "₹80"})
+                                            </button>
+                                            {/* Express Delivery */}
+                                            <button
+                                                onClick={() => setShippingSpeed('express')}
+                                                className={`flex-1 py-2.5 text-[11px] font-bold uppercase tracking-wider rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                                                    shippingSpeed === 'express'
+                                                        ? 'bg-white dark:bg-[#222] text-[#1A1A1A] dark:text-[#F4F1ED] shadow-sm'
+                                                        : 'text-neutral-500 hover:text-[#1A1A1A] dark:hover:text-white'
+                                                }`}
+                                            >
+                                                <Zap className="w-3.5 h-3.5 opacity-80 text-[#3B82F6]" />
+                                                Express ({paymentMethod === 'razorpay' ? "₹40" : "₹120"})
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    {/* Payment Method Selection */}
                                     <div className="mt-6">
                                         <label className="block text-xs font-bold uppercase tracking-widest text-[#1A1A1A] dark:text-[#F4F1ED] mb-4">Payment Method</label>
-
                                         <div className="space-y-3">
                                             {/* Online Payment */}
                                             <div
                                                 onClick={() => setPaymentMethod('razorpay')}
-                                                className={`flex items-center justify-between p-4 border rounded-xl cursor-pointer transition-all ${paymentMethod === 'razorpay' ? 'border-black bg-neutral-50 dark:bg-[#0A0A0A]' : 'border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#111111] hover:border-neutral-300'}`}
+                                                className={`flex items-center justify-between p-4 border rounded-xl cursor-pointer transition-all ${
+                                                    paymentMethod === 'razorpay' 
+                                                        ? 'bg-neutral-50 dark:bg-[#0A0A0A]' 
+                                                        : 'border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#111111] hover:border-neutral-300'
+                                                }`}
+                                                style={paymentMethod === 'razorpay' ? { borderColor: accentColor } : {}}
                                             >
                                                 <div className="flex items-center gap-3">
-                                                    <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${paymentMethod === 'razorpay' ? 'border-black' : 'border-neutral-300'}`}>
-                                                        {paymentMethod === 'razorpay' && <div className="w-2 h-2 rounded-full bg-black" />}
+                                                    <div className={`w-4 h-4 rounded-full border flex items-center justify-center`}
+                                                        style={paymentMethod === 'razorpay' ? { borderColor: accentColor } : { borderColor: '#d4d4d4' }}
+                                                    >
+                                                        {paymentMethod === 'razorpay' && <div className="w-2 h-2 rounded-full" style={{ backgroundColor: accentColor }} />}
                                                     </div>
-                                                    <span className="text-sm font-medium text-[#1A1A1A] dark:text-[#F4F1ED]">Online Payment</span>
+                                                    <div className="flex flex-col">
+                                                        <span className="text-sm font-medium text-[#1A1A1A] dark:text-[#F4F1ED]">Online Prepay</span>
+                                                        <span className="text-[10px] text-green-700 dark:text-green-400 mt-0.5 font-medium">Save ₹80 + Free Standard Delivery</span>
+                                                    </div>
                                                 </div>
-                                                <span className="text-[10px] font-bold uppercase tracking-widest text-green-700 bg-green-50 px-2 py-1 rounded-md">Fastest</span>
+                                                <span className="text-[10px] font-bold uppercase tracking-widest text-green-700 bg-green-50 dark:bg-green-950/20 px-2 py-1 rounded-md">SAVE ₹80</span>
                                             </div>
 
                                             {/* Cash On Delivery */}
                                             <div
-                                                onClick={() => finalTotal >= COD_MIN_THRESHOLD && setPaymentMethod('cod')}
-                                                className={`flex items-center justify-between p-4 border rounded-xl transition-all ${
-                                                    finalTotal < COD_MIN_THRESHOLD 
-                                                        ? 'border-neutral-100 dark:border-neutral-800 bg-neutral-50/50 cursor-not-allowed opacity-50' 
-                                                        : paymentMethod === 'cod' 
-                                                            ? 'border-black bg-neutral-50 dark:bg-[#0A0A0A] cursor-pointer' 
-                                                            : 'border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#111111] hover:border-neutral-300 cursor-pointer'
+                                                onClick={() => setPaymentMethod('cod')}
+                                                className={`flex items-center justify-between p-4 border rounded-xl cursor-pointer transition-all ${
+                                                    paymentMethod === 'cod' 
+                                                        ? 'bg-neutral-50 dark:bg-[#0A0A0A]' 
+                                                        : 'border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#111111] hover:border-neutral-300'
                                                 }`}
+                                                style={paymentMethod === 'cod' ? { borderColor: accentColor } : {}}
                                             >
                                                 <div className="flex items-center gap-3">
-                                                    <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${paymentMethod === 'cod' ? 'border-black' : 'border-neutral-300'}`}>
-                                                        {paymentMethod === 'cod' && finalTotal >= COD_MIN_THRESHOLD && <div className="w-2 h-2 rounded-full bg-black" />}
+                                                    <div className={`w-4 h-4 rounded-full border flex items-center justify-center`}
+                                                        style={paymentMethod === 'cod' ? { borderColor: accentColor } : { borderColor: '#d4d4d4' }}
+                                                    >
+                                                        {paymentMethod === 'cod' && <div className="w-2 h-2 rounded-full" style={{ backgroundColor: accentColor }} />}
                                                     </div>
                                                     <div className="flex flex-col">
-                                                        <span className="text-sm font-medium text-[#1A1A1A] dark:text-[#F4F1ED]">Cash on Delivery</span>
-                                                        {finalTotal < COD_MIN_THRESHOLD && (
-                                                            <span className="text-[10px] text-red-500 mt-1 font-sans">
-                                                                Cash on Delivery is available on orders above ₹{COD_MIN_THRESHOLD.toLocaleString()}
-                                                            </span>
-                                                        )}
+                                                        <span className="text-sm font-medium text-[#1A1A1A] dark:text-[#F4F1ED]">Cash on Delivery (COD)</span>
+                                                        <span className="text-[10px] text-neutral-500 mt-0.5 font-sans">Prepay Shipping Confirmation Fee + Pay Product on Delivery</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1110,6 +1165,20 @@ export default function CartDrawer() {
                                 </div>
 
                                 <div className="mt-8 pt-6 border-t border-neutral-200 dark:border-neutral-800">
+                                    <div className="flex items-center justify-between text-xs font-sans text-neutral-500 mb-2">
+                                        <span>Subtotal</span>
+                                        <span>₹{subtotal.toLocaleString('en-IN')}</span>
+                                    </div>
+                                    <div className="flex items-center justify-between text-xs font-sans mb-2">
+                                        <span>Shipping ({shippingSpeed === 'express' ? 'Express' : 'Standard'})</span>
+                                        {shippingAmount === 0 ? (
+                                            <span className="text-green-700 font-bold">FREE (Prepay Benefit)</span>
+                                        ) : (
+                                            <span className={paymentMethod === 'razorpay' ? "text-[#1A1A1A] dark:text-[#F4F1ED] font-bold" : "text-red-600 font-bold"}>
+                                                ₹{shippingAmount} {paymentMethod === 'cod' && '(COD Fee)'}
+                                            </span>
+                                        )}
+                                    </div>
                                     {walletDeduction > 0 && (
                                         <div className="flex items-center justify-between text-sm font-sans mb-3 text-green-700 font-bold">
                                             <span>Wallet Credit Applied</span>
@@ -1120,16 +1189,47 @@ export default function CartDrawer() {
                                         <span>Total Due</span>
                                         <span>₹{finalTotal.toLocaleString('en-IN')}</span>
                                     </div>
+                                    {paymentMethod === 'cod' ? (
+                                        <div className="bg-red-50/50 dark:bg-red-950/10 rounded-xl p-3 border border-red-100 dark:border-red-900/30 space-y-2 mb-4">
+                                            <div className="flex items-center justify-between text-xs font-sans text-red-800 dark:text-red-300">
+                                                <span className="font-medium">COD Shipping Fee ({shippingSpeed === 'express' ? 'Express' : 'Standard'} - Pay Upfront)</span>
+                                                <span className="font-bold">₹{shippingAmount}</span>
+                                            </div>
+                                            <div className="flex items-center justify-between text-xs font-sans text-neutral-600 dark:text-neutral-400">
+                                                <span>Product Price (Pay on Delivery)</span>
+                                                <span className="font-bold text-[#1A1A1A] dark:text-[#F4F1ED]">₹{Math.max(0, subtotal - walletDeduction).toLocaleString('en-IN')}</span>
+                                            </div>
+                                            <div className="text-[10px] text-red-600 dark:text-red-400 font-medium pt-1 border-t border-red-100 dark:border-red-900/20">
+                                                💡 Tip: Pay online now to get {shippingSpeed === 'express' ? 'Express Delivery for just ₹40 (Save ₹80)' : 'FREE Standard Delivery (Save ₹80)'}!
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <div className="bg-green-50/50 dark:bg-green-950/10 rounded-xl p-3 border border-green-100 dark:border-green-900/30 space-y-1 mb-4">
+                                            <div className="flex items-center justify-between text-xs font-sans text-green-800 dark:text-green-300 font-bold">
+                                                <span>Prepay Shipping Fee ({shippingSpeed === 'express' ? 'Express' : 'Standard'})</span>
+                                                <span>{shippingAmount === 0 ? 'FREE' : `₹${shippingAmount}`}</span>
+                                            </div>
+                                            <div className="text-[10px] text-green-700 dark:text-green-400 font-medium">
+                                                {shippingSpeed === 'express' ? (
+                                                    "🚀 Upgraded to 2-Day Express Delivery for just ₹40 (Saved ₹80 compared to COD)!"
+                                                ) : (
+                                                    "🎉 You saved ₹80 with Free Prepay Delivery!"
+                                                )}
+                                            </div>
+                                        </div>
+                                    )}
                                     <button
-                                        className="w-full bg-[#1A1A1A] text-white py-4 font-sans text-sm uppercase tracking-widest hover:bg-black transition-colors rounded-full flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                                        className="w-full text-white py-4 font-sans text-sm uppercase tracking-widest hover:opacity-95 transition-all rounded-full flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                                        style={{ backgroundColor: accentColor }}
                                         onClick={handleCheckout}
-                                        disabled={paymentMethod === 'cod' && finalTotal < COD_MIN_THRESHOLD}
                                     >
-                                        {paymentMethod === 'razorpay' ? 'Pay Securely Now' : `Pay 15% Advance (₹${Math.round(finalTotal * 0.15).toLocaleString('en-IN')})`}
+                                        {paymentMethod === 'razorpay' 
+                                            ? `Pay Securely Now (₹${finalTotal.toLocaleString('en-IN')})` 
+                                            : `Confirm Order & Pay Shipping (₹${Math.min(shippingAmount, finalTotal).toLocaleString('en-IN')})`}
                                     </button>
                                     <button
                                         onClick={() => setCheckoutStep('cart')}
-                                        className="w-full mt-3 text-xs text-neutral-500 hover:text-black py-2"
+                                        className="w-full mt-3 text-xs text-neutral-500 hover:text-black dark:hover:text-white py-2"
                                     >
                                         Back to Cart
                                     </button>

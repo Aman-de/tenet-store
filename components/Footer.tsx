@@ -90,7 +90,7 @@ export default function Footer() {
                                     animate={{ opacity: 1, scale: 1 }}
                                     className="flex items-center gap-3.5 bg-white/5 border border-white/10 rounded-2xl p-5 md:w-[400px] shadow-lg backdrop-blur-sm"
                                 >
-                                    <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-black shrink-0">
+                                    <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-black dark:text-white shrink-0">
                                         <Check className="w-4 h-4" strokeWidth={3} />
                                     </div>
                                     <div>
@@ -116,7 +116,7 @@ export default function Footer() {
                                 href="https://www.instagram.com/tenet_archives/" 
                                 target="_blank" 
                                 rel="noopener noreferrer" 
-                                className="p-2.5 border border-white/10 rounded-full hover:bg-white hover:text-black transition-all hover:scale-105 active:scale-95 text-neutral-400 hover:border-white"
+                                className="p-2.5 border border-white/10 rounded-full hover:bg-white hover:text-black dark:hover:text-white transition-all hover:scale-105 active:scale-95 text-neutral-400 hover:border-white"
                                 title="Instagram"
                             >
                                 <Instagram className="w-4 h-4" />
@@ -125,7 +125,7 @@ export default function Footer() {
                                 href="https://x.com/tenet_archives?s=11" 
                                 target="_blank" 
                                 rel="noopener noreferrer" 
-                                className="p-2.5 border border-white/10 rounded-full hover:bg-white hover:text-black transition-all hover:scale-105 active:scale-95 text-neutral-400 hover:border-white"
+                                className="p-2.5 border border-white/10 rounded-full hover:bg-white hover:text-black dark:hover:text-white transition-all hover:scale-105 active:scale-95 text-neutral-400 hover:border-white"
                                 title="Twitter / X"
                             >
                                 <Twitter className="w-4 h-4" />
@@ -228,7 +228,7 @@ export default function Footer() {
                 </div>
 
                 {/* Copyright */}
-                <div className="mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-[10px] text-neutral-500 font-sans tracking-wide">
+                <div className="mt-10 pt-6 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-[10px] text-neutral-500 font-sans tracking-wide">
                     <p>© 2026 TENET. All rights reserved.</p>
                     <div className="flex gap-6 mt-4 md:mt-0">
                         <Link href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
@@ -237,7 +237,7 @@ export default function Footer() {
                 </div>
 
                 {/* SEO Footer */}
-                <div className="mt-6 pt-4 border-t border-white/5 text-center">
+                <div className="mt-4 pt-4 border-t border-white/5 text-center">
                     <p className="text-[9px] text-neutral-600 tracking-wide font-sans">
                         Popular: <span className="hover:text-neutral-400 transition-colors cursor-pointer">Linen Shirts</span> | <span className="hover:text-neutral-400 transition-colors cursor-pointer">Polo T-Shirts</span> | <span className="hover:text-neutral-400 transition-colors cursor-pointer">Old Money Aesthetic</span> | <span className="hover:text-neutral-400 transition-colors cursor-pointer">Luxury Knitwear</span> | <span className="hover:text-neutral-400 transition-colors cursor-pointer">Cashmere Sweaters</span> | <span className="hover:text-neutral-400 transition-colors cursor-pointer">Quiet Luxury</span>
                     </p>

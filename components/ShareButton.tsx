@@ -4,6 +4,7 @@ import { Share2 } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { useUser } from "@clerk/nextjs";
 
 interface ShareButtonProps {
     title: string;
@@ -23,12 +24,25 @@ export default function ShareButton({
     showText = false
 }: ShareButtonProps) {
     const [showToast, setShowToast] = useState(false);
+    const { user } = useUser();
+    const referralCode = user?.unsafeMetadata?.referralCode as string | undefined;
 
     const handleShare = async (e: React.MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
 
-        const shareUrl = url || window.location.href;
+        const baseShareUrl = url || window.location.href;
+        let shareUrl = baseShareUrl;
+        if (referralCode && typeof window !== "undefined") {
+            try {
+                const urlObj = new URL(baseShareUrl, window.location.origin);
+                urlObj.searchParams.set("ref", referralCode);
+                shareUrl = urlObj.toString();
+            } catch (err) {
+                console.error("Error building referral share URL:", err);
+            }
+        }
+
         const shareData = {
             title: title,
             text: text || "Check out this product",

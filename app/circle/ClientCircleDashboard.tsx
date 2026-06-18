@@ -225,7 +225,7 @@ export default function ClientCircleDashboard({
                 <div>
                     <h3 className="font-bold text-xs uppercase tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED] mb-1.5">Your Circle Assets</h3>
                     <p className="text-xs text-neutral-400 font-sans leading-relaxed">
-                        Share your unique invite assets. Customers receive an extra <strong className="text-[#1A1A1A] dark:text-[#F4F1ED] font-semibold">15% discount</strong> at checkout, and you earn <strong className="text-[#1A1A1A] dark:text-[#F4F1ED] font-semibold">15% commission</strong> on their entire purchase value.
+                        Share your unique invite assets. Referred patrons receive an extra <strong className="text-[#1A1A1A] dark:text-[#F4F1ED] font-semibold">15% discount</strong> at checkout. You earn a flat <strong className="text-[#1A1A1A] dark:text-[#F4F1ED] font-semibold">₹15 signup bonus</strong> instantly for every verified new registration + <strong className="text-[#1A1A1A] dark:text-[#F4F1ED] font-semibold">15% commission</strong> on their purchases.
                     </p>
                 </div>
 
@@ -379,7 +379,7 @@ export default function ClientCircleDashboard({
                     <button
                         onClick={handleRedeem}
                         disabled={isRedeeming || !bankDetails}
-                        className="w-full sm:w-auto px-8 py-3.5 bg-white dark:bg-[#111111] hover:bg-neutral-100 dark:hover:bg-[#1A1A1A] dark:bg-[#141414] text-black font-sans text-xs font-bold uppercase tracking-widest rounded-xl transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed shrink-0 flex items-center justify-center gap-2 cursor-pointer"
+                        className="w-full sm:w-auto px-8 py-3.5 bg-white dark:bg-[#111111] hover:bg-neutral-100 dark:hover:bg-[#1A1A1A] dark:bg-[#141414] text-black dark:text-white font-sans text-xs font-bold uppercase tracking-widest rounded-xl transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed shrink-0 flex items-center justify-center gap-2 cursor-pointer"
                     >
                         {isRedeeming && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
                         {!bankDetails ? "Link Bank to Redeem" : "Redeem to Bank"}
@@ -415,7 +415,7 @@ export default function ClientCircleDashboard({
                     {bankDetails && !isEditingBank && (
                         <button
                             onClick={() => setIsEditingBank(true)}
-                            className="text-[10px] font-bold uppercase tracking-wider text-neutral-500 hover:text-black transition-colors cursor-pointer"
+                            className="text-[10px] font-bold uppercase tracking-wider text-neutral-500 hover:text-black dark:text-white transition-colors cursor-pointer"
                         >
                             Change Account
                         </button>

@@ -175,7 +175,7 @@ export default function OnboardingModal() {
                                     <button
                                         type="button"
                                         onClick={handleAutoLocate}
-                                        className="text-[10px] uppercase font-bold tracking-widest flex items-center gap-1 text-black hover:opacity-70 transition-opacity"
+                                        className="text-[10px] uppercase font-bold tracking-widest flex items-center gap-1 text-[#1A1A1A] dark:text-[#F4F1ED] hover:opacity-70 transition-opacity"
                                     >
                                         {isLocating ? <Loader2 className="w-3 h-3 animate-spin" /> : <MapPin className="w-3 h-3" />}
                                         Auto-Locate

@@ -3,6 +3,25 @@
 import { createClient } from "next-sanity";
 import { apiVersion, dataset, projectId } from "@/sanity/env";
 import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
+
+function isBot(userAgent: string): boolean {
+    const botKeywords = [
+        "bot", "spider", "crawl", "scrape", "headless", "puppeteer", 
+        "selenium", "playwright", "curl", "wget", "python", "node"
+    ];
+    const ua = userAgent.toLowerCase();
+    return botKeywords.some(keyword => ua.includes(keyword));
+}
+
+function isDisposableEmail(email: string): boolean {
+    const tempEmailDomains = [
+        "mailinator.com", "tempmail.com", "yopmail.com", "guerrillamail.com",
+        "dispostable.com", "sharklasers.com", "10minutemail.com", "trashmail.com"
+    ];
+    const domain = email.split("@")[1]?.toLowerCase();
+    return tempEmailDomains.includes(domain);
+}
 
 const token = process.env.SANITY_API_TOKEN;
 
@@ -325,18 +344,51 @@ export async function trackReferralJoin(userId: string, code: string) {
         const referrer = users.data.find(u => u.unsafeMetadata.referralCode === code);
         
         if (referrer && referrer.id !== userId) {
+            // Get Client Headers for IP and Bot tracking
+            const headerList = await headers();
+            const clientIp = headerList.get('x-forwarded-for')?.split(',')[0].trim() || 
+                             headerList.get('x-real-ip') || 
+                             "unknown-ip";
+            const userAgent = headerList.get('user-agent') || "";
+            const emailAddress = currentUser.emailAddresses[0]?.emailAddress || "";
+
+            // Spam & Bot checks
+            if (isBot(userAgent)) {
+                console.warn(`Signup blocked: Bot detected from user agent: ${userAgent}`);
+                return { success: false, message: "Spam prevention: Bot signup blocked" };
+            }
+            if (isDisposableEmail(emailAddress)) {
+                console.warn(`Signup blocked: Temporary email provider detected: ${emailAddress}`);
+                return { success: false, message: "Spam prevention: Temp email blocked" };
+            }
+
+            // IP tracking: Check if client IP already signed up under any user
+            if (clientIp !== "unknown-ip") {
+                const isDuplicateIp = users.data.some(u => 
+                    u.id !== userId && 
+                    u.unsafeMetadata.signupIp === clientIp
+                );
+                if (isDuplicateIp) {
+                    console.warn(`Signup blocked: Duplicate IP address detected: ${clientIp}`);
+                    return { success: false, message: "Spam prevention: Duplicate IP blocked" };
+                }
+            }
+
             const joins = (referrer.unsafeMetadata.referralJoins as number) || 0;
+            const currentWallet = (referrer.unsafeMetadata.walletBalance as number) || 0;
             await clerk.users.updateUserMetadata(referrer.id, {
                 unsafeMetadata: {
                     ...referrer.unsafeMetadata,
-                    referralJoins: joins + 1
+                    referralJoins: joins + 1,
+                    walletBalance: currentWallet + 15 // ₹15 signup affiliate bonus
                 }
             });
 
             await clerk.users.updateUserMetadata(userId, {
                 unsafeMetadata: {
                     ...currentUser.unsafeMetadata,
-                    referredByCode: code
+                    referredByCode: code,
+                    signupIp: clientIp
                 }
             });
 

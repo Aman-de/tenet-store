@@ -112,12 +112,12 @@ export default async function OrdersPage(props: { searchParams: Promise<{ [key: 
     const orders = await client.fetch(query, { email });
 
     return (
-        <div className="min-h-screen bg-[#FDFBF7] dark:bg-[#0A0A0A] pt-24 pb-12 px-4 md:px-8">
+        <div className="min-h-screen pt-24 pb-12 px-4 md:px-8">
             <div className="max-w-4xl mx-auto space-y-8">
                 {/* Header */}
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-neutral-200 dark:border-neutral-800 pb-6">
                     <div className="flex flex-col gap-4">
-                        <Link href="/" className="inline-flex items-center text-sm font-medium text-neutral-500 hover:text-black transition-colors w-fit group">
+                        <Link href="/" className="inline-flex items-center text-sm font-medium text-neutral-500 hover:text-black dark:hover:text-white transition-colors w-fit group">
                             <ChevronLeft className="w-4 h-4 mr-1 group-hover:-translate-x-1 transition-transform" />
                             Back to Shop
                         </Link>

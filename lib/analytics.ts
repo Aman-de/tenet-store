@@ -1,6 +1,7 @@
 /**
  * Utility for Google Analytics 4 Ecommerce tracking
  */
+import posthog from 'posthog-js';
 
 export interface GA4Item {
     item_id: string;
@@ -90,6 +91,12 @@ export const trackPurchase = (transactionId: string, items: any[], totalValue: n
     });
 
     if (typeof window !== "undefined") {
+        posthog.capture('purchase_completed', {
+            amount: totalValue,
+            transaction_id: transactionId,
+            currency: "INR"
+        });
+
         const gtag = (window as any).gtag || function() { (window as any).dataLayer = (window as any).dataLayer || []; (window as any).dataLayer.push(arguments); };
         gtag('event', 'conversion', {
             'send_to': 'AW-18224844065/mvSiCLnK2LscEKGapPJD',

@@ -21,7 +21,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     const products = query ? await searchProducts(query) : [];
 
     return (
-        <main className="bg-[#FDFBF7] dark:bg-[#0A0A0A] min-h-screen">
+        <main className="min-h-screen">
             {/* Header */}
             <section className="max-w-7xl mx-auto px-4 md:px-6 pt-32 pb-8">
                 <div className="flex flex-col gap-2">

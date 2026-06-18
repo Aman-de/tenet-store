@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 
 export default function EditorialPage() {
   return (
-    <main className="bg-[#FDFBF7] dark:bg-[#0A0A0A] min-h-screen pt-24 pb-20">
+    <main className="min-h-screen pt-24 pb-20">
       <div className="max-w-[2000px] mx-auto px-6 xl:px-12">
         {/* Page Header */}
         <header className="text-center mb-16 md:mb-24">
@@ -59,7 +59,7 @@ export default function EditorialPage() {
               <div>
                 <Link
                   href="/#new-arrivals"
-                  className="inline-block group/btn px-8 py-4 border border-black text-black hover:bg-[#1A1A1A] hover:text-white transition-all duration-300 tracking-[0.2em] text-xs font-bold uppercase backdrop-blur-sm relative overflow-hidden"
+                  className="inline-block group/btn px-8 py-4 border border-[#1A1A1A] dark:border-[#F4F1ED] text-[#1A1A1A] dark:text-[#F4F1ED] hover:bg-[#1A1A1A] hover:text-white transition-all duration-300 tracking-[0.2em] text-xs font-bold uppercase backdrop-blur-sm relative overflow-hidden"
                 >
                   Shop Men's Edit
                 </Link>
@@ -99,7 +99,7 @@ export default function EditorialPage() {
               <div>
                 <Link
                   href="/#new-arrivals"
-                  className="inline-block group/btn px-8 py-4 border border-black text-black hover:bg-[#1A1A1A] hover:text-white transition-all duration-300 tracking-[0.2em] text-xs font-bold uppercase backdrop-blur-sm relative overflow-hidden"
+                  className="inline-block group/btn px-8 py-4 border border-[#1A1A1A] dark:border-[#F4F1ED] text-[#1A1A1A] dark:text-[#F4F1ED] hover:bg-[#1A1A1A] hover:text-white transition-all duration-300 tracking-[0.2em] text-xs font-bold uppercase backdrop-blur-sm relative overflow-hidden"
                 >
                   Shop Women's Edit
                 </Link>

@@ -13,11 +13,11 @@ export default function SupportPage() {
     const faqs = [
         {
             question: "When will my order ship and arrive?",
-            answer: "Orders are processed within 24-48 hours. Express shipping across major Indian cities takes 3-5 business days. Once dispatched, you will receive a tracking link via email and SMS. You can also look up status using the tracker below."
+            answer: "Orders are processed within 24-48 hours. Standard delivery takes 3-7 business days, while Express delivery guarantees delivery in 2 business days. Once dispatched, you will receive a tracking link via email and SMS."
         },
         {
             question: "Do you offer Cash on Delivery (COD)?",
-            answer: "Yes, we support Cash on Delivery (COD) for orders above ₹2,000. For orders below this threshold, we accept all major Credit/Debit Cards, UPI, Netbanking, and Wallets securely via Razorpay."
+            answer: "Yes, we support Cash on Delivery (COD) on all orders. For COD orders, the shipping fee (₹80 for Standard or ₹120 for Express) must be prepaid upfront as a shipping confirmation fee, while the product price is paid on delivery. Alternatively, you can pay online to get FREE Standard shipping (or upgrade to Express for just ₹40) and save ₹80 instantly!"
         },
         {
             question: "What is your return and exchange policy?",
@@ -37,7 +37,7 @@ export default function SupportPage() {
     };
 
     return (
-        <main className="bg-[#FDFBF7] dark:bg-[#0A0A0A] min-h-screen pb-24 text-[#1A1A1A] dark:text-[#F4F1ED]">
+        <main className="min-h-screen pb-24 text-[#1A1A1A] dark:text-[#F4F1ED]">
             {/* Header */}
             <div className="py-24 px-6 border-b border-neutral-100 dark:border-neutral-800 bg-white dark:bg-[#111111] text-center">
                 <div className="max-w-3xl mx-auto">
@@ -58,7 +58,7 @@ export default function SupportPage() {
                         {/* Order Tracking */}
                         <div className="bg-white dark:bg-[#111111] border border-neutral-100 dark:border-neutral-800 p-6 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.01)]">
                             <div className="flex items-center gap-2 mb-3 text-neutral-800">
-                                <ShieldCheck className="w-5 h-5 text-black" />
+                                <ShieldCheck className="w-5 h-5 text-[#1A1A1A] dark:text-[#F4F1ED]" />
                                 <span className="font-serif text-lg font-semibold">Track Your Order</span>
                             </div>
                             <p className="font-sans text-xs text-neutral-400 mb-4">
@@ -101,7 +101,7 @@ export default function SupportPage() {
                                         <span className="text-xs uppercase font-bold tracking-wider text-emerald-800 block">WhatsApp Desk</span>
                                         <span className="bg-emerald-600 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full uppercase tracking-wider">Primary</span>
                                     </div>
-                                    <span className="text-sm font-sans font-medium text-black">+91 77377 96817</span>
+                                    <span className="text-sm font-sans font-medium text-[#1A1A1A] dark:text-[#F4F1ED]">+91 77377 96817</span>
                                 </div>
                             </a>
 
@@ -114,7 +114,7 @@ export default function SupportPage() {
                                 </div>
                                 <div className="flex-1">
                                     <span className="text-xs uppercase font-bold tracking-wider text-neutral-400 block">Email Support</span>
-                                    <span className="text-sm font-sans font-medium text-black">tenetarchives@gmail.com</span>
+                                    <span className="text-sm font-sans font-medium text-[#1A1A1A] dark:text-[#F4F1ED]">tenetarchives@gmail.com</span>
                                 </div>
                             </a>
                         </div>
@@ -122,7 +122,7 @@ export default function SupportPage() {
 
                     {/* Right: FAQ Accordions */}
                     <div className="md:col-span-3 space-y-4 bg-white dark:bg-[#111111] border border-neutral-100 dark:border-neutral-800 p-8 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.01)]">
-                        <h2 className="font-serif text-2xl text-black mb-6">Frequently Asked Questions</h2>
+                        <h2 className="font-serif text-2xl text-[#1A1A1A] dark:text-[#F4F1ED] mb-6">Frequently Asked Questions</h2>
                         
                         <div className="divide-y divide-neutral-100">
                             {faqs.map((faq, index) => {

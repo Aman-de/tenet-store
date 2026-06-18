@@ -11,7 +11,7 @@ export default async function InnerCirclePage() {
 
     if (!userId || !user) {
         return (
-            <div className="min-h-screen bg-[#FDFBF7] dark:bg-[#0A0A0A] pt-20 lg:pt-28 pb-20 px-4">
+            <div className="min-h-screen pt-20 lg:pt-28 pb-20 px-4">
                 <div className="max-w-2xl mx-auto text-center space-y-8">
                     <div className="w-16 h-16 bg-[#1A1A1A] rounded-full flex items-center justify-center mx-auto mb-8 shadow-xl">
                         <Crown className="w-8 h-8 text-[#D4AF37]" />
@@ -88,57 +88,7 @@ export default async function InnerCirclePage() {
         });
     }
 
-    // Fetch dynamic referral orders from Sanity
-    const referralOrdersQuery = `*[_type == "order" && referralCode == $referralCode && status != "cancelled"] {
-        totalPrice,
-        status,
-        createdAt,
-        deliveredAt
-    }`;
-    const referralOrders = await client.fetch(referralOrdersQuery, { referralCode }) || [];
-    
-    let totalSales = 0;
-    let availableCommission = 0;
-    
-    const now = Date.now();
-    const TEN_DAYS_MS = 10 * 24 * 60 * 60 * 1000;
-
-    referralOrders.forEach((o: any) => {
-        const price = o.totalPrice || 0;
-        totalSales += price;
-
-        if (o.status === 'delivered') {
-            // For testing: If deliveredAt is set, use it. Otherwise fallback to createdAt + 48h (simulated delivery)
-            const deliveredTime = o.deliveredAt ? new Date(o.deliveredAt).getTime() : new Date(o.createdAt).getTime() + (48 * 60 * 60 * 1000);
-            if (now - deliveredTime >= TEN_DAYS_MS) {
-                availableCommission += Math.round(price * 0.15);
-            }
-        }
-    });
-
-    const totalEarnings = Math.round(totalSales * 0.15);
-    const redeemedAmount = user.unsafeMetadata?.redeemedAmount as number || 0;
-    // Real available balance is the total matured commission minus whatever was already redeemed.
-    const availableBalance = Math.max(0, availableCommission - redeemedAmount);
-    
-    const bankDetails = user.unsafeMetadata?.bankDetails as any || null;
-
-    const clicksCount = user.unsafeMetadata?.referralClicks as number || 0;
-    const joinsCount = user.unsafeMetadata?.referralJoins as number || 0;
-    const cartsCount = user.unsafeMetadata?.referralCarts as number || 0;
-
-    const initialStats = {
-        totalSales,
-        totalEarnings,
-        redeemedAmount,
-        availableBalance,
-        clicksCount,
-        joinsCount,
-        cartsCount,
-        ordersCount: referralOrders.length
-    };
-
-    // Fetch Clerk users to find who joined via this ambassador's code
+    // Fetch Clerk users first to calculate signup bonuses and list referred people
     let referredPeople: Array<{
         id: string;
         name: string;
@@ -147,6 +97,7 @@ export default async function InnerCirclePage() {
         ordersCount: number;
         totalSpent: number;
     }> = [];
+    let signupBonusTotal = 0;
 
     try {
         const { clerkClient } = await import("@clerk/nextjs/server");
@@ -154,6 +105,7 @@ export default async function InnerCirclePage() {
         const users = await clerk.users.getUserList({ limit: 500 });
         
         const referredUsers = users.data.filter(u => u.unsafeMetadata?.referredByCode === referralCode);
+        signupBonusTotal = referredUsers.length * 15;
         const referredEmails = referredUsers.map(u => u.emailAddresses[0]?.emailAddress).filter(Boolean);
 
         // Fetch their orders from Sanity
@@ -180,8 +132,57 @@ export default async function InnerCirclePage() {
         console.error("Failed to fetch referred users:", err);
     }
 
+    // Fetch dynamic referral orders from Sanity
+    const referralOrdersQuery = `*[_type == "order" && referralCode == $referralCode && status != "cancelled"] {
+        totalPrice,
+        status,
+        createdAt,
+        deliveredAt
+    }`;
+    const referralOrders = await client.fetch(referralOrdersQuery, { referralCode }) || [];
+    
+    let totalSales = 0;
+    let availableCommission = signupBonusTotal; // Signup bonuses are instantly matured!
+    
+    const now = Date.now();
+    const TEN_DAYS_MS = 10 * 24 * 60 * 60 * 1000;
+
+    referralOrders.forEach((o: any) => {
+        const price = o.totalPrice || 0;
+        totalSales += price;
+
+        if (o.status === 'delivered') {
+            // For testing: If deliveredAt is set, use it. Otherwise fallback to createdAt + 48h (simulated delivery)
+            const deliveredTime = o.deliveredAt ? new Date(o.deliveredAt).getTime() : new Date(o.createdAt).getTime() + (48 * 60 * 60 * 1000);
+            if (now - deliveredTime >= TEN_DAYS_MS) {
+                availableCommission += Math.round(price * 0.15);
+            }
+        }
+    });
+
+    const totalEarnings = Math.round(totalSales * 0.15) + signupBonusTotal;
+    const redeemedAmount = user.unsafeMetadata?.redeemedAmount as number || 0;
+    // Real available balance is the total matured commission minus whatever was already redeemed.
+    const availableBalance = Math.max(0, availableCommission - redeemedAmount);
+    
+    const bankDetails = user.unsafeMetadata?.bankDetails as any || null;
+    const clicksCount = user.unsafeMetadata?.referralClicks as number || 0;
+    const joinsCount = referredPeople.length; // Use the actual count of verified referred users
+    const cartsCount = user.unsafeMetadata?.referralCarts as number || 0;
+
+    const initialStats = {
+        totalSales,
+        totalEarnings,
+        redeemedAmount,
+        availableBalance,
+        clicksCount,
+        joinsCount,
+        cartsCount,
+        ordersCount: referralOrders.length
+    };
+
     return (
-        <div className="min-h-screen bg-[#FDFBF7] dark:bg-[#0A0A0A] pt-20 lg:pt-28 pb-20 px-4 animate-in fade-in duration-500">
+        <div className="min-h-screen pt-20 lg:pt-28 pb-20 px-4 animate-in fade-in duration-500">
             <div className="max-w-4xl mx-auto space-y-8">
                 <div className="flex items-center gap-4 mb-10">
                     <div className="w-12 h-12 bg-[#1A1A1A] rounded-full flex items-center justify-center shadow-md">

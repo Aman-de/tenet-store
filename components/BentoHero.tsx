@@ -81,7 +81,7 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
     const accentColor = gender === "woman" ? "#FF4D6D" : "#3B82F6";
 
     const trustPillars = [
-        { icon: <Truck className="w-7 h-7 text-[#1A1A1A] dark:text-[#F4F1ED] stroke-[1]" />, title: "COMPLIMENTARY", title2: "SHIPPING", subtext: "On orders above $250" },
+        { icon: <Truck className="w-7 h-7 text-[#1A1A1A] dark:text-[#F4F1ED] stroke-[1]" />, title: "COMPLIMENTARY", title2: "SHIPPING", subtext: "Free on all orders" },
         { icon: <RefreshCw className="w-7 h-7 text-[#1A1A1A] dark:text-[#F4F1ED] stroke-[1]" />, title: "EASY RETURNS", title2: "", subtext: "Hassle-free\nexchanges" },
         { icon: <ShieldCheck className="w-7 h-7 text-[#1A1A1A] dark:text-[#F4F1ED] stroke-[1]" />, title: "SECURE PAYMENTS", title2: "", subtext: "100% protected\ncheckout" },
         { icon: <Leaf className="w-7 h-7 text-[#1A1A1A] dark:text-[#F4F1ED] stroke-[1]" />, title: "CRAFTED", title2: "RESPONSIBLY", subtext: "Thoughtfully made" }
@@ -173,6 +173,17 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
             {/* RIGHT: Categories & TrustBar (Mobile) / Categories Only (Desktop) */}
             <div className="w-full h-[57%] lg:w-5/12 xl:w-1/3 lg:h-full flex flex-col gap-1 lg:gap-4 px-1 lg:px-0">
                 
+                {/* Mobile Integrated TrustBar - 16% of the 57% remaining height */}
+                <div className="w-full h-[16%] lg:hidden grid grid-cols-4 divide-x divide-[#1A1A1A]/10 dark:divide-white/10 bg-[#F8F5EF] dark:bg-[#0A0A0A] pb-1 pt-1 rounded-sm lg:rounded-none">
+                    {trustPillars.map((pillar, index) => (
+                        <div key={index} className="flex flex-col items-center justify-center text-center px-0.5">
+                            <div className="mb-0.5">{pillar.icon}</div>
+                            <h3 className="font-sans text-[8.5px] font-bold tracking-widest text-[#1A1A1A] dark:text-[#F4F1ED] uppercase leading-tight scale-x-95 origin-center">
+                                {pillar.title}<br/>{pillar.title2}
+                            </h3>
+                        </div>
+                    ))}
+                </div>
                 {/* Categories Grid - 84% of the 57% remaining height */}
                 <div className="w-full h-[84%] lg:h-full grid grid-cols-2 grid-rows-3 gap-1 lg:gap-4">
                     {filteredCollections.map((collection, index) => {
@@ -207,18 +218,6 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                         </Link>
                     );
                 })}
-                </div>
-
-                {/* Mobile Integrated TrustBar - 16% of the 57% remaining height */}
-                <div className="w-full h-[16%] lg:hidden grid grid-cols-4 divide-x divide-[#1A1A1A]/10 dark:divide-white/10 bg-[#F8F5EF] dark:bg-[#0A0A0A] pb-2 pt-1">
-                    {trustPillars.map((pillar, index) => (
-                        <div key={index} className="flex flex-col items-center justify-center text-center px-0.5">
-                            <div className="mb-1">{pillar.icon}</div>
-                            <h3 className="font-sans text-[8.5px] font-bold tracking-widest text-[#1A1A1A] dark:text-[#F4F1ED] uppercase leading-tight scale-x-95 origin-center">
-                                {pillar.title}<br/>{pillar.title2}
-                            </h3>
-                        </div>
-                    ))}
                 </div>
             </div>
             

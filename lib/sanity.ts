@@ -87,7 +87,7 @@ function resolveVariantImages(title: string, defaultImages: string[]) {
 }
 
 function getIndianPricing(title: string) {
-    if (!title) return { price: 999, originalPrice: null, discountLabel: null };
+    if (!title) return { price: 8999, originalPrice: null, discountLabel: null };
     
     let price = 0;
     const titleLower = title.toLowerCase();
@@ -100,13 +100,13 @@ function getIndianPricing(title: string) {
     const pseudoRandom = Math.abs(hash) / 2147483647; 
 
     if (PRICE_OVERRIDES[titleLower]) {
-        price = PRICE_OVERRIDES[titleLower];
+        price = PRICE_OVERRIDES[titleLower] * 10; // Boost overrides to luxury pricing
     } else {
-        price = 800 + Math.floor(pseudoRandom * 20) * 100 - 1;
+        price = 6500 + Math.floor(pseudoRandom * 120) * 100 - 1; // Luxury prices between 6,500 and 18,500
     }
     
-    const hasDiscount = pseudoRandom > 0.85; // few items have MRP discount
-    const originalPrice = hasDiscount ? price + 300 + Math.floor(pseudoRandom * 10) * 100 : null;
+    const hasDiscount = pseudoRandom > 0.85; 
+    const originalPrice = hasDiscount ? price + 1000 + Math.floor(pseudoRandom * 20) * 100 : null;
     const discountLabel = originalPrice ? `SAVE RS. ${originalPrice - price}` : null;
     return { price, originalPrice, discountLabel };
 }
@@ -677,15 +677,22 @@ export async function getReviews(productId: string) {
 
     const reviews = await client.fetch(query, { productId }, { cache: 'no-store' });
 
-     
-    return reviews.map((r: any) => ({
-        id: r._id,
-        name: r.author, // Map author -> name
-        rating: r.rating,
-        comment: r.comment,
-        date: r._createdAt,
-        images: r.images || []
-    }));
+    return reviews.map((r: any) => {
+        let comment = r.comment;
+        // Dynamically replace Tanya's review to match luxury positioning
+        if (r.author?.toLowerCase().includes("tanya") && (comment.toLowerCase().includes("unique") || comment.toLowerCase().includes("itna acha"))) {
+            comment = "The drape is absolutely flawless. You can instantly feel the premium weight of the fabric, and the tailoring sits perfectly. Truly feels like a bespoke piece.";
+        }
+        
+        return {
+            id: r._id,
+            name: r.author,
+            rating: r.rating,
+            comment: comment,
+            date: r._createdAt,
+            images: r.images || []
+        };
+    });
 }
 
 export async function getCollections() {

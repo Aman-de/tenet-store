@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useGender } from "@/context/GenderContext";
 import BentoHero from "@/components/BentoHero";
 import ProductSection from "@/components/ProductSection";
+import TrustBar from "@/components/TrustBar";
 
 interface HomePageClientProps {
     products: any[];
@@ -28,7 +29,7 @@ export default function HomePageClient({ products, collections }: HomePageClient
         .slice(0, 10);
 
     return (
-        <div className="bg-[#FDFBF7] dark:bg-[#0A0A0A] min-h-screen">
+        <div className="min-h-screen">
             {/* Unified 100vh Bento Box Hero & Categories */}
             <BentoHero spotlightProducts={spotlightProducts} collections={collections} />
 

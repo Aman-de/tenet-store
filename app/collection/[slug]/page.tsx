@@ -24,7 +24,7 @@ export default async function CollectionPage({ params }: { params: Promise<{ slu
     }
 
     return (
-        <main className="bg-[#FDFBF7] dark:bg-[#0A0A0A] min-h-screen">
+        <main className="min-h-screen">
 
             {/* Compact Header with Sort */}
             <section className="max-w-7xl mx-auto px-4 md:px-6 pt-4">

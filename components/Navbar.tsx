@@ -1,10 +1,11 @@
 "use client";
 
-import { ShoppingBag, Menu, X, Heart, User, Package, Crown, LayoutGrid } from "lucide-react";
+import { ShoppingBag, Menu, X, Heart, User, Package, Crown, LayoutGrid, Search, Home, Moon, Sun, Monitor } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { UserButton, SignInButton, useUser, SignedIn, SignedOut } from "@clerk/nextjs";
+import { cn } from "@/lib/utils";
 
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -30,6 +31,50 @@ export default function Navbar() {
 
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
+    const [theme, setTheme] = useState<'light' | 'dark' | 'system'>('system');
+
+    // Initialize state on mount
+    useEffect(() => {
+        const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | 'system' | null;
+        if (savedTheme) {
+            setTheme(savedTheme);
+        } else {
+            setTheme('system');
+        }
+    }, []);
+
+    // Sync theme adjustments with document classes
+    useEffect(() => {
+        const root = document.documentElement;
+        
+        const applyTheme = () => {
+            if (theme === 'system') {
+                const systemIsDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                if (systemIsDark) {
+                    root.classList.add('dark');
+                } else {
+                    root.classList.remove('dark');
+                }
+            } else if (theme === 'dark') {
+                root.classList.add('dark');
+            } else {
+                root.classList.remove('dark');
+            }
+        };
+
+        applyTheme();
+
+        // Listen to OS scheme changes if system is selected
+        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        const handleSystemThemeChange = () => {
+            if (theme === 'system') {
+                applyTheme();
+            }
+        };
+
+        mediaQuery.addEventListener('change', handleSystemThemeChange);
+        return () => mediaQuery.removeEventListener('change', handleSystemThemeChange);
+    }, [theme]);
 
     useEffect(() => {
         const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -94,6 +139,41 @@ export default function Navbar() {
         );
     };
 
+    const ThemeToggle = ({ isDesktop = false }: { isDesktop?: boolean }) => {
+        return (
+            <div className={cn(
+                "flex items-center gap-1",
+                isDesktop ? "bg-transparent" : "justify-between bg-transparent"
+            )}>
+                {(['light', 'system', 'dark'] as const).map((t) => {
+                    const isActive = theme === t;
+                    return (
+                        <button
+                            key={t}
+                            onClick={() => {
+                                setTheme(t);
+                                localStorage.setItem('theme', t);
+                            }}
+                            className={cn(
+                                "flex items-center justify-center gap-1.5 py-1.5 px-2.5 rounded transition-all duration-300 cursor-pointer",
+                                isActive
+                                    ? "text-[#1A1A1A] dark:text-[#F4F1ED] font-black opacity-100"
+                                    : "text-[#1A1A1A]/40 dark:text-[#F4F1ED]/30 font-normal hover:opacity-80"
+                            )}
+                        >
+                            {t === 'light' && <Sun className={cn("w-3.5 h-3.5", isActive ? "stroke-[2.5]" : "stroke-[1.25]")} />}
+                            {t === 'system' && <Monitor className={cn("w-3.5 h-3.5", isActive ? "stroke-[2.5]" : "stroke-[1.25]")} />}
+                            {t === 'dark' && <Moon className={cn("w-3.5 h-3.5", isActive ? "stroke-[2.5]" : "stroke-[1.25]")} />}
+                            <span className={cn("text-[9px] tracking-wider uppercase", isActive ? "font-extrabold" : "font-normal")}>
+                                {t === 'system' ? 'Device' : t}
+                            </span>
+                        </button>
+                    );
+                })}
+            </div>
+        );
+    };
+
     const isProductPage = pathname.includes("/product/");
 
     return (
@@ -104,91 +184,44 @@ export default function Navbar() {
                     
                     {/* MOBILE LAYOUT (lg:hidden) */}
                     <div className="flex lg:hidden w-full items-center justify-between relative">
-                        {isProductPage ? (
-                            <>
-                                {/* LEFT SIDE: Account, Orders, Collection */}
-                                <div className="flex items-center gap-1 z-10 flex-1 justify-start">
-                                    {isSignedIn ? (
-                                        <div className={`w-[32px] h-[32px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`}>
-                                            <div className="scale-[0.75] origin-center flex items-center justify-center">
-                                                <UserButton afterSignOutUrl="/" />
-                                            </div>
-                                        </div>
-                                    ) : (
-                                        <SignInButton mode="modal">
-                                            <button className={`w-[32px] h-[32px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Sign in">
-                                                <User className={`w-[18px] h-[18px] transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
-                                            </button>
-                                        </SignInButton>
-                                    )}
-                                    <Link href="/orders" className={`w-[32px] h-[32px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Orders">
-                                        <Package className={`w-[18px] h-[18px] transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
-                                    </Link>
-                                    <Link href="/#new-arrivals" className={`w-[32px] h-[32px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Collections">
-                                        <LayoutGrid className={`w-[18px] h-[18px] transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
-                                    </Link>
+                        {/* LEFT SIDE: Menu & Home/Gender */}
+                        <div className="flex items-center gap-1 z-10 flex-1 justify-start">
+                            <button className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Toggle mobile menu" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                                {isMobileMenuOpen ? (
+                                    <X className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
+                                ) : (
+                                    <Menu className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
+                                )}
+                            </button>
+                            {!isProductPage && (
+                                <div className="scale-[0.85] sm:scale-100 origin-left ml-1">
+                                    <GenderToggle idSuffix="mobile" />
                                 </div>
+                            )}
+                        </div>
 
-                                {/* CENTER: Logo (Absolute Centered) */}
-                                <Link href="/" className="absolute left-1/2 -translate-x-1/2 z-10">
-                                    <span className={`text-2xl sm:text-3xl font-serif font-bold tracking-[0.25em] uppercase group-hover:opacity-80 transition-colors duration-500 ${logoColor} drop-shadow-sm`}>
-                                        TENET
-                                    </span>
-                                </Link>
+                        {/* CENTER: Logo (Absolute Centered) */}
+                        <Link href="/" className="absolute left-[54%] sm:left-1/2 -translate-x-1/2 z-10">
+                            <span className={`text-2xl sm:text-3xl font-serif font-bold tracking-[0.25em] uppercase group-hover:opacity-80 transition-colors duration-500 ${logoColor} drop-shadow-sm`}>
+                                TENET
+                            </span>
+                        </Link>
 
-                                {/* RIGHT SIDE: Circle, Wishlist, Cart */}
-                                <div className="flex items-center gap-1 z-10 flex-1 justify-end">
-                                    <Link href="/circle" className={`w-[32px] h-[32px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="The Circle">
-                                        <Crown className={`w-[18px] h-[18px] transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
-                                    </Link>
-                                    <button className={`relative w-[32px] h-[32px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Open wishlist" onClick={openWishlist}>
-                                        <Heart className={`w-[18px] h-[18px] transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
-                                        {wishlistCount > 0 && (
-                                            <span className="absolute top-0.5 right-0.5 w-2 h-2 rounded-full border border-white" style={{ backgroundColor: accentColor }} />
-                                        )}
-                                    </button>
-                                    <button className={`relative w-[32px] h-[32px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Open cart" onClick={openCart}>
-                                        <ShoppingBag className={`w-[18px] h-[18px] transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
-                                        {cartCount > 0 && (
-                                            <span className="absolute top-0.5 right-0.5 w-2 h-2 rounded-full border border-white" style={{ backgroundColor: accentColor }} />
-                                        )}
-                                    </button>
-                                </div>
-                            </>
-                        ) : (
-                            <>
-                                {/* LEFT: Gender Toggle */}
-                                <div className="flex items-center justify-start flex-1 z-10">
-                                    <div className="scale-[0.85] sm:scale-100 origin-left">
-                                        <GenderToggle idSuffix="mobile" />
-                                    </div>
-                                </div>
-
-                                {/* CENTER: Logo (Absolute Centered) */}
-                                <Link href="/" className="absolute left-[54%] sm:left-1/2 -translate-x-1/2 z-10">
-                                    <span className={`text-2xl sm:text-3xl font-serif font-bold tracking-[0.25em] uppercase group-hover:opacity-80 transition-colors duration-500 ${logoColor} drop-shadow-sm`}>
-                                        TENET
-                                    </span>
-                                </Link>
-
-                                {/* RIGHT: Icons */}
-                                <div className="flex items-center justify-end flex-1 gap-1 sm:gap-2 z-10">
-                                    <button className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center relative`} aria-label="Open wishlist" onClick={openWishlist}>
-                                        <Heart className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
-                                        {wishlistCount > 0 && (
-                                            <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full border border-white" style={{ backgroundColor: accentColor }} />
-                                        )}
-                                    </button>
-                                    <button className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Toggle mobile menu" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-                                        {isMobileMenuOpen ? (
-                                            <X className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
-                                        ) : (
-                                            <Menu className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
-                                        )}
-                                    </button>
-                                </div>
-                            </>
-                        )}
+                        {/* RIGHT SIDE: Wishlist, Cart */}
+                        <div className="flex items-center gap-1 z-10 flex-1 justify-end">
+                            <button className={`relative w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Open wishlist" onClick={openWishlist}>
+                                <Heart className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
+                                {wishlistCount > 0 && (
+                                    <span className="absolute top-1 right-1 w-2 h-2 rounded-full border border-white" style={{ backgroundColor: accentColor }} />
+                                )}
+                            </button>
+                            <button className={`relative w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Open cart" onClick={openCart}>
+                                <ShoppingBag className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
+                                {cartCount > 0 && (
+                                    <span className="absolute top-1 right-1 w-2 h-2 rounded-full border border-white" style={{ backgroundColor: accentColor }} />
+                                )}
+                            </button>
+                        </div>
                     </div>
 
                     {/* DESKTOP LAYOUT (hidden lg:flex) */}
@@ -224,6 +257,14 @@ export default function Navbar() {
                             {/* Gender Toggle */}
                             <div className="flex-shrink-0 origin-center">
                                 <GenderToggle idSuffix="desktop" isDesktop={true} />
+                            </div>
+
+                            {/* Subtle Divider */}
+                            <div className="w-[1px] h-6 bg-black/10 dark:bg-white/10 mx-1" />
+
+                            {/* Theme Toggle (Desktop) */}
+                            <div className="flex-shrink-0 origin-center">
+                                <ThemeToggle isDesktop={true} />
                             </div>
                         </div>
 
@@ -281,32 +322,40 @@ export default function Navbar() {
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -10 }}
                             transition={{ duration: 0.2 }}
-                            className="absolute top-full left-4 right-4 mt-2 pointer-events-auto bg-white/90 dark:bg-[#141414]/90 backdrop-blur-3xl saturate-200 dark:saturate-100 border border-white/50 dark:border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.12)] rounded-[32px] overflow-hidden py-4"
+                            className="absolute top-full left-4 right-4 mt-2 pointer-events-auto bg-white/90 dark:bg-[#141414]/90 backdrop-blur-3xl saturate-200 dark:saturate-100 border border-white/50 dark:border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.12)] rounded-[32px] overflow-hidden py-4 z-50"
                         >
                             <div className="flex flex-col">
                                 <Link
                                     href="/"
                                     onClick={() => setIsMobileMenuOpen(false)}
-                                    className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED] hover:bg-neutral-50 dark:hover:bg-[#141414] dark:bg-[#0A0A0A] transition-colors text-center border-b border-neutral-100 dark:border-neutral-800"
+                                    className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED] hover:bg-neutral-50 dark:hover:bg-[#1A1A1A] transition-colors text-center border-b border-neutral-100 dark:border-white/5"
                                 >
                                     HOME
                                 </Link>
                                 <Link
                                     href="/#new-arrivals"
                                     onClick={() => setIsMobileMenuOpen(false)}
-                                    className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED] hover:bg-neutral-50 dark:hover:bg-[#141414] dark:bg-[#0A0A0A] transition-colors text-center border-b border-neutral-100 dark:border-neutral-800"
+                                    className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED] hover:bg-neutral-50 dark:hover:bg-[#1A1A1A] transition-colors text-center border-b border-neutral-100 dark:border-white/5"
                                 >
                                     COLLECTIONS
                                 </Link>
                                 <Link
                                     href="/orders"
                                     onClick={() => setIsMobileMenuOpen(false)}
-                                    className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED] hover:bg-neutral-50 dark:hover:bg-[#141414] dark:bg-[#0A0A0A] transition-colors text-center border-b border-neutral-100 dark:border-neutral-800"
+                                    className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED] hover:bg-neutral-50 dark:hover:bg-[#1A1A1A] transition-colors text-center border-b border-neutral-100 dark:border-white/5"
                                 >
                                     ORDERS
                                 </Link>
+                                <Link
+                                    href="/circle"
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                    className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED] hover:bg-neutral-50 dark:hover:bg-[#1A1A1A] transition-colors text-center border-b border-neutral-100 dark:border-white/5 flex items-center justify-center gap-2"
+                                >
+                                    <Crown className="w-4 h-4" strokeWidth={2} />
+                                    MY CIRCLE
+                                </Link>
                                 <SignedIn>
-                                    <div className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED] hover:bg-neutral-50 dark:hover:bg-[#141414] dark:bg-[#0A0A0A] transition-colors flex items-center justify-center gap-4 border-b border-neutral-100 dark:border-neutral-800">
+                                    <div className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED] hover:bg-neutral-50 dark:hover:bg-[#1A1A1A] transition-colors flex items-center justify-center gap-4 border-b border-neutral-100 dark:border-white/5">
                                         <span>ACCOUNT</span>
                                         <div className="scale-90 origin-center">
                                             <UserButton afterSignOutUrl="/" />
@@ -317,12 +366,19 @@ export default function Navbar() {
                                     <SignInButton mode="modal">
                                         <button 
                                             onClick={() => setIsMobileMenuOpen(false)}
-                                            className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED] hover:bg-neutral-50 dark:hover:bg-[#141414] dark:bg-[#0A0A0A] transition-colors text-center border-b border-neutral-100 dark:border-neutral-800 w-full"
+                                            className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED] hover:bg-neutral-50 dark:hover:bg-[#1A1A1A] transition-colors text-center border-b border-neutral-100 dark:border-white/5 w-full flex justify-center items-center gap-2"
                                         >
+                                            <User className="w-4 h-4" strokeWidth={2} />
                                             ACCOUNT (LOG IN)
                                         </button>
                                     </SignInButton>
                                 </SignedOut>
+                                
+                                <div className="px-6 py-4 border-b border-neutral-100 dark:border-white/5 flex flex-col items-center">
+                                    <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-neutral-400 dark:text-neutral-500 mb-2 block text-center">Theme Mode</span>
+                                    <ThemeToggle />
+                                </div>
+
                                 <div className="flex justify-center gap-8 py-6">
                                     <button className="relative p-2" aria-label="Open wishlist" onClick={() => { setIsMobileMenuOpen(false); openWishlist(); }}>
                                         <Heart className="w-6 h-6 text-[#1A1A1A] dark:text-[#F4F1ED]" strokeWidth={iconStroke} />
