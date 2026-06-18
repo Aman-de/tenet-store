@@ -26,6 +26,9 @@ export const metadata: Metadata = {
   title: "TENET | Silent Luxury",
   description: "Premium, Old Money aesthetic e-commerce store for men.",
   manifest: "/manifest.json",
+  icons: {
+    apple: "/apple-touch-icon.png",
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
