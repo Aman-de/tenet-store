@@ -9,6 +9,7 @@ const CartDrawer = dynamic(() => import('@/components/CartDrawer'));
 const WishlistDrawer = dynamic(() => import('@/components/WishlistDrawer'));
 const OnboardingModal = dynamic(() => import('@/components/OnboardingModal'));
 const WhatsAppWidget = dynamic(() => import('@/components/WhatsAppWidget'));
+const InstallPWA = dynamic(() => import('@/components/InstallPWA'), { ssr: false });
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -121,6 +122,7 @@ export default function RootLayout({
               </Suspense>
               <WishlistDrawer />
               <OnboardingModal />
+              <InstallPWA />
               <SpeedInsights />
               <Analytics />
             </GenderThemeWrapper>
