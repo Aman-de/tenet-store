@@ -1125,10 +1125,15 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                             />
                             <button
                                 onClick={() => pincode.length === 6 && handleCheckPincode(pincode)}
-                                disabled={pincode.length !== 6}
-                                className="shrink-0 bg-[#1A1A1A] dark:bg-white text-white dark:text-[#1A1A1A] px-5 py-2.5 text-[10px] font-bold tracking-widest uppercase rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] transition-transform shadow-sm cursor-pointer"
+                                disabled={pincode.length !== 6 || !!deliveryInfo}
+                                className={cn(
+                                    "shrink-0 px-5 py-2.5 text-[10px] font-bold tracking-widest uppercase rounded-lg transition-all shadow-sm",
+                                    deliveryInfo 
+                                        ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 cursor-default" 
+                                        : "bg-[#1A1A1A] dark:bg-white text-white dark:text-[#1A1A1A] hover:scale-[1.02] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                                )}
                             >
-                                Check
+                                {deliveryInfo ? "✓" : "Check"}
                             </button>
                         </div>
                         {pincodeError && (
@@ -1268,12 +1273,12 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#A0604A] dark:text-[#E8A38B] mb-1.5 flex items-center gap-1.5">
                             <Tag className="w-3.5 h-3.5" /> Welcome Offer
                         </span>
-                        <span className="text-sm font-serif text-[#1A1A1A] dark:text-[#F4F1ED] mb-3">Get 20% Off Your First Order</span>
+                        <span className="text-sm font-serif text-[#1A1A1A] dark:text-[#F4F1ED] mb-3">Get 15% Off Your First Order</span>
                         <button
                             onClick={handleCopyCode}
                             className="bg-[#1A1A1A] dark:bg-white text-white dark:text-[#1A1A1A] px-6 py-2.5 text-[11px] font-bold uppercase tracking-[0.15em] rounded-sm hover:scale-[1.02] transition-transform cursor-pointer shadow-md flex items-center gap-2"
                         >
-                            {copied ? "COPIED ✓" : "USE CODE: FIRST20"}
+                            {copied ? "COPIED ✓" : "USE CODE: FIRST15"}
                         </button>
                     </div>
                 )}
