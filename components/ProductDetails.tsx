@@ -883,15 +883,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         </span>
                     </div>
 
-                    {/* Live Viewers Indicator */}
-                    <div className="flex items-center gap-2 text-[10.5px] font-bold text-neutral-600 dark:text-neutral-400 mt-1 mb-2 bg-[#F8F5EF]/60 dark:bg-white/5 px-2.5 py-1 rounded-md border border-neutral-200/40 dark:border-white/5 w-fit shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
-                        <span className="relative flex h-1.5 w-1.5">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
-                        </span>
-                        <span className="tracking-wider uppercase text-[9.5px]">Live: {viewers} guests viewing this design</span>
-                    </div>
- 
+
                     <div className="-mx-4 xs:-mx-5 sm:-mx-6 md:mx-0 mt-1 mb-1">
                         <TrustBar />
                     </div>

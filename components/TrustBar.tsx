@@ -61,14 +61,14 @@ export default function TrustBar() {
                     ))}
                 </div>
 
-                {/* Mobile Marquee Layout */}
-                <div className="lg:hidden flex overflow-hidden whitespace-nowrap relative mask-edges">
-                    <div className="flex w-max animate-marquee items-center gap-12 px-6">
-                        {[...pillars, ...pillars, ...pillars, ...pillars].map((pillar, index) => (
-                            <div key={index} className="flex items-center gap-3 shrink-0">
-                                <div>{pillar.icon}</div>
-                                <h3 className="font-sans text-[10px] font-bold tracking-widest text-[#1A1A1A] dark:text-[#F4F1ED] uppercase leading-tight">
-                                    {pillar.title} {pillar.title2}
+                {/* Mobile Static Layout (Always Visible) */}
+                <div className="lg:hidden w-full px-4 pt-2 pb-1">
+                    <div className="grid grid-cols-2 gap-y-4 gap-x-4">
+                        {pillars.map((pillar, index) => (
+                            <div key={index} className="flex items-center gap-2.5">
+                                <div className="shrink-0">{pillar.icon}</div>
+                                <h3 className="font-sans text-[9px] font-bold tracking-widest text-[#1A1A1A] dark:text-[#F4F1ED] uppercase leading-[1.15]">
+                                    {pillar.title}<br />{pillar.title2}
                                 </h3>
                             </div>
                         ))}
