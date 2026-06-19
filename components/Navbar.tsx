@@ -142,11 +142,34 @@ export default function Navbar() {
     };
 
     const ThemeToggle = ({ isDesktop = false }: { isDesktop?: boolean }) => {
+        if (!mounted) return <div className={isDesktop ? "w-8 h-8" : "w-[120px] h-[32px]"} />;
+        
+        if (isDesktop) {
+            const themes: ('light' | 'dark' | 'system')[] = ['light', 'dark', 'system'];
+            const currentIndex = themes.indexOf(theme);
+            const nextTheme = themes[(currentIndex + 1) % 3];
+            
+            return (
+                <button
+                    onClick={() => {
+                        setTheme(nextTheme);
+                        localStorage.setItem('theme', nextTheme);
+                    }}
+                    className="flex flex-col items-center gap-1 group w-10"
+                    aria-label="Toggle Theme"
+                >
+                    {theme === 'light' && <Sun className="w-5 h-5 opacity-80 group-hover:opacity-100 transition-opacity duration-200" strokeWidth={2} />}
+                    {theme === 'system' && <Monitor className="w-5 h-5 opacity-80 group-hover:opacity-100 transition-opacity duration-200" strokeWidth={2} />}
+                    {theme === 'dark' && <Moon className="w-5 h-5 opacity-80 group-hover:opacity-100 transition-opacity duration-200" strokeWidth={2} />}
+                    <span className="text-[11px] font-semibold opacity-80 group-hover:opacity-100 transition-opacity duration-200">
+                        {theme === 'light' ? 'Light' : theme === 'dark' ? 'Dark' : 'Auto'}
+                    </span>
+                </button>
+            );
+        }
+
         return (
-            <div className={cn(
-                "flex items-center gap-1",
-                isDesktop ? "bg-transparent" : "justify-between bg-transparent"
-            )}>
+            <div className="flex items-center bg-neutral-100 dark:bg-[#1A1A1A] rounded p-0.5 border border-black/5 dark:border-white/5 shadow-inner">
                 {(['light', 'system', 'dark'] as const).map((t) => {
                     const isActive = theme === t;
                     return (
@@ -159,7 +182,7 @@ export default function Navbar() {
                             className={cn(
                                 "flex items-center justify-center gap-1.5 py-1.5 px-2.5 rounded transition-all duration-300 cursor-pointer",
                                 isActive
-                                    ? "text-[#1A1A1A] dark:text-[#F4F1ED] font-black opacity-100"
+                                    ? "text-[#1A1A1A] dark:text-[#F4F1ED] font-black opacity-100 bg-white dark:bg-neutral-800 shadow-sm"
                                     : "text-[#1A1A1A]/40 dark:text-[#F4F1ED]/30 font-normal hover:opacity-80"
                             )}
                         >
@@ -167,7 +190,7 @@ export default function Navbar() {
                             {t === 'system' && <Monitor className={cn("w-3.5 h-3.5", isActive ? "stroke-[2.5]" : "stroke-[1.25]")} />}
                             {t === 'dark' && <Moon className={cn("w-3.5 h-3.5", isActive ? "stroke-[2.5]" : "stroke-[1.25]")} />}
                             <span className={cn("text-[9px] tracking-wider uppercase", isActive ? "font-extrabold" : "font-normal")}>
-                                {t === 'system' ? 'Device' : t}
+                                {t === 'system' ? 'Auto' : t}
                             </span>
                         </button>
                     );
@@ -207,8 +230,8 @@ export default function Navbar() {
                         </div>
 
                         {/* CENTER: Logo (Absolute Centered) */}
-                        <Link href="/" className="absolute left-[54%] sm:left-1/2 -translate-x-1/2 z-10">
-                            <span className={`text-2xl sm:text-3xl font-serif font-bold tracking-[0.25em] uppercase group-hover:opacity-80 transition-colors duration-500 ${logoColor} drop-shadow-sm`}>
+                        <Link href="/" className="absolute left-1/2 -translate-x-1/2 z-10 flex justify-center w-fit">
+                            <span className={`text-2xl sm:text-3xl font-serif font-bold tracking-[0.25em] uppercase group-hover:opacity-80 transition-colors duration-500 ${logoColor} drop-shadow-sm ml-1.5`}>
                                 TENET
                             </span>
                         </Link>
