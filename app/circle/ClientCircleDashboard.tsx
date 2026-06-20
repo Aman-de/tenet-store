@@ -19,10 +19,11 @@ interface ClientCircleDashboardProps {
         ordersCount: number;
     };
     initialBankDetails: {
-        bankName: string;
-        accountHolder: string;
-        accountNumber: string;
-        ifscCode: string;
+        upiId?: string;
+        bankName?: string;
+        accountHolder?: string;
+        accountNumber?: string;
+        ifscCode?: string;
     } | null;
     referredPeople: Array<{
         id: string;
@@ -170,8 +171,26 @@ export default function ClientCircleDashboard({
         }
 
         setIsSavingBank(true);
-        } else {
-            setBankError(res.message || "Failed to save bank details.");
+        setBankError("");
+        try {
+            const details = payoutMethod === 'bank' ? {
+                bankName: resolvedBankName,
+                accountHolder,
+                accountNumber,
+                ifscCode
+            } : { upiId };
+            const res = await linkBankAccount(userId, details as any);
+            
+            setIsSavingBank(false);
+            if (res.success) {
+                setBankDetails(details);
+                setIsEditingBank(false);
+            } else {
+                setBankError(res.message || "Failed to save details.");
+            }
+        } catch (e) {
+            setIsSavingBank(false);
+            setBankError("An error occurred while saving.");
         }
     };
 
@@ -435,7 +454,7 @@ export default function ClientCircleDashboard({
                                 </div>
                                 <div>
                                     <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-400 block mb-0.5">Account Number</span>
-                                    <span className="text-sm font-mono text-[#1A1A1A] dark:text-[#F4F1ED]">{getObscuredAccountNumber(bankDetails.accountNumber)}</span>
+                                    <span className="text-sm font-mono text-[#1A1A1A] dark:text-[#F4F1ED]">{getObscuredAccountNumber(bankDetails.accountNumber || "")}</span>
                                 </div>
                                 <div>
                                     <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-400 block mb-0.5">IFSC Code</span>

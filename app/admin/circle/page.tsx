@@ -2,6 +2,7 @@ import { auth, currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { Crown, Users, TrendingUp, IndianRupee, ShieldAlert } from "lucide-react";
 import { clerkClient } from "@clerk/nextjs/server";
+import SyncButton from "./SyncButton";
 
 export default async function AdminCircleDashboard() {
     const { userId } = await auth();
@@ -88,14 +89,17 @@ export default async function AdminCircleDashboard() {
 
     return (
         <div className="min-h-screen pt-24 pb-20 px-4 md:px-8 max-w-7xl mx-auto">
-            <div className="flex items-center gap-4 mb-10">
-                <div className="w-12 h-12 bg-[#1A1A1A] rounded-full flex items-center justify-center shadow-md">
-                    <Crown className="w-6 h-6 text-[#D4AF37]" />
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mb-10">
+                <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-[#1A1A1A] rounded-full flex items-center justify-center shadow-md">
+                        <Crown className="w-6 h-6 text-[#D4AF37]" />
+                    </div>
+                    <div>
+                        <h1 className="font-serif text-3xl text-[#1A1A1A] dark:text-[#F4F1ED]">Circle Admin</h1>
+                        <p className="text-sm text-neutral-500 font-sans mt-1">Master Dashboard for Partner Tracking</p>
+                    </div>
                 </div>
-                <div>
-                    <h1 className="font-serif text-3xl text-[#1A1A1A] dark:text-[#F4F1ED]">Circle Admin</h1>
-                    <p className="text-sm text-neutral-500 font-sans mt-1">Master Dashboard for Partner Tracking</p>
-                </div>
+                <SyncButton />
             </div>
 
             {/* Summary Cards */}

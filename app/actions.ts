@@ -327,12 +327,13 @@ export async function trackReferralClick(code: string) {
         
         if (referrer) {
             const clicks = (referrer.unsafeMetadata.referralClicks as number) || 0;
-            await clerk.users.updateUserMetadata(referrer.id, {
+            const updatedUser = await clerk.users.updateUserMetadata(referrer.id, {
                 unsafeMetadata: {
                     ...referrer.unsafeMetadata,
                     referralClicks: clicks + 1
                 }
             });
+            await syncUserToSanity(updatedUser);
             return { success: true };
         }
         return { success: false, message: "Referrer not found" };
@@ -407,13 +408,14 @@ export async function trackReferralJoin(userId: string, code: string) {
 
             const joins = (referrer.unsafeMetadata.referralJoins as number) || 0;
             const currentWallet = (referrer.unsafeMetadata.walletBalance as number) || 0;
-            await clerk.users.updateUserMetadata(referrer.id, {
+            const updatedUser = await clerk.users.updateUserMetadata(referrer.id, {
                 unsafeMetadata: {
                     ...referrer.unsafeMetadata,
                     referralJoins: joins + 1,
-                    walletBalance: currentWallet + 15 // ₹15 signup affiliate bonus
+                    walletBalance: currentWallet + 10 // ₹10 signup affiliate bonus
                 }
             });
+            await syncUserToSanity(updatedUser);
 
             await clerk.users.updateUserMetadata(userId, {
                 unsafeMetadata: {
@@ -429,5 +431,31 @@ export async function trackReferralJoin(userId: string, code: string) {
     } catch (error) {
         console.error("trackReferralJoin error:", error);
         return { success: false };
+    }
+}
+
+export async function syncUserToSanity(user: any) {
+    try {
+        const bd = user.unsafeMetadata?.bankDetails as any;
+        let payoutInfo = "";
+        if (bd?.upiId) payoutInfo = `UPI: ${bd.upiId}`;
+        else if (bd?.accountNumber) payoutInfo = `Bank: ${bd.bankName} - ${bd.accountNumber}`;
+
+        await client.createOrReplace({
+            _type: 'partner',
+            _id: `partner-${user.id}`,
+            clerkId: user.id,
+            name: `${user.firstName || ""} ${user.lastName || ""}`.trim(),
+            email: user.emailAddresses?.[0]?.emailAddress || "",
+            referralCode: user.unsafeMetadata?.referralCode || "",
+            clicks: (user.unsafeMetadata?.referralClicks as number) || 0,
+            joins: (user.unsafeMetadata?.referralJoins as number) || 0,
+            carts: (user.unsafeMetadata?.referralCarts as number) || 0,
+            revenue: (user.unsafeMetadata?.referralRevenue as number) || 0,
+            walletBalance: (user.unsafeMetadata?.walletBalance as number) || 0,
+            payoutDetails: payoutInfo
+        });
+    } catch (error) {
+        console.error("Failed to sync user to Sanity:", error);
     }
 }
