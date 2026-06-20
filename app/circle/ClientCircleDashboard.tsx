@@ -126,7 +126,7 @@ export default function ClientCircleDashboard({
     const [availableBalance, setAvailableBalance] = useState(initialStats.availableBalance);
     const [redeemedAmount, setRedeemedAmount] = useState(initialStats.redeemedAmount);
 
-    const shareUrl = typeof window !== 'undefined' ? `${window.location.origin}/?ref=${referralCode}` : `https://tenet-store.com/?ref=${referralCode}`;
+    const shareUrl = typeof window !== 'undefined' ? `${window.location.origin}/?ref=${referralCode}` : `https://tenetarchives.com/?ref=${referralCode}`;
 
     const handleCopyLink = () => {
         navigator.clipboard.writeText(shareUrl);

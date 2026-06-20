@@ -271,8 +271,8 @@ export async function redeemReferralBalance(userId: string) {
         const redeemedAmount = (user.unsafeMetadata.redeemedAmount as number) || 0;
         const balance = Math.max(0, availableCommission - redeemedAmount);
         
-        if (balance <= 0) {
-            return { success: false, message: "Insufficient balance to redeem" };
+        if (balance < 500) {
+            return { success: false, message: `Minimum redeem amount is ₹500. Your available balance is ₹${balance}` };
         }
         if (!user.unsafeMetadata.bankDetails) {
             return { success: false, message: "Please link your bank account first" };
