@@ -326,14 +326,21 @@ export async function trackReferralClick(code: string) {
         const referrer = await findUserByReferralCode(code, clerk);
         
         if (referrer) {
-            const clicks = (referrer.unsafeMetadata.referralClicks as number) || 0;
+            // Ensure partner exists in Sanity for atomic increments
+            await syncUserToSanity(referrer);
+            
+            // Atomically increment clicks in Sanity to prevent race conditions
+            const sanityPartner = await client
+                .patch(`partner-${referrer.id}`)
+                .inc({ clicks: 1 })
+                .commit();
+
             const updatedUser = await clerk.users.updateUserMetadata(referrer.id, {
                 unsafeMetadata: {
                     ...referrer.unsafeMetadata,
-                    referralClicks: clicks + 1
+                    referralClicks: sanityPartner.clicks
                 }
             });
-            await syncUserToSanity(updatedUser);
             return { success: true };
         }
         return { success: false, message: "Referrer not found" };
@@ -406,16 +413,23 @@ export async function trackReferralJoin(userId: string, code: string) {
                 // We'll rely on email verification and bot detection.
             }
 
-            const joins = (referrer.unsafeMetadata.referralJoins as number) || 0;
-            const currentWallet = (referrer.unsafeMetadata.walletBalance as number) || 0;
+            // Ensure partner exists in Sanity
+            await syncUserToSanity(referrer);
+            
+            // Atomically increment joins, wallet, and revenue in Sanity
+            const sanityPartner = await client
+                .patch(`partner-${referrer.id}`)
+                .inc({ joins: 1, walletBalance: 10, revenue: 10 })
+                .commit();
+
             const updatedUser = await clerk.users.updateUserMetadata(referrer.id, {
                 unsafeMetadata: {
                     ...referrer.unsafeMetadata,
-                    referralJoins: joins + 1,
-                    walletBalance: currentWallet + 10 // ₹10 signup affiliate bonus
+                    referralJoins: sanityPartner.joins,
+                    walletBalance: sanityPartner.walletBalance,
+                    referralRevenue: sanityPartner.revenue // Credit revenue for signups
                 }
             });
-            await syncUserToSanity(updatedUser);
 
             await clerk.users.updateUserMetadata(userId, {
                 unsafeMetadata: {
@@ -441,7 +455,8 @@ export async function syncUserToSanity(user: any) {
         if (bd?.upiId) payoutInfo = `UPI: ${bd.upiId}`;
         else if (bd?.accountNumber) payoutInfo = `Bank: ${bd.bankName} - ${bd.accountNumber}`;
 
-        await client.createOrReplace({
+        // Use createIfNotExists so we don't overwrite Sanity's atomic counters
+        await client.createIfNotExists({
             _type: 'partner',
             _id: `partner-${user.id}`,
             clerkId: user.id,
@@ -455,6 +470,13 @@ export async function syncUserToSanity(user: any) {
             walletBalance: (user.unsafeMetadata?.walletBalance as number) || 0,
             payoutDetails: payoutInfo
         });
+
+        // Always update mutable string fields
+        await client.patch(`partner-${user.id}`).set({
+            name: `${user.firstName || ""} ${user.lastName || ""}`.trim(),
+            email: user.emailAddresses?.[0]?.emailAddress || "",
+            payoutDetails: payoutInfo
+        }).commit();
     } catch (error) {
         console.error("Failed to sync user to Sanity:", error);
     }
