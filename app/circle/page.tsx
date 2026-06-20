@@ -69,8 +69,8 @@ export default async function InnerCirclePage() {
         // Update user metadata and check for unique code
         const { clerkClient } = await import("@clerk/nextjs/server");
         const clerk = await clerkClient();
-        const users = await clerk.users.getUserList({ limit: 500 });
-        const codeExists = users.data.some(u => u.unsafeMetadata?.referralCode === codeCandidate);
+        const { findUserByReferralCode } = await import("@/app/actions");
+        const codeExists = await findUserByReferralCode(codeCandidate, clerk);
         
         if (codeExists) {
             const randomStr = Math.random().toString(36).substring(2, 5).toUpperCase();
@@ -102,9 +102,19 @@ export default async function InnerCirclePage() {
     try {
         const { clerkClient } = await import("@clerk/nextjs/server");
         const clerk = await clerkClient();
-        const users = await clerk.users.getUserList({ limit: 500 });
         
-        const referredUsers = users.data.filter(u => u.unsafeMetadata?.referredByCode === referralCode);
+        // Paginate to safely get all users without hitting the 500 limit
+        const allUsers: any[] = [];
+        let offset = 0;
+        const limit = 500;
+        while (true) {
+            const usersBatch = await clerk.users.getUserList({ limit, offset });
+            allUsers.push(...usersBatch.data);
+            if (usersBatch.data.length < limit) break;
+            offset += limit;
+        }
+        
+        const referredUsers = allUsers.filter(u => u.unsafeMetadata?.referredByCode === referralCode);
         signupBonusTotal = referredUsers.length * 15;
         const referredEmails = referredUsers.map(u => u.emailAddresses[0]?.emailAddress).filter(Boolean);
 

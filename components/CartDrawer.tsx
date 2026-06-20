@@ -199,8 +199,13 @@ export default function CartDrawer() {
             const cleanCode = refParam.toUpperCase();
             setReferralCode(cleanCode);
             trackReferralClick(cleanCode);
-            // Optional: clean up URL
-            router.replace('/');
+            
+            // Clean up URL without redirecting away from current page (like product pages)
+            const newSearchParams = new URLSearchParams(searchParams.toString());
+            newSearchParams.delete('ref');
+            const newQuery = newSearchParams.toString();
+            const newPath = newQuery ? `${window.location.pathname}?${newQuery}` : window.location.pathname;
+            router.replace(newPath, { scroll: false });
         }
     }, [searchParams, openCart, router, setReferralCode]);
 
