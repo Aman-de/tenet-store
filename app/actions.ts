@@ -285,7 +285,8 @@ export async function redeemReferralBalance(userId: string) {
         
         const now = Date.now();
         const TEN_DAYS_MS = 10 * 24 * 60 * 60 * 1000;
-        let availableCommission = 0;
+        // Start with the bonuses stored in walletBalance (from signups)
+        let availableCommission = (user.unsafeMetadata.walletBalance as number) || 0;
 
         referralOrders.forEach((o: any) => {
             const deliveredTime = o.deliveredAt ? new Date(o.deliveredAt).getTime() : new Date(o.createdAt).getTime() + (48 * 60 * 60 * 1000);
@@ -294,7 +295,8 @@ export async function redeemReferralBalance(userId: string) {
             }
         });
 
-        const redeemedAmount = (user.unsafeMetadata.redeemedAmount as number) || 0;
+        const sanityDoc = await client.fetch(`*[_type == "partner" && clerkId == $userId][0]`, { userId });
+        const redeemedAmount = (sanityDoc?.redeemedAmount as number) || (user.unsafeMetadata.redeemedAmount as number) || 0;
         const balance = Math.max(0, availableCommission - redeemedAmount);
         
         if (balance < 500) {
@@ -304,10 +306,17 @@ export async function redeemReferralBalance(userId: string) {
             return { success: false, message: "Please link your bank account or UPI ID first" };
         }
 
+        // Atomically increment redeemedAmount in Sanity to prevent double-spending
+        await syncUserToSanity(user);
+        const sanityPartner = await client
+            .patch(`partner-${user.id}`)
+            .inc({ redeemedAmount: balance })
+            .commit();
+
         await clerk.users.updateUserMetadata(userId, {
             unsafeMetadata: {
                 ...user.unsafeMetadata,
-                redeemedAmount: redeemedAmount + balance
+                redeemedAmount: sanityPartner.redeemedAmount || (redeemedAmount + balance)
             }
         });
         
@@ -358,11 +367,18 @@ export async function trackReferralAddToCart(code: string) {
         const referrer = await findUserByReferralCode(code, clerk);
         
         if (referrer) {
-            const carts = (referrer.unsafeMetadata.referralCarts as number) || 0;
+            await syncUserToSanity(referrer);
+            
+            // Atomically increment carts in Sanity
+            const sanityPartner = await client
+                .patch(`partner-${referrer.id}`)
+                .inc({ carts: 1 })
+                .commit();
+
             await clerk.users.updateUserMetadata(referrer.id, {
                 unsafeMetadata: {
                     ...referrer.unsafeMetadata,
-                    referralCarts: carts + 1
+                    referralCarts: sanityPartner.carts
                 }
             });
             return { success: true };

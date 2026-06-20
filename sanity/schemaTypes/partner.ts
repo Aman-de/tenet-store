@@ -55,6 +55,12 @@ export const partner = {
             initialValue: 0,
         },
         {
+            name: 'redeemedAmount',
+            title: 'Total Redeemed Amount (₹)',
+            type: 'number',
+            initialValue: 0,
+        },
+        {
             name: 'payoutDetails',
             title: 'Payout Details (UPI or Bank)',
             type: 'string',
