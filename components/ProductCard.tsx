@@ -259,9 +259,9 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
                 </div>
 
             {/* Product Info */}
-            <div className="space-y-1.5 p-1 pt-2 flex flex-col items-center text-center">
-                <Link href={`/product/${product.handle}`} onClick={handleViewItem}>
-                    <h3 className="font-serif text-sm md:text-base font-normal tracking-wide text-[#1A1A1A] dark:text-[#F4F1ED] truncate hover:text-[#1A1A1A] dark:text-[#F4F1ED]/70 dark:hover:text-[#F4F1ED]/70 transition-colors">
+            <div className="space-y-1.5 p-1 pt-2 flex flex-col items-center text-center w-full">
+                <Link href={`/product/${product.handle}`} onClick={handleViewItem} className="block w-full">
+                    <h3 className="font-serif text-sm md:text-base font-normal tracking-wide text-[#1A1A1A] dark:text-[#F4F1ED] truncate hover:text-[#1A1A1A] dark:text-[#F4F1ED]/70 dark:hover:text-[#F4F1ED]/70 transition-colors w-full">
                         {product.title}
                     </h3>
                 </Link>

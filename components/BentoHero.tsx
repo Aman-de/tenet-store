@@ -60,16 +60,12 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
     const { gender } = useGender();
     const isWoman = gender === "woman";
 
-    // Filter categories to exactly 6
-    const coreCategories = ["shirting", "shirts", "trousers", "pants", "footwear", "accessories", "sets", "shorts"];
+    // Filter categories to exactly 4, prioritizing sets
+    const coreCategories = ["sets", "shirts", "trousers", "footwear", "accessories", "shorts"];
     let filteredCollections = collections.filter(collection => {
         const catKey = (collection.filterTag || collection.handle || "").toLowerCase();
         return coreCategories.includes(catKey);
     });
-    const hasShirts = filteredCollections.some(c => (c.filterTag || c.handle || "").toLowerCase() === "shirts");
-    if (hasShirts) {
-        filteredCollections = filteredCollections.filter(c => (c.filterTag || c.handle || "").toLowerCase() !== "shirting");
-    }
     filteredCollections = filteredCollections.slice(0, 4);
 
     // Embla Carousel for Hero Images (Spotlights + Main Image)
@@ -101,7 +97,7 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                                 alt="Main Hero"
                                 fill
                                 priority
-                                className="object-cover transform transition-transform duration-[20s] hover:scale-105"
+                                className="object-cover object-center transform transition-transform duration-[20s] hover:scale-105"
                             />
                             {/* Gradient for Navbar Icon Visibility */}
                             <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-black/60 to-transparent z-10 lg:hidden pointer-events-none" />
@@ -137,7 +133,7 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                         </div>
 
                         {/* Slides 2+: Spotlight Products */}
-                        {spotlightProducts.slice(0, 4).map((product) => {
+                        {spotlightProducts.slice(0, 10).map((product) => {
                             const heroImage = product.images[1] || product.images[0];
                             return (
                                 <Link href={`/product/${product.handle}`} key={product.id} className="relative flex-[0_0_100%] h-full w-full block">
