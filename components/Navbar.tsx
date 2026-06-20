@@ -108,10 +108,10 @@ export default function Navbar() {
             return solid ? "text-[#1A1A1A] dark:text-[#F4F1ED] font-medium" : "text-white/80 font-medium";
         };
         return (
-            <div className={`relative flex items-center rounded-full p-0.5 sm:p-1 transition-colors duration-500 backdrop-blur-md ${toggleBg}`}>
+            <div className={`relative flex items-center rounded-full p-1 sm:p-1 transition-colors duration-500 backdrop-blur-md ${toggleBg}`}>
                 <button 
                     onClick={() => setGender('man')}
-                    className={`relative z-10 w-12 sm:w-20 py-1 sm:py-1.5 text-[9px] sm:text-xs tracking-widest uppercase transition-colors duration-300 ${btnText(gender === 'man')}`}
+                    className={`relative z-10 w-14 sm:w-20 py-1.5 sm:py-2 text-[10px] sm:text-xs tracking-widest uppercase transition-colors duration-300 ${btnText(gender === 'man')}`}
                 >
                     MEN
                     {gender === 'man' && (
@@ -125,7 +125,7 @@ export default function Navbar() {
                 </button>
                 <button 
                     onClick={() => setGender('woman')}
-                    className={`relative w-14 sm:w-20 py-1 sm:py-1.5 text-[9px] sm:text-xs tracking-widest uppercase transition-colors z-10 ${btnText(gender === 'woman')}`}
+                    className={`relative w-16 sm:w-20 py-1.5 sm:py-2 text-[10px] sm:text-xs tracking-widest uppercase transition-colors z-10 ${btnText(gender === 'woman')}`}
                 >
                     WOMEN
                     {gender === 'woman' && (
@@ -223,7 +223,7 @@ export default function Navbar() {
                                     <Home className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
                                 </Link>
                             ) : (
-                                <div className="scale-[0.85] sm:scale-100 origin-left ml-1">
+                                <div className="scale-95 sm:scale-100 origin-left -translate-x-1 sm:translate-x-0">
                                     <GenderToggle idSuffix="mobile" />
                                 </div>
                             )}
@@ -231,7 +231,7 @@ export default function Navbar() {
 
                         {/* CENTER: Logo (Absolute Centered) */}
                         <Link href="/" className="absolute left-1/2 -translate-x-1/2 z-10 flex justify-center w-fit">
-                            <span className={`text-2xl sm:text-3xl font-serif font-bold tracking-[0.25em] uppercase group-hover:opacity-80 transition-colors duration-500 ${logoColor} drop-shadow-sm ml-1.5`}>
+                            <span className={`text-xl sm:text-3xl font-serif font-bold tracking-widest sm:tracking-[0.25em] uppercase group-hover:opacity-80 transition-colors duration-500 ${logoColor} drop-shadow-sm ml-0.5 sm:ml-1.5`}>
                                 TENET
                             </span>
                         </Link>
