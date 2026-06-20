@@ -141,9 +141,35 @@ export async function checkReferralCodeValidity(code: string, email?: string) {
     }
 }
 
-export async function linkBankAccount(userId: string, bankDetails: { bankName: string, accountHolder: string, accountNumber: string, ifscCode: string }) {
+export async function linkBankAccount(userId: string, bankDetails: { upiId?: string, bankName?: string, accountHolder?: string, accountNumber?: string, ifscCode?: string }) {
     if (!userId || !bankDetails) return { success: false, message: "Missing required fields" };
     
+    if (bankDetails.upiId) {
+        const upi = bankDetails.upiId.trim().toLowerCase();
+        if (!/^[a-zA-Z0-9.\-_]{2,256}@[a-zA-Z]{2,64}$/.test(upi)) {
+            return { success: false, message: "Invalid UPI ID format." };
+        }
+        try {
+            const { clerkClient } = await import("@clerk/nextjs/server");
+            const clerk = await clerkClient();
+            const user = await clerk.users.getUser(userId);
+            await clerk.users.updateUserMetadata(userId, {
+                unsafeMetadata: {
+                    ...user.unsafeMetadata,
+                    bankDetails: { upiId: upi }
+                }
+            });
+            return { success: true, message: `UPI ID linked successfully.` };
+        } catch (error) {
+            console.error("linkBankAccount UPI error:", error);
+            return { success: false, message: "Failed to link UPI ID" };
+        }
+    }
+
+    if (!bankDetails.accountHolder || !bankDetails.accountNumber || !bankDetails.ifscCode) {
+        return { success: false, message: "Missing required bank fields" };
+    }
+
     const nameTrimmed = bankDetails.accountHolder.trim();
     if (nameTrimmed.length < 3) {
         return { success: false, message: "Account holder name must be at least 3 characters long." };
@@ -275,7 +301,7 @@ export async function redeemReferralBalance(userId: string) {
             return { success: false, message: `Minimum redeem amount is ₹500. Your available balance is ₹${balance}` };
         }
         if (!user.unsafeMetadata.bankDetails) {
-            return { success: false, message: "Please link your bank account first" };
+            return { success: false, message: "Please link your bank account or UPI ID first" };
         }
 
         await clerk.users.updateUserMetadata(userId, {

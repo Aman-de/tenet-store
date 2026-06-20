@@ -47,12 +47,14 @@ export default function ClientCircleDashboard({
     const [redemptionMessage, setRedemptionMessage] = useState("");
     const [redemptionSuccess, setRedemptionSuccess] = useState(false);
 
-    // Bank Account State
+    // Bank Account / UPI State
     const [bankDetails, setBankDetails] = useState(initialBankDetails);
     const [isEditingBank, setIsEditingBank] = useState(!initialBankDetails);
     const [isSavingBank, setIsSavingBank] = useState(false);
     
     // Form Inputs & Validation States
+    const [payoutMethod, setPayoutMethod] = useState<'bank' | 'upi'>(initialBankDetails?.upiId ? 'upi' : 'bank');
+    const [upiId, setUpiId] = useState(initialBankDetails?.upiId || "");
     const [bankName, setBankName] = useState(initialBankDetails?.bankName || "");
     const [accountHolder, setAccountHolder] = useState(initialBankDetails?.accountHolder || "");
     const [accountNumber, setAccountNumber] = useState(initialBankDetails?.accountNumber || "");
@@ -154,28 +156,20 @@ export default function ClientCircleDashboard({
 
     const handleLinkBank = async (e: React.FormEvent) => {
         e.preventDefault();
-        setBankError("");
+        
+        if (payoutMethod === 'bank') {
+            if (accountNumberError || ifscError || !resolvedBankName) {
+                setBankError("Please resolve all bank details errors before saving.");
+                return;
+            }
+        } else {
+            if (!upiId.includes('@')) {
+                setBankError("Please enter a valid UPI ID.");
+                return;
+            }
+        }
+
         setIsSavingBank(true);
-
-        if (ifscError || accountNumberError) {
-            setBankError("Please resolve validation errors first.");
-            setIsSavingBank(false);
-            return;
-        }
-
-        if (!bankName || !accountHolder || !accountNumber || !ifscCode) {
-            setBankError("All bank account fields are required.");
-            setIsSavingBank(false);
-            return;
-        }
-
-        const details = { bankName, accountHolder, accountNumber, ifscCode };
-        const res = await linkBankAccount(userId, details);
-
-        setIsSavingBank(false);
-        if (res.success) {
-            setBankDetails(details);
-            setIsEditingBank(false);
         } else {
             setBankError(res.message || "Failed to save bank details.");
         }
@@ -424,30 +418,63 @@ export default function ClientCircleDashboard({
 
                 {!isEditingBank && bankDetails ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-8 text-sm font-sans leading-relaxed text-neutral-600">
-                        <div>
-                            <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-400 block mb-0.5">Beneficiary Name</span>
-                            <span className="text-sm font-medium text-[#1A1A1A] dark:text-[#F4F1ED]">{bankDetails.accountHolder}</span>
-                        </div>
-                        <div>
-                            <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-400 block mb-0.5">Bank Name</span>
-                            <span className="text-sm font-medium text-[#1A1A1A] dark:text-[#F4F1ED]">{bankDetails.bankName}</span>
-                        </div>
-                        <div>
-                            <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-400 block mb-0.5">Account Number</span>
-                            <span className="text-sm font-mono text-[#1A1A1A] dark:text-[#F4F1ED]">{getObscuredAccountNumber(bankDetails.accountNumber)}</span>
-                        </div>
-                        <div>
-                            <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-400 block mb-0.5">IFSC Code</span>
-                            <span className="text-sm font-mono text-[#1A1A1A] dark:text-[#F4F1ED]">{bankDetails.ifscCode}</span>
-                        </div>
+                        {bankDetails.upiId ? (
+                            <div>
+                                <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-400 block mb-0.5">UPI ID</span>
+                                <span className="text-sm font-medium text-[#1A1A1A] dark:text-[#F4F1ED]">{bankDetails.upiId}</span>
+                            </div>
+                        ) : (
+                            <>
+                                <div>
+                                    <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-400 block mb-0.5">Beneficiary Name</span>
+                                    <span className="text-sm font-medium text-[#1A1A1A] dark:text-[#F4F1ED]">{bankDetails.accountHolder}</span>
+                                </div>
+                                <div>
+                                    <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-400 block mb-0.5">Bank Name</span>
+                                    <span className="text-sm font-medium text-[#1A1A1A] dark:text-[#F4F1ED]">{bankDetails.bankName}</span>
+                                </div>
+                                <div>
+                                    <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-400 block mb-0.5">Account Number</span>
+                                    <span className="text-sm font-mono text-[#1A1A1A] dark:text-[#F4F1ED]">{getObscuredAccountNumber(bankDetails.accountNumber)}</span>
+                                </div>
+                                <div>
+                                    <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-400 block mb-0.5">IFSC Code</span>
+                                    <span className="text-sm font-mono text-[#1A1A1A] dark:text-[#F4F1ED]">{bankDetails.ifscCode}</span>
+                                </div>
+                            </>
+                        )}
                     </div>
                 ) : (
                     <form onSubmit={handleLinkBank} className="space-y-4 max-w-xl">
-                        <p className="text-xs text-neutral-400 font-sans mb-2">
+                        <p className="text-xs text-neutral-400 font-sans mb-4">
                             Link your settlement details to enable payout transfers. Payments are securely audited and credited directly.
                         </p>
+
+                        <div className="flex gap-4 mb-4">
+                            <label className="flex items-center gap-2 text-xs font-medium text-neutral-600 dark:text-neutral-300 cursor-pointer">
+                                <input type="radio" name="payoutMethod" checked={payoutMethod === 'upi'} onChange={() => setPayoutMethod('upi')} className="accent-black dark:accent-white" />
+                                UPI ID
+                            </label>
+                            <label className="flex items-center gap-2 text-xs font-medium text-neutral-600 dark:text-neutral-300 cursor-pointer">
+                                <input type="radio" name="payoutMethod" checked={payoutMethod === 'bank'} onChange={() => setPayoutMethod('bank')} className="accent-black dark:accent-white" />
+                                Bank Account
+                            </label>
+                        </div>
                         
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {payoutMethod === 'upi' ? (
+                            <div className="space-y-1">
+                                <label className="text-[9px] font-bold uppercase tracking-wider text-neutral-400">UPI ID</label>
+                                <input
+                                    type="text"
+                                    required
+                                    placeholder="e.g. yourname@upi"
+                                    value={upiId}
+                                    onChange={(e) => setUpiId(e.target.value.toLowerCase())}
+                                    className="w-full border border-neutral-200 dark:border-neutral-800 rounded-xl px-4 py-2.5 text-xs font-sans focus:outline-none focus:border-black bg-neutral-50/40"
+                                />
+                            </div>
+                        ) : (
+                            <>                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div className="space-y-1">
                                 <label className="text-[9px] font-bold uppercase tracking-wider text-neutral-400">Account Holder Name</label>
                                 <input
@@ -511,6 +538,8 @@ export default function ClientCircleDashboard({
                                 )}
                             </div>
                         </div>
+                        </>
+                        )}
 
                         {bankError && (
                             <p className="text-xs text-red-500 font-sans mt-2">{bankError}</p>
