@@ -6,8 +6,10 @@ import { getProducts, getCollections } from "@/lib/sanity";
 export const revalidate = 60; // ISR cache for 60 seconds
 
 export default async function Home() {
-  const products = await getProducts();
-  const collections = await getCollections();
+  const [products, collections] = await Promise.all([
+    getProducts(),
+    getCollections(),
+  ]);
 
   return (
     <main className="min-h-screen">

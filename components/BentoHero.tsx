@@ -96,6 +96,7 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                                 src={mainHeroSrc}
                                 alt="Main Hero"
                                 fill
+                                sizes="(max-width: 1024px) 100vw, 66vw"
                                 priority
                                 className="object-cover object-center transform transition-transform duration-[20s] hover:scale-105"
                             />
@@ -142,6 +143,9 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                                             src={heroImage}
                                         alt={product.title}
                                         fill
+                                        sizes="(max-width: 1024px) 100vw, 66vw"
+                                        loading="lazy"
+                                        quality={75}
                                         className="object-cover"
                                     />
                                 )}

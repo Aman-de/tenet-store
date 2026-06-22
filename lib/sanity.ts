@@ -251,10 +251,13 @@ export const client = createClient({
     projectId,
     dataset,
     apiVersion,
-    useCdn: false,
+    useCdn: true,
     token: process.env.SANITY_API_TOKEN,
     fetch: fetchWithRetry as any
 });
+
+// Reusable cache config: ISR-compatible 60-second revalidation
+const CACHE_60S = { next: { revalidate: 60 } } as any;
 
 const PREMIUM_NAMES: Record<string, string> = {
     // Knitwear
@@ -433,7 +436,7 @@ export async function getProducts() {
     setOriginalPrice
   }`;
 
-    const products = await client.fetch(query, {}, { cache: 'no-store' });
+    const products = await client.fetch(query, {}, CACHE_60S);
 
     return [...ARTIFICIAL_PRODUCTS, ...(products || [])]
         .filter((p: any) => p && !HIDDEN_PRODUCT_TITLES.has(p.title))
@@ -635,7 +638,7 @@ export async function getRecommendedProducts(category: string, currentSlug: stri
     isOutOfStock
   }`;
 
-    let products = await client.fetch(query, params, { cache: 'no-store' });
+    let products = await client.fetch(query, params, CACHE_60S);
     products = (products || []).filter((p: any) => p && !HIDDEN_PRODUCT_TITLES.has(p.title));
 
     // Fallback: If we couldn't find at least 4 items, pad with general products to keep the grid full
@@ -654,7 +657,7 @@ export async function getRecommendedProducts(category: string, currentSlug: stri
         gender,
         isOutOfStock
       }`;
-        let fallbackProducts = await client.fetch(fallbackQuery, params, { cache: 'no-store' });
+        let fallbackProducts = await client.fetch(fallbackQuery, params, CACHE_60S);
         fallbackProducts = (fallbackProducts || []).filter((p: any) => p && !HIDDEN_PRODUCT_TITLES.has(p.title));
         
         const needed = 12 - products.length;
@@ -675,7 +678,7 @@ export async function getReviews(productId: string) {
     "images": images[].asset->url
   }`;
 
-    const reviews = await client.fetch(query, { productId }, { cache: 'no-store' });
+    const reviews = await client.fetch(query, { productId }, CACHE_60S);
 
     return reviews.map((r: any) => {
         let comment = r.comment;
@@ -705,7 +708,7 @@ export async function getCollections() {
     filterTag
   }`;
 
-    const collections = await client.fetch(query, {}, { cache: 'no-store' });
+    const collections = await client.fetch(query, {}, CACHE_60S);
 
      
     return collections.map((c: any) => ({
@@ -744,7 +747,7 @@ export async function getCollection(slug: string) {
     }
   }`;
 
-    const collection = await client.fetch(query, { slug }, { cache: 'no-store' });
+    const collection = await client.fetch(query, { slug }, CACHE_60S);
 
     if (!collection) return null;
 
@@ -782,7 +785,7 @@ export async function getCartUpsells(cartProductIds: string[]) {
     isOutOfStock
   }`;
 
-    const products = await client.fetch(query, { cartProductIds }, { cache: 'no-store' });
+    const products = await client.fetch(query, { cartProductIds }, CACHE_60S);
 
     // Filter out nulls, hidden products, and deduplicate
     const validProducts = (products || []).filter((p: any) => p && p._id && !HIDDEN_PRODUCT_TITLES.has(p.title));
@@ -815,7 +818,7 @@ export async function searchProducts(searchTerm: string) {
     isOutOfStock
   }`;
 
-    const products = await client.fetch(query, { searchTerm }, { cache: 'no-store' });
+    const products = await client.fetch(query, { searchTerm }, CACHE_60S);
 
     return [...ARTIFICIAL_PRODUCTS, ...(products || [])]
         .filter((p: any) => p && !HIDDEN_PRODUCT_TITLES.has(p.title))
