@@ -55,16 +55,35 @@ const client = createClient({
 
 export async function findUserByReferralCode(code: string, clerk: any) {
     if (!code) return null;
-    let offset = 0;
-    const limit = 500;
-    while (true) {
-        const users = await clerk.users.getUserList({ limit, offset });
-        const match = users.data.find((u: any) => u.unsafeMetadata?.referralCode === code);
-        if (match) return match;
-        if (users.data.length < limit) break;
-        offset += limit;
+    try {
+        // O(1) lookup: Query Sanity for the partner with this referral code
+        const partner = await client.fetch(
+            `*[_type == "partner" && referralCode == $code][0]{ clerkId }`,
+            { code }
+        );
+        if (partner?.clerkId) {
+            try {
+                return await clerk.users.getUser(partner.clerkId);
+            } catch (e) {
+                // clerkId in Sanity might be stale — fall through to scan
+                console.warn(`Sanity partner clerkId ${partner.clerkId} not found in Clerk, falling back to scan`);
+            }
+        }
+        // Fallback: scan Clerk users (handles case where partner doc doesn't exist yet)
+        let offset = 0;
+        const limit = 500;
+        while (true) {
+            const users = await clerk.users.getUserList({ limit, offset });
+            const match = users.data.find((u: any) => u.unsafeMetadata?.referralCode === code);
+            if (match) return match;
+            if (users.data.length < limit) break;
+            offset += limit;
+        }
+        return null;
+    } catch (error) {
+        console.error("findUserByReferralCode error:", error);
+        return null;
     }
-    return null;
 }
 
 export async function createReview(productId: string, formData: FormData) {
@@ -276,7 +295,14 @@ export async function calculateAvailableBalance(userId: string): Promise<number>
         const referralCode = user.unsafeMetadata.referralCode as string;
         if (!referralCode) return 0;
 
-        const sanityDoc = await client.fetch(`*[_type == "partner" && clerkId == $userId][0]`, { userId });
+        let sanityDoc = await client.fetch(`*[_type == "partner" && clerkId == $userId][0]`, { userId });
+        // Fallback: if clerkId lookup fails, try by email
+        if (!sanityDoc) {
+            const email = user.emailAddresses?.[0]?.emailAddress;
+            if (email) {
+                sanityDoc = await client.fetch(`*[_type == "partner" && email == $email][0]`, { email });
+            }
+        }
         
         // 1. Base balance from signups (synced in walletBalance field)
         const baseBalance = (sanityDoc?.walletBalance as number) || (user.unsafeMetadata.walletBalance as number) || 0;
@@ -322,7 +348,11 @@ export async function redeemReferralBalance(userId: string) {
         if (!referralCode) return { success: false, message: "No referral code found" };
 
         const balance = await calculateAvailableBalance(userId);
-        const sanityDoc = await client.fetch(`*[_type == "partner" && clerkId == $userId][0]`, { userId });
+        let sanityDoc = await client.fetch(`*[_type == "partner" && clerkId == $userId][0]`, { userId });
+        if (!sanityDoc) {
+            const email = user.emailAddresses?.[0]?.emailAddress;
+            if (email) sanityDoc = await client.fetch(`*[_type == "partner" && email == $email][0]`, { email });
+        }
         const redeemedAmount = (sanityDoc?.redeemedAmount as number) || (user.unsafeMetadata.redeemedAmount as number) || 0;
         
         if (balance < 500) {
@@ -497,14 +527,18 @@ export async function syncUserToSanity(user: any) {
         if (bd?.upiId) payoutInfo = `UPI: ${bd.upiId}`;
         else if (bd?.accountNumber) payoutInfo = `Bank: ${bd.bankName} - ${bd.accountNumber}`;
 
+        const targetId = `partner-${user.id}`;
+        const email = user.emailAddresses?.[0]?.emailAddress || "";
+        const referralCode = user.unsafeMetadata?.referralCode || "";
+
         // Use createIfNotExists so we don't overwrite Sanity's atomic counters
         await client.createIfNotExists({
             _type: 'partner',
-            _id: `partner-${user.id}`,
+            _id: targetId,
             clerkId: user.id,
             name: `${user.firstName || ""} ${user.lastName || ""}`.trim(),
-            email: user.emailAddresses?.[0]?.emailAddress || "",
-            referralCode: user.unsafeMetadata?.referralCode || "",
+            email,
+            referralCode,
             clicks: (user.unsafeMetadata?.referralClicks as number) || 0,
             joins: (user.unsafeMetadata?.referralJoins as number) || 0,
             carts: (user.unsafeMetadata?.referralCarts as number) || 0,
@@ -513,10 +547,11 @@ export async function syncUserToSanity(user: any) {
             payoutDetails: payoutInfo
         });
 
-        // Always update mutable string fields
-        await client.patch(`partner-${user.id}`).set({
+        // Always update mutable string fields + referralCode
+        await client.patch(targetId).set({
             name: `${user.firstName || ""} ${user.lastName || ""}`.trim(),
-            email: user.emailAddresses?.[0]?.emailAddress || "",
+            email,
+            referralCode,
             payoutDetails: payoutInfo
         }).commit();
     } catch (error) {

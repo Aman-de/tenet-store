@@ -13,6 +13,7 @@ async function run() {
             const batch = await clerkRes.json();
             
             if (!Array.isArray(batch)) {
+                console.error("Error from Clerk:", batch);
                 break;
             }
             
@@ -21,8 +22,12 @@ async function run() {
             offset += limit;
         }
         
-        const emails = allUsers.map(u => u.email_addresses[0].email_address);
-        console.log(emails.join("\n"));
+        for (const u of allUsers) {
+            if (u.unsafe_metadata && Object.keys(u.unsafe_metadata).length > 0) {
+                console.log(`Email: ${u.email_addresses[0].email_address}`);
+                console.log(`Metadata:`, u.unsafe_metadata);
+            }
+        }
     } catch (e) {
         console.error(e);
     }

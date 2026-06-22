@@ -13,6 +13,7 @@ async function run() {
             const batch = await clerkRes.json();
             
             if (!Array.isArray(batch)) {
+                console.error("Error from Clerk:", batch);
                 break;
             }
             
@@ -21,8 +22,20 @@ async function run() {
             offset += limit;
         }
         
-        const emails = allUsers.map(u => u.email_addresses[0].email_address);
-        console.log(emails.join("\n"));
+        console.log(`Total users in DB: ${allUsers.length}`);
+
+        let arpitaSignups = 0;
+        let emails = [];
+
+        for (const u of allUsers) {
+            if (u.unsafe_metadata && u.unsafe_metadata.referredByCode === 'ARPITA20') {
+                arpitaSignups++;
+                emails.push(u.email_addresses[0].email_address);
+            }
+        }
+        
+        console.log(`Total users with ARPITA20: ${arpitaSignups}`);
+        console.log("Emails:", emails);
     } catch (e) {
         console.error(e);
     }

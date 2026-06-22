@@ -91,7 +91,19 @@ export default async function InnerCirclePage() {
     // Calculate balances without the O(N) Clerk bottleneck
     const { calculateAvailableBalance } = await import("@/app/actions");
     const availableBalance = await calculateAvailableBalance(userId);
-    const sanityDoc = await client.fetch(`*[_type == "partner" && clerkId == $userId][0]`, { userId });
+    let sanityDoc = await client.fetch(`*[_type == "partner" && clerkId == $userId][0]`, { userId });
+    // Fallback: if clerkId lookup fails, try by email
+    if (!sanityDoc && email) {
+        sanityDoc = await client.fetch(`*[_type == "partner" && email == $email][0]`, { email });
+        // Auto-repair: update the stale clerkId in Sanity so future lookups are fast
+        if (sanityDoc) {
+            try {
+                await client.patch(sanityDoc._id).set({ clerkId: userId }).commit();
+            } catch (e) {
+                console.error("Failed to auto-repair clerkId:", e);
+            }
+        }
+    }
     
     const joinsCount = (sanityDoc?.joins as number) || (user.unsafeMetadata?.referralJoins as number) || 0;
     const signupBonusTotal = (sanityDoc?.walletBalance as number) || 0; // Each join is 10 rupees atomically
