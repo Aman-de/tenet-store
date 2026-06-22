@@ -55,7 +55,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
     return (
 
-        <main className="min-h-screen pb-20 pt-[48px] lg:pt-[96px]">
+        <main className="min-h-screen pb-20 pt-[56px] lg:pt-[96px]">
             <ProductDetails product={product} reviews={reviews} />
             {/* Recommendations stream in after the main product renders */}
             <Suspense fallback={

@@ -3,7 +3,23 @@
 import { useGender } from "@/context/GenderContext";
 import { useEffect, useState } from "react";
 
-export default function GenderThemeWrapper({ children }: { children: React.ReactNode }) {
+interface SiteSettings {
+    title: string;
+    womanAccentColor: string;
+    manAccentColor: string;
+    womanBgColorLight: string;
+    womanBgColorDark: string;
+    manBgColorLight: string;
+    manBgColorDark: string;
+}
+
+export default function GenderThemeWrapper({ 
+    children, 
+    settings 
+}: { 
+    children: React.ReactNode;
+    settings: SiteSettings;
+}) {
     const { gender } = useGender();
     const isWoman = gender === "woman";
     const [mounted, setMounted] = useState(false);
@@ -12,14 +28,15 @@ export default function GenderThemeWrapper({ children }: { children: React.React
         setMounted(true);
     }, []);
 
-    // Pink theme for women, blue theme for men
-    const lightBg = isWoman ? "#FCF0F2" : "#F0F4F8";
-    const darkBg = isWoman ? "#160F11" : "#0E1217";
+    const accentColor = isWoman ? settings.womanAccentColor : settings.manAccentColor;
+    const lightBg = isWoman ? settings.womanBgColorLight : settings.manBgColorLight;
+    const darkBg = isWoman ? settings.womanBgColorDark : settings.manBgColorDark;
 
     return (
         <div className="min-h-screen transition-colors duration-500">
             <style>{`
                 :root {
+                    --accent-color: ${accentColor};
                     --theme-bg-light: ${lightBg};
                     --theme-bg-dark: ${darkBg};
                 }

@@ -1,8 +1,8 @@
 "use client";
 
-import { ShoppingBag, Menu, X, Heart, User, Package, Crown, LayoutGrid, Search, Home, Moon, Sun, Monitor } from "lucide-react";
+import { ShoppingBag, Menu, X, Heart, User, Package, Crown, LayoutGrid, Search, Home, Moon, Sun, Monitor, Mic, Camera } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { UserButton, SignInButton, useUser, SignedIn, SignedOut } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
@@ -17,8 +17,46 @@ export default function Navbar() {
     const { openCart, openWishlist, cart, wishlist } = useStore();
     const { gender, setGender } = useGender();
     const isWoman = gender === "woman";
-    const accentColor = isWoman ? "#FF4D6D" : "#3B82F6";
+    const accentColor = "var(--accent-color)";
     const [mounted, setMounted] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
+    const router = useRouter();
+
+    const handleSearchSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (searchQuery.trim()) {
+            router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+        }
+    };
+
+    const SearchBar = () => {
+        const placeholderText = gender === 'woman' 
+            ? "Search kurtis, co-ords, sets..." 
+            : "Search shirts, trousers, knitwear...";
+            
+        return (
+            <form onSubmit={handleSearchSubmit} className="w-full px-1 pt-1.5 pb-2 pointer-events-auto">
+                <div className="relative flex items-center bg-[#F4F1ED]/80 dark:bg-[#1C1C1E] border border-black/5 dark:border-white/5 rounded-full px-4 h-[40px] transition-all focus-within:border-black/25 dark:focus-within:border-white/25 shadow-[inset_0_1px_2px_rgba(0,0,0,0.02)]">
+                    <Search className="w-3.5 h-3.5 text-neutral-400 dark:text-neutral-500 shrink-0" strokeWidth={2.5} />
+                    <input 
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder={placeholderText}
+                        className="w-full bg-transparent border-none outline-none pl-2.5 pr-12 text-[12px] font-sans placeholder-neutral-400 dark:placeholder-neutral-500 text-neutral-800 dark:text-[#F4F1ED]"
+                    />
+                    <div className="absolute right-4 flex items-center gap-2.5">
+                        <button type="button" aria-label="Voice search" className="hover:scale-105 active:scale-95 transition-transform" onClick={() => alert("Voice search is not configured.")}>
+                            <Mic className="w-3.5 h-3.5 text-neutral-400 dark:text-neutral-500" strokeWidth={2.5} />
+                        </button>
+                        <button type="button" aria-label="Camera search" className="hover:scale-105 active:scale-95 transition-transform" onClick={() => alert("Image search is not configured.")}>
+                            <Camera className="w-3.5 h-3.5 text-neutral-400 dark:text-neutral-500" strokeWidth={2.5} />
+                        </button>
+                    </div>
+                </div>
+            </form>
+        );
+    };
     const { isSignedIn } = useUser();
 
     useEffect(() => {
@@ -91,13 +129,19 @@ export default function Navbar() {
     // Authentic Apple Liquid Glass effect
     // Only show borders on product page as requested by user
     const navContainerClass = isScrolledOrNotHome 
-        ? `bg-[#F8F5EF]/85 dark:bg-[#141414]/85 backdrop-blur-[20px] saturate-[180%] dark:saturate-100 ${isProductPage ? 'border-b lg:border border-[#1A1A1A]/10 dark:border-white/10' : 'border-none'} shadow-[0_2px_10px_rgba(0,0,0,0.03)]` 
-        : `bg-transparent border-transparent shadow-none lg:bg-[#F8F5EF]/85 lg:dark:bg-[#141414]/85 lg:backdrop-blur-[20px] lg:saturate-[180%] dark:saturate-100 ${isProductPage ? 'lg:border lg:border-[#1A1A1A]/10 lg:dark:border-white/10' : 'lg:border-none'} lg:shadow-[0_2px_10px_rgba(0,0,0,0.03)]`;
+        ? `bg-[#FDFBF7]/90 dark:bg-[#160F11]/90 backdrop-blur-[20px] saturate-[180%] dark:saturate-100 ${isProductPage ? 'border-b lg:border border-[#1A1A1A]/10 dark:border-white/10' : 'border-b border-neutral-100 dark:border-neutral-800 lg:border-none'} shadow-[0_2px_10px_rgba(0,0,0,0.03)]` 
+        : `bg-[#FDFBF7]/90 dark:bg-[#160F11]/90 backdrop-blur-[20px] lg:bg-transparent lg:border-transparent lg:shadow-none lg:backdrop-blur-none lg:saturate-100 lg:dark:saturate-100 ${isProductPage ? 'lg:border lg:border-[#1A1A1A]/10 lg:dark:border-white/10' : 'lg:border-none border-b border-neutral-100 dark:border-neutral-800'} lg:shadow-none`;
 
-    const textColor = isScrolledOrNotHome ? "text-neutral-800 dark:text-[#F4F1ED]" : "text-white lg:text-neutral-800 lg:dark:text-[#F4F1ED]";
-    const logoColor = isScrolledOrNotHome ? "text-black dark:text-white" : "text-white lg:text-black lg:dark:text-white";
+    const textColor = isScrolledOrNotHome 
+        ? "text-neutral-800 dark:text-[#F4F1ED]" 
+        : "text-[#1A1A1A] dark:text-[#F4F1ED] lg:text-white lg:dark:text-[#F4F1ED]";
+    const logoColor = isScrolledOrNotHome 
+        ? "text-black dark:text-white" 
+        : "text-black dark:text-white lg:text-white lg:dark:text-white";
     const iconStroke = 2;
-    const iconGlassBg = isScrolledOrNotHome ? "bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20" : "bg-white/10 hover:bg-white/20 lg:bg-black/5 lg:dark:bg-white/10 lg:hover:bg-black/10 lg:dark:hover:bg-white/20";
+    const iconGlassBg = isScrolledOrNotHome 
+        ? "bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20" 
+        : "bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 lg:bg-white/10 lg:hover:bg-white/20 lg:dark:bg-white/10 lg:dark:hover:bg-white/20";
 
     // Ultra-premium Apple-style segmented control (Liquid Glass)
     const GenderToggle = ({ idSuffix, isDesktop = false }: { idSuffix: string, isDesktop?: boolean }) => {
@@ -206,10 +250,10 @@ export default function Navbar() {
                 <nav className={`pointer-events-auto w-full mx-auto px-4 lg:px-8 py-2 lg:py-2.5 transition-all duration-500 ease-in-out lg:rounded-full lg:max-w-[800px] xl:max-w-[900px] ${navContainerClass}`}>
                     
                     {/* MOBILE LAYOUT (lg:hidden) */}
-                    <div className="flex lg:hidden w-full items-center justify-between relative">
-                        {/* LEFT SIDE: Menu & Home/Gender */}
-                        <div className="flex items-center gap-1 z-10 flex-1 justify-start">
-                            {isProductPage && (
+                    <div className="flex lg:hidden flex-col w-full gap-1">
+                        <div className="flex w-full items-center justify-between relative py-0.5">
+                            {/* LEFT SIDE: Menu & Gender links */}
+                            <div className="flex items-center gap-1.5 z-10 flex-1 justify-start">
                                 <button className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Toggle mobile menu" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
                                     {isMobileMenuOpen ? (
                                         <X className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
@@ -217,40 +261,84 @@ export default function Navbar() {
                                         <Menu className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
                                     )}
                                 </button>
-                            )}
-                            {isProductPage ? (
-                                <Link href="/" className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center ml-0.5`}>
-                                    <Home className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
-                                </Link>
-                            ) : (
-                                <div className="scale-95 sm:scale-100 origin-left -translate-x-1 sm:translate-x-0">
-                                    <GenderToggle idSuffix="mobile" />
-                                </div>
-                            )}
+                                
+                                {!isProductPage && (
+                                    <div className="flex items-center gap-2.5 ml-0.5">
+                                        <button 
+                                            onClick={() => setGender('woman')}
+                                            className={`text-[10px] tracking-widest uppercase transition-all duration-300 relative py-1 ${
+                                                gender === 'woman' 
+                                                    ? 'font-black text-[#1A1A1A] dark:text-[#F4F1ED]' 
+                                                    : 'font-medium text-neutral-400 dark:text-neutral-500'
+                                            }`}
+                                        >
+                                            WOMEN
+                                            {gender === 'woman' && (
+                                                <motion.div 
+                                                    layoutId="mobile-gender-underline"
+                                                    className="absolute bottom-0 left-0 right-0 h-[2px] rounded-full"
+                                                    style={{ backgroundColor: 'var(--accent-color)' }}
+                                                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                                                />
+                                            )}
+                                        </button>
+                                        <button 
+                                            onClick={() => setGender('man')}
+                                            className={`text-[10px] tracking-widest uppercase transition-all duration-300 relative py-1 ${
+                                                gender === 'man' 
+                                                    ? 'font-black text-[#1A1A1A] dark:text-[#F4F1ED]' 
+                                                    : 'font-medium text-neutral-400 dark:text-neutral-500'
+                                            }`}
+                                        >
+                                            MEN
+                                            {gender === 'man' && (
+                                                <motion.div 
+                                                    layoutId="mobile-gender-underline"
+                                                    className="absolute bottom-0 left-0 right-0 h-[2px] rounded-full"
+                                                    style={{ backgroundColor: 'var(--accent-color)' }}
+                                                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                                                />
+                                            )}
+                                        </button>
+                                    </div>
+                                )}
+                                {isProductPage && (
+                                    <Link href="/" className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center ml-0.5`}>
+                                        <Home className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
+                                    </Link>
+                                )}
+                            </div>
+
+                            {/* CENTER: Logo (Absolute Centered) */}
+                            <Link href="/" className="absolute left-1/2 -translate-x-1/2 z-10 flex justify-center w-fit">
+                                <span className={`text-xl sm:text-2xl font-serif font-bold tracking-widest sm:tracking-[0.2em] uppercase group-hover:opacity-80 transition-colors duration-500 ${logoColor} drop-shadow-sm ml-0.5`}>
+                                    TENET
+                                </span>
+                            </Link>
+
+                            {/* RIGHT SIDE: Wishlist, Cart */}
+                            <div className="flex items-center gap-1 z-10 flex-1 justify-end">
+                                <button className={`relative w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Open wishlist" onClick={openWishlist}>
+                                    <Heart className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
+                                    {wishlistCount > 0 && (
+                                        <span className="absolute -top-0.5 -right-0.5 min-w-[14px] h-[14px] rounded-full border border-white dark:border-neutral-900 flex items-center justify-center text-[8px] text-white font-sans font-bold px-1" style={{ backgroundColor: accentColor }}>
+                                            {wishlistCount}
+                                        </span>
+                                    )}
+                                </button>
+                                <button className={`relative w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Open cart" onClick={openCart}>
+                                    <ShoppingBag className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
+                                    {cartCount > 0 && (
+                                        <span className="absolute -top-0.5 -right-0.5 min-w-[14px] h-[14px] rounded-full border border-white dark:border-neutral-900 flex items-center justify-center text-[8px] text-white font-sans font-bold px-1" style={{ backgroundColor: accentColor }}>
+                                            {cartCount}
+                                        </span>
+                                    )}
+                                </button>
+                            </div>
                         </div>
 
-                        {/* CENTER: Logo (Absolute Centered) */}
-                        <Link href="/" className="absolute left-1/2 -translate-x-1/2 z-10 flex justify-center w-fit">
-                            <span className={`text-xl sm:text-3xl font-serif font-bold tracking-widest sm:tracking-[0.25em] uppercase group-hover:opacity-80 transition-colors duration-500 ${logoColor} drop-shadow-sm ml-0.5 sm:ml-1.5`}>
-                                TENET
-                            </span>
-                        </Link>
-
-                        {/* RIGHT SIDE: Wishlist, Cart */}
-                        <div className="flex items-center gap-1 z-10 flex-1 justify-end">
-                            <button className={`relative w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Open wishlist" onClick={openWishlist}>
-                                <Heart className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
-                                {wishlistCount > 0 && (
-                                    <span className="absolute top-1 right-1 w-2 h-2 rounded-full border border-white" style={{ backgroundColor: accentColor }} />
-                                )}
-                            </button>
-                            <button className={`relative w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Open cart" onClick={openCart}>
-                                <ShoppingBag className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
-                                {cartCount > 0 && (
-                                    <span className="absolute top-1 right-1 w-2 h-2 rounded-full border border-white" style={{ backgroundColor: accentColor }} />
-                                )}
-                            </button>
-                        </div>
+                        {/* Search Bar rendered below the top bar */}
+                        {!isProductPage && <SearchBar />}
                     </div>
 
                     {/* DESKTOP LAYOUT (hidden lg:flex) */}

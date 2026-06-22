@@ -74,7 +74,7 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
     const scrollNext = () => emblaApi?.scrollNext();
 
     const mainHeroSrc = gender === "man" ? "/images/hero-main.webp" : "/images/hero-women.webp";
-    const accentColor = gender === "woman" ? "#FF4D6D" : "#3B82F6";
+    const accentColor = "var(--accent-color)";
 
     const trustPillars = [
         { icon: <Truck className="w-7 h-7 text-[#1A1A1A] dark:text-[#F4F1ED] stroke-[1]" />, title: "COMPLIMENTARY", title2: "SHIPPING", subtext: "Free on all orders" },
@@ -84,7 +84,7 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
     ];
 
     return (
-        <section className="relative w-full flex flex-col lg:flex-row p-0 lg:p-6 gap-1 lg:gap-6 overflow-hidden bg-[#F8F5EF] dark:bg-[#0A0A0A] lg:h-[100dvh]">
+        <section className="relative w-full flex flex-col lg:flex-row pt-[108px] lg:pt-0 p-0 lg:p-6 gap-1 lg:gap-6 overflow-hidden bg-transparent lg:h-[100dvh]">
             
             {/* LEFT: Hero Section (Auto Scrolling) */}
             <div className="relative w-full h-[65vh] lg:w-7/12 xl:w-2/3 lg:h-full rounded-none lg:rounded-2xl overflow-hidden group bg-neutral-200 dark:bg-neutral-800">

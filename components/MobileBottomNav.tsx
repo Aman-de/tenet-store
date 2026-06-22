@@ -27,7 +27,7 @@ export default function MobileBottomNav() {
     const isScrolledOrNotHome = isScrolled || !isHome;
 
     const isWoman = gender === "woman";
-    const accentColor = isWoman ? "#FF4D6D" : "#3B82F6";
+    const accentColor = "var(--accent-color)";
     // Always use the solid "scrolled" style because bottom nav is over the bright TrustBar on mobile.
     const activeTextClass = "text-[#1A1A1A] dark:text-[#F4F1ED]";
     const activeFillClass = "fill-[#1A1A1A]/5 dark:fill-white/10";

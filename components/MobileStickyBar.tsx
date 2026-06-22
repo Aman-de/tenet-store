@@ -22,7 +22,7 @@ export default function MobileStickyBar({ product, selectedVariant, onAddToCart,
     const { gender } = useGender();
 
     const isWoman = gender === "woman";
-    const accentColor = isWoman ? "#FF4D6D" : "#3B82F6";
+    const accentColor = "var(--accent-color)";
 
         return (
             <AnimatePresence>

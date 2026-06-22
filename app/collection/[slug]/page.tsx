@@ -36,7 +36,7 @@ export default async function CollectionPage({ params }: { params: Promise<{ slu
         <main className="min-h-screen">
 
             {/* Compact Header with Sort */}
-            <section className="max-w-7xl mx-auto px-4 md:px-6 pt-4">
+            <section className="max-w-7xl mx-auto px-4 md:px-6 pt-28 lg:pt-4">
                 {/* Title Row with Sort */}
                 <div className="flex items-baseline justify-between mb-1">
                     <h1 className="text-2xl md:text-3xl font-serif text-[#1A1A1A] dark:text-[#F4F1ED] tracking-tight">{collection.title}</h1>

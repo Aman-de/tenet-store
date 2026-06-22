@@ -33,7 +33,7 @@ const sortSizes = (sizesList: string[]) => {
 export default function SortedProductGrid({ products: rawProducts, showSizeFilter = true, alignFiltersWithTitle = false }: SortedProductGridProps) {
     const { gender: activeGender } = useGender();
     const isWoman = activeGender === "woman";
-    const accentColor = isWoman ? "#FF4D6D" : "#3B82F6";
+    const accentColor = "var(--accent-color)";
 
     // Filter products dynamically by the active global gender
     const products = rawProducts.filter(p => {

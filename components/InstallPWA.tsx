@@ -11,7 +11,7 @@ export default function InstallPWA() {
     const [isIOS, setIsIOS] = useState(false);
     const [showInstructions, setShowInstructions] = useState(false);
     const { gender } = useGender();
-    const accentColor = gender === "woman" ? "#FF4D6D" : "#3B82F6";
+    const accentColor = "var(--accent-color)";
 
     useEffect(() => {
         if (typeof window === "undefined") return;

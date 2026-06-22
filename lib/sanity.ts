@@ -824,3 +824,38 @@ export async function searchProducts(searchTerm: string) {
         .filter((p: any) => p && !HIDDEN_PRODUCT_TITLES.has(p.title))
         .map(mapProduct);
 }
+
+export async function getSettings() {
+    const query = `*[_type == "settings"][0]{
+        title,
+        womanAccentColor,
+        manAccentColor,
+        womanBgColorLight,
+        womanBgColorDark,
+        manBgColorLight,
+        manBgColorDark
+    }`;
+    try {
+        const data = await client.fetch(query, {}, CACHE_60S);
+        return data || {
+            title: 'TENET',
+            womanAccentColor: '#C94B32',
+            manAccentColor: '#2E5B82',
+            womanBgColorLight: '#FDFBF7',
+            womanBgColorDark: '#160F11',
+            manBgColorLight: '#F4F6F9',
+            manBgColorDark: '#0E1217'
+        };
+    } catch (e) {
+        console.error("Failed to fetch settings, using fallback", e);
+        return {
+            title: 'TENET',
+            womanAccentColor: '#C94B32',
+            manAccentColor: '#2E5B82',
+            womanBgColorLight: '#FDFBF7',
+            womanBgColorDark: '#160F11',
+            manBgColorLight: '#F4F6F9',
+            manBgColorDark: '#0E1217'
+        };
+    }
+}

@@ -182,7 +182,7 @@ export default function CartDrawer() {
     } = useStore();
     const { gender } = useGender();
     const isWoman = gender === "woman";
-    const accentColor = isWoman ? "#FF4D6D" : "#3B82F6";
+    const accentColor = "var(--accent-color)";
     const [mounted, setMounted] = useState(false);
     const router = useRouter();
     const searchParams = useSearchParams();
