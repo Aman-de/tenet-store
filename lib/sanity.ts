@@ -484,7 +484,7 @@ export async function getProduct(slug: string) {
     }
   }`;
 
-    const product = await client.fetch(query, { slug });
+    const product = await client.fetch(query, { slug }, CACHE_60S);
 
     if (!product || HIDDEN_PRODUCT_TITLES.has(product.title)) return null;
 

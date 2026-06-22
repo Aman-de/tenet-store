@@ -120,6 +120,9 @@ const CartItemRow = ({ item, removeFromCart, updateQuantity, toggleWishlist, isI
                             src={item.images[0]}
                             alt={item.title}
                             fill
+                            sizes="80px"
+                            loading="lazy"
+                            quality={60}
                             className="object-cover pointer-events-none"
                         />
                     ) : (
@@ -743,6 +746,9 @@ export default function CartDrawer() {
                                                                 src={prod.images[0]}
                                                                 alt={prod.title}
                                                                 fill
+                                                                sizes="48px"
+                                                                loading="lazy"
+                                                                quality={60}
                                                                 className="object-cover"
                                                             />
                                                         ) : (

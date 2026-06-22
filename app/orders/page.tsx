@@ -206,6 +206,9 @@ export default async function OrdersPage(props: { searchParams: Promise<{ [key: 
                                                             src={item.product.imageUrl}
                                                             alt={item.product.title || "Product"}
                                                             fill
+                                                            sizes="64px"
+                                                            loading="lazy"
+                                                            quality={60}
                                                             className="object-cover"
                                                         />
                                                     ) : (

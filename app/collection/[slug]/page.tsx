@@ -1,10 +1,19 @@
 import Footer from "@/components/Footer";
 import SortedProductGrid from "@/components/SortedProductGrid";
-import { getCollection } from "@/lib/sanity";
+import { getCollection, getCollections } from "@/lib/sanity";
 import { notFound, redirect } from "next/navigation";
 import type { Metadata } from 'next';
 
 export const revalidate = 60; // ISR cache for 60 seconds
+
+export async function generateStaticParams() {
+    const collections = await getCollections();
+    return collections
+        .filter((collection: any) => collection.handle && typeof collection.handle === "string" && collection.handle.trim() !== "")
+        .map((collection: any) => ({
+            slug: collection.handle,
+        }));
+}
 
 export default async function CollectionPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;

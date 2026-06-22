@@ -116,6 +116,9 @@ const WishlistItemRow = ({ item, removeFromWishlist, addToCart }: any) => {
                             src={item.images[0]}
                             alt={item.title}
                             fill
+                            sizes="96px"
+                            loading="lazy"
+                            quality={60}
                             className="object-cover group-hover:scale-105 transition-transform duration-500 pointer-events-none"
                         />
                     ) : (

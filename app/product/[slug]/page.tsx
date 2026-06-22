@@ -1,4 +1,4 @@
-import { getProduct, getRecommendedProducts, getReviews } from "@/lib/sanity";
+import { getProduct, getProducts, getRecommendedProducts, getReviews } from "@/lib/sanity";
 import { notFound, redirect } from "next/navigation";
 import ProductDetails from "@/components/ProductDetails";
 import RecommendedProducts from "@/components/RecommendedProducts";
@@ -6,6 +6,15 @@ import Footer from "@/components/Footer";
 import { Suspense } from "react";
 
 export const revalidate = 60; // ISR cache for 60 seconds
+
+export async function generateStaticParams() {
+    const products = await getProducts();
+    return products
+        .filter((product) => product.handle && typeof product.handle === "string" && product.handle.trim() !== "")
+        .map((product) => ({
+            slug: product.handle,
+        }));
+}
 
 interface ProductPageProps {
     params: Promise<{
