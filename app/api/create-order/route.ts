@@ -14,8 +14,23 @@ export async function POST(req: Request) {
 
         // Security Check: Verify wallet balance before deducting or writing order
         let verifiedWalletUsed = 0;
+        let partnerDocForCheck: any = null;
         if (userId && walletUsed > 0) {
             try {
+                const sanityPartnerId = `partner-${userId}`;
+                // Ensure partner document exists first
+                await client.createIfNotExists({
+                    _type: 'partner',
+                    _id: sanityPartnerId,
+                    clerkId: userId
+                });
+
+                // Fetch latest partner doc from Sanity to get its _rev
+                partnerDocForCheck = await client.fetch(`*[_type == "partner" && _id == $id][0]`, { id: sanityPartnerId });
+                if (!partnerDocForCheck) {
+                    return NextResponse.json({ error: "Failed to load partner record" }, { status: 400 });
+                }
+
                 const currentBalance = await calculateAvailableBalance(userId);
                 
                 if (walletUsed > currentBalance) {
@@ -77,26 +92,40 @@ export async function POST(req: Request) {
             createdAt: new Date().toISOString()
         };
 
-        const createdOrder = await client.create(newOrder);
-
-        // 1. Deduct from buyer's wallet if they used it
-        if (userId && verifiedWalletUsed > 0) {
+        // Deduct from buyer's wallet if they used it (Deduct FIRST to prevent double spending)
+        if (userId && verifiedWalletUsed > 0 && partnerDocForCheck) {
             try {
-                // Ensure partner document exists
                 const sanityPartnerId = `partner-${userId}`;
-                await client.createIfNotExists({
-                    _type: 'partner',
-                    _id: sanityPartnerId,
-                    clerkId: userId
-                });
-                // Atomically update spentOnPurchases
+                // Atomically update spentOnPurchases with a revision check to prevent double spending
                 await client
                     .patch(sanityPartnerId)
+                    .ifRevisionId(partnerDocForCheck._rev)
                     .inc({ spentOnPurchases: verifiedWalletUsed })
                     .commit();
-            } catch (err) {
-                console.error("Failed to deduct wallet:", err);
+            } catch (err: any) {
+                console.error("Failed to deduct wallet due to conflict/error:", err);
+                return NextResponse.json({ error: "Wallet transaction conflict or balance changed. Please try again." }, { status: 409 });
             }
+        }
+
+        // Now create the order, with rollback if it fails
+        let createdOrder;
+        try {
+            createdOrder = await client.create(newOrder);
+        } catch (orderError) {
+            console.error("Order creation failed, rolling back wallet deduction:", orderError);
+            if (userId && verifiedWalletUsed > 0) {
+                try {
+                    const sanityPartnerId = `partner-${userId}`;
+                    await client
+                        .patch(sanityPartnerId)
+                        .inc({ spentOnPurchases: -verifiedWalletUsed })
+                        .commit();
+                } catch (rollbackError) {
+                    console.error("CRITICAL: Failed to rollback wallet deduction:", rollbackError);
+                }
+            }
+            throw orderError;
         }
 
         // 2. We no longer instantly reward the referrer. Payouts are dynamically calculated in the Circle Dashboard

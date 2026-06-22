@@ -347,12 +347,20 @@ export async function redeemReferralBalance(userId: string) {
         const referralCode = user.unsafeMetadata.referralCode as string;
         if (!referralCode) return { success: false, message: "No referral code found" };
 
-        const balance = await calculateAvailableBalance(userId);
+        // Ensure partner exists in Sanity
+        await syncUserToSanity(user);
+
+        // Fetch fresh partner document to get _rev and latest stats
         let sanityDoc = await client.fetch(`*[_type == "partner" && clerkId == $userId][0]`, { userId });
         if (!sanityDoc) {
             const email = user.emailAddresses?.[0]?.emailAddress;
             if (email) sanityDoc = await client.fetch(`*[_type == "partner" && email == $email][0]`, { email });
         }
+        if (!sanityDoc) {
+            return { success: false, message: "Referral account could not be found." };
+        }
+
+        const balance = await calculateAvailableBalance(userId);
         const redeemedAmount = (sanityDoc?.redeemedAmount as number) || (user.unsafeMetadata.redeemedAmount as number) || 0;
         
         if (balance < 500) {
@@ -362,10 +370,10 @@ export async function redeemReferralBalance(userId: string) {
             return { success: false, message: "Please link your bank account or UPI ID first" };
         }
 
-        // Atomically increment redeemedAmount in Sanity to prevent double-spending
-        await syncUserToSanity(user);
+        // Atomically increment redeemedAmount in Sanity using optimistic locking (revision check)
         const sanityPartner = await client
-            .patch(`partner-${user.id}`)
+            .patch(sanityDoc._id)
+            .ifRevisionId(sanityDoc._rev)
             .inc({ redeemedAmount: balance })
             .commit();
 
@@ -377,9 +385,12 @@ export async function redeemReferralBalance(userId: string) {
         });
         
         return { success: true, message: `Redemption request of ₹${balance.toLocaleString('en-IN')} submitted successfully. Funds will arrive in 2-3 business days.` };
-    } catch (error) {
+    } catch (error: any) {
         console.error("redeemReferralBalance error:", error);
-        return { success: false, message: "Redemption failed" };
+        if (error.name === 'ValidationError' || error.message?.includes('revision') || error.message?.includes('conflict')) {
+            return { success: false, message: "A redemption request is already in progress. Please refresh the page and try again." };
+        }
+        return { success: false, message: "Redemption failed. Please try again." };
     }
 }
 
