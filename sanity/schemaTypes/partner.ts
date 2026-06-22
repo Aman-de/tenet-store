@@ -61,6 +61,12 @@ export const partner = {
             initialValue: 0,
         },
         {
+            name: 'spentOnPurchases',
+            title: 'Spent on Purchases (₹)',
+            type: 'number',
+            initialValue: 0,
+        },
+        {
             name: 'payoutDetails',
             title: 'Payout Details (UPI or Bank)',
             type: 'string',

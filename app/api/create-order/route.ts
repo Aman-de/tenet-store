@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { client } from "@/lib/sanity";
 import { clerkClient } from "@clerk/nextjs/server";
+import { calculateAvailableBalance } from "@/app/actions";
 
 export async function POST(req: Request) {
     try {
@@ -15,9 +16,7 @@ export async function POST(req: Request) {
         let verifiedWalletUsed = 0;
         if (userId && walletUsed > 0) {
             try {
-                const clerk = await clerkClient();
-                const user = await clerk.users.getUser(userId);
-                const currentBalance = (user.unsafeMetadata.walletBalance as number) || 0;
+                const currentBalance = await calculateAvailableBalance(userId);
                 
                 if (walletUsed > currentBalance) {
                     return NextResponse.json({ error: "Insufficient wallet balance" }, { status: 400 });
@@ -30,10 +29,25 @@ export async function POST(req: Request) {
         }
 
         // Server-Side Referral Code Verification: Only allow on first purchase
+        // (if referralCode is explicitly provided for a discount)
         if (referralCode) {
             const pastOrdersCount = await client.fetch(`count(*[_type == "order" && email == $email && status != 'cancelled'])`, { email });
             if (pastOrdersCount > 0) {
                 return NextResponse.json({ error: "Referral discounts are only valid for your first purchase." }, { status: 400 });
+            }
+        }
+
+        // Auto-assign referral code for commission tracking if they joined via one
+        let finalReferralCode = referralCode || null;
+        if (userId && !finalReferralCode) {
+            try {
+                const clerk = await clerkClient();
+                const user = await clerk.users.getUser(userId);
+                if (user.unsafeMetadata?.referredByCode) {
+                    finalReferralCode = user.unsafeMetadata.referredByCode as string;
+                }
+            } catch (err) {
+                console.error("Failed to fetch referredByCode", err);
             }
         }
 
@@ -59,25 +73,27 @@ export async function POST(req: Request) {
             totalPrice: totalAmount,
             status: 'pending',
             shippingAddress: typeof shippingAddress === 'string' ? shippingAddress : JSON.stringify(shippingAddress),
-            referralCode: referralCode || null,
+            referralCode: finalReferralCode,
             createdAt: new Date().toISOString()
         };
 
         const createdOrder = await client.create(newOrder);
 
-        // --- Wallet & Referral Logic ---
         // 1. Deduct from buyer's wallet if they used it
         if (userId && verifiedWalletUsed > 0) {
             try {
-                const clerk = await clerkClient();
-                const user = await clerk.users.getUser(userId);
-                const currentBalance = (user.unsafeMetadata.walletBalance as number) || 0;
-                await clerk.users.updateUserMetadata(userId, {
-                    unsafeMetadata: {
-                        ...user.unsafeMetadata,
-                        walletBalance: Math.max(0, currentBalance - verifiedWalletUsed)
-                    }
+                // Ensure partner document exists
+                const sanityPartnerId = `partner-${userId}`;
+                await client.createIfNotExists({
+                    _type: 'partner',
+                    _id: sanityPartnerId,
+                    clerkId: userId
                 });
+                // Atomically update spentOnPurchases
+                await client
+                    .patch(sanityPartnerId)
+                    .inc({ spentOnPurchases: verifiedWalletUsed })
+                    .commit();
             } catch (err) {
                 console.error("Failed to deduct wallet:", err);
             }

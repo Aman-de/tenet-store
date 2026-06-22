@@ -25,22 +25,13 @@ interface ClientCircleDashboardProps {
         accountNumber?: string;
         ifscCode?: string;
     } | null;
-    referredPeople: Array<{
-        id: string;
-        name: string;
-        joinedAt: string;
-        email: string;
-        ordersCount: number;
-        totalSpent: number;
-    }>;
 }
 
 export default function ClientCircleDashboard({ 
     referralCode, 
     userId, 
     initialStats, 
-    initialBankDetails,
-    referredPeople
+    initialBankDetails
 }: ClientCircleDashboardProps) {
     const [copiedLink, setCopiedLink] = useState(false);
     const [copiedCode, setCopiedCode] = useState(false);
@@ -597,37 +588,14 @@ export default function ClientCircleDashboard({
                     <h3 className="font-bold text-xs uppercase tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED]">Your Referred Community</h3>
                 </div>
 
-                {referredPeople.length === 0 ? (
+                {initialStats.joinsCount === 0 ? (
                     <div className="py-8 text-center text-xs text-neutral-400 font-sans leading-relaxed">
                         No members have registered using your circle invitation key yet. Share your invite assets to build your community.
                     </div>
                 ) : (
-                    <div className="overflow-x-auto animate-in fade-in duration-300">
-                        <table className="w-full text-left border-collapse text-xs font-sans">
-                            <thead>
-                                <tr className="border-b border-neutral-150 text-[10px] font-bold uppercase tracking-wider text-neutral-400">
-                                    <th className="py-3 px-4 pl-0 font-bold">Patron</th>
-                                    <th className="py-3 px-4 font-bold">Joined On</th>
-                                    <th className="py-3 px-4 text-center font-bold">Purchases</th>
-                                    <th className="py-3 px-4 text-right pr-0 font-bold">Net Contribution</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-neutral-100 text-[#1A1A1A] dark:text-[#F4F1ED]">
-                                {referredPeople.map((person) => (
-                                    <tr key={person.id} className="hover:bg-neutral-50/40 transition-colors">
-                                        <td className="py-3 px-4 pl-0">
-                                            <div className="font-medium">{person.name}</div>
-                                            <div className="text-[10px] text-neutral-400 font-mono mt-0.5">{person.email}</div>
-                                        </td>
-                                        <td className="py-3 px-4 text-neutral-500">{person.joinedAt}</td>
-                                        <td className="py-3 px-4 text-center font-medium">{person.ordersCount}</td>
-                                        <td className="py-3 px-4 text-right font-medium pr-0">
-                                            ₹{person.totalSpent.toLocaleString('en-IN')}
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                    <div className="py-8 text-center text-xs text-neutral-600 dark:text-neutral-400 font-sans leading-relaxed">
+                        <div className="text-3xl font-serif text-[#1A1A1A] dark:text-[#F4F1ED] mb-2">{initialStats.joinsCount}</div>
+                        Patrons have successfully joined the Circle through your invitation key.
                     </div>
                 )}
             </div>

@@ -266,6 +266,51 @@ export async function linkBankAccount(userId: string, bankDetails: { upiId?: str
     }
 }
 
+export async function calculateAvailableBalance(userId: string): Promise<number> {
+    if (!userId) return 0;
+    try {
+        const { clerkClient } = await import("@clerk/nextjs/server");
+        const clerk = await clerkClient();
+        const user = await clerk.users.getUser(userId);
+        
+        const referralCode = user.unsafeMetadata.referralCode as string;
+        if (!referralCode) return 0;
+
+        const sanityDoc = await client.fetch(`*[_type == "partner" && clerkId == $userId][0]`, { userId });
+        
+        // 1. Base balance from signups (synced in walletBalance field)
+        const baseBalance = (sanityDoc?.walletBalance as number) || (user.unsafeMetadata.walletBalance as number) || 0;
+
+        // 2. Matured Order Commissions
+        let maturedOrdersCommission = 0;
+        const referralOrdersQuery = `*[_type == "order" && referralCode == $referralCode && status == "delivered"] {
+            totalPrice,
+            createdAt,
+            deliveredAt
+        }`;
+        const referralOrders = await client.fetch(referralOrdersQuery, { referralCode }) || [];
+        const now = Date.now();
+        const TEN_DAYS_MS = 10 * 24 * 60 * 60 * 1000;
+        
+        referralOrders.forEach((o: any) => {
+            const deliveredTime = o.deliveredAt ? new Date(o.deliveredAt).getTime() : new Date(o.createdAt).getTime() + (48 * 60 * 60 * 1000);
+            if (now - deliveredTime >= TEN_DAYS_MS) {
+                maturedOrdersCommission += Math.round((o.totalPrice || 0) * 0.15);
+            }
+        });
+
+        // 3. Deductions (Withdrawn to Bank + Spent on Store)
+        const redeemedAmount = (sanityDoc?.redeemedAmount as number) || (user.unsafeMetadata.redeemedAmount as number) || 0;
+        const spentOnPurchases = (sanityDoc?.spentOnPurchases as number) || 0;
+
+        // Total available is base + orders - redeemed - spent
+        return Math.max(0, baseBalance + maturedOrdersCommission - redeemedAmount - spentOnPurchases);
+    } catch (error) {
+        console.error("calculateAvailableBalance error:", error);
+        return 0;
+    }
+}
+
 export async function redeemReferralBalance(userId: string) {
     if (!userId) return { success: false, message: "Unauthorized" };
     try {
@@ -276,28 +321,9 @@ export async function redeemReferralBalance(userId: string) {
         const referralCode = user.unsafeMetadata.referralCode as string;
         if (!referralCode) return { success: false, message: "No referral code found" };
 
-        const referralOrdersQuery = `*[_type == "order" && referralCode == $referralCode && status == "delivered"] {
-            totalPrice,
-            createdAt,
-            deliveredAt
-        }`;
-        const referralOrders = await client.fetch(referralOrdersQuery, { referralCode }) || [];
-        
-        const now = Date.now();
-        const TEN_DAYS_MS = 10 * 24 * 60 * 60 * 1000;
-        // Start with the bonuses stored in walletBalance (from signups)
-        let availableCommission = (user.unsafeMetadata.walletBalance as number) || 0;
-
-        referralOrders.forEach((o: any) => {
-            const deliveredTime = o.deliveredAt ? new Date(o.deliveredAt).getTime() : new Date(o.createdAt).getTime() + (48 * 60 * 60 * 1000);
-            if (now - deliveredTime >= TEN_DAYS_MS) {
-                availableCommission += Math.round((o.totalPrice || 0) * 0.15);
-            }
-        });
-
+        const balance = await calculateAvailableBalance(userId);
         const sanityDoc = await client.fetch(`*[_type == "partner" && clerkId == $userId][0]`, { userId });
         const redeemedAmount = (sanityDoc?.redeemedAmount as number) || (user.unsafeMetadata.redeemedAmount as number) || 0;
-        const balance = Math.max(0, availableCommission - redeemedAmount);
         
         if (balance < 500) {
             return { success: false, message: `Minimum redeem amount is ₹500. Your available balance is ₹${balance}` };

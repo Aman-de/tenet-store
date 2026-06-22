@@ -88,59 +88,14 @@ export default async function InnerCirclePage() {
         });
     }
 
-    // Fetch Clerk users first to calculate signup bonuses and list referred people
-    let referredPeople: Array<{
-        id: string;
-        name: string;
-        joinedAt: string;
-        email: string;
-        ordersCount: number;
-        totalSpent: number;
-    }> = [];
-    let signupBonusTotal = 0;
+    // Calculate balances without the O(N) Clerk bottleneck
+    const { calculateAvailableBalance } = await import("@/app/actions");
+    const availableBalance = await calculateAvailableBalance(userId);
+    const sanityDoc = await client.fetch(`*[_type == "partner" && clerkId == $userId][0]`, { userId });
+    
+    const joinsCount = (sanityDoc?.joins as number) || (user.unsafeMetadata?.referralJoins as number) || 0;
+    const signupBonusTotal = (sanityDoc?.walletBalance as number) || 0; // Each join is 10 rupees atomically
 
-    try {
-        const { clerkClient } = await import("@clerk/nextjs/server");
-        const clerk = await clerkClient();
-        
-        // Paginate to safely get all users without hitting the 500 limit
-        const allUsers: any[] = [];
-        let offset = 0;
-        const limit = 500;
-        while (true) {
-            const usersBatch = await clerk.users.getUserList({ limit, offset });
-            allUsers.push(...usersBatch.data);
-            if (usersBatch.data.length < limit) break;
-            offset += limit;
-        }
-        
-        const referredUsers = allUsers.filter(u => u.unsafeMetadata?.referredByCode === referralCode);
-        signupBonusTotal = referredUsers.length * 15;
-        const referredEmails = referredUsers.map(u => u.emailAddresses[0]?.emailAddress).filter(Boolean);
-
-        // Fetch their orders from Sanity
-        const referredOrdersData = referredEmails.length > 0 ? (await client.fetch(
-            `*[_type == "order" && email in $emails] { email, status, totalPrice }`,
-            { emails: referredEmails }
-        ) || []) : [];
-
-        referredPeople = referredUsers.map(u => {
-            const emailAddress = u.emailAddresses[0]?.emailAddress;
-            const personOrders = referredOrdersData.filter((o: any) => o.email === emailAddress && o.status !== 'cancelled');
-            const totalContributed = personOrders.reduce((sum: number, o: any) => sum + (o.totalPrice || 0), 0);
-            
-            return {
-                id: u.id,
-                name: `${u.firstName || ""} ${u.lastName || ""}`.trim() || emailAddress?.split('@')[0] || "Patron",
-                joinedAt: new Date(u.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-                email: emailAddress ? `${emailAddress.slice(0, 3)}***@${emailAddress.split('@')[1]}` : "Private email",
-                ordersCount: personOrders.length,
-                totalSpent: totalContributed
-            };
-        });
-    } catch (err) {
-        console.error("Failed to fetch referred users:", err);
-    }
 
     // Fetch dynamic referral orders from Sanity
     const referralOrdersQuery = `*[_type == "order" && referralCode == $referralCode && status != "cancelled"] {
@@ -152,33 +107,16 @@ export default async function InnerCirclePage() {
     const referralOrders = await client.fetch(referralOrdersQuery, { referralCode }) || [];
     
     let totalSales = 0;
-    let availableCommission = signupBonusTotal; // Signup bonuses are instantly matured!
-    
-    const now = Date.now();
-    const TEN_DAYS_MS = 10 * 24 * 60 * 60 * 1000;
-
     referralOrders.forEach((o: any) => {
-        const price = o.totalPrice || 0;
-        totalSales += price;
-
-        if (o.status === 'delivered') {
-            // For testing: If deliveredAt is set, use it. Otherwise fallback to createdAt + 48h (simulated delivery)
-            const deliveredTime = o.deliveredAt ? new Date(o.deliveredAt).getTime() : new Date(o.createdAt).getTime() + (48 * 60 * 60 * 1000);
-            if (now - deliveredTime >= TEN_DAYS_MS) {
-                availableCommission += Math.round(price * 0.15);
-            }
-        }
+        totalSales += (o.totalPrice || 0);
     });
 
     const totalEarnings = Math.round(totalSales * 0.15) + signupBonusTotal;
-    const redeemedAmount = user.unsafeMetadata?.redeemedAmount as number || 0;
-    // Real available balance is the total matured commission minus whatever was already redeemed.
-    const availableBalance = Math.max(0, availableCommission - redeemedAmount);
+    const redeemedAmount = (sanityDoc?.redeemedAmount as number) || (user.unsafeMetadata?.redeemedAmount as number) || 0;
     
     const bankDetails = user.unsafeMetadata?.bankDetails as any || null;
-    const clicksCount = user.unsafeMetadata?.referralClicks as number || 0;
-    const joinsCount = referredPeople.length; // Use the actual count of verified referred users
-    const cartsCount = user.unsafeMetadata?.referralCarts as number || 0;
+    const clicksCount = (sanityDoc?.clicks as number) || (user.unsafeMetadata?.referralClicks as number) || 0;
+    const cartsCount = (sanityDoc?.carts as number) || (user.unsafeMetadata?.referralCarts as number) || 0;
 
     const initialStats = {
         totalSales,
@@ -209,7 +147,6 @@ export default async function InnerCirclePage() {
                     userId={userId}
                     initialStats={initialStats}
                     initialBankDetails={bankDetails}
-                    referredPeople={referredPeople}
                 />
 
                 {/* How it works */}
