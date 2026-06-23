@@ -322,11 +322,15 @@ export default function Navbar() {
                                             <Menu className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
                                         )}
                                     </button>
-                                    <Link href="/circle" className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center ml-0.5`} aria-label="Open circle">
-                                        <Crown className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
-                                    </Link>
+                                    
+                                    {!isProductPage && (
+                                        <Link href="/circle" className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center ml-0.5`} aria-label="Open circle">
+                                            <Crown className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
+                                        </Link>
+                                    )}
+                                    
                                     {isProductPage && (
-                                        <Link href="/" className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center ml-0.5`}>
+                                        <Link href="/" className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center ml-0.5`} aria-label="Go to Home">
                                             <Home className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
                                         </Link>
                                     )}
@@ -339,7 +343,7 @@ export default function Navbar() {
                                     </span>
                                 </Link>
 
-                                {/* RIGHT SIDE: Cart */}
+                                {/* RIGHT SIDE: Cart and Circle */}
                                 <div className="flex items-center gap-1 z-10 flex-1 justify-end">
                                     <button className={`relative w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Open cart" onClick={openCart}>
                                         <ShoppingBag className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
@@ -349,6 +353,12 @@ export default function Navbar() {
                                             </span>
                                         )}
                                     </button>
+                                    
+                                    {isProductPage && (
+                                        <Link href="/circle" className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center ml-0.5`} aria-label="Open circle">
+                                            <Crown className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
+                                        </Link>
+                                    )}
                                 </div>
                             </div>
                         )}
