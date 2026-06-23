@@ -1,7 +1,7 @@
 export default function CollectionLoading() {
     return (
         <main className="min-h-screen pb-20 animate-pulse">
-            <section className="max-w-7xl mx-auto px-4 md:px-6 pt-6">
+            <section className="max-w-7xl mx-auto px-4 md:px-6 pt-[72px] lg:pt-6">
                 {/* Title and Description Skeletons */}
                 <div className="w-48 h-8 md:h-10 bg-neutral-200 dark:bg-neutral-800 mb-4 rounded" />
                 <div className="w-3/4 max-w-lg h-4 bg-neutral-200 dark:bg-neutral-800 mb-8 rounded" />

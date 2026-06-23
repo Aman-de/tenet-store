@@ -20,6 +20,10 @@ export default function InstallPWA() {
             return;
         }
 
+        if (localStorage.getItem('pwa_dismissed') === 'true') {
+            return;
+        }
+
         const userAgent = window.navigator.userAgent.toLowerCase();
         const isIosDevice = /iphone|ipad|ipod/.test(userAgent);
         setIsIOS(isIosDevice);
@@ -27,17 +31,28 @@ export default function InstallPWA() {
         const handleBeforeInstallPrompt = (e: Event) => {
             e.preventDefault();
             setDeferredPrompt(e);
-            setIsVisible(true);
         };
 
         window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
 
+        // Show banner only after scroll or timeout
+        const handleScroll = () => {
+            if (window.scrollY > 600) {
+                setIsVisible(true);
+                window.removeEventListener('scroll', handleScroll);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+
         const timer = setTimeout(() => {
             setIsVisible(true);
-        }, 1000);
+            window.removeEventListener('scroll', handleScroll);
+        }, 20000); // 20 seconds timeout
 
         return () => {
             clearTimeout(timer);
+            window.removeEventListener('scroll', handleScroll);
             window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
         };
     }, []);
@@ -91,7 +106,10 @@ export default function InstallPWA() {
                         </button>
                         
                         <button 
-                            onClick={() => setIsVisible(false)}
+                            onClick={() => {
+                                localStorage.setItem('pwa_dismissed', 'true');
+                                setIsVisible(false);
+                            }}
                             className="p-1 text-neutral-400 hover:text-neutral-600 dark:hover:text-white transition-colors shrink-0"
                             aria-label="Close"
                         >
