@@ -260,48 +260,104 @@ export default function Navbar() {
                     
                     {/* MOBILE LAYOUT (lg:hidden) */}
                     <div className="flex lg:hidden flex-col w-full gap-1">
-                        <div className="flex w-full items-center justify-between relative py-0.5">
-                            {/* LEFT SIDE: Menu, Circle & Home buttons */}
-                            <div className="flex items-center gap-1.5 z-10 flex-1 justify-start">
-                                <button className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Toggle mobile menu" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-                                    {isMobileMenuOpen ? (
-                                        <X className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
-                                    ) : (
-                                        <Menu className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
-                                    )}
-                                </button>
-                                <Link href="/circle" className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center ml-0.5`} aria-label="Open circle">
-                                    <Crown className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
+                        {isHome ? (
+                            /* HOME PAGE MOBILE LAYOUT */
+                            <div className="flex w-full items-center justify-between relative py-0.5">
+                                {/* LEFT SIDE: Menu & Search */}
+                                <div className="flex items-center gap-1.5 z-10 flex-1 justify-start">
+                                    <button className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center shrink-0`} aria-label="Toggle mobile menu" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                                        {isMobileMenuOpen ? (
+                                            <X className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
+                                        ) : (
+                                            <Menu className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
+                                        )}
+                                    </button>
+                                    
+                                    {/* Little search bar in the place of circle icon */}
+                                    <form onSubmit={handleSearchSubmit} className="flex-1 min-w-[70px] max-w-[130px] pointer-events-auto">
+                                        <div className="relative flex items-center bg-[#F4F1ED]/80 dark:bg-[#1C1C1E] border border-black/5 dark:border-white/5 rounded-full px-2 h-[36px] transition-all focus-within:border-black/25 dark:focus-within:border-white/25 shadow-[inset_0_1px_2px_rgba(0,0,0,0.02)]">
+                                            <Search className="w-3 h-3 text-neutral-400 dark:text-neutral-500 shrink-0" strokeWidth={2.5} />
+                                            <input 
+                                                type="text"
+                                                value={searchQuery}
+                                                onChange={(e) => setSearchQuery(e.target.value)}
+                                                placeholder="Search..."
+                                                className="w-full bg-transparent border-none outline-none pl-1.5 text-[10px] font-sans placeholder-neutral-400 dark:placeholder-neutral-500 text-neutral-800 dark:text-[#F4F1ED]"
+                                            />
+                                        </div>
+                                    </form>
+                                </div>
+
+                                {/* CENTER: Logo (Absolute Centered) */}
+                                <Link href="/" className="absolute left-1/2 -translate-x-1/2 z-10 flex justify-center w-fit">
+                                    <span className={`text-xl sm:text-2xl font-serif font-bold tracking-widest sm:tracking-[0.2em] uppercase group-hover:opacity-80 transition-colors duration-500 ${logoColor} drop-shadow-sm ml-0.5`}>
+                                        TENET
+                                    </span>
                                 </Link>
-                                {isProductPage && (
-                                    <Link href="/" className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center ml-0.5`}>
-                                        <Home className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
+
+                                {/* RIGHT SIDE: Switch & Cart */}
+                                <div className="flex items-center gap-1.5 z-10 flex-1 justify-end">
+                                    {/* Men and women switch to the right of the logo */}
+                                    <div className="shrink-0 origin-right">
+                                        <GenderToggle idSuffix="mobile-top-bar" isDesktop={false} isMini={true} />
+                                    </div>
+                                    
+                                    {/* Cart icon */}
+                                    <button className={`relative w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center shrink-0`} aria-label="Open cart" onClick={openCart}>
+                                        <ShoppingBag className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
+                                        {cartCount > 0 && (
+                                            <span className="absolute -top-0.5 -right-0.5 min-w-[14px] h-[14px] rounded-full border border-white dark:border-neutral-900 flex items-center justify-center text-[8px] text-white font-sans font-bold px-1" style={{ backgroundColor: accentColor }}>
+                                                {cartCount}
+                                            </span>
+                                        )}
+                                    </button>
+                                </div>
+                            </div>
+                        ) : (
+                            /* STANDARD MOBILE LAYOUT (OTHER PAGES) */
+                            <div className="flex w-full items-center justify-between relative py-0.5">
+                                {/* LEFT SIDE: Menu, Circle & Home buttons */}
+                                <div className="flex items-center gap-1.5 z-10 flex-1 justify-start">
+                                    <button className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Toggle mobile menu" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                                        {isMobileMenuOpen ? (
+                                            <X className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
+                                        ) : (
+                                            <Menu className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
+                                        )}
+                                    </button>
+                                    <Link href="/circle" className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center ml-0.5`} aria-label="Open circle">
+                                        <Crown className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
                                     </Link>
-                                )}
-                            </div>
-
-                            {/* CENTER: Logo (Absolute Centered) */}
-                            <Link href="/" className="absolute left-1/2 -translate-x-1/2 z-10 flex justify-center w-fit">
-                                <span className={`text-xl sm:text-2xl font-serif font-bold tracking-widest sm:tracking-[0.2em] uppercase group-hover:opacity-80 transition-colors duration-500 ${logoColor} drop-shadow-sm ml-0.5`}>
-                                    TENET
-                                </span>
-                            </Link>
-
-                            {/* RIGHT SIDE: Cart */}
-                            <div className="flex items-center gap-1 z-10 flex-1 justify-end">
-                                <button className={`relative w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Open cart" onClick={openCart}>
-                                    <ShoppingBag className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
-                                    {cartCount > 0 && (
-                                        <span className="absolute -top-0.5 -right-0.5 min-w-[14px] h-[14px] rounded-full border border-white dark:border-neutral-900 flex items-center justify-center text-[8px] text-white font-sans font-bold px-1" style={{ backgroundColor: accentColor }}>
-                                            {cartCount}
-                                        </span>
+                                    {isProductPage && (
+                                        <Link href="/" className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center ml-0.5`}>
+                                            <Home className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
+                                        </Link>
                                     )}
-                                </button>
-                            </div>
-                        </div>
+                                </div>
 
-                        {/* Search Bar and Gender Switcher rendered below the top bar */}
-                        {!isProductPage && (
+                                {/* CENTER: Logo (Absolute Centered) */}
+                                <Link href="/" className="absolute left-1/2 -translate-x-1/2 z-10 flex justify-center w-fit">
+                                    <span className={`text-xl sm:text-2xl font-serif font-bold tracking-widest sm:tracking-[0.2em] uppercase group-hover:opacity-80 transition-colors duration-500 ${logoColor} drop-shadow-sm ml-0.5`}>
+                                        TENET
+                                    </span>
+                                </Link>
+
+                                {/* RIGHT SIDE: Cart */}
+                                <div className="flex items-center gap-1 z-10 flex-1 justify-end">
+                                    <button className={`relative w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Open cart" onClick={openCart}>
+                                        <ShoppingBag className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
+                                        {cartCount > 0 && (
+                                            <span className="absolute -top-0.5 -right-0.5 min-w-[14px] h-[14px] rounded-full border border-white dark:border-neutral-900 flex items-center justify-center text-[8px] text-white font-sans font-bold px-1" style={{ backgroundColor: accentColor }}>
+                                                {cartCount}
+                                            </span>
+                                        )}
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Search Bar and Gender Switcher rendered below the top bar (only on other pages) */}
+                        {!isProductPage && !isHome && (
                             <div className="flex items-center gap-2.5 w-full px-1 py-1.5 pointer-events-auto">
                                 <div className="flex-1 min-w-0">
                                     <SearchBar />
