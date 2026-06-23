@@ -73,7 +73,7 @@ export default function HomePageClient({ products, collections }: HomePageClient
                     <h2 className="font-serif text-[22px] lg:text-3xl font-bold tracking-wider text-neutral-800 dark:text-[#F4F1ED] uppercase">
                         Bestsellers
                     </h2>
-                    <Link href={`/collection/${isWoman ? 'sets' : 'shirts'}`} className="flex items-center gap-1 text-[10px] lg:text-xs font-bold uppercase tracking-widest text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors">
+                    <Link href={`/collection/${isWoman ? 'kurti' : 'shirts'}`} className="flex items-center gap-1 text-[10px] lg:text-xs font-bold uppercase tracking-widest text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors">
                         <span>View all</span>
                         <ArrowRight className="w-3 lg:w-4 h-3 lg:h-4" />
                     </Link>

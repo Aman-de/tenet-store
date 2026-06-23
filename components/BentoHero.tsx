@@ -79,9 +79,10 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
     filteredCollections = filteredCollections.slice(0, 4);
 
     // Embla Carousel for Hero Images (Spotlights + Main Image)
-    const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [Autoplay({ delay: 5000, stopOnInteraction: true })]);
-    const scrollPrev = () => emblaApi?.scrollPrev();
-    const scrollNext = () => emblaApi?.scrollNext();
+    const [desktopEmblaRef, desktopEmblaApi] = useEmblaCarousel({ loop: true }, [Autoplay({ delay: 5000, stopOnInteraction: true })]);
+    const [mobileEmblaRef] = useEmblaCarousel({ loop: true }, [Autoplay({ delay: 5000, stopOnInteraction: true })]);
+    const scrollPrev = () => desktopEmblaApi?.scrollPrev();
+    const scrollNext = () => desktopEmblaApi?.scrollNext();
 
     const mainHeroSrc = gender === "man" ? "/images/hero-main.webp" : "/images/hero-women.webp";
     const accentColor = "var(--accent-color)";
@@ -103,7 +104,7 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
             <div className="hidden lg:flex w-full h-full gap-6">
                 {/* LEFT: Hero Section (Auto Scrolling) */}
                 <div className="relative w-full h-[65vh] lg:w-7/12 xl:w-2/3 lg:h-full rounded-none lg:rounded-2xl overflow-hidden group bg-neutral-200 dark:bg-neutral-800">
-                    <div ref={emblaRef} className="overflow-hidden w-full h-full">
+                    <div ref={desktopEmblaRef} className="overflow-hidden w-full h-full">
                         <div className="flex w-full h-full">
                             {/* Slide 1: Main Editorial */}
                             <div className="relative flex-[0_0_100%] h-full w-full">
@@ -224,43 +225,108 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
 
             {/* MOBILE LAYOUT (lg:hidden) */}
             <div className="lg:hidden flex flex-col w-full gap-4 px-4 pb-2">
-                {/* 1. Hero Banner */}
-                <div className={`relative w-full h-[220px] rounded-2xl overflow-hidden ${cardBg} border border-neutral-200/50 dark:border-white/5 flex items-center`}>
-                    <div className="absolute right-0 top-0 bottom-0 w-[60%] h-full overflow-hidden">
-                        <Image
-                            src={mainHeroSrc}
-                            alt="Main Hero"
-                            fill
-                            sizes="60vw"
-                            priority
-                            className="object-cover object-[85%_center] scale-[1.04]"
-                        />
-                        <div className={`absolute inset-y-0 -left-2 w-48 bg-gradient-to-r ${cardGradientFrom} ${cardGradientTo}`} />
-                    </div>
-                    
-                    <div className="relative z-10 w-[55%] pl-5 flex flex-col items-start justify-center pointer-events-none">
-                        <h1 className="font-serif text-xl sm:text-2xl font-bold tracking-tight text-neutral-800 dark:text-[#F4F1ED] leading-[1.25] mb-1.5 pointer-events-auto">
-                            {isWoman ? (
-                                <>Premium Cotton<br/>Kurtis & Linen<br/>Essentials</>
-                            ) : (
-                                <>Premium Linen<br/>Shirts & Tailored<br/>Essentials</>
-                            )}
-                        </h1>
-                        <div className="flex items-center gap-1 mb-4 text-[9px] text-neutral-500 dark:text-neutral-400">
-                            <span className="text-[#FF9900]">★★★★★</span>
-                            <span className="font-bold text-neutral-700 dark:text-neutral-300">4.8</span>
-                            <span>|</span>
-                            <span>{isWoman ? "Rated by 6,321 Women" : "Rated by 4,892 Men"}</span>
+                {/* 1. Hero Banner Carousel */}
+                <div ref={mobileEmblaRef} className="overflow-hidden w-full rounded-2xl">
+                    <div className="flex w-full">
+                        {/* Slide 1: Main Static Hero */}
+                        <div className={`relative flex-[0_0_100%] w-full h-[220px] overflow-hidden ${cardBg} border border-neutral-200/50 dark:border-white/5 flex items-center`}>
+                            <div className="absolute right-0 top-0 bottom-0 w-[60%] h-full overflow-hidden">
+                                <Image
+                                    src={mainHeroSrc}
+                                    alt="Main Hero"
+                                    fill
+                                    sizes="60vw"
+                                    priority
+                                    className="object-cover object-[85%_center] scale-[1.04]"
+                                />
+                                <div className={`absolute inset-y-0 -left-2 w-48 bg-gradient-to-r ${cardGradientFrom} ${cardGradientTo}`} />
+                            </div>
+                            
+                            <div className="relative z-10 w-[55%] pl-5 flex flex-col items-start justify-center pointer-events-none">
+                                <h1 className="font-serif text-xl sm:text-2xl font-bold tracking-tight text-neutral-800 dark:text-[#F4F1ED] leading-[1.25] mb-1.5 pointer-events-auto">
+                                    {isWoman ? (
+                                        <>Premium Cotton<br/>Kurtis & Linen<br/>Essentials</>
+                                    ) : (
+                                        <>Premium Linen<br/>Shirts & Tailored<br/>Essentials</>
+                                    )}
+                                </h1>
+                                <div className="flex items-center gap-1 mb-4 text-[9px] text-neutral-500 dark:text-neutral-400">
+                                    <span className="text-[#FF9900]">★★★★★</span>
+                                    <span className="font-bold text-neutral-700 dark:text-neutral-300">4.8</span>
+                                    <span>|</span>
+                                    <span>{isWoman ? "Rated by 6,321 Women" : "Rated by 4,892 Men"}</span>
+                                </div>
+                                <Link 
+                                    href="#new-arrivals" 
+                                    className="flex items-center justify-between gap-3 bg-[#1A1A1A] dark:bg-[#F4F1ED] text-white dark:text-[#1A1A1A] px-4 py-2.5 rounded-full hover:scale-[1.02] active:scale-[0.98] transition-all shadow-sm pointer-events-auto"
+                                >
+                                    <span className="text-[9px] font-bold uppercase tracking-wider">
+                                        Shop Bestsellers
+                                    </span>
+                                    <ArrowRight className="w-3.5 h-3.5" />
+                                </Link>
+                            </div>
                         </div>
-                        <Link 
-                            href="#new-arrivals" 
-                            className="flex items-center justify-between gap-3 bg-[#1A1A1A] dark:bg-[#F4F1ED] text-white dark:text-[#1A1A1A] px-4 py-2.5 rounded-full hover:scale-[1.02] active:scale-[0.98] transition-all shadow-sm"
-                        >
-                            <span className="text-[9px] font-bold uppercase tracking-wider">
-                                Shop Bestsellers
-                            </span>
-                            <ArrowRight className="w-3.5 h-3.5" />
-                        </Link>
+
+                        {/* Product Spotlight Slides */}
+                        {(() => {
+                            const targetHandles = [
+                                'chocolate-tassel-kurti-wide-leg-denim-co-ord-set',
+                                'jaipur-print-kurti',
+                                'blue-sky-co-ord-set',
+                                'aurelia-cotton-kurti',
+                                'silk-blend-camp-collar-shirt'
+                            ];
+                            
+                            // Get products that match handles, or fallback to first few spotlights
+                            const featuredProducts = targetHandles
+                                .map(handle => spotlightProducts.find(p => p.handle === handle))
+                                .filter(Boolean) as Product[];
+                                
+                            const finalProducts = featuredProducts.length > 0 ? featuredProducts : spotlightProducts.slice(0, 5);
+
+                            return finalProducts.map(product => {
+                                const heroImage = product.images[0] || product.images[1];
+                                return (
+                                    <div key={product.id} className={`relative flex-[0_0_100%] w-full h-[220px] overflow-hidden ${cardBg} border border-neutral-200/50 dark:border-white/5 flex items-center`}>
+                                        <div className="absolute right-0 top-0 bottom-0 w-[60%] h-full overflow-hidden">
+                                            {heroImage && (
+                                                <Image
+                                                    src={heroImage}
+                                                    alt={product.title}
+                                                    fill
+                                                    sizes="60vw"
+                                                    className="object-cover object-[85%_center] scale-[1.04]"
+                                                    unoptimized={heroImage.startsWith("http")}
+                                                />
+                                            )}
+                                            <div className={`absolute inset-y-0 -left-2 w-48 bg-gradient-to-r ${cardGradientFrom} ${cardGradientTo}`} />
+                                        </div>
+                                        
+                                        <div className="relative z-10 w-[55%] pl-5 flex flex-col items-start justify-center pointer-events-none">
+                                            <span className="text-[9px] uppercase font-bold tracking-widest text-[#FF9900] mb-1">
+                                                Featured
+                                            </span>
+                                            <h1 className="font-serif text-lg sm:text-xl font-bold tracking-tight text-neutral-800 dark:text-[#F4F1ED] leading-[1.25] mb-2 pointer-events-auto line-clamp-3">
+                                                {product.title}
+                                            </h1>
+                                            <div className="flex items-center gap-1.5 font-sans mb-4 pointer-events-auto">
+                                                <span className="font-bold text-sm" style={{ color: accentColor }}>₹{product.price.toLocaleString('en-IN')}</span>
+                                            </div>
+                                            <Link 
+                                                href={`/product/${product.handle}`} 
+                                                className="flex items-center justify-between gap-3 bg-[#1A1A1A] dark:bg-[#F4F1ED] text-white dark:text-[#1A1A1A] px-4 py-2.5 rounded-full hover:scale-[1.02] active:scale-[0.98] transition-all shadow-sm pointer-events-auto w-fit"
+                                            >
+                                                <span className="text-[9px] font-bold uppercase tracking-wider">
+                                                    Buy Now
+                                                </span>
+                                                <ArrowRight className="w-3.5 h-3.5" />
+                                            </Link>
+                                        </div>
+                                    </div>
+                                );
+                            });
+                        })()}
                     </div>
                 </div>
 

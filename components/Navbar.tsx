@@ -157,16 +157,16 @@ export default function Navbar() {
             if (active) return "text-white dark:text-[#1A1A1A] dark:text-[#F4F1ED]";
             return solid ? "text-[#1A1A1A] dark:text-[#F4F1ED] font-medium" : "text-white/80 font-medium";
         };
-        const manWidth = isMini ? "w-10" : "w-14 sm:w-20";
-        const womanWidth = isMini ? "w-12" : "w-16 sm:w-20";
-        const paddingY = isMini ? "py-1" : "py-1.5 sm:py-2";
-        const textSize = isMini ? "text-[8px]" : "text-[10px] sm:text-xs";
+        const manWidth = isMini ? "w-[46px]" : "w-14 sm:w-20";
+        const womanWidth = isMini ? "w-[56px]" : "w-16 sm:w-20";
+        const layoutClasses = isMini ? "h-[32px] flex items-center justify-center" : "py-1.5 sm:py-2 inline-block";
+        const textSize = isMini ? "text-[9px]" : "text-[10px] sm:text-xs";
         
         return (
             <div className={`relative flex items-center rounded-full transition-colors duration-500 backdrop-blur-md ${toggleBg} ${isMini ? 'p-0.5' : 'p-1 sm:p-1'}`}>
                 <button 
                     onClick={() => setGender('man')}
-                    className={`relative z-10 tracking-widest uppercase transition-colors duration-300 ${manWidth} ${paddingY} ${textSize} ${btnText(gender === 'man')}`}
+                    className={`relative z-10 tracking-widest uppercase transition-colors duration-300 ${manWidth} ${layoutClasses} ${textSize} ${btnText(gender === 'man')}`}
                 >
                     MEN
                     {gender === 'man' && (
@@ -180,7 +180,7 @@ export default function Navbar() {
                 </button>
                 <button 
                     onClick={() => setGender('woman')}
-                    className={`relative tracking-widest uppercase transition-colors z-10 ${womanWidth} ${paddingY} ${textSize} ${btnText(gender === 'woman')}`}
+                    className={`relative tracking-widest uppercase transition-colors z-10 ${womanWidth} ${layoutClasses} ${textSize} ${btnText(gender === 'woman')}`}
                 >
                     WOMEN
                     {gender === 'woman' && (

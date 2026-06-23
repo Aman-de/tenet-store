@@ -1572,27 +1572,43 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         {[
                             {
                                 id: 'realistic-review-1',
-                                name: 'Arjun Sen',
+                                name: isWoman ? 'Pooja S.' : 'Arjun Sen',
                                 rating: 5,
                                 date: '2026-06-12',
-                                comment: 'Incredible fit and fabric. I was skeptical about ordering a set online, but the material feels incredibly premium and it fits perfectly. Definitely my go-to outfit now.',
+                                comment: isWoman 
+                                    ? 'Bohot pyara suit hai, fitting ekdum perfect aayi. Material bhi kaafi soft aur premium feel hota hai. Definitely worth the price!' 
+                                    : 'Incredible fit and fabric. Material feels incredibly premium and it fits perfectly.',
                                 images: [displayImages[0] || '']
                             },
                             {
                                 id: 'realistic-review-2',
-                                name: 'Rohan Sharma',
+                                name: isWoman ? 'Neha Sharma' : 'Rohan Sharma',
                                 rating: 5,
                                 date: '2026-06-08',
-                                comment: 'Exceeded expectations. The tailoring is flawless and it holds its shape even after multiple washes. The color is rich and exactly as pictured.',
+                                comment: isWoman 
+                                    ? 'Fabric quality ekdum top class hai. Pehanne ke baad look bohot amazing aata hai. Wash karne ke baad bhi color fade nahi hua.'
+                                    : 'Exceeded expectations. The tailoring is flawless and it holds its shape even after multiple washes.',
                                 images: [displayImages[1] || '']
                             },
                             {
                                 id: 'realistic-review-3',
-                                name: 'Jyoti K.',
+                                name: isWoman ? 'Kritika R.' : 'Jyoti K.',
                                 rating: 4,
                                 date: '2026-05-28',
-                                comment: 'Beautiful piece, very comfortable. I get compliments every time I wear this. Highly recommend for both casual and semi-formal settings.',
+                                comment: isWoman 
+                                    ? 'Design aur embroidery bohot sundar hai. Office aur casual wear dono ke liye best hai. Delivery bhi fast thi.'
+                                    : 'Beautiful piece, very comfortable. I get compliments every time I wear this. Highly recommend.',
                                 images: [displayImages[2] || '']
+                            },
+                            {
+                                id: 'realistic-review-4',
+                                name: isWoman ? 'Anjali V.' : 'Vikram S.',
+                                rating: 5,
+                                date: '2026-05-15',
+                                comment: isWoman
+                                    ? 'Mujhe yeh kurti set bohot accha laga! Color exactly waise hi hai jaise picture mein dikhaya gaya tha. Very elegant.'
+                                    : 'Looks exactly like the pictures. The fit is true to size and it feels very comfortable to wear all day.',
+                                images: []
                             },
                             ...reviews
                         ].map((review: any) => (
