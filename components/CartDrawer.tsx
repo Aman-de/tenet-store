@@ -112,7 +112,7 @@ const CartItemRow = ({ item, removeFromCart, updateQuantity, toggleWishlist, isI
                         setSwipeState('idle');
                     }
                 }}
-                className="relative bg-[#FDFBF7] dark:bg-[#0A0A0A] flex gap-4 z-10 w-full cursor-grab active:cursor-grabbing"
+                className="relative bg-transparent flex gap-4 z-10 w-full cursor-grab active:cursor-grabbing"
             >
                 <div className="relative w-20 h-24 bg-neutral-100 dark:bg-[#141414] shrink-0">
                     {item.images?.[0] && typeof item.images[0] === 'string' && item.images[0].length > 0 ? (
@@ -183,6 +183,8 @@ export default function CartDrawer() {
     } = useStore();
     const { gender } = useGender();
     const isWoman = gender === "woman";
+    const drawerBg = isWoman ? "bg-[#FCF0F2] dark:bg-[#160F11]" : "bg-[#F0F4F8] dark:bg-[#0E1217]";
+    const cardBg = isWoman ? "bg-[#FFF2F4] dark:bg-[#1C1416]" : "bg-[#F4F8FC] dark:bg-[#12161B]";
     const accentColor = "var(--accent-color)";
     const [mounted, setMounted] = useState(false);
     const router = useRouter();
@@ -661,10 +663,10 @@ export default function CartDrawer() {
                         animate={{ x: 0 }}
                         exit={{ x: "100%" }}
                         transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                        className="fixed top-0 right-0 h-full w-full md:w-[450px] bg-[#FDFBF7] dark:bg-[#0A0A0A] shadow-2xl z-[70] flex flex-col border-l border-neutral-200 dark:border-neutral-800 md:rounded-l-2xl"
+                        className={`fixed top-0 right-0 h-full w-full md:w-[450px] ${drawerBg} shadow-2xl z-[70] flex flex-col border-l border-neutral-200 dark:border-neutral-800 md:rounded-l-2xl`}
                     >
                         {/* Header */}
-                        <div className="flex items-center justify-between p-6 border-b border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#111111]">
+                        <div className="flex items-center justify-between p-6 border-b border-neutral-200 dark:border-neutral-800 bg-transparent">
                             <div className="flex items-center gap-3">
                                 {checkoutStep === 'address' && (
                                     <button aria-label="Back to cart" onClick={() => setCheckoutStep('cart')} className="p-1 hover:bg-neutral-100 dark:hover:bg-[#1A1A1A] dark:bg-[#141414] rounded-full transition-colors mr-1">
@@ -686,7 +688,7 @@ export default function CartDrawer() {
                         {checkoutStep === 'cart' ? (
                             <>
                                 {/* Smart Progress Bar */}
-                                <div className="p-4 bg-neutral-50 dark:bg-[#0A0A0A] border-b border-neutral-200 dark:border-neutral-800">
+                                <div className="p-4 bg-neutral-100/30 dark:bg-black/10 border-b border-neutral-200 dark:border-neutral-800">
                                     <div className="mb-2 text-xs font-medium text-center uppercase tracking-wide text-[#1A1A1A] dark:text-[#F4F1ED]">
                                         {isFreeShipping ? (
                                             <span className="text-green-800 dark:text-green-400 font-bold">🎉 FREE Standard Shipping Unlocked (Pay Online)</span>
@@ -783,7 +785,7 @@ export default function CartDrawer() {
                                 )}
 
                                 {/* Footer */}
-                                <div className="p-6 border-t border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#111111] space-y-4 shadow-[0_-5px_20px_rgba(0,0,0,0.05)]">
+                                <div className={`p-6 border-t border-neutral-200 dark:border-neutral-800 ${cardBg} space-y-4 shadow-[0_-5px_20px_rgba(0,0,0,0.05)]`}>
                                     <div className="flex items-center justify-between font-serif text-lg">
                                         <span>Subtotal</span>
                                         <span className="line-through text-neutral-500 mr-2 text-sm">₹{rawSubtotal.toLocaleString('en-IN')}</span>
@@ -873,7 +875,7 @@ export default function CartDrawer() {
                                 <div className="space-y-4 flex-1">
                                     {(!isEditingAddress && address.street && address.city) ? (
                                         <div className="space-y-6">
-                                            <div className="p-4 border border-neutral-200 dark:border-neutral-800 rounded-2xl bg-neutral-50 dark:bg-[#0A0A0A] relative group">
+                                            <div className={`p-4 border border-neutral-200 dark:border-neutral-800 rounded-2xl ${cardBg} relative group`}>
                                                 <div className="flex justify-between items-start mb-2">
                                                     <span className="text-xs font-bold uppercase tracking-widest text-[#1A1A1A] dark:text-[#F4F1ED]">Main Address</span>
                                                     <button 
@@ -1113,8 +1115,8 @@ export default function CartDrawer() {
                                                 onClick={() => setPaymentMethod('razorpay')}
                                                 className={`flex items-center justify-between p-4 border rounded-xl cursor-pointer transition-all ${
                                                     paymentMethod === 'razorpay' 
-                                                        ? 'bg-neutral-50 dark:bg-[#0A0A0A]' 
-                                                        : 'border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#111111] hover:border-neutral-300'
+                                                        ? 'bg-black/5 dark:bg-white/5' 
+                                                        : `border-neutral-200 dark:border-neutral-800 ${cardBg} hover:border-neutral-300`
                                                 }`}
                                                 style={paymentMethod === 'razorpay' ? { borderColor: accentColor } : {}}
                                             >
@@ -1137,8 +1139,8 @@ export default function CartDrawer() {
                                                 onClick={() => setPaymentMethod('cod')}
                                                 className={`flex items-center justify-between p-4 border rounded-xl cursor-pointer transition-all ${
                                                     paymentMethod === 'cod' 
-                                                        ? 'bg-neutral-50 dark:bg-[#0A0A0A]' 
-                                                        : 'border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#111111] hover:border-neutral-300'
+                                                        ? 'bg-black/5 dark:bg-white/5' 
+                                                        : `border-neutral-200 dark:border-neutral-800 ${cardBg} hover:border-neutral-300`
                                                 }`}
                                                 style={paymentMethod === 'cod' ? { borderColor: accentColor } : {}}
                                             >

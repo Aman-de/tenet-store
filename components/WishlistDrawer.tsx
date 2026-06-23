@@ -1,6 +1,7 @@
 "use client";
 
 import { useStore } from "@/lib/store";
+import { useGender } from "@/context/GenderContext";
 import { trackAddToCart } from "@/lib/analytics";
 import { motion, AnimatePresence, useMotionValue, useTransform, animate } from "framer-motion";
 import { X, Heart, ShoppingBag, Trash2 } from "lucide-react";
@@ -108,7 +109,7 @@ const WishlistItemRow = ({ item, removeFromWishlist, addToCart }: any) => {
                         setSwipeState('idle');
                     }
                 }}
-                className="relative bg-[#FDFBF7] dark:bg-[#0A0A0A] flex gap-4 z-10 w-full cursor-grab active:cursor-grabbing"
+                className="relative bg-transparent flex gap-4 z-10 w-full cursor-grab active:cursor-grabbing"
             >
                 <Link href={`/product/${item.handle}`} className="relative w-24 h-32 bg-neutral-100 dark:bg-[#141414] shrink-0 block overflow-hidden group pointer-events-none">
                     {item.images?.[0] && typeof item.images[0] === 'string' && item.images[0].length > 0 ? (
@@ -165,6 +166,9 @@ const WishlistItemRow = ({ item, removeFromWishlist, addToCart }: any) => {
 
 export default function WishlistDrawer() {
     const { isWishlistOpen, closeWishlist, wishlist, removeFromWishlist, addToCart } = useStore();
+    const { gender } = useGender();
+    const isWoman = gender === "woman";
+    const drawerBg = isWoman ? "bg-[#FCF0F2] dark:bg-[#160F11]" : "bg-[#F0F4F8] dark:bg-[#0E1217]";
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
@@ -204,10 +208,10 @@ export default function WishlistDrawer() {
                         animate={{ x: 0 }}
                         exit={{ x: "100%" }}
                         transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                        className="fixed top-0 right-0 h-full w-full md:w-[450px] bg-[#FDFBF7] dark:bg-[#0A0A0A] shadow-2xl z-[70] flex flex-col border-l border-neutral-200 dark:border-neutral-800 md:rounded-l-2xl"
+                        className={`fixed top-0 right-0 h-full w-full md:w-[450px] ${drawerBg} shadow-2xl z-[70] flex flex-col border-l border-neutral-200 dark:border-neutral-800 md:rounded-l-2xl`}
                     >
                         {/* Header */}
-                        <div className="flex items-center justify-between p-6 border-b border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#111111]">
+                        <div className="flex items-center justify-between p-6 border-b border-neutral-200 dark:border-neutral-800 bg-transparent">
                             <h2 className="font-serif text-xl text-[#1A1A1A] dark:text-[#F4F1ED]">Wishlist ({wishlist.length})</h2>
                             <button onClick={closeWishlist} className="p-2 hover:bg-neutral-100 dark:hover:bg-[#1A1A1A] dark:bg-[#141414] rounded-full transition-colors">
                                 <X className="w-5 h-5 text-[#1A1A1A] dark:text-[#F4F1ED]" />
@@ -245,7 +249,7 @@ export default function WishlistDrawer() {
 
                         {/* Footer */}
                         {wishlistItems.length > 0 && (
-                            <div className="p-6 border-t border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#111111]">
+                            <div className="p-6 border-t border-neutral-200 dark:border-neutral-800 bg-transparent">
                                 <button
                                     onClick={closeWishlist}
                                     className="w-full bg-[#1A1A1A] text-white py-4 font-sans text-sm uppercase tracking-widest hover:bg-black transition-colors rounded-full"

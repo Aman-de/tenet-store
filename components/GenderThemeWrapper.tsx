@@ -29,7 +29,9 @@ export default function GenderThemeWrapper({
     }, []);
 
     const accentColor = isWoman ? settings.womanAccentColor : settings.manAccentColor;
-    const lightBg = isWoman ? settings.womanBgColorLight : settings.manBgColorLight;
+    const lightBg = isWoman 
+        ? (settings.womanBgColorLight === '#FDFBF7' ? '#FCF0F2' : settings.womanBgColorLight)
+        : (settings.manBgColorLight === '#F4F6F9' ? '#F0F4F8' : settings.manBgColorLight);
     const darkBg = isWoman ? settings.womanBgColorDark : settings.manBgColorDark;
 
     return (

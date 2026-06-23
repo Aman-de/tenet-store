@@ -16,6 +16,7 @@ interface HomePageClientProps {
 export default function HomePageClient({ products, collections }: HomePageClientProps) {
     const { gender } = useGender();
     const isWoman = gender === "woman";
+    const cardBg = isWoman ? "bg-[#FFF2F4] dark:bg-[#1C1416]" : "bg-[#F4F8FC] dark:bg-[#12161B]";
 
     // Dynamically filter spotlight products based on selected gender
     const spotlightProducts = products
@@ -81,7 +82,7 @@ export default function HomePageClient({ products, collections }: HomePageClient
 
             {/* DETAILED TRUST RIBBON */}
             <div className="w-full px-6 xl:px-12 py-6">
-                <div className="bg-[#FAF7F2] dark:bg-[#151213] border border-neutral-200/50 dark:border-white/5 rounded-2xl p-6 grid grid-cols-2 md:grid-cols-4 gap-6 divide-y md:divide-y-0 md:divide-x divide-neutral-200/50 dark:divide-white/5 shadow-sm">
+                <div className={`${cardBg} border border-neutral-200/50 dark:border-white/5 rounded-2xl p-6 grid grid-cols-2 md:grid-cols-4 gap-6 divide-y md:divide-y-0 md:divide-x divide-neutral-200/50 dark:divide-white/5 shadow-sm`}>
                     <div className="flex items-center gap-3.5 p-2 md:justify-center">
                         <Truck className="w-6 h-6 text-neutral-800 dark:text-[#F4F1ED]/90 shrink-0" strokeWidth={1.5} />
                         <div className="flex flex-col text-left">
@@ -139,7 +140,7 @@ export default function HomePageClient({ products, collections }: HomePageClient
                     {reviews.map((rev, index) => (
                         <div 
                             key={index} 
-                            className="flex-shrink-0 w-[280px] md:w-[320px] bg-[#F9F7F4] dark:bg-[#171314] border border-neutral-200/40 dark:border-white/5 rounded-2xl p-4 flex gap-4 items-center snap-align-start shadow-sm"
+                            className={`flex-shrink-0 w-[280px] md:w-[320px] ${cardBg} border border-neutral-200/40 dark:border-white/5 rounded-2xl p-4 flex gap-4 items-center snap-align-start shadow-sm`}
                         >
                             {/* Photo Left */}
                             <div className="relative w-20 h-20 rounded-xl overflow-hidden shrink-0">

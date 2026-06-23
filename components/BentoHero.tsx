@@ -85,6 +85,8 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
 
     const mainHeroSrc = gender === "man" ? "/images/hero-main.webp" : "/images/hero-women.webp";
     const accentColor = "var(--accent-color)";
+    const cardBg = isWoman ? "bg-[#FFF2F4] dark:bg-[#1C1416]" : "bg-[#F4F8FC] dark:bg-[#12161B]";
+    const cardGradientFrom = isWoman ? "from-[#FFF2F4] dark:from-[#1C1416]" : "from-[#F4F8FC] dark:from-[#12161B]";
 
     const trustPillars = [
         { icon: <Truck className="w-7 h-7 text-[#1A1A1A] dark:text-[#F4F1ED] stroke-[1]" />, title: "COMPLIMENTARY", title2: "SHIPPING", subtext: "Free on all orders" },
@@ -222,7 +224,7 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
             {/* MOBILE LAYOUT (lg:hidden) */}
             <div className="lg:hidden flex flex-col w-full gap-4 px-4 pb-2">
                 {/* 1. Hero Banner */}
-                <div className="relative w-full h-[280px] rounded-2xl overflow-hidden bg-[#FAF7F2] dark:bg-[#171312] border border-neutral-200/50 dark:border-white/5 flex items-center">
+                <div className={`relative w-full h-[280px] rounded-2xl overflow-hidden ${cardBg} border border-neutral-200/50 dark:border-white/5 flex items-center`}>
                     <div className="absolute right-0 top-0 bottom-0 w-[53%] h-full">
                         <Image
                             src={mainHeroSrc}
@@ -232,7 +234,7 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                             priority
                             className="object-cover object-center"
                         />
-                        <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[#FAF7F2] dark:from-[#171312] to-transparent" />
+                        <div className={`absolute inset-y-0 left-0 w-24 bg-gradient-to-r ${cardGradientFrom} to-transparent`} />
                     </div>
                     
                     <div className="relative z-10 w-[55%] pl-5 flex flex-col items-start justify-center">
@@ -262,7 +264,7 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                 </div>
 
                 {/* 2. Trust Ribbon (Pill) */}
-                <div className="w-full bg-[#FBF9F6] dark:bg-[#161213] border border-neutral-200/50 dark:border-white/5 rounded-2xl py-3 px-2 flex justify-between items-center shadow-[0_2px_8px_rgba(0,0,0,0.02)] divide-x divide-neutral-200/60 dark:divide-white/5">
+                <div className={`w-full ${cardBg} border border-neutral-200/50 dark:border-white/5 rounded-2xl py-3 px-2 flex justify-between items-center shadow-[0_2px_8px_rgba(0,0,0,0.02)] divide-x divide-neutral-200/60 dark:divide-white/5`}>
                     <div className="flex-1 flex items-center justify-center gap-1.5 px-0.5">
                         <span className="text-[10px] text-[#FF9900]">★</span>
                         <span className="font-bold text-[9px] text-neutral-800 dark:text-[#F4F1ED]/95 tracking-wide">4.8 Rating</span>

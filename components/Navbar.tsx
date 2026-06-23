@@ -128,9 +128,13 @@ export default function Navbar() {
     
     // Authentic Apple Liquid Glass effect
     // Only show borders on product page as requested by user
+    const navbarBg = isWoman 
+        ? "bg-[#FCF0F2]/90 dark:bg-[#160F11]/90" 
+        : "bg-[#F0F4F8]/90 dark:bg-[#0E1217]/90";
+
     const navContainerClass = isScrolledOrNotHome 
-        ? `bg-[#FDFBF7]/90 dark:bg-[#160F11]/90 backdrop-blur-[20px] saturate-[180%] dark:saturate-100 ${isProductPage ? 'border-b lg:border border-[#1A1A1A]/10 dark:border-white/10' : 'border-b border-neutral-100 dark:border-neutral-800 lg:border-none'} shadow-[0_2px_10px_rgba(0,0,0,0.03)]` 
-        : `bg-[#FDFBF7]/90 dark:bg-[#160F11]/90 backdrop-blur-[20px] lg:bg-transparent lg:border-transparent lg:shadow-none lg:backdrop-blur-none lg:saturate-100 lg:dark:saturate-100 ${isProductPage ? 'lg:border lg:border-[#1A1A1A]/10 lg:dark:border-white/10' : 'lg:border-none border-b border-neutral-100 dark:border-neutral-800'} lg:shadow-none`;
+        ? `${navbarBg} backdrop-blur-[20px] saturate-[180%] dark:saturate-100 ${isProductPage ? 'border-b lg:border border-[#1A1A1A]/10 dark:border-white/10' : 'border-b border-neutral-100 dark:border-neutral-800 lg:border-none'} shadow-[0_2px_10px_rgba(0,0,0,0.03)]` 
+        : `${navbarBg} backdrop-blur-[20px] lg:bg-transparent lg:border-transparent lg:shadow-none lg:backdrop-blur-none lg:saturate-100 lg:dark:saturate-100 ${isProductPage ? 'lg:border lg:border-[#1A1A1A]/10 lg:dark:border-white/10' : 'lg:border-none border-b border-neutral-100 dark:border-neutral-800'} lg:shadow-none`;
 
     const textColor = isScrolledOrNotHome 
         ? "text-neutral-800 dark:text-[#F4F1ED]" 
