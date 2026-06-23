@@ -145,7 +145,7 @@ export default function Navbar() {
 
     // Ultra-premium Apple-style segmented control (Liquid Glass)
     const GenderToggle = ({ idSuffix, isDesktop = false }: { idSuffix: string, isDesktop?: boolean }) => {
-        const solid = isScrolledOrNotHome || isDesktop;
+        const solid = isScrolledOrNotHome || isDesktop || idSuffix === "mobile-bar";
         const toggleBg = solid ? "bg-[#1A1A1A]/5 dark:bg-white/10" : "bg-white/10";
         const btnText = (active: boolean) => {
             if (active) return "text-white dark:text-[#1A1A1A] dark:text-[#F4F1ED]";
@@ -252,7 +252,7 @@ export default function Navbar() {
                     {/* MOBILE LAYOUT (lg:hidden) */}
                     <div className="flex lg:hidden flex-col w-full gap-1">
                         <div className="flex w-full items-center justify-between relative py-0.5">
-                            {/* LEFT SIDE: Menu & Gender links */}
+                            {/* LEFT SIDE: Menu & Home buttons */}
                             <div className="flex items-center gap-1.5 z-10 flex-1 justify-start">
                                 <button className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Toggle mobile menu" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
                                     {isMobileMenuOpen ? (
@@ -261,47 +261,6 @@ export default function Navbar() {
                                         <Menu className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
                                     )}
                                 </button>
-                                
-                                {!isProductPage && (
-                                    <div className="flex items-center gap-2.5 ml-0.5">
-                                        <button 
-                                            onClick={() => setGender('woman')}
-                                            className={`text-[10px] tracking-widest uppercase transition-all duration-300 relative py-1 ${
-                                                gender === 'woman' 
-                                                    ? 'font-black text-[#1A1A1A] dark:text-[#F4F1ED]' 
-                                                    : 'font-medium text-neutral-400 dark:text-neutral-500'
-                                            }`}
-                                        >
-                                            WOMEN
-                                            {gender === 'woman' && (
-                                                <motion.div 
-                                                    layoutId="mobile-gender-underline"
-                                                    className="absolute bottom-0 left-0 right-0 h-[2px] rounded-full"
-                                                    style={{ backgroundColor: 'var(--accent-color)' }}
-                                                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                                                />
-                                            )}
-                                        </button>
-                                        <button 
-                                            onClick={() => setGender('man')}
-                                            className={`text-[10px] tracking-widest uppercase transition-all duration-300 relative py-1 ${
-                                                gender === 'man' 
-                                                    ? 'font-black text-[#1A1A1A] dark:text-[#F4F1ED]' 
-                                                    : 'font-medium text-neutral-400 dark:text-neutral-500'
-                                            }`}
-                                        >
-                                            MEN
-                                            {gender === 'man' && (
-                                                <motion.div 
-                                                    layoutId="mobile-gender-underline"
-                                                    className="absolute bottom-0 left-0 right-0 h-[2px] rounded-full"
-                                                    style={{ backgroundColor: 'var(--accent-color)' }}
-                                                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                                                />
-                                            )}
-                                        </button>
-                                    </div>
-                                )}
                                 {isProductPage && (
                                     <Link href="/" className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center ml-0.5`}>
                                         <Home className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
@@ -337,8 +296,17 @@ export default function Navbar() {
                             </div>
                         </div>
 
-                        {/* Search Bar rendered below the top bar */}
-                        {!isProductPage && <SearchBar />}
+                        {/* Search Bar and Gender Switcher rendered below the top bar */}
+                        {!isProductPage && (
+                            <div className="flex items-center gap-2.5 w-full px-1 py-1.5 pointer-events-auto">
+                                <div className="flex-1 min-w-0">
+                                    <SearchBar />
+                                </div>
+                                <div className="shrink-0 scale-95 origin-right pr-0.5">
+                                    <GenderToggle idSuffix="mobile-bar" isDesktop={false} />
+                                </div>
+                            </div>
+                        )}
                     </div>
 
                     {/* DESKTOP LAYOUT (hidden lg:flex) */}
