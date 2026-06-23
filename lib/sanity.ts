@@ -796,13 +796,20 @@ export async function getCartUpsells(cartProductIds: string[]) {
 }
 
 export async function searchProducts(searchTerm: string) {
-    const query = `*[_type == "product" && (
-    title match $searchTerm + "*" ||
-    category match $searchTerm + "*" ||
-    description match $searchTerm + "*" ||
-    filterTag match $searchTerm + "*" ||
-    variants[].colorName match $searchTerm + "*"
-  )] | order(_score desc) {
+    const terms = (searchTerm || "").trim().split(/\s+/).filter(Boolean);
+    if (terms.length === 0) {
+        return [];
+    }
+
+    const termFilters = terms.map((_, index) => `(
+    title match $term${index} + "*" ||
+    category match $term${index} + "*" ||
+    description match $term${index} + "*" ||
+    filterTag match $term${index} + "*" ||
+    variants[].colorName match $term${index} + "*"
+  )`).join(" && ");
+
+    const query = `*[_type == "product" && (${termFilters})] | order(_score desc) {
     _id,
     title,
     "slug": slug.current,
@@ -818,9 +825,26 @@ export async function searchProducts(searchTerm: string) {
     isOutOfStock
   }`;
 
-    const products = await client.fetch(query, { searchTerm }, CACHE_60S);
+    const params: Record<string, string> = {};
+    terms.forEach((term, index) => {
+        params[`term${index}`] = term;
+    });
 
-    return [...ARTIFICIAL_PRODUCTS, ...(products || [])]
+    const products = await client.fetch(query, params, CACHE_60S);
+
+    // Filter artificial products to only those that match the search query term(s)
+    const matchingArtificial = ARTIFICIAL_PRODUCTS.filter(p => {
+        return terms.every(term => {
+            const lowerTerm = term.toLowerCase();
+            return (
+                p.title?.toLowerCase().includes(lowerTerm) ||
+                p.category?.toLowerCase().includes(lowerTerm) ||
+                p.variants?.some((v: any) => v.colorName?.toLowerCase().includes(lowerTerm))
+            );
+        });
+    });
+
+    return [...matchingArtificial, ...(products || [])]
         .filter((p: any) => p && !HIDDEN_PRODUCT_TITLES.has(p.title))
         .map(mapProduct);
 }
