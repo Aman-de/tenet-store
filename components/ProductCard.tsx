@@ -80,6 +80,7 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
                                 fill
                                 className="object-cover absolute inset-0 z-0 transition-opacity duration-200 ease-in-out group-hover:opacity-0"
                                 sizes="(max-width: 768px) 50vw, 33vw"
+                                unoptimized={primaryImage.startsWith("http")}
                                 onLoad={() => setIsImg1Loading(false)}
                             />
                         </>
@@ -99,6 +100,7 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
                                 fill
                                 className="object-cover absolute inset-0 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-in-out"
                                 sizes="(max-width: 768px) 50vw, 33vw"
+                                unoptimized={secondaryImage.startsWith("http")}
                                 onError={() => setAltImgError(true)}
                                 onLoad={() => setIsImg2Loading(false)}
                             />

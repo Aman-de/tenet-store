@@ -15,7 +15,7 @@ export const settings = defineType({
             name: 'womanAccentColor',
             title: 'Women Accent Color',
             type: 'string',
-            initialValue: '#FF4D6D',
+            initialValue: '#E67389',
         }),
         defineField({
             name: 'manAccentColor',

@@ -707,6 +707,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                         priority={idx === 0}
                                         loading={idx === 0 ? "eager" : "lazy"}
                                         quality={idx === 0 ? 85 : 75}
+                                        unoptimized={img.startsWith("http")}
                                         onLoad={() => setLoadedImages(prev => ({ ...prev, [idx]: true }))}
                                     />
                                 </>
@@ -793,6 +794,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                         className="object-cover"
                                         loading="lazy"
                                         quality={60}
+                                        unoptimized={img.startsWith("http")}
                                         onLoad={() => setLoadedThumbnails(prev => ({ ...prev, [idx]: true }))}
                                     />
                                 </div>
@@ -824,6 +826,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                 className="object-cover transition-transform duration-700 hover:scale-[1.08] cursor-zoom-in"
                                 priority
                                 quality={85}
+                                unoptimized={displayImages[selectedImageIndex].startsWith("http")}
                                 onLoad={() => setIsMainImgLoading(false)}
                             />
                         ) : (
@@ -979,14 +982,14 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                         onClick={() => setSelectedPiece(piece)}
                                         className={cn(
                                             "group flex flex-col gap-2 p-1.5 rounded-2xl transition-all cursor-pointer w-full items-center text-center relative",
-                                            isSelected 
+                                        isSelected 
                                                 ? "ring-[1.5px] ring-[#1A1A1A] dark:ring-white bg-white/70 dark:bg-white/5 shadow-[0_8px_20px_rgba(0,0,0,0.06)]" 
                                                 : "border border-neutral-200/60 dark:border-white/5 opacity-80 hover:opacity-100 bg-white/30 dark:bg-black/10 hover:bg-white/50 dark:hover:bg-black/25"
                                         )}
                                     >
                                         <div className="relative w-full aspect-[3/4] rounded-xl overflow-hidden bg-neutral-100 dark:bg-[#111] shrink-0 border border-neutral-100 dark:border-white/5">
                                             {pieceImage ? (
-                                                <Image src={pieceImage} alt={label} fill sizes="(max-width: 768px) 25vw, 120px" loading="lazy" quality={70} className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                                                <Image src={pieceImage} alt={label} fill sizes="(max-width: 768px) 25vw, 120px" loading="lazy" quality={70} unoptimized={pieceImage.startsWith("http")} className="object-cover transition-transform duration-500 group-hover:scale-105" />
                                             ) : (
                                                 <div className="w-full h-full bg-neutral-200 dark:bg-neutral-800 animate-pulse" />
                                             )}
@@ -1296,15 +1299,15 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         <div className="flex items-center gap-2 xs:gap-3 bg-neutral-50 dark:bg-white/5 p-3 rounded-lg border border-neutral-100 dark:border-white/10">
                             <div className="flex gap-1.5 xs:gap-2 flex-1 items-center">
                                 <div className="relative w-10 h-14 xs:w-12 xs:h-16 rounded overflow-hidden shadow-sm shrink-0 border border-neutral-200/50 dark:border-white/10">
-                                    {product.images?.[0] && <Image src={product.images[0]} alt="Kurti Set" fill sizes="48px" loading="lazy" quality={60} className="object-cover" />}
+                                    {product.images?.[0] && <Image src={product.images[0]} alt="Kurti Set" fill sizes="48px" loading="lazy" quality={60} unoptimized={product.images[0].startsWith("http")} className="object-cover" />}
                                 </div>
                                 <div className="text-neutral-400 font-bold text-[10px]">+</div>
                                 <div className="relative w-10 h-14 xs:w-12 xs:h-16 rounded overflow-hidden shadow-sm shrink-0 bg-white/40 dark:bg-black/20 border border-neutral-200/50 dark:border-white/10">
-                                    <Image src="/images/generated/pearl_drop_earrings.png" alt="Earrings" fill sizes="48px" loading="lazy" quality={60} className="object-cover" />
+                                    <Image src="/images/generated/pearl_drop_earrings.png" alt="Earrings" fill sizes="48px" loading="lazy" quality={60} unoptimized={true} className="object-cover" />
                                 </div>
                                 <div className="text-neutral-400 font-bold text-[10px]">+</div>
                                 <div className="relative w-10 h-14 xs:w-12 xs:h-16 rounded overflow-hidden shadow-sm shrink-0 bg-white/40 dark:bg-black/20 border border-neutral-200/50 dark:border-white/10">
-                                    <Image src="/images/generated/woven_leather_slides.png" alt="Slides" fill sizes="48px" loading="lazy" quality={60} className="object-cover" />
+                                    <Image src="/images/generated/woven_leather_slides.png" alt="Slides" fill sizes="48px" loading="lazy" quality={60} unoptimized={true} className="object-cover" />
                                 </div>
                             </div>
                             <div className="flex flex-col items-end justify-center shrink-0">
@@ -1358,7 +1361,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                 className="w-[140px] shrink-0 group cursor-pointer"
                             >
                                 <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-neutral-100 dark:bg-[#141414] mb-2 border border-neutral-200/50 dark:border-white/5">
-                                    {item.img && <Image src={item.img} alt={item.name} fill sizes="140px" loading="lazy" quality={70} className="object-cover transition-transform duration-500 group-hover:scale-105" />}
+                                    {item.img && <Image src={item.img} alt={item.name} fill sizes="140px" loading="lazy" quality={70} unoptimized={item.img.startsWith("http")} className="object-cover transition-transform duration-500 group-hover:scale-105" />}
                                     <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors" />
                                     
                                     {/* Desktop Hover Add Overlay */}
@@ -1555,7 +1558,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                     <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none">
                                         {[displayImages[1] || displayImages[0], displayImages[2] || displayImages[0]].filter(Boolean).map((img, idx) => (
                                             <div key={idx} className="relative w-24 h-24 xs:w-28 xs:h-28 rounded-xl overflow-hidden shrink-0 border border-neutral-100 dark:border-neutral-800 shadow-sm">
-                                                <Image src={img} alt={`Customer photo ${idx}`} fill sizes="112px" loading="lazy" quality={70} className="object-cover hover:scale-105 transition-transform cursor-zoom-in" />
+                                                <Image src={img} alt={`Customer photo ${idx}`} fill sizes="112px" loading="lazy" quality={70} unoptimized={img.startsWith("http")} className="object-cover hover:scale-105 transition-transform cursor-zoom-in" />
                                             </div>
                                         ))}
                                     </div>
@@ -1640,6 +1643,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                                                     sizes="96px"
                                                                     loading="lazy"
                                                                     quality={70}
+                                                                    unoptimized={img.startsWith("http")}
                                                                     className="object-cover" 
                                                                 />
                                                             </div>

@@ -119,6 +119,7 @@ const WishlistItemRow = ({ item, removeFromWishlist, addToCart }: any) => {
                             sizes="96px"
                             loading="lazy"
                             quality={60}
+                            unoptimized={item.images[0].startsWith("http")}
                             className="object-cover group-hover:scale-105 transition-transform duration-500 pointer-events-none"
                         />
                     ) : (

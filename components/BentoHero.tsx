@@ -60,11 +60,21 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
     const { gender } = useGender();
     const isWoman = gender === "woman";
 
-    // Filter categories to exactly 4, prioritizing sets
-    const coreCategories = ["sets", "shirts", "trousers", "footwear", "accessories", "shorts"];
+    // Filter categories to exactly 4, prioritizing high-converting collections for the active gender
+    const coreCategories = isWoman 
+        ? ["sets", "accessories", "footwear", "pants"]
+        : ["shirts", "trousers", "footwear", "accessories"];
+
     let filteredCollections = collections.filter(collection => {
         const catKey = (collection.filterTag || collection.handle || "").toLowerCase();
         return coreCategories.includes(catKey);
+    });
+
+    // Sort according to gender-specific priority order
+    filteredCollections.sort((a, b) => {
+        const keyA = (a.filterTag || a.handle || "").toLowerCase();
+        const keyB = (b.filterTag || b.handle || "").toLowerCase();
+        return coreCategories.indexOf(keyA) - coreCategories.indexOf(keyB);
     });
     filteredCollections = filteredCollections.slice(0, 4);
 
@@ -141,6 +151,7 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                                                 sizes="(max-width: 1024px) 100vw, 66vw"
                                                 loading="lazy"
                                                 quality={75}
+                                                unoptimized={heroImage.startsWith("http")}
                                                 className="object-cover"
                                             />
                                         )}
@@ -183,6 +194,7 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                                         alt={collection.title}
                                         fill
                                         sizes="(max-width: 768px) 50vw, 16vw"
+                                        unoptimized={coverPhoto.startsWith("http")}
                                         className="object-cover transform transition-transform duration-[2s] ease-out group-hover:scale-[1.03]"
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-700" />
@@ -291,6 +303,7 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                                         alt={collection.title}
                                         fill
                                         sizes="130px"
+                                        unoptimized={coverPhoto.startsWith("http")}
                                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent" />

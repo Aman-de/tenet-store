@@ -209,6 +209,7 @@ export default async function OrdersPage(props: { searchParams: Promise<{ [key: 
                                                             sizes="64px"
                                                             loading="lazy"
                                                             quality={60}
+                                                            unoptimized={item.product.imageUrl.startsWith("http")}
                                                             className="object-cover"
                                                         />
                                                     ) : (
