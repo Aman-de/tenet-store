@@ -256,7 +256,7 @@ export default function Navbar() {
                     {/* MOBILE LAYOUT (lg:hidden) */}
                     <div className="flex lg:hidden flex-col w-full gap-1">
                         <div className="flex w-full items-center justify-between relative py-0.5">
-                            {/* LEFT SIDE: Menu & Home buttons */}
+                            {/* LEFT SIDE: Menu, Circle & Home buttons */}
                             <div className="flex items-center gap-1.5 z-10 flex-1 justify-start">
                                 <button className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Toggle mobile menu" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
                                     {isMobileMenuOpen ? (
@@ -265,6 +265,9 @@ export default function Navbar() {
                                         <Menu className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
                                     )}
                                 </button>
+                                <Link href="/circle" className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center ml-0.5`} aria-label="Open circle">
+                                    <Crown className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
+                                </Link>
                                 {isProductPage && (
                                     <Link href="/" className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center ml-0.5`}>
                                         <Home className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
@@ -279,16 +282,8 @@ export default function Navbar() {
                                 </span>
                             </Link>
 
-                            {/* RIGHT SIDE: Wishlist, Cart */}
+                            {/* RIGHT SIDE: Cart */}
                             <div className="flex items-center gap-1 z-10 flex-1 justify-end">
-                                <button className={`relative w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Open wishlist" onClick={openWishlist}>
-                                    <Heart className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
-                                    {wishlistCount > 0 && (
-                                        <span className="absolute -top-0.5 -right-0.5 min-w-[14px] h-[14px] rounded-full border border-white dark:border-neutral-900 flex items-center justify-center text-[8px] text-white font-sans font-bold px-1" style={{ backgroundColor: accentColor }}>
-                                            {wishlistCount}
-                                        </span>
-                                    )}
-                                </button>
                                 <button className={`relative w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Open cart" onClick={openCart}>
                                     <ShoppingBag className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
                                     {cartCount > 0 && (

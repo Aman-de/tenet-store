@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
-import { Home, Package, ShoppingBag, User, Crown } from "lucide-react";
+import { Home, Package, ShoppingBag, User, Heart } from "lucide-react";
 import { UserButton, SignInButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import { useGender } from "@/context/GenderContext";
 import { useStore } from "@/lib/store";
@@ -11,7 +11,7 @@ import { useStore } from "@/lib/store";
 export default function MobileBottomNav() {
     const pathname = usePathname();
     const { gender } = useGender();
-    const { openCart, cart } = useStore();
+    const { openCart, openWishlist, cart, wishlist } = useStore();
     
     const [mounted, setMounted] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
@@ -36,12 +36,13 @@ export default function MobileBottomNav() {
     const containerClass = "bg-[#F8F5EF]/85 dark:bg-[#141414]/85 backdrop-blur-[20px] saturate-[180%] dark:saturate-100 border border-[#1A1A1A]/10 dark:border-white/10 shadow-[0_2px_10px_rgba(0,0,0,0.03)]";
 
     const cartCount = mounted ? cart.length : 0;
+    const wishlistCount = mounted ? wishlist.length : 0;
 
     if (pathname.includes("/product/")) {
         return null;
     }
 
-    // Navigation Items (Home, Cart, Circle, Orders)
+    // Navigation Items (Home, Cart, Wishlist, Orders)
     const navItems = [
         {
             name: "Home",
@@ -54,13 +55,14 @@ export default function MobileBottomNav() {
             onClick: openCart,
             icon: ShoppingBag,
             isActive: false,
-            hasBadge: true,
+            badgeCount: cartCount,
         },
         {
-            name: "Circle",
-            href: "/circle",
-            icon: Crown,
-            isActive: pathname === "/circle",
+            name: "Wishlist",
+            onClick: openWishlist,
+            icon: Heart,
+            isActive: false,
+            badgeCount: wishlistCount,
         },
         {
             name: "Orders",
@@ -84,7 +86,7 @@ export default function MobileBottomNav() {
                             strokeWidth={2}
                             className={`w-[22px] h-[22px] transition-all duration-300 ${textStyle} ${fillStyle}`}
                         />
-                        {item.hasBadge && cartCount > 0 && (
+                        {item.badgeCount !== undefined && item.badgeCount > 0 && (
                             <span 
                                 className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full animate-pulse border border-white"
                                 style={{ backgroundColor: accentColor }}
