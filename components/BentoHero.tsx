@@ -87,6 +87,7 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
     const accentColor = "var(--accent-color)";
     const cardBg = isWoman ? "bg-[#FFF2F4] dark:bg-[#1C1416]" : "bg-[#F4F8FC] dark:bg-[#12161B]";
     const cardGradientFrom = isWoman ? "from-[#FFF2F4] dark:from-[#1C1416]" : "from-[#F4F8FC] dark:from-[#12161B]";
+    const cardGradientTo = isWoman ? "to-[#FFF2F4]/0 dark:to-[#1C1416]/0" : "to-[#F4F8FC]/0 dark:to-[#12161B]/0";
 
     const trustPillars = [
         { icon: <Truck className="w-7 h-7 text-[#1A1A1A] dark:text-[#F4F1ED] stroke-[1]" />, title: "COMPLIMENTARY", title2: "SHIPPING", subtext: "Free on all orders" },
@@ -96,7 +97,7 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
     ];
 
     return (
-        <section className="relative w-full pt-[124px] lg:pt-0 p-0 lg:p-6 overflow-hidden bg-transparent lg:h-[100dvh]">
+        <section className="relative w-full pt-[72px] lg:pt-0 p-0 lg:p-6 overflow-hidden bg-transparent lg:h-[100dvh]">
             
             {/* DESKTOP LAYOUT (hidden lg:flex) */}
             <div className="hidden lg:flex w-full h-full gap-6">
@@ -234,7 +235,7 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                             priority
                             className="object-cover object-center"
                         />
-                        <div className={`absolute inset-y-0 left-0 w-24 bg-gradient-to-r ${cardGradientFrom} to-transparent`} />
+                        <div className={`absolute inset-y-0 left-0 w-32 bg-gradient-to-r ${cardGradientFrom} ${cardGradientTo}`} />
                     </div>
                     
                     <div className="relative z-10 w-[55%] pl-5 flex flex-col items-start justify-center">

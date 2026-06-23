@@ -274,7 +274,7 @@ export default function Navbar() {
                                     </button>
                                     
                                     {/* Little search bar in the place of circle icon */}
-                                    <form onSubmit={handleSearchSubmit} className="flex-1 min-w-[70px] max-w-[130px] pointer-events-auto">
+                                    <form onSubmit={handleSearchSubmit} className="flex-1 min-w-[70px] max-w-[155px] pointer-events-auto">
                                         <div className="relative flex items-center bg-[#F4F1ED]/80 dark:bg-[#1C1C1E] border border-black/5 dark:border-white/5 rounded-full px-2 h-[36px] transition-all focus-within:border-black/25 dark:focus-within:border-white/25 shadow-[inset_0_1px_2px_rgba(0,0,0,0.02)]">
                                             <Search className="w-3 h-3 text-neutral-400 dark:text-neutral-500 shrink-0" strokeWidth={2.5} />
                                             <input 
@@ -296,7 +296,7 @@ export default function Navbar() {
                                 </Link>
 
                                 {/* RIGHT SIDE: Switch & Cart */}
-                                <div className="flex items-center gap-1.5 z-10 flex-1 justify-end">
+                                <div className="flex items-center gap-2.5 z-10 flex-1 justify-end">
                                     {/* Men and women switch to the right of the logo */}
                                     <div className="shrink-0 origin-right">
                                         <GenderToggle idSuffix="mobile-top-bar" isDesktop={false} isMini={true} />
