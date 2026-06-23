@@ -113,7 +113,7 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                                     fill
                                     sizes="(max-width: 1024px) 100vw, 66vw"
                                     priority
-                                    className="object-cover object-center transform transition-transform duration-[20s] hover:scale-105"
+                                    className="object-cover object-[75%_center] transform transition-transform duration-[20s] hover:scale-105"
                                 />
                                 {/* Gradient for Navbar Icon Visibility */}
                                 <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-black/60 to-transparent z-10 lg:hidden pointer-events-none" />
@@ -233,7 +233,7 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                             fill
                             sizes="60vw"
                             priority
-                            className="object-cover object-center scale-[1.04]"
+                            className="object-cover object-[75%_center] scale-[1.04]"
                         />
                         <div className={`absolute inset-y-0 -left-2 w-48 bg-gradient-to-r ${cardGradientFrom} ${cardGradientTo}`} />
                     </div>
