@@ -3,7 +3,7 @@
 import { Product } from "@/lib/data";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useStore } from "@/lib/store";
 import { useGender } from "@/context/GenderContext";
@@ -23,10 +23,16 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
     const [isSizeSelectorOpen, setIsSizeSelectorOpen] = useState(false);
     const [isImg1Loading, setIsImg1Loading] = useState(true);
     const [isImg2Loading, setIsImg2Loading] = useState(true);
+    const [mounted, setMounted] = useState(false);
     const { addToCart, openCart, toggleWishlist, isInWishlist } = useStore();
+    
+    useEffect(() => {
+        setMounted(true);
+    }, []);
     const { gender } = useGender();
     const isWoman = gender === "woman";
     const accentColor = "var(--accent-color)";
+    const isWishlisted = mounted ? isInWishlist(product.id) : false;
     
     // Stable random seed for ratings and review count
     const rating = 4.5 + (product.title.charCodeAt(0) % 5) * 0.1;
@@ -138,7 +144,7 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
                         <Heart
                             size={16}
                             className="transition-all duration-300"
-                            style={isInWishlist(product.id) ? { fill: accentColor, stroke: accentColor } : { stroke: "currentColor" }}
+                            style={isWishlisted ? { fill: accentColor, stroke: accentColor } : { stroke: "currentColor" }}
                             strokeWidth={2}
                         />
                     </motion.button>
@@ -203,7 +209,7 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
                             <Heart
                                 size={22}
                                 className="transition-all duration-300"
-                                style={isInWishlist(product.id) ? { fill: accentColor, stroke: accentColor } : { stroke: "black" }}
+                                style={isWishlisted ? { fill: accentColor, stroke: accentColor } : { stroke: "black" }}
                                 strokeWidth={2}
                             />
                         </motion.button>

@@ -298,6 +298,11 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
     const targetGender = product.gender ? product.gender.toLowerCase() : gender;
     const isWoman = targetGender === "woman" || (targetGender === "unisex" && gender === "woman");
     const accentColor = "var(--accent-color)";
+    
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     // Variant Logic
     const hasVariants = product.variants && product.variants.length > 0;
@@ -541,7 +546,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
         }
     }, [product.id, product.category, trackEngagement]);
 
-    const isWishlisted = isInWishlist(product.id);
+    const isWishlisted = mounted ? isInWishlist(product.id) : false;
     const averageRating = reviews.length > 0
         ? reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length
         : 0;
