@@ -34,10 +34,19 @@ export default function HomePageClient({ products, collections }: HomePageClient
     const bestsellerProducts = products
         .filter(p => {
             const g = p.gender ? p.gender.toLowerCase() : "man";
-            const isCorrectGender = gender === "man"
+            return gender === "man"
                 ? (g === "man" || g === "unisex")
                 : (g === "woman" || g === "unisex");
-            return isCorrectGender;
+        })
+        .sort((a, b) => {
+            if (a.isBestSeller && !b.isBestSeller) return -1;
+            if (!a.isBestSeller && b.isBestSeller) return 1;
+            if (a.isBestSeller && b.isBestSeller) {
+                const rankA = a.bestSellerRank ?? 999;
+                const rankB = b.bestSellerRank ?? 999;
+                return rankA - rankB;
+            }
+            return b.price - a.price;
         })
         .slice(0, 6);
 

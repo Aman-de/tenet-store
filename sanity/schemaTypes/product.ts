@@ -69,6 +69,20 @@ export const product = {
             validation: (Rule: any) => Rule.required()
         },
         {
+            name: 'isBestSeller',
+            title: 'Is Best Seller?',
+            type: 'boolean',
+            description: 'Check this to feature the product in the Best Sellers section on the home page.',
+            initialValue: false
+        },
+        {
+            name: 'bestSellerRank',
+            title: 'Best Seller Rank',
+            type: 'number',
+            description: 'Order of appearance in Best Sellers (e.g. 1 will show up first). Lower numbers appear first.',
+            hidden: ({ document }: any) => !document?.isBestSeller
+        },
+        {
             name: 'apparelType',
             title: 'Apparel Type',
             type: 'string',

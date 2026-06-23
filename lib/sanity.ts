@@ -408,6 +408,8 @@ function mapProduct(p: any): Product {
         bottomOriginalPrice: p.bottomOriginalPrice,
         setPrice: p.setPrice,
         setOriginalPrice: p.setOriginalPrice,
+        isBestSeller: p.isBestSeller,
+        bestSellerRank: p.bestSellerRank,
     };
 }
 
@@ -433,7 +435,9 @@ export async function getProducts() {
     bottomPrice,
     bottomOriginalPrice,
     setPrice,
-    setOriginalPrice
+    setOriginalPrice,
+    isBestSeller,
+    bestSellerRank
   }`;
 
     const products = await client.fetch(query, {}, CACHE_60S);

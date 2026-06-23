@@ -26,6 +26,8 @@ export interface Product {
     colors: string[];
 
     // New Fields
+    isBestSeller?: boolean;
+    bestSellerRank?: number;
     sizeType?: string;
     sizes?: string[];
     variants?: Variant[];
