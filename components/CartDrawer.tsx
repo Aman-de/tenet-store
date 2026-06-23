@@ -1075,7 +1075,7 @@ export default function CartDrawer() {
                                         <div className="flex items-center justify-between">
                                             <label className="block text-xs font-bold uppercase tracking-widest text-[#1A1A1A] dark:text-[#F4F1ED]">Delivery Option</label>
                                             <span className="text-[10px] text-neutral-500 dark:text-neutral-400 font-sans">
-                                                {shippingSpeed === 'express' ? "Delivered in 2 days" : "Delivered in 3-7 days"}
+                                                {shippingSpeed === 'express' ? "Delivered in 10 days" : "Delivered in 10 days"}
                                             </span>
                                         </div>
                                         <div className="flex gap-1.5 bg-neutral-100/60 dark:bg-[#141414] p-1 rounded-xl border border-neutral-200/50 dark:border-neutral-800">

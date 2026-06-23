@@ -11,9 +11,7 @@ export default function ShippingPage() {
                     <section>
                         <h2 className="font-serif text-2xl text-[#1A1A1A] dark:text-[#F4F1ED] mb-4">Domestic Processing & Shipping time</h2>
                         <ul className="list-disc pl-5 space-y-2">
-                            <li>All orders are processed within 1-2 business days.</li>
-                            <li>Standard shipping typically takes 3-5 business days.</li>
-                            <li>Express shipping options are available at checkout.</li>
+                            <li>All shipping is guaranteed to be exactly 10 days.</li>
                             <li>Orders are not shipped or delivered on weekends or holidays.</li>
                             <li>If we are experiencing a high volume of orders, shipments may be delayed by a few days. Please allow additional days in transit for delivery.</li>
                         </ul>

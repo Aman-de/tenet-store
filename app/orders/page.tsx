@@ -143,10 +143,10 @@ export default async function OrdersPage(props: { searchParams: Promise<{ [key: 
                     <div className="space-y-6">
 
                         {orders.map((order: any) => {
-                            // Calculate expected delivery (3 days from creation)
+                            // Calculate expected delivery (10 days from creation)
                             const created = new Date(order.createdAt);
                             const expected = new Date(created);
-                            expected.setDate(created.getDate() + 3);
+                            expected.setDate(created.getDate() + 10);
 
                             // Simulate Status Progression based on time elapsed
                             // 0-12h: Pending -> 12-24h: Processing -> 1-2d: Shipped -> 2d+: Delivered

@@ -13,7 +13,7 @@ export default function SupportPage() {
     const faqs = [
         {
             question: "When will my order ship and arrive?",
-            answer: "Orders are processed within 24-48 hours. Standard delivery takes 3-7 business days, while Express delivery guarantees delivery in 2 business days. Once dispatched, you will receive a tracking link via email and SMS."
+            answer: "Orders are processed within 24-48 hours. All deliveries are made in exactly 10 days. Once dispatched, you will receive a tracking link via email and SMS."
         },
         {
             question: "Do you offer Cash on Delivery (COD)?",

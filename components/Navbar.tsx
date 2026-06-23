@@ -123,7 +123,7 @@ export default function Navbar() {
     const isHome = pathname === "/";
     const isProductPage = pathname.includes("/product/");
     const isCategoryPage = pathname.includes("/collection/") || pathname.includes("/category/");
-    const showSearchAndSwitchOnTop = isHome || isCategoryPage;
+    const showSearchAndSwitchOnTop = isHome;
     
     // Dynamically apply glassmorphism based on scroll/page state
     const isScrolledOrNotHome = isScrolled || !isHome;
@@ -353,17 +353,6 @@ export default function Navbar() {
                             </div>
                         )}
 
-                        {/* Search Bar and Gender Switcher rendered below the top bar (only on other pages) */}
-                        {!isProductPage && !showSearchAndSwitchOnTop && (
-                            <div className="flex items-center gap-2.5 w-full px-1 py-1.5 pointer-events-auto">
-                                <div className="flex-1 min-w-0">
-                                    <SearchBar />
-                                </div>
-                                <div className="shrink-0 scale-95 origin-right pr-0.5">
-                                    <GenderToggle idSuffix="mobile-bar" isDesktop={false} />
-                                </div>
-                            </div>
-                        )}
                     </div>
 
                     {/* DESKTOP LAYOUT (hidden lg:flex) */}
@@ -393,16 +382,21 @@ export default function Navbar() {
                                 <span className="text-[11px] font-semibold opacity-80 group-hover:opacity-100 transition-opacity duration-200">Circle</span>
                             </Link>
 
-                            {/* Subtle Divider */}
-                            <div className="w-[1px] h-6 bg-black/10 mx-1" />
+                            {/* Gender Toggle (Home Only) */}
+                            {isHome && (
+                                <>
+                                    {/* Subtle Divider */}
+                                    <div className="w-[1px] h-6 bg-black/10 mx-1" />
 
-                            {/* Gender Toggle */}
-                            <div className="flex-shrink-0 origin-center">
-                                <GenderToggle idSuffix="desktop" isDesktop={true} />
-                            </div>
+                                    {/* Gender Toggle */}
+                                    <div className="flex-shrink-0 origin-center">
+                                        <GenderToggle idSuffix="desktop" isDesktop={true} />
+                                    </div>
 
-                            {/* Subtle Divider */}
-                            <div className="w-[1px] h-6 bg-black/10 dark:bg-white/10 mx-1" />
+                                    {/* Subtle Divider */}
+                                    <div className="w-[1px] h-6 bg-black/10 dark:bg-white/10 mx-1" />
+                                </>
+                            )}
 
                             {/* Theme Toggle (Desktop) */}
                             <div className="flex-shrink-0 origin-center">

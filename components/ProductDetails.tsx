@@ -443,17 +443,9 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 
                 if (data && data[0] && data[0].Status === "Success" && data[0].PostOffice && data[0].PostOffice.length > 0) {
                     const city = data[0].PostOffice[0].District || data[0].PostOffice[0].Block || "your location";
-                    const cityLower = city.toLowerCase().trim();
-                    let dateText = "";
-                    if (TIER_1_CITIES.has(cityLower)) {
-                        dateText = `Get it by tomorrow, 6 PM in ${city}`;
-                    } else if (TIER_2_CITIES.has(cityLower)) {
-                        dateText = `Get it in 2 days in ${city}`;
-                    } else {
-                        dateText = `Get it in 3 days in ${city}`;
-                    }
+                    
                     setDeliveryInfo({ 
-                        date: dateText, 
+                        date: `Get it in 10 days in ${city}`, 
                         free: true,
                         city: city
                     });
@@ -1154,7 +1146,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         {deliveryInfo && (
                             <div className="flex flex-col gap-2 mt-2 pt-2">
                                 <div className="flex flex-col gap-2 text-xs font-bold text-[#1A1A1A] dark:text-[#F4F1ED]">
-                                    <span className="flex items-center gap-2"><span className="text-emerald-600 text-sm">✅</span> Get it in 3 Days in {deliveryInfo.city || "your location"}</span>
+                                    <span className="flex items-center gap-2"><span className="text-emerald-600 text-sm">✅</span> Get it in 10 Days in {deliveryInfo.city || "your location"}</span>
                                     <span className="flex items-center gap-2"><span className="text-emerald-600 text-sm">✅</span> FREE Shipping (Pay Online)</span>
                                     <span className="flex items-center gap-2"><span className="text-emerald-600 text-sm">✅</span> COD Available (Prepaid shipping)</span>
                                 </div>
@@ -1211,7 +1203,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                 <>
                                     <span className="text-[14px] tracking-widest flex items-center gap-1.5 relative z-10">BUY NOW</span>
                                     <span className="text-[9px] uppercase tracking-widest font-medium opacity-90 mt-0.5 relative z-10">
-                                        {deliveryInfo ? `Order Today • ${deliveryInfo.date}` : "Order Today • Get in 3 Days"}
+                                        {deliveryInfo ? `Order Today • ${deliveryInfo.date}` : "Order Today • Get in 10 Days"}
                                     </span>
                                 </>
                             )}
