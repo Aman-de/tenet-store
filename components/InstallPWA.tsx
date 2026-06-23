@@ -35,9 +35,9 @@ export default function InstallPWA() {
 
         window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
 
-        // Show banner only after scroll or timeout
+        // Show banner only after significant scroll or longer timeout
         const handleScroll = () => {
-            if (window.scrollY > 600) {
+            if (window.scrollY > 1200) { // Require more scrolling (2+ full screens)
                 setIsVisible(true);
                 window.removeEventListener('scroll', handleScroll);
             }
@@ -48,7 +48,7 @@ export default function InstallPWA() {
         const timer = setTimeout(() => {
             setIsVisible(true);
             window.removeEventListener('scroll', handleScroll);
-        }, 20000); // 20 seconds timeout
+        }, 45000); // 45 seconds timeout (up from 20)
 
         return () => {
             clearTimeout(timer);

@@ -226,20 +226,20 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
             <div className="lg:hidden flex flex-col w-full gap-4 px-4 pb-2">
                 {/* 1. Hero Banner */}
                 <div className={`relative w-full h-[220px] rounded-2xl overflow-hidden ${cardBg} border border-neutral-200/50 dark:border-white/5 flex items-center`}>
-                    <div className="absolute right-0 top-0 bottom-0 w-[53%] h-full overflow-hidden">
+                    <div className="absolute right-0 top-0 bottom-0 w-[60%] h-full overflow-hidden">
                         <Image
                             src={mainHeroSrc}
                             alt="Main Hero"
                             fill
-                            sizes="50vw"
+                            sizes="60vw"
                             priority
                             className="object-cover object-center scale-[1.04]"
                         />
-                        <div className={`absolute inset-y-0 left-0 w-32 bg-gradient-to-r ${cardGradientFrom} ${cardGradientTo}`} />
+                        <div className={`absolute inset-y-0 -left-2 w-48 bg-gradient-to-r ${cardGradientFrom} ${cardGradientTo}`} />
                     </div>
                     
-                    <div className="relative z-10 w-[55%] pl-5 flex flex-col items-start justify-center">
-                        <h1 className="font-serif text-xl sm:text-2xl font-bold tracking-tight text-neutral-800 dark:text-[#F4F1ED] leading-[1.25] mb-1.5">
+                    <div className="relative z-10 w-[55%] pl-5 flex flex-col items-start justify-center pointer-events-none">
+                        <h1 className="font-serif text-xl sm:text-2xl font-bold tracking-tight text-neutral-800 dark:text-[#F4F1ED] leading-[1.25] mb-1.5 pointer-events-auto">
                             {isWoman ? (
                                 <>Premium Cotton<br/>Kurtis & Linen<br/>Essentials</>
                             ) : (
