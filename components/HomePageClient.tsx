@@ -210,21 +210,6 @@ export default function HomePageClient({ products, collections }: HomePageClient
                 </div>
             </div>
 
-            {/* FLOATING WHATSAPP WIDGET */}
-            <a 
-                href="https://wa.me/919999999999" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="fixed bottom-20 right-4 z-40 w-12 h-12 bg-[#25D366] hover:bg-[#20BA56] rounded-full flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 transition-all border border-white/10"
-                aria-label="Contact us on WhatsApp"
-            >
-                <Image
-                    src="/whatsapp-logo.svg"
-                    alt="WhatsApp"
-                    width={26}
-                    height={26}
-                />
-            </a>
         </div>
     );
 }
