@@ -68,31 +68,31 @@ export default function HomePageClient({ products, collections }: HomePageClient
             <BentoHero spotlightProducts={spotlightProducts} collections={collections} />
 
             {/* BESTSELLERS SLIDER */}
-            <div className="w-full px-6 xl:px-12 py-10">
-                <div className="flex items-center justify-between mb-6">
-                    <h2 className="font-serif text-2xl md:text-3xl font-bold tracking-tight text-[#1A1A1A] dark:text-[#F4F1ED] uppercase">
+            <div className="w-full py-6 lg:py-12">
+                <div className="flex items-center justify-between mb-4 px-4 lg:px-12">
+                    <h2 className="font-serif text-[22px] lg:text-3xl font-bold tracking-wider text-neutral-800 dark:text-[#F4F1ED] uppercase">
                         Bestsellers
                     </h2>
-                    <Link href={`/collection/${isWoman ? 'sets' : 'shirts'}`} className="flex items-center gap-1.5 text-xs font-bold text-neutral-800 dark:text-[#F4F1ED] hover:opacity-80 transition-opacity">
+                    <Link href={`/collection/${isWoman ? 'sets' : 'shirts'}`} className="flex items-center gap-1 text-[10px] lg:text-xs font-bold uppercase tracking-widest text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors">
                         <span>View all</span>
-                        <ArrowRight className="w-3.5 h-3.5" />
+                        <ArrowRight className="w-3 lg:w-4 h-3 lg:h-4" />
                     </Link>
                 </div>
                 
                 {/* Horizontal Scroll Container */}
-                <div className="flex gap-4 md:gap-6 overflow-x-auto pb-4 scrollbar-none snap-x snap-mandatory">
+                <div className="flex gap-4 lg:gap-6 overflow-x-auto px-4 lg:px-12 pb-6 scrollbar-none snap-x snap-mandatory">
                     {bestsellerProducts.map((product) => (
-                        <div key={product.id} className="flex-shrink-0 w-[180px] md:w-[240px] snap-align-start">
+                        <div key={product.id} className="flex-shrink-0 w-[180px] lg:w-[240px] snap-align-start">
                             <ProductCard product={product} />
                         </div>
                     ))}
                 </div>
             </div>
 
-            {/* DETAILED TRUST RIBBON */}
-            <div className="w-full px-6 xl:px-12 py-6">
-                <div className={`${cardBg} border border-neutral-200/40 dark:border-white/5 rounded-2xl p-6 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-4 shadow-sm`}>
-                    <div className="flex items-center gap-3.5 p-1 md:justify-center">
+            {/* DETAILED TRUST RIBBON (Hidden on mobile as it's redundant with the hero ribbon) */}
+            <div className="hidden lg:block w-full px-12 py-6">
+                <div className={`${cardBg} border border-neutral-200/40 dark:border-white/5 rounded-2xl p-6 grid grid-cols-4 gap-4 shadow-sm`}>
+                    <div className="flex items-center justify-center gap-3.5 p-1">
                         <div className="w-10 h-10 rounded-full bg-black/5 dark:bg-white/5 flex items-center justify-center shrink-0">
                             <Truck className="w-5 h-5 text-neutral-800 dark:text-[#F4F1ED]/90" strokeWidth={1.5} />
                         </div>
@@ -101,7 +101,7 @@ export default function HomePageClient({ products, collections }: HomePageClient
                             <span className="font-sans text-[9px] text-neutral-400 dark:text-neutral-500">On prepaid orders</span>
                         </div>
                     </div>
-                    <div className="flex items-center gap-3.5 p-1 md:justify-center">
+                    <div className="flex items-center justify-center gap-3.5 p-1">
                         <div className="w-10 h-10 rounded-full bg-black/5 dark:bg-white/5 flex items-center justify-center shrink-0">
                             <RefreshCw className="w-5 h-5 text-neutral-800 dark:text-[#F4F1ED]/90" strokeWidth={1.5} />
                         </div>
@@ -110,7 +110,7 @@ export default function HomePageClient({ products, collections }: HomePageClient
                             <span className="font-sans text-[9px] text-neutral-400 dark:text-neutral-500">7 days return</span>
                         </div>
                     </div>
-                    <div className="flex items-center gap-3.5 p-1 md:justify-center">
+                    <div className="flex items-center justify-center gap-3.5 p-1">
                         <div className="w-10 h-10 rounded-full bg-black/5 dark:bg-white/5 flex items-center justify-center shrink-0">
                             <ShieldCheck className="w-5 h-5 text-neutral-800 dark:text-[#F4F1ED]/90" strokeWidth={1.5} />
                         </div>
@@ -119,7 +119,7 @@ export default function HomePageClient({ products, collections }: HomePageClient
                             <span className="font-sans text-[9px] text-neutral-400 dark:text-neutral-500">100% safe</span>
                         </div>
                     </div>
-                    <div className="flex items-center gap-3.5 p-1 md:justify-center">
+                    <div className="flex items-center justify-center gap-3.5 p-1">
                         <div className="w-10 h-10 rounded-full bg-black/5 dark:bg-white/5 flex items-center justify-center shrink-0">
                             <svg className="w-5 h-5 text-neutral-800 dark:text-[#F4F1ED]/90" strokeWidth={1.5} viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                 <rect x="2" y="5" width="20" height="14" rx="2" />
