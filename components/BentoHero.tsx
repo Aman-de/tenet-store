@@ -142,7 +142,7 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
 
                             {/* Slides 2+: Spotlight Products */}
                             {spotlightProducts.slice(0, 10).map((product) => {
-                                const heroImage = product.images[1] || product.images[0];
+                                const heroImage = product.images[0] || product.images[1];
                                 return (
                                     <Link href={`/product/${product.handle}`} key={product.id} className="relative flex-[0_0_100%] h-full w-full block">
                                         {heroImage && (

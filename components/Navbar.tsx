@@ -148,18 +148,23 @@ export default function Navbar() {
         : "bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 lg:bg-white/10 lg:hover:bg-white/20 lg:dark:bg-white/10 lg:dark:hover:bg-white/20";
 
     // Ultra-premium Apple-style segmented control (Liquid Glass)
-    const GenderToggle = ({ idSuffix, isDesktop = false }: { idSuffix: string, isDesktop?: boolean }) => {
-        const solid = isScrolledOrNotHome || isDesktop || idSuffix === "mobile-bar";
+    const GenderToggle = ({ idSuffix, isDesktop = false, isMini = false }: { idSuffix: string, isDesktop?: boolean, isMini?: boolean }) => {
+        const solid = isScrolledOrNotHome || isDesktop || idSuffix === "mobile-bar" || idSuffix === "mobile-top-bar";
         const toggleBg = solid ? "bg-[#1A1A1A]/5 dark:bg-white/10" : "bg-white/10";
         const btnText = (active: boolean) => {
             if (active) return "text-white dark:text-[#1A1A1A] dark:text-[#F4F1ED]";
             return solid ? "text-[#1A1A1A] dark:text-[#F4F1ED] font-medium" : "text-white/80 font-medium";
         };
+        const manWidth = isMini ? "w-10" : "w-14 sm:w-20";
+        const womanWidth = isMini ? "w-12" : "w-16 sm:w-20";
+        const paddingY = isMini ? "py-1" : "py-1.5 sm:py-2";
+        const textSize = isMini ? "text-[8px]" : "text-[10px] sm:text-xs";
+        
         return (
-            <div className={`relative flex items-center rounded-full p-1 sm:p-1 transition-colors duration-500 backdrop-blur-md ${toggleBg}`}>
+            <div className={`relative flex items-center rounded-full transition-colors duration-500 backdrop-blur-md ${toggleBg} ${isMini ? 'p-0.5' : 'p-1 sm:p-1'}`}>
                 <button 
                     onClick={() => setGender('man')}
-                    className={`relative z-10 w-14 sm:w-20 py-1.5 sm:py-2 text-[10px] sm:text-xs tracking-widest uppercase transition-colors duration-300 ${btnText(gender === 'man')}`}
+                    className={`relative z-10 tracking-widest uppercase transition-colors duration-300 ${manWidth} ${paddingY} ${textSize} ${btnText(gender === 'man')}`}
                 >
                     MEN
                     {gender === 'man' && (
@@ -173,7 +178,7 @@ export default function Navbar() {
                 </button>
                 <button 
                     onClick={() => setGender('woman')}
-                    className={`relative w-16 sm:w-20 py-1.5 sm:py-2 text-[10px] sm:text-xs tracking-widest uppercase transition-colors z-10 ${btnText(gender === 'woman')}`}
+                    className={`relative tracking-widest uppercase transition-colors z-10 ${womanWidth} ${paddingY} ${textSize} ${btnText(gender === 'woman')}`}
                 >
                     WOMEN
                     {gender === 'woman' && (

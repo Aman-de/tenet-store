@@ -57,8 +57,8 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
         }, 600);
     };
 
-    const primaryImage = product.images?.[1] || product.images?.[0];
-    const secondaryImage = product.images?.[1] ? product.images[0] : null;
+    const primaryImage = product.images?.[0];
+    const secondaryImage = product.images?.[1] || null;
 
     return (
         <div
