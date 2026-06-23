@@ -226,7 +226,7 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
             <div className="lg:hidden flex flex-col w-full gap-4 px-4 pb-2">
                 {/* 1. Hero Banner */}
                 <div className={`relative w-full h-[220px] rounded-2xl overflow-hidden ${cardBg} border border-neutral-200/50 dark:border-white/5 flex items-center`}>
-                    <div className="absolute right-0 top-0 bottom-0 w-[53%] h-full">
+                    <div className="absolute right-0 top-0 bottom-0 w-[53%] h-full overflow-hidden">
                         <Image
                             src={mainHeroSrc}
                             alt="Main Hero"
