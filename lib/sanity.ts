@@ -839,7 +839,7 @@ export async function getSettings() {
         const data = await client.fetch(query, {}, CACHE_60S);
         return data || {
             title: 'TENET',
-            womanAccentColor: '#C94B32',
+            womanAccentColor: '#FF4D6D',
             manAccentColor: '#2E5B82',
             womanBgColorLight: '#FDFBF7',
             womanBgColorDark: '#160F11',
@@ -850,7 +850,7 @@ export async function getSettings() {
         console.error("Failed to fetch settings, using fallback", e);
         return {
             title: 'TENET',
-            womanAccentColor: '#C94B32',
+            womanAccentColor: '#FF4D6D',
             manAccentColor: '#2E5B82',
             womanBgColorLight: '#FDFBF7',
             womanBgColorDark: '#160F11',
