@@ -84,143 +84,228 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
     ];
 
     return (
-        <section className="relative w-full flex flex-col lg:flex-row pt-[108px] lg:pt-0 p-0 lg:p-6 gap-1 lg:gap-6 overflow-hidden bg-transparent lg:h-[100dvh]">
+        <section className="relative w-full pt-[108px] lg:pt-0 p-0 lg:p-6 overflow-hidden bg-transparent lg:h-[100dvh]">
             
-            {/* LEFT: Hero Section (Auto Scrolling) */}
-            <div className="relative w-full h-[65vh] lg:w-7/12 xl:w-2/3 lg:h-full rounded-none lg:rounded-2xl overflow-hidden group bg-neutral-200 dark:bg-neutral-800">
-                <div ref={emblaRef} className="overflow-hidden w-full h-full">
-                    <div className="flex w-full h-full">
-                        {/* Slide 1: Main Editorial */}
-                        <div className="relative flex-[0_0_100%] h-full w-full">
-                            <Image
-                                src={mainHeroSrc}
-                                alt="Main Hero"
-                                fill
-                                sizes="(max-width: 1024px) 100vw, 66vw"
-                                priority
-                                className="object-cover object-center transform transition-transform duration-[20s] hover:scale-105"
-                            />
-                            {/* Gradient for Navbar Icon Visibility */}
-                            <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-black/60 to-transparent z-10 lg:hidden pointer-events-none" />
-                            <div className="absolute inset-0 bg-black/20 lg:bg-black/10" />
-                            <div className="absolute inset-0 p-4 lg:p-12 flex flex-col justify-center lg:justify-end items-start pt-16 lg:pt-0">
-                                <span className="text-[9px] lg:text-xs font-bold uppercase tracking-widest mb-2 lg:mb-4" style={{ color: accentColor }}>
-                                    {gender === "man" ? "SPRING 2025" : "FESTIVE 2025"}
-                                </span>
-                                <h1 className="font-serif text-4xl lg:text-7xl xl:text-[6rem] font-normal tracking-wide text-white leading-[1.1] drop-shadow-md">
-                                    {isWoman ? (
-                                        <>Timeless<br/>Elegance</>
-                                    ) : (
-                                        <>Quiet<br/>Luxury</>
-                                    )}
-                                </h1>
-                                <p className="text-white/90 text-[10px] lg:text-base font-sans mt-2 max-w-[220px] lg:max-w-md leading-relaxed hidden sm:block">
-                                    {isWoman 
-                                        ? "Exquisite Banarasi Lehengas, crafted for your most cherished celebrations." 
-                                        : "Refined essentials, meticulously tailored for the modern gentleman."}
-                                </p>
-                                <Link href="/#new-arrivals" className="mt-4 flex items-center justify-between w-full max-w-[180px] lg:max-w-[260px] bg-[#1A1A1A] text-white px-4 py-3 lg:px-6 lg:py-4 rounded-sm hover:bg-black transition-colors duration-300">
-                                    <span className="text-[9px] lg:text-[10px] font-bold uppercase tracking-[0.2em]">Explore</span>
-                                    <ArrowRight className="w-4 h-4 text-white/80" strokeWidth={1.5} />
-                                </Link>
-                                
-                                {/* Slide Indicators (Mobile) */}
-                                <div className="absolute bottom-4 left-4 flex items-center gap-2 lg:hidden">
-                                    <div className="w-6 h-1 bg-white dark:bg-[#111111] rounded-full" />
-                                    <div className="w-1 h-1 border border-white rounded-full" />
-                                    <div className="w-1 h-1 border border-white rounded-full" />
+            {/* DESKTOP LAYOUT (hidden lg:flex) */}
+            <div className="hidden lg:flex w-full h-full gap-6">
+                {/* LEFT: Hero Section (Auto Scrolling) */}
+                <div className="relative w-full h-[65vh] lg:w-7/12 xl:w-2/3 lg:h-full rounded-none lg:rounded-2xl overflow-hidden group bg-neutral-200 dark:bg-neutral-800">
+                    <div ref={emblaRef} className="overflow-hidden w-full h-full">
+                        <div className="flex w-full h-full">
+                            {/* Slide 1: Main Editorial */}
+                            <div className="relative flex-[0_0_100%] h-full w-full">
+                                <Image
+                                    src={mainHeroSrc}
+                                    alt="Main Hero"
+                                    fill
+                                    sizes="(max-width: 1024px) 100vw, 66vw"
+                                    priority
+                                    className="object-cover object-center transform transition-transform duration-[20s] hover:scale-105"
+                                />
+                                {/* Gradient for Navbar Icon Visibility */}
+                                <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-black/60 to-transparent z-10 lg:hidden pointer-events-none" />
+                                <div className="absolute inset-0 bg-black/20 lg:bg-black/10" />
+                                <div className="absolute inset-0 p-4 lg:p-12 flex flex-col justify-center lg:justify-end items-start pt-16 lg:pt-0">
+                                    <span className="text-[9px] lg:text-xs font-bold uppercase tracking-widest mb-2 lg:mb-4" style={{ color: accentColor }}>
+                                        {gender === "man" ? "SPRING 2025" : "FESTIVE 2025"}
+                                    </span>
+                                    <h1 className="font-serif text-4xl lg:text-7xl xl:text-[6rem] font-normal tracking-wide text-white leading-[1.1] drop-shadow-md">
+                                        {isWoman ? (
+                                            <>Timeless<br/>Elegance</>
+                                        ) : (
+                                            <>Quiet<br/>Luxury</>
+                                        )}
+                                    </h1>
+                                    <p className="text-white/90 text-[10px] lg:text-base font-sans mt-2 max-w-[220px] lg:max-w-md leading-relaxed hidden sm:block">
+                                        {isWoman 
+                                            ? "Exquisite Banarasi Lehengas, crafted for your most cherished celebrations." 
+                                            : "Refined essentials, meticulously tailored for the modern gentleman."}
+                                    </p>
+                                    <Link href="/#new-arrivals" className="mt-4 flex items-center justify-between w-full max-w-[180px] lg:max-w-[260px] bg-[#1A1A1A] text-white px-4 py-3 lg:px-6 lg:py-4 rounded-sm hover:bg-black transition-colors duration-300">
+                                        <span className="text-[9px] lg:text-[10px] font-bold uppercase tracking-[0.2em]">Explore</span>
+                                        <ArrowRight className="w-4 h-4 text-white/80" strokeWidth={1.5} />
+                                    </Link>
                                 </div>
                             </div>
-                        </div>
 
-                        {/* Slides 2+: Spotlight Products */}
-                        {spotlightProducts.slice(0, 10).map((product) => {
-                            const heroImage = product.images[1] || product.images[0];
+                            {/* Slides 2+: Spotlight Products */}
+                            {spotlightProducts.slice(0, 10).map((product) => {
+                                const heroImage = product.images[1] || product.images[0];
+                                return (
+                                    <Link href={`/product/${product.handle}`} key={product.id} className="relative flex-[0_0_100%] h-full w-full block">
+                                        {heroImage && (
+                                            <Image
+                                                src={heroImage}
+                                                alt={product.title}
+                                                fill
+                                                sizes="(max-width: 1024px) 100vw, 66vw"
+                                                loading="lazy"
+                                                quality={75}
+                                                className="object-cover"
+                                            />
+                                        )}
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+                                        <div className="absolute bottom-6 left-6 lg:bottom-12 lg:left-12">
+                                            <span className="text-[9px] uppercase font-medium tracking-[0.3em] text-white/80 mb-3 block">
+                                                Editorial Spotlight
+                                            </span>
+                                            <h2 className="font-serif italic text-3xl lg:text-5xl text-white drop-shadow-sm">
+                                                {product.title}
+                                            </h2>
+                                        </div>
+                                    </Link>
+                                );
+                            })}
+                        </div>
+                    </div>
+
+                    {/* Hero Controls */}
+                    <button onClick={scrollPrev} className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                        <ChevronLeft className="w-5 h-5" />
+                    </button>
+                    <button onClick={scrollNext} className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                        <ChevronRight className="w-5 h-5" />
+                    </button>
+                </div>
+
+                {/* RIGHT: Categories (Desktop) */}
+                <div className="w-full lg:w-5/12 xl:w-1/3 lg:h-full flex flex-col gap-4">
+                    <div className="w-full h-full grid grid-cols-2 grid-rows-2 gap-4">
+                        {filteredCollections.map((collection) => {
+                            const catKey = (collection.filterTag || collection.handle || "").toLowerCase();
+                            const coverPhoto = CATEGORY_IMAGES[catKey]?.[gender] || collection.imageUrl;
+                            const subtitle = CATEGORY_SUBTITLES[catKey] || "Explore the collection";
+
                             return (
-                                <Link href={`/product/${product.handle}`} key={product.id} className="relative flex-[0_0_100%] h-full w-full block">
-                                    {heroImage && (
-                                        <Image
-                                            src={heroImage}
-                                        alt={product.title}
+                                <Link key={collection.id} href={`/collection/${collection.handle}`} className="relative group rounded-2xl overflow-hidden bg-neutral-100 dark:bg-[#141414] block w-full h-full">
+                                    <Image
+                                        src={coverPhoto}
+                                        alt={collection.title}
                                         fill
-                                        sizes="(max-width: 1024px) 100vw, 66vw"
-                                        loading="lazy"
-                                        quality={75}
-                                        className="object-cover"
+                                        sizes="(max-width: 768px) 50vw, 16vw"
+                                        className="object-cover transform transition-transform duration-[2s] ease-out group-hover:scale-[1.03]"
                                     />
-                                )}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-                                <div className="absolute bottom-6 left-6 lg:bottom-12 lg:left-12">
-                                    <span className="text-[9px] uppercase font-medium tracking-[0.3em] text-white/80 mb-3 block">
-                                        Editorial Spotlight
-                                    </span>
-                                    <h2 className="font-serif italic text-3xl lg:text-5xl text-white drop-shadow-sm">
-                                        {product.title}
-                                    </h2>
-                                </div>
-                            </Link>
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-700" />
+                                    
+                                    <div className="absolute inset-0 p-6 flex flex-row items-end justify-between">
+                                        <div className="flex flex-col text-left">
+                                            <h3 className="font-serif text-white text-2xl drop-shadow-sm leading-tight">
+                                                {collection.title}
+                                            </h3>
+                                            <p className="font-sans text-[10px] text-white/80 mt-1.5 tracking-wide">
+                                                {subtitle}
+                                            </p>
+                                        </div>
+                                        <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/10 shrink-0 transform group-hover:bg-white/30 transition-colors duration-500">
+                                            <ArrowRight className="w-4 h-4 text-white" strokeWidth={1.5} />
+                                        </div>
+                                    </div>
+                                </Link>
                             );
                         })}
                     </div>
                 </div>
-
-                {/* Hero Controls */}
-                <button onClick={scrollPrev} className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity">
-                    <ChevronLeft className="w-5 h-5" />
-                </button>
-                <button onClick={scrollNext} className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity">
-                    <ChevronRight className="w-5 h-5" />
-                </button>
             </div>
 
-            {/* RIGHT: Categories & TrustBar (Mobile) / Categories Only (Desktop) */}
-            <div className="w-full h-[60vh] lg:w-5/12 xl:w-1/3 lg:h-full flex flex-col gap-1 lg:gap-4 px-1 lg:px-0">
-                
-                {/* Mobile Integrated TrustBar - 15% of the 60vh */}
-                <div className="w-full h-[15%] lg:hidden grid grid-cols-4 divide-x divide-[#1A1A1A]/10 dark:divide-white/10 bg-[#F8F5EF] dark:bg-[#0A0A0A] pb-1 pt-1 rounded-sm lg:rounded-none">
-                    {trustPillars.map((pillar, index) => (
-                        <div key={index} className="flex flex-col items-center justify-center text-center px-0.5">
-                            <div className="mb-0.5">{pillar.icon}</div>
-                            <h3 className="font-sans text-[8.5px] font-bold tracking-widest text-[#1A1A1A] dark:text-[#F4F1ED] uppercase leading-tight scale-x-95 origin-center">
-                                {pillar.title}<br/>{pillar.title2}
-                            </h3>
+            {/* MOBILE LAYOUT (lg:hidden) */}
+            <div className="lg:hidden flex flex-col w-full gap-4 px-4 pb-2">
+                {/* 1. Hero Banner */}
+                <div className="relative w-full h-[280px] rounded-2xl overflow-hidden bg-[#FAF7F2] dark:bg-[#171312] border border-neutral-200/50 dark:border-white/5 flex items-center">
+                    <div className="absolute right-0 top-0 bottom-0 w-[53%] h-full">
+                        <Image
+                            src={mainHeroSrc}
+                            alt="Main Hero"
+                            fill
+                            sizes="50vw"
+                            priority
+                            className="object-cover object-center"
+                        />
+                        <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[#FAF7F2] dark:from-[#171312] to-transparent" />
+                    </div>
+                    
+                    <div className="relative z-10 w-[55%] pl-5 flex flex-col items-start justify-center">
+                        <h1 className="font-serif text-xl sm:text-2xl font-bold tracking-tight text-neutral-800 dark:text-[#F4F1ED] leading-[1.25] mb-1.5">
+                            {isWoman ? (
+                                <>Premium Cotton<br/>Kurtis & Linen<br/>Essentials</>
+                            ) : (
+                                <>Premium Linen<br/>Shirts & Tailored<br/>Essentials</>
+                            )}
+                        </h1>
+                        <div className="flex items-center gap-1 mb-4 text-[9px] text-neutral-500 dark:text-neutral-400">
+                            <span className="text-[#FF9900]">★★★★★</span>
+                            <span className="font-bold text-neutral-700 dark:text-neutral-300">4.8</span>
+                            <span>|</span>
+                            <span>{isWoman ? "Rated by 6,321 Women" : "Rated by 4,892 Men"}</span>
                         </div>
-                    ))}
-                </div>
-                {/* Categories Grid - 85% of the 60vh */}
-                <div className="w-full h-[85%] lg:h-full grid grid-cols-2 grid-rows-2 gap-1 lg:gap-4">
-                    {filteredCollections.map((collection, index) => {
-                        const catKey = (collection.filterTag || collection.handle || "").toLowerCase();
-                        const coverPhoto = CATEGORY_IMAGES[catKey]?.[gender] || collection.imageUrl;
-                        const subtitle = CATEGORY_SUBTITLES[catKey] || "Explore the collection";
-
-                        return (
-                            <Link key={collection.id} href={`/collection/${collection.handle}`} className="relative group rounded-md lg:rounded-2xl overflow-hidden bg-neutral-100 dark:bg-[#141414] block w-full h-full">
-                            <Image
-                                src={coverPhoto}
-                                alt={collection.title}
-                                fill
-                                sizes="(max-width: 768px) 50vw, 16vw"
-                                className="object-cover transform transition-transform duration-[2s] ease-out group-hover:scale-[1.03]"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-700" />
-                            
-                            <div className="absolute inset-0 p-3 lg:p-6 flex flex-row items-end justify-between">
-                                <div className="flex flex-col text-left">
-                                    <h3 className="font-serif text-white text-[13px] lg:text-2xl drop-shadow-sm leading-tight">
-                                        {collection.title}
-                                    </h3>
-                                    <p className="font-sans text-[7px] lg:text-[10px] text-white/80 mt-0.5 lg:mt-1.5 tracking-wide">
-                                        {subtitle}
-                                    </p>
-                                </div>
-                                <div className="w-5 h-5 lg:w-8 lg:h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/10 shrink-0 transform group-hover:bg-white/30 transition-colors duration-500">
-                                    <ArrowRight className="w-2.5 h-2.5 lg:w-4 lg:h-4 text-white" strokeWidth={1.5} />
-                                </div>
-                            </div>
+                        <Link 
+                            href="#new-arrivals" 
+                            className="flex items-center justify-between gap-3 bg-[#1A1A1A] dark:bg-[#F4F1ED] text-white dark:text-[#1A1A1A] px-4 py-2.5 rounded-full hover:scale-[1.02] active:scale-[0.98] transition-all shadow-sm"
+                        >
+                            <span className="text-[9px] font-bold uppercase tracking-wider">
+                                Shop Bestsellers
+                            </span>
+                            <ArrowRight className="w-3.5 h-3.5" />
                         </Link>
-                    );
-                })}
+                    </div>
+                </div>
+
+                {/* 2. Trust Ribbon (Pill) */}
+                <div className="w-full bg-[#FBF9F6] dark:bg-[#161213] border border-neutral-200/50 dark:border-white/5 rounded-2xl py-3 px-2 flex justify-between items-center shadow-[0_2px_8px_rgba(0,0,0,0.02)] divide-x divide-neutral-200/60 dark:divide-white/5">
+                    <div className="flex-1 flex items-center justify-center gap-1.5 px-0.5">
+                        <span className="text-[10px] text-[#FF9900]">★</span>
+                        <span className="font-bold text-[9px] text-neutral-800 dark:text-[#F4F1ED]/95 tracking-wide">4.8 Rating</span>
+                    </div>
+                    <div className="flex-1 flex items-center justify-center gap-1.5 px-0.5">
+                        <Truck className="w-3.5 h-3.5 text-neutral-600 dark:text-[#F4F1ED]/70" strokeWidth={2} />
+                        <span className="font-bold text-[9px] text-neutral-800 dark:text-[#F4F1ED]/95 tracking-wide">Free Shipping</span>
+                    </div>
+                    <div className="flex-1 flex items-center justify-center gap-1.5 px-0.5">
+                        <ShieldCheck className="w-3.5 h-3.5 text-neutral-600 dark:text-[#F4F1ED]/70" strokeWidth={2} />
+                        <span className="font-bold text-[9px] text-neutral-800 dark:text-[#F4F1ED]/95 tracking-wide">COD Available</span>
+                    </div>
+                    <div className="flex-1 flex items-center justify-center gap-1.5 px-0.5">
+                        <RefreshCw className="w-3.5 h-3.5 text-neutral-600 dark:text-[#F4F1ED]/70" strokeWidth={2} />
+                        <span className="font-bold text-[9px] text-neutral-800 dark:text-[#F4F1ED]/95 tracking-wide">Easy Returns</span>
+                    </div>
+                </div>
+
+                {/* 3. Shop By Category Section */}
+                <div className="w-full pt-2">
+                    <h2 className="font-serif text-sm font-bold tracking-wider text-neutral-800 dark:text-[#F4F1ED] uppercase mb-3">
+                        Shop By Category
+                    </h2>
+                    <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none snap-x snap-mandatory">
+                        {filteredCollections.map((collection) => {
+                            const catKey = (collection.filterTag || collection.handle || "").toLowerCase();
+                            const coverPhoto = CATEGORY_IMAGES[catKey]?.[gender] || collection.imageUrl;
+                            const subtitle = CATEGORY_SUBTITLES[catKey] || "Explore Now";
+                            
+                            return (
+                                <Link 
+                                    key={collection.id} 
+                                    href={`/collection/${collection.handle}`} 
+                                    className="relative flex-shrink-0 w-[130px] h-[180px] rounded-2xl overflow-hidden group snap-align-start shadow-sm"
+                                >
+                                    <Image
+                                        src={coverPhoto}
+                                        alt={collection.title}
+                                        fill
+                                        sizes="130px"
+                                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent" />
+                                    <div className="absolute bottom-3 left-3 right-3 flex flex-col justify-end">
+                                        <h3 className="font-sans text-[10px] font-bold text-white tracking-widest uppercase leading-snug">
+                                            {collection.title}
+                                        </h3>
+                                        <div className="w-5 h-5 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center mt-1.5 border border-white/10 self-start group-hover:bg-white/40 transition-colors">
+                                            <ArrowRight className="w-2.5 h-2.5 text-white" strokeWidth={2.5} />
+                                        </div>
+                                    </div>
+                                </Link>
+                            );
+                        })}
+                    </div>
                 </div>
             </div>
             

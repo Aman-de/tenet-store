@@ -27,6 +27,10 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
     const { gender } = useGender();
     const isWoman = gender === "woman";
     const accentColor = "var(--accent-color)";
+    
+    // Stable random seed for ratings and review count
+    const rating = 4.5 + (product.title.charCodeAt(0) % 5) * 0.1;
+    const reviewCount = 200 + (product.title.charCodeAt(1) % 80) * 15;
 
     const hasDiscount = product.originalPrice && product.originalPrice > product.price;
     const discountPercentage = hasDiscount
@@ -63,7 +67,7 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
             onMouseLeave={() => setIsHovered(false)}
         >
             {/* Image Container */}
-            <div className="relative aspect-[3/4] w-full overflow-hidden bg-neutral-100 dark:bg-[#111111] mb-3 rounded-sm">
+            <div className="relative aspect-[3/4] w-full overflow-hidden bg-neutral-100 dark:bg-[#111111] mb-3 rounded-2xl">
                 <Link href={`/product/${product.handle}`} onClick={handleViewItem} className="absolute inset-0 z-0 block w-full h-full">
                     {primaryImage ? (
                         <>
@@ -104,13 +108,13 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
 
                 {/* Out of Stock Badge */}
                     {product.isOutOfStock ? (
-                        <div className="absolute top-2 left-2 bg-black/90 backdrop-blur-sm text-white text-[10px] font-medium px-2 py-1 uppercase tracking-widest z-20">
+                        <div className="absolute top-2.5 left-2.5 bg-black/90 backdrop-blur-sm text-white text-[10px] font-medium px-2 py-1 uppercase tracking-widest z-20 rounded-md">
                             Out of Stock
                         </div>
                     ) : (
                         hasDiscount && discountPercentage !== 16 && discountPercentage !== 17 && (
                             <div 
-                                className="absolute top-2 left-2 text-white text-[10px] font-bold px-2 py-1 uppercase tracking-wider z-20 shadow-sm rounded-sm"
+                                className="absolute top-2.5 left-2.5 text-white text-[9px] font-bold px-2 py-1 uppercase tracking-wider z-20 shadow-sm rounded-md"
                                 style={{ backgroundColor: accentColor }}
                             >
                                 {discountPercentage}% OFF
@@ -126,19 +130,13 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
                             e.stopPropagation();
                             toggleWishlist(product);
                         }}
-                        className={`
-                            md:hidden absolute top-2 right-2 z-30
-                            pointer-events-auto
-                            w-8 h-8 bg-white/20 dark:bg-black/20 backdrop-blur-md text-[#1A1A1A] dark:text-white rounded-full 
-                            flex items-center justify-center
-                            active:scale-90 transition-all duration-200
-                        `}
+                        className="md:hidden absolute top-2.5 right-2.5 z-30 pointer-events-auto w-8 h-8 bg-white dark:bg-[#1A1A1A] text-neutral-800 dark:text-[#F4F1ED] rounded-full flex items-center justify-center shadow-md border border-neutral-100/50 dark:border-white/10 active:scale-90 transition-all duration-200"
                         aria-label="Wishlist"
                     >
                         <Heart
-                            size={18}
+                            size={16}
                             className="transition-all duration-300"
-                            style={isInWishlist(product.id) ? { fill: accentColor, stroke: accentColor } : { stroke: "white" }}
+                            style={isInWishlist(product.id) ? { fill: accentColor, stroke: accentColor } : { stroke: "currentColor" }}
                             strokeWidth={2}
                         />
                     </motion.button>
@@ -259,31 +257,40 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
                 </div>
 
             {/* Product Info */}
-            <div className="space-y-1.5 p-1 pt-2 flex flex-col items-center text-center w-full">
+            <div className="space-y-1.5 p-1 pt-1.5 flex flex-col items-start text-left w-full">
                 <Link href={`/product/${product.handle}`} onClick={handleViewItem} className="block w-full">
-                    <h3 className="font-serif text-sm md:text-base font-normal tracking-wide text-[#1A1A1A] dark:text-[#F4F1ED] truncate hover:text-[#1A1A1A] dark:text-[#F4F1ED]/70 dark:hover:text-[#F4F1ED]/70 transition-colors w-full">
+                    <h3 className="font-sans text-xs md:text-[13px] font-normal tracking-wide text-neutral-800 dark:text-[#F4F1ED] truncate hover:text-black dark:hover:text-white transition-colors w-full">
                         {product.title}
                     </h3>
                 </Link>
 
-                <div className="flex items-center justify-center gap-3 text-xs md:text-sm">
+                <div className="flex items-baseline gap-2 text-xs md:text-sm">
+                    <span className="font-sans font-extrabold text-[13px]" style={{ color: accentColor }}>
+                        ₹{product.price.toLocaleString('en-IN')}
+                    </span>
                     {product.originalPrice && (
-                        <span className="text-neutral-400 dark:text-neutral-500 line-through decoration-neutral-300 dark:decoration-neutral-600 font-sans text-xs">
+                        <span className="text-neutral-400 dark:text-neutral-500 line-through decoration-neutral-300 dark:decoration-neutral-600 font-sans text-[10px]">
                             ₹{product.originalPrice.toLocaleString('en-IN')}
                         </span>
                     )}
-                    <span className="font-sans font-medium text-[#1A1A1A] dark:text-[#F4F1ED] tracking-wider text-xs">
-                        ₹{product.price.toLocaleString('en-IN')}
-                    </span>
+                </div>
+
+                {/* Rating & Review Count */}
+                <div className="flex items-center gap-1 text-[9px] md:text-[10px] text-neutral-500 dark:text-neutral-400">
+                    <div className="flex text-amber-500">
+                        {"★".repeat(Math.floor(rating))}
+                    </div>
+                    <span className="font-bold text-neutral-700 dark:text-neutral-300">{rating.toFixed(1)}</span>
+                    <span>({reviewCount.toLocaleString()})</span>
                 </div>
 
                 {/* Color Swatches */}
                 {product.colors && product.colors.length > 0 && (
-                    <div className="flex gap-1 pt-1">
+                    <div className="flex gap-1 pt-0.5">
                         {product.colors.map((color, idx) => (
                             <div
                                 key={idx}
-                                className="w-3 h-3 rounded-full border border-gray-200"
+                                className="w-2.5 h-2.5 rounded-full border border-neutral-200 dark:border-neutral-700"
                                 style={{ backgroundColor: color }}
                             />
                         ))}
