@@ -82,34 +82,42 @@ export default function HomePageClient({ products, collections }: HomePageClient
 
             {/* DETAILED TRUST RIBBON */}
             <div className="w-full px-6 xl:px-12 py-6">
-                <div className={`${cardBg} border border-neutral-200/50 dark:border-white/5 rounded-2xl p-6 grid grid-cols-2 md:grid-cols-4 gap-6 divide-y md:divide-y-0 md:divide-x divide-neutral-200/50 dark:divide-white/5 shadow-sm`}>
-                    <div className="flex items-center gap-3.5 p-2 md:justify-center">
-                        <Truck className="w-6 h-6 text-neutral-800 dark:text-[#F4F1ED]/90 shrink-0" strokeWidth={1.5} />
+                <div className={`${cardBg} border border-neutral-200/40 dark:border-white/5 rounded-2xl p-6 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-4 shadow-sm`}>
+                    <div className="flex items-center gap-3.5 p-1 md:justify-center">
+                        <div className="w-10 h-10 rounded-full bg-black/5 dark:bg-white/5 flex items-center justify-center shrink-0">
+                            <Truck className="w-5 h-5 text-neutral-800 dark:text-[#F4F1ED]/90" strokeWidth={1.5} />
+                        </div>
                         <div className="flex flex-col text-left">
                             <span className="font-sans text-[11px] font-bold text-neutral-800 dark:text-[#F4F1ED]/90 uppercase tracking-wider">Free Shipping</span>
                             <span className="font-sans text-[9px] text-neutral-400 dark:text-neutral-500">On prepaid orders</span>
                         </div>
                     </div>
-                    <div className="flex items-center gap-3.5 p-2 pt-6 md:pt-2 md:justify-center">
-                        <RefreshCw className="w-6 h-6 text-neutral-800 dark:text-[#F4F1ED]/90 shrink-0" strokeWidth={1.5} />
+                    <div className="flex items-center gap-3.5 p-1 md:justify-center">
+                        <div className="w-10 h-10 rounded-full bg-black/5 dark:bg-white/5 flex items-center justify-center shrink-0">
+                            <RefreshCw className="w-5 h-5 text-neutral-800 dark:text-[#F4F1ED]/90" strokeWidth={1.5} />
+                        </div>
                         <div className="flex flex-col text-left">
                             <span className="font-sans text-[11px] font-bold text-neutral-800 dark:text-[#F4F1ED]/90 uppercase tracking-wider">Easy Returns</span>
                             <span className="font-sans text-[9px] text-neutral-400 dark:text-neutral-500">7 days return</span>
                         </div>
                     </div>
-                    <div className="flex items-center gap-3.5 p-2 pt-6 md:pt-2 md:justify-center">
-                        <ShieldCheck className="w-6 h-6 text-neutral-800 dark:text-[#F4F1ED]/90 shrink-0" strokeWidth={1.5} />
+                    <div className="flex items-center gap-3.5 p-1 md:justify-center">
+                        <div className="w-10 h-10 rounded-full bg-black/5 dark:bg-white/5 flex items-center justify-center shrink-0">
+                            <ShieldCheck className="w-5 h-5 text-neutral-800 dark:text-[#F4F1ED]/90" strokeWidth={1.5} />
+                        </div>
                         <div className="flex flex-col text-left">
                             <span className="font-sans text-[11px] font-bold text-neutral-800 dark:text-[#F4F1ED]/90 uppercase tracking-wider">Secure Payments</span>
                             <span className="font-sans text-[9px] text-neutral-400 dark:text-neutral-500">100% safe</span>
                         </div>
                     </div>
-                    <div className="flex items-center gap-3.5 p-2 pt-6 md:pt-2 md:justify-center">
-                        <svg className="w-6 h-6 text-neutral-800 dark:text-[#F4F1ED]/90 shrink-0" strokeWidth={1.5} viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                            <rect x="2" y="5" width="20" height="14" rx="2" />
-                            <line x1="2" y1="10" x2="22" y2="10" />
-                            <path d="M6 14h.01M10 14h.01" />
-                        </svg>
+                    <div className="flex items-center gap-3.5 p-1 md:justify-center">
+                        <div className="w-10 h-10 rounded-full bg-black/5 dark:bg-white/5 flex items-center justify-center shrink-0">
+                            <svg className="w-5 h-5 text-neutral-800 dark:text-[#F4F1ED]/90" strokeWidth={1.5} viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <rect x="2" y="5" width="20" height="14" rx="2" />
+                                <line x1="2" y1="10" x2="22" y2="10" />
+                                <path d="M6 14h.01M10 14h.01" />
+                            </svg>
+                        </div>
                         <div className="flex flex-col text-left">
                             <span className="font-sans text-[11px] font-bold text-neutral-800 dark:text-[#F4F1ED]/90 uppercase tracking-wider">COD Available</span>
                             <span className="font-sans text-[9px] text-neutral-400 dark:text-neutral-500">Cash on delivery</span>
