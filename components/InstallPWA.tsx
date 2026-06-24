@@ -50,6 +50,13 @@ export default function InstallPWA() {
             window.removeEventListener('scroll', handleScroll);
         }, 45000); // 45 seconds timeout (up from 20)
 
+        // Auto-reload when new service worker takes over
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                window.location.reload();
+            });
+        }
+
         return () => {
             clearTimeout(timer);
             window.removeEventListener('scroll', handleScroll);

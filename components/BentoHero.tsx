@@ -7,7 +7,7 @@ import { useGender } from "@/context/GenderContext";
 import { motion } from "framer-motion";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Product } from "@/lib/data";
 
 interface Collection {
@@ -79,8 +79,10 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
     filteredCollections = filteredCollections.slice(0, 4);
 
     // Embla Carousel for Hero Images (Spotlights + Main Image)
-    const [desktopEmblaRef, desktopEmblaApi] = useEmblaCarousel({ loop: true }, [Autoplay({ delay: 5000, stopOnInteraction: true })]);
-    const [mobileEmblaRef] = useEmblaCarousel({ loop: true }, [Autoplay({ delay: 5000, stopOnInteraction: true })]);
+    const desktopAutoplay = useRef(Autoplay({ delay: 3500, stopOnInteraction: false }));
+    const mobileAutoplay = useRef(Autoplay({ delay: 3500, stopOnInteraction: false }));
+    const [desktopEmblaRef, desktopEmblaApi] = useEmblaCarousel({ loop: true }, [desktopAutoplay.current]);
+    const [mobileEmblaRef] = useEmblaCarousel({ loop: true }, [mobileAutoplay.current]);
     const scrollPrev = () => desktopEmblaApi?.scrollPrev();
     const scrollNext = () => desktopEmblaApi?.scrollNext();
 
@@ -239,7 +241,7 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                                     priority
                                     className="object-cover object-[85%_center] scale-[1.04]"
                                 />
-                                <div className={`absolute inset-y-0 -left-2 w-48 bg-gradient-to-r ${cardGradientFrom} ${cardGradientTo}`} />
+                                <div className={`absolute inset-y-0 -left-2 w-20 bg-gradient-to-r ${cardGradientFrom} ${cardGradientTo}`} />
                             </div>
                             
                             <div className="relative z-10 w-[55%] pl-5 flex flex-col items-start justify-center pointer-events-none">
@@ -300,7 +302,7 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                                                     unoptimized={heroImage.startsWith("http")}
                                                 />
                                             )}
-                                            <div className={`absolute inset-y-0 -left-2 w-48 bg-gradient-to-r ${cardGradientFrom} ${cardGradientTo}`} />
+                                            <div className={`absolute inset-y-0 -left-2 w-20 bg-gradient-to-r ${cardGradientFrom} ${cardGradientTo}`} />
                                         </div>
                                         
                                         <div className="relative z-10 w-[55%] pl-5 flex flex-col items-start justify-center pointer-events-none">

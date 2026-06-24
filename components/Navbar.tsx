@@ -149,10 +149,10 @@ export default function Navbar() {
         ? "bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20" 
         : "bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 lg:bg-white/10 lg:hover:bg-white/20 lg:dark:bg-white/10 lg:dark:hover:bg-white/20";
 
-    // Ultra-premium Apple-style segmented control (Liquid Glass)
+    // Ultra-premium distinct buttons for gender toggle
     const GenderToggle = ({ idSuffix, isDesktop = false, isMini = false }: { idSuffix: string, isDesktop?: boolean, isMini?: boolean }) => {
         const solid = isScrolledOrNotHome || isDesktop || idSuffix === "mobile-bar" || idSuffix === "mobile-top-bar";
-        const toggleBg = solid ? "bg-[#1A1A1A]/5 dark:bg-white/10" : "bg-white/10";
+        
         const btnText = (active: boolean) => {
             if (active) return "text-white dark:text-[#1A1A1A] dark:text-[#F4F1ED]";
             return solid ? "text-[#1A1A1A] dark:text-[#F4F1ED] font-medium" : "text-white/80 font-medium";
@@ -163,10 +163,10 @@ export default function Navbar() {
         const textSize = isMini ? "text-[9px]" : "text-[10px] sm:text-xs";
         
         return (
-            <div className={`relative flex items-center rounded-full transition-colors duration-500 backdrop-blur-md ${toggleBg} ${isMini ? 'p-0.5' : 'p-1 sm:p-1'}`}>
+            <div className={`relative flex items-center gap-1`}>
                 <button 
                     onClick={() => setGender('man')}
-                    className={`relative z-10 tracking-widest uppercase transition-colors duration-300 ${manWidth} ${layoutClasses} ${textSize} ${btnText(gender === 'man')}`}
+                    className={`relative z-10 tracking-widest uppercase transition-all duration-300 rounded-full border ${manWidth} ${layoutClasses} ${textSize} ${btnText(gender === 'man')} ${gender === 'man' ? 'border-transparent shadow-sm' : (solid ? 'border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5' : 'border-white/20 hover:bg-white/10')}`}
                 >
                     MEN
                     {gender === 'man' && (
@@ -180,7 +180,7 @@ export default function Navbar() {
                 </button>
                 <button 
                     onClick={() => setGender('woman')}
-                    className={`relative tracking-widest uppercase transition-colors z-10 ${womanWidth} ${layoutClasses} ${textSize} ${btnText(gender === 'woman')}`}
+                    className={`relative tracking-widest uppercase transition-all duration-300 rounded-full border z-10 ${womanWidth} ${layoutClasses} ${textSize} ${btnText(gender === 'woman')} ${gender === 'woman' ? 'border-transparent shadow-sm' : (solid ? 'border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5' : 'border-white/20 hover:bg-white/10')}`}
                 >
                     WOMEN
                     {gender === 'woman' && (
@@ -276,7 +276,7 @@ export default function Navbar() {
                                     </button>
                                     
                                     {/* Little search bar in the place of circle icon */}
-                                    <form onSubmit={handleSearchSubmit} className="flex-1 min-w-[70px] max-w-[96px] pointer-events-auto">
+                                    <form onSubmit={handleSearchSubmit} className="flex-1 min-w-[60px] max-w-[76px] pointer-events-auto">
                                         <div className="relative flex items-center bg-[#F4F1ED]/80 dark:bg-[#1C1C1E] border border-black/5 dark:border-white/5 rounded-full px-2 h-[36px] transition-all focus-within:border-black/25 dark:focus-within:border-white/25 shadow-[inset_0_1px_2px_rgba(0,0,0,0.02)]">
                                             <Search className="w-3 h-3 text-neutral-400 dark:text-neutral-500 shrink-0" strokeWidth={2.5} />
                                             <input 
