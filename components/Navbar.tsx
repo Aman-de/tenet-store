@@ -164,7 +164,7 @@ export default function Navbar() {
         const textSize = isMini ? "text-[9px]" : "text-[10px] sm:text-xs";
         
         return (
-            <div className={`relative flex items-center rounded-full transition-colors duration-500 backdrop-blur-md cursor-pointer ${toggleBg} ${isMini ? 'p-0.5 h-[36px]' : 'p-1 sm:p-1'}`}>
+            <div className={`relative flex items-center rounded-full transition-colors duration-500 backdrop-blur-md cursor-pointer ${toggleBg} ${isMini ? 'p-0.5 h-[32px]' : 'p-1 sm:p-1'}`}>
                 <button 
                     onClick={() => setGender('man')}
                     className={`relative z-10 tracking-widest uppercase transition-colors duration-300 rounded-full cursor-pointer hover:bg-black/5 dark:hover:bg-white/10 ${manWidth} ${layoutClasses} ${textSize} ${btnText(gender === 'man')}`}
@@ -268,7 +268,7 @@ export default function Navbar() {
                             <div className="flex w-full items-center justify-between relative py-0.5">
                                 {/* LEFT SIDE: Menu & Search */}
                                 <div className="flex items-center gap-1.5 z-10 flex-1 justify-start">
-                                    <button className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center shrink-0`} aria-label="Toggle mobile menu" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                                    <button className={`w-[32px] h-[32px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center shrink-0`} aria-label="Toggle mobile menu" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
                                         {isMobileMenuOpen ? (
                                             <X className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
                                         ) : (
@@ -278,7 +278,7 @@ export default function Navbar() {
                                     
                                     {/* Little search bar in the place of circle icon */}
                                     <form onSubmit={handleSearchSubmit} className="flex-1 min-w-[60px] max-w-[76px] pointer-events-auto">
-                                        <div className="relative flex items-center bg-[#F4F1ED]/80 dark:bg-[#1C1C1E] border border-black/5 dark:border-white/5 rounded-full px-2 h-[36px] transition-all focus-within:border-black/25 dark:focus-within:border-white/25 shadow-[inset_0_1px_2px_rgba(0,0,0,0.02)]">
+                                        <div className="relative flex items-center bg-[#F4F1ED]/80 dark:bg-[#1C1C1E] border border-black/5 dark:border-white/5 rounded-full px-2 h-[32px] transition-all focus-within:border-black/25 dark:focus-within:border-white/25 shadow-[inset_0_1px_2px_rgba(0,0,0,0.02)]">
                                             <Search className="w-2 h-2 text-neutral-400 dark:text-neutral-500 shrink-0" strokeWidth={2} />
                                             <input 
                                                 type="text"
@@ -306,7 +306,7 @@ export default function Navbar() {
                                     </div>
                                     
                                     {/* Circle icon replacing cart */}
-                                    <Link href="/circle" className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center shrink-0`} aria-label="Open circle">
+                                    <Link href="/circle" className={`w-[32px] h-[32px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center shrink-0`} aria-label="Open circle">
                                         <Crown className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
                                     </Link>
                                 </div>
@@ -316,7 +316,7 @@ export default function Navbar() {
                             <div className="flex w-full items-center justify-between relative py-0.5">
                                 {/* LEFT SIDE: Menu, Circle & Home buttons */}
                                 <div className="flex items-center gap-1.5 z-10 flex-1 justify-start">
-                                    <button className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Toggle mobile menu" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                                    <button className={`w-[32px] h-[32px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Toggle mobile menu" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
                                         {isMobileMenuOpen ? (
                                             <X className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
                                         ) : (
@@ -325,13 +325,13 @@ export default function Navbar() {
                                     </button>
                                     
                                     {!isProductPage && (
-                                        <Link href="/circle" className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center ml-0.5`} aria-label="Open circle">
+                                        <Link href="/circle" className={`w-[32px] h-[32px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center ml-0.5`} aria-label="Open circle">
                                             <Crown className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
                                         </Link>
                                     )}
                                     
                                     {isProductPage && (
-                                        <Link href="/" className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center ml-0.5`} aria-label="Go to Home">
+                                        <Link href="/" className={`w-[32px] h-[32px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center ml-0.5`} aria-label="Go to Home">
                                             <Home className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
                                         </Link>
                                     )}
@@ -346,7 +346,7 @@ export default function Navbar() {
 
                                 {/* RIGHT SIDE: Cart and Circle */}
                                 <div className="flex items-center gap-1 z-10 flex-1 justify-end">
-                                    <button className={`relative w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Open cart" onClick={openCart}>
+                                    <button className={`relative w-[32px] h-[32px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Open cart" onClick={openCart}>
                                         <ShoppingBag className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
                                         {cartCount > 0 && (
                                             <span className="absolute -top-0.5 -right-0.5 min-w-[14px] h-[14px] rounded-full border border-white dark:border-neutral-900 flex items-center justify-center text-[8px] text-white font-sans font-bold px-1" style={{ backgroundColor: accentColor }}>
@@ -356,7 +356,7 @@ export default function Navbar() {
                                     </button>
                                     
                                     {isProductPage && (
-                                        <Link href="/circle" className={`w-[36px] h-[36px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center ml-0.5`} aria-label="Open circle">
+                                        <Link href="/circle" className={`w-[32px] h-[32px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center ml-0.5`} aria-label="Open circle">
                                             <Crown className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
                                         </Link>
                                     )}
