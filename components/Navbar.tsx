@@ -149,34 +149,49 @@ export default function Navbar() {
         ? "bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20" 
         : "bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 lg:bg-white/10 lg:hover:bg-white/20 lg:dark:bg-white/10 lg:dark:hover:bg-white/20";
 
-    // Distinct separate clickable buttons for gender toggle
+    // Ultra-premium Apple-style segmented control (Liquid Glass)
     const GenderToggle = ({ idSuffix, isDesktop = false, isMini = false }: { idSuffix: string, isDesktop?: boolean, isMini?: boolean }) => {
         const solid = isScrolledOrNotHome || isDesktop || idSuffix === "mobile-bar" || idSuffix === "mobile-top-bar";
+        const toggleBg = solid ? "bg-[#1A1A1A]/5 dark:bg-white/10" : "bg-white/10";
         
-        const inactiveClass = solid 
-            ? "bg-[#1A1A1A]/5 text-[#1A1A1A] dark:bg-white/10 dark:text-[#F4F1ED] border-transparent hover:bg-[#1A1A1A]/10 dark:hover:bg-white/20" 
-            : "bg-white/10 text-white/90 border-white/20 hover:bg-white/20";
-            
+        const btnText = (active: boolean) => {
+            if (active) return "text-white dark:text-[#1A1A1A] dark:text-[#F4F1ED] font-bold";
+            return solid ? "text-[#1A1A1A] dark:text-[#F4F1ED] font-medium" : "text-white/80 font-medium";
+        };
         const manWidth = isMini ? "w-[46px]" : "w-14 sm:w-20";
         const womanWidth = isMini ? "w-[56px]" : "w-16 sm:w-20";
-        const layoutClasses = isMini ? "h-[32px] flex items-center justify-center" : "py-1.5 sm:py-2 inline-flex items-center justify-center";
+        const layoutClasses = isMini ? "h-full flex items-center justify-center" : "py-1.5 sm:py-2 inline-flex items-center justify-center";
         const textSize = isMini ? "text-[9px]" : "text-[10px] sm:text-xs";
         
         return (
-            <div className={`relative flex items-center gap-1.5`}>
+            <div className={`relative flex items-center rounded-full transition-colors duration-500 backdrop-blur-md cursor-pointer ${toggleBg} ${isMini ? 'p-0.5 h-[36px]' : 'p-1 sm:p-1'}`}>
                 <button 
                     onClick={() => setGender('man')}
-                    className={`tracking-widest uppercase font-medium transition-all duration-300 rounded-full border ${manWidth} ${layoutClasses} ${textSize} ${gender === 'man' ? "text-white dark:text-[#1A1A1A] shadow-md border-transparent font-bold" : inactiveClass}`}
-                    style={gender === 'man' ? { backgroundColor: accentColor } : {}}
+                    className={`relative z-10 tracking-widest uppercase transition-colors duration-300 rounded-full cursor-pointer hover:bg-black/5 dark:hover:bg-white/10 ${manWidth} ${layoutClasses} ${textSize} ${btnText(gender === 'man')}`}
                 >
                     MEN
+                    {gender === 'man' && (
+                        <motion.div
+                            layoutId={`nav-gender-active-${idSuffix}`}
+                            className="absolute inset-0 rounded-full -z-10 shadow-sm"
+                            style={{ backgroundColor: accentColor }}
+                            transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                        />
+                    )}
                 </button>
                 <button 
                     onClick={() => setGender('woman')}
-                    className={`tracking-widest uppercase font-medium transition-all duration-300 rounded-full border ${womanWidth} ${layoutClasses} ${textSize} ${gender === 'woman' ? "text-white dark:text-[#1A1A1A] shadow-md border-transparent font-bold" : inactiveClass}`}
-                    style={gender === 'woman' ? { backgroundColor: accentColor } : {}}
+                    className={`relative tracking-widest uppercase transition-colors duration-300 rounded-full cursor-pointer hover:bg-black/5 dark:hover:bg-white/10 z-10 ${womanWidth} ${layoutClasses} ${textSize} ${btnText(gender === 'woman')}`}
                 >
                     WOMEN
+                    {gender === 'woman' && (
+                        <motion.div
+                            layoutId={`nav-gender-active-${idSuffix}`}
+                            className="absolute inset-0 rounded-full -z-10 shadow-sm"
+                            style={{ backgroundColor: accentColor }}
+                            transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                        />
+                    )}
                 </button>
             </div>
         );
@@ -264,7 +279,7 @@ export default function Navbar() {
                                     {/* Little search bar in the place of circle icon */}
                                     <form onSubmit={handleSearchSubmit} className="flex-1 min-w-[60px] max-w-[76px] pointer-events-auto">
                                         <div className="relative flex items-center bg-[#F4F1ED]/80 dark:bg-[#1C1C1E] border border-black/5 dark:border-white/5 rounded-full px-2 h-[36px] transition-all focus-within:border-black/25 dark:focus-within:border-white/25 shadow-[inset_0_1px_2px_rgba(0,0,0,0.02)]">
-                                            <Search className="w-[9px] h-[9px] text-neutral-400 dark:text-neutral-500 shrink-0" strokeWidth={2} />
+                                            <Search className="w-2 h-2 text-neutral-400 dark:text-neutral-500 shrink-0" strokeWidth={2} />
                                             <input 
                                                 type="text"
                                                 value={searchQuery}
