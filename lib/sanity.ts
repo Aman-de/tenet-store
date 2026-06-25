@@ -482,6 +482,7 @@ export async function getProduct(slug: string) {
     variants[]{
         colorName,
         colorHex,
+        secondaryColorHex,
         stock,
         "images": images[].asset->url
     }
@@ -601,6 +602,7 @@ export async function getProduct(slug: string) {
         variants: product.variants?.map((v: any) => ({
             ...v,
             colorHex: typeof v.colorHex === 'object' && v.colorHex?.hex ? v.colorHex.hex : v.colorHex,
+            secondaryColorHex: typeof v.secondaryColorHex === 'object' && v.secondaryColorHex?.hex ? v.secondaryColorHex.hex : v.secondaryColorHex,
             images: resolveVariantImages(product.title, v.images || [])
         })) || [],
         gender: product.gender,

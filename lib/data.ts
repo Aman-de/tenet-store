@@ -1,6 +1,7 @@
 export interface Variant {
     colorName: string;
     colorHex: string;
+    secondaryColorHex?: string;
     images: string[];
     stock: number;
 }

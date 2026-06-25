@@ -212,7 +212,14 @@ export const product = {
                         name: 'colorHex',
                         title: 'Color',
                         type: 'color',
-                        description: 'Select the color visually'
+                        description: 'Select the primary (or top) color visually'
+                    },
+                    {
+                        name: 'secondaryColorHex',
+                        title: 'Secondary Color',
+                        type: 'color',
+                        description: 'Select the bottom color for two-tone sets',
+                        hidden: ({ document }: any) => document?.apparelType !== 'set'
                     },
                     {
                         name: 'images',
