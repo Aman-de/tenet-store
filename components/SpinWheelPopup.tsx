@@ -2,19 +2,19 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
+import { X, Gift, Copy } from "lucide-react";
 
 import posthog from "posthog-js";
 
 const segments = [
-    { label: "10% Discount", color: "#E8E3DF", code: "TENET10" },
+    { label: "5% Discount", color: "#E8E3DF", code: "TENET5" },
+    { label: "10% Discount", color: "#D4CFCC", code: "TENET10" },
+    { label: "Free Shipping", color: "#E8E3DF", code: "FREESHIP" },
     { label: "15% Discount", color: "#D4CFCC", code: "TENET15" },
-    { label: "Buy 1, Get 1", color: "#E8E3DF", code: "BOGO1" },
-    { label: "40% Discount", color: "#D4CFCC", code: "FORTYOFF" },
-    { label: "INR 200 Off", color: "#E8E3DF", code: "SAVE200" },
-    { label: "INR 500 Off", color: "#D4CFCC", code: "SAVE500" },
-    { label: "Buy 2, Get 2", color: "#E8E3DF", code: "BOGO2" },
-    { label: "5% Discount", color: "#D4CFCC", code: "TENET5" },
+    { label: "INR 100 Off", color: "#E8E3DF", code: "SAVE100" },
+    { label: "INR 200 Off", color: "#D4CFCC", code: "SAVE200" },
+    { label: "5% Discount", color: "#E8E3DF", code: "TENET5" },
+    { label: "10% Discount", color: "#D4CFCC", code: "TENET10" },
 ];
 
 export default function SpinWheelPopup() {
@@ -44,20 +44,18 @@ export default function SpinWheelPopup() {
             });
     }, []);
 
-    // Automatically open after 5 seconds on first visit
-    useEffect(() => {
-        const hasSeenPopup = localStorage.getItem("hasSeenSpinWheel");
-        if (!hasSeenPopup) {
-            const timer = setTimeout(() => {
-                setIsOpen(true);
-            }, 5000);
-            return () => clearTimeout(timer);
-        }
-    }, []);
+    // Remove auto-open entirely as requested
 
     const handleClose = () => {
         setIsOpen(false);
-        localStorage.setItem("hasSeenSpinWheel", "true");
+    };
+
+    const handleCopy = () => {
+        if (wonSegment?.code) {
+            navigator.clipboard.writeText(wonSegment.code);
+            alert(`Code ${wonSegment.code} copied to clipboard!`);
+            setIsOpen(false);
+        }
     };
 
     const handleSpin = () => {
@@ -82,9 +80,8 @@ export default function SpinWheelPopup() {
             country: locationData?.country || "Unknown"
         });
 
-        // Rig the wheel to land on "15% Discount" (index 1) to protect margins, or pick a random one if you prefer.
-        // Let's rig it to always land on 15% Discount for now.
-        const targetIndex = 1; 
+        // Rig the wheel to land on "15% Discount" (index 3 now based on the new segments array)
+        const targetIndex = 3; 
         
         // Calculate degrees
         const segmentDegrees = 360 / segments.length;
@@ -110,6 +107,24 @@ export default function SpinWheelPopup() {
 
     return (
         <AnimatePresence>
+            {!isOpen && !wonSegment && (
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setIsOpen(true)}
+                    className="fixed bottom-24 lg:bottom-6 left-4 lg:left-6 z-40 w-12 h-12 lg:w-14 lg:h-14 bg-[#1A1A1A] text-white rounded-full flex items-center justify-center shadow-lg cursor-pointer border border-white/10"
+                >
+                    <Gift className="w-5 h-5 lg:w-6 lg:h-6" />
+                    <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                    </span>
+                </motion.div>
+            )}
+
             {isOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
                     <motion.div 
@@ -239,10 +254,11 @@ export default function SpinWheelPopup() {
                                 </div>
 
                                 <button
-                                    onClick={handleClose}
-                                    className="w-full mt-6 bg-[#1A1A1A] hover:bg-black text-white py-3.5 rounded-md font-bold text-xs uppercase tracking-widest transition-colors"
+                                    onClick={handleCopy}
+                                    className="w-full mt-6 bg-[#1A1A1A] hover:bg-black text-white py-3.5 rounded-md font-bold text-xs uppercase tracking-widest transition-colors flex items-center justify-center gap-2"
                                 >
-                                    Start Shopping
+                                    <Copy className="w-4 h-4" />
+                                    Copy Code & Shop
                                 </button>
                             </motion.div>
                         )}
