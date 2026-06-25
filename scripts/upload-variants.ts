@@ -17,16 +17,15 @@ const client = createClient({
 });
 
 function getHexCodes(topName: string, bottomName: string) {
-    const map: Record<string, string> = {
-        'chocolate': '#7B3F00',
+    const map: any = {
         'choclate': '#7B3F00',
         'white': '#FFFFFF',
-        'blue': '#3B5998',      // Slightly Brighter Navy Blue
+        'blue': '#3B5998',
         'lightpink': '#FFB6C1',
         'light pink': '#FFB6C1',
-        'red': '#8B3A46',       // Slightly Brighter Burgundy Red
-        'yellow': '#D49B2C',    // Mustard Yellow
-        'light blue': '#A8B8CD' // Silvery blue
+        'red': '#8B3A46',
+        'yellow': '#D49B2C',
+        'light blue': '#A8B8CD'
     };
     return {
         topHex: map[topName.toLowerCase().trim()] || '#000000',
@@ -71,43 +70,37 @@ async function main() {
         const newVariants = [];
         let chocolateWhiteTopImage: any = null;
         let chocolateWhiteSetImage: any = null;
+        let chocolateWhiteBottomImage: any = null;
         
         // First pass: upload Choclate White to grab images for the original
         const chocFolder = folders.find(f => f.includes('choclate'));
         if (chocFolder) {
             const folderPath = path.join(baseDir, chocFolder);
-            const files = fs.readdirSync(folderPath).filter(f => !f.startsWith('.'));
+            const files = fs.readdirSync(folderPath).filter(f => !f.startsWith('.') && !f.endsWith('.mp4'));
             
             for (const file of files) {
                 const lower = file.toLowerCase();
-                if (lower.includes('top only')) {
-                    chocolateWhiteTopImage = await uploadImage(path.join(folderPath, file));
-                }
-                if (lower.includes('set only')) {
-                    chocolateWhiteSetImage = await uploadImage(path.join(folderPath, file));
-                }
+                const uploaded = await uploadImage(path.join(folderPath, file));
+                if (lower.includes('set only') || lower.includes('setonly')) chocolateWhiteSetImage = uploaded;
+                else if (lower.includes('top only') || lower.includes('toponly')) chocolateWhiteTopImage = uploaded;
+                else if (lower.includes('bottom only') || lower.includes('buttom only')) chocolateWhiteBottomImage = uploaded;
             }
         }
 
         if (originalChocolate) {
-            console.log("Restoring original Chocolate & Denim variant...");
-            // Secondary Hex
-            if (originalChocolate.secondaryColorHex && typeof originalChocolate.secondaryColorHex === 'object') {
-                originalChocolate.secondaryColorHex.hex = '#A8B8CD';
-            } else {
-                originalChocolate.secondaryColorHex = '#A8B8CD';
+            // Restore original images, but replace 3rd image with new set image if available
+            const imgs = originalChocolate.images || [];
+            if (imgs.length >= 3 && chocolateWhiteSetImage) {
+                imgs[2] = chocolateWhiteSetImage;
             }
+            originalChocolate.images = imgs;
+            originalChocolate.topImages = imgs;
             
-            // "use set only and top only for brown one from the colour variont folder for top and buttom"
-            if (chocolateWhiteTopImage && chocolateWhiteSetImage) {
-                originalChocolate.topImages = [chocolateWhiteTopImage];
-                originalChocolate.bottomImages = [chocolateWhiteSetImage];
-                
-                // "replace 3rd'd image of product only flat lay with new set only in brown set"
-                if (originalChocolate.images && originalChocolate.images.length >= 3) {
-                    originalChocolate.images[2] = chocolateWhiteSetImage;
-                }
-            }
+            // "for top and buttom currently there no buttom one" 
+            // If they mean Chocolate & Denim has no bottom image, use the set image for its bottom!
+            originalChocolate.bottomImages = chocolateWhiteSetImage ? [chocolateWhiteSetImage] : [];
+            originalChocolate.secondaryColorHex = '#A8B8CD'; // Explicitly add secondaryColorHex!
+            
             newVariants.push(originalChocolate);
         }
 
@@ -140,40 +133,35 @@ async function main() {
                 else randomFiles.push(file);
             }
 
-            const uploads: Record<string, any> = {};
+            const uploads: any = {};
             for (const file of files) {
+                console.log(`Uploading ${file}...`);
                 uploads[file] = await uploadImage(path.join(folderPath, file));
             }
 
+            // EXACT INSTRUCTIONS: "put that image alsong with other randome named images on the set"
             const setImages = [...setOnlyFiles, ...randomFiles].map(f => uploads[f]);
             
-            // Fallback to setImages if no specific top/bottom images are provided
-            let topImages = topOnlyFiles.length > 0 ? [...topOnlyFiles, ...randomFiles].map(f => uploads[f]) : [...setImages];
-            let bottomImages = bottomOnlyFiles.length > 0 ? [...bottomOnlyFiles, ...randomFiles].map(f => uploads[f]) : [...setImages];
+            // "if some folders don't have buttom only image that means you won't put that folder in buttom option"
+            // So NO fallback to setImages!
+            const topImages = topOnlyFiles.length > 0 ? [...topOnlyFiles, ...randomFiles].map(f => uploads[f]) : [];
+            const bottomImages = bottomOnlyFiles.length > 0 ? [...bottomOnlyFiles, ...randomFiles].map(f => uploads[f]) : [];
 
             newVariants.push({
                 _key: `variant_${Date.now()}_${Math.random().toString(36).substring(7)}`,
                 colorName: colorName,
                 colorHex: hexes.topHex,
                 secondaryColorHex: hexes.bottomHex,
-                onlyAvailableAsSet: false, 
-                stock: 10,
                 images: setImages,
                 topImages: topImages,
                 bottomImages: bottomImages
             });
         }
 
-        console.log(`Updating Sanity with ${newVariants.length} variants...`);
-        await client
-            .patch(productId)
-            .set({ variants: newVariants })
-            .commit();
-
-        console.log("Success! Variants patched correctly.");
-
-    } catch (err) {
-        console.error("Error:", err);
+        await client.patch(productId).set({ variants: newVariants }).commit();
+        console.log("Successfully uploaded and patched variants!");
+    } catch (e) {
+        console.error(e);
     }
 }
 

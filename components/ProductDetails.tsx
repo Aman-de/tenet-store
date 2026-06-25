@@ -334,6 +334,14 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
     const [selectedColor, setSelectedColor] = useState<string | undefined>(undefined);
     const [selectedPiece, setSelectedPiece] = useState<'top' | 'bottom' | 'set'>('set');
     const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
+    
+    // Remember the user's preferred top color so that clicking around bottoms doesn't permanently lose their top choice
+    const preferredTopHexRef = useRef<string | undefined>(undefined);
+    useEffect(() => {
+        if (selectedVariant && selectedPiece !== 'bottom') {
+            preferredTopHexRef.current = selectedVariant.colorHex;
+        }
+    }, [selectedVariant, selectedPiece]);
 
     const availableVariants = useMemo(() => {
         if (!product.variants) return [];
@@ -376,15 +384,18 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         return v.colorName === selectedVariant?.colorName;
                     }
                     
-                    // 2. If we are browsing Bottoms, try to pick a representative that shares our CURRENT Top color!
-                    if (selectedPiece === 'bottom' && selectedVariant?.colorHex) {
-                        const hasMatchingTop = self.some(sv => {
-                            if (sv.onlyAvailableAsSet || (!sv.bottomImages || sv.bottomImages.length === 0)) return false;
-                            const svHex = sv.secondaryColorHex || sv.colorHex;
-                            return svHex === colorHexForPiece && sv.colorHex === selectedVariant.colorHex;
-                        });
-                        if (hasMatchingTop) {
-                            return v.colorHex === selectedVariant.colorHex;
+                    // 2. If we are browsing Bottoms, try to pick a representative that shares our PREFERRED Top color!
+                    if (selectedPiece === 'bottom') {
+                        const targetTopHex = preferredTopHexRef.current || selectedVariant?.colorHex;
+                        if (targetTopHex) {
+                            const hasMatchingTop = self.some(sv => {
+                                if (sv.onlyAvailableAsSet || (!sv.bottomImages || sv.bottomImages.length === 0)) return false;
+                                const svHex = sv.secondaryColorHex || sv.colorHex;
+                                return svHex === colorHexForPiece && sv.colorHex === targetTopHex;
+                            });
+                            if (hasMatchingTop) {
+                                return v.colorHex === targetTopHex;
+                            }
                         }
                     }
                     
