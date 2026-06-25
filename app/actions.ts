@@ -285,6 +285,35 @@ export async function linkBankAccount(userId: string, bankDetails: { upiId?: str
     }
 }
 
+export async function linkWishlink(userId: string, wishlinkId: string) {
+    if (!userId) return { success: false, message: "Unauthorized" };
+    try {
+        const { clerkClient } = await import("@clerk/nextjs/server");
+        const clerk = await clerkClient();
+        
+        // Find partner in sanity
+        let sanityDoc = await client.fetch(`*[_type == "partner" && clerkId == $userId][0]`, { userId });
+        
+        if (sanityDoc) {
+            await client.patch(sanityDoc._id).set({ wishlinkId }).commit();
+        }
+
+        // Update Clerk Metadata
+        const user = await clerk.users.getUser(userId);
+        await clerk.users.updateUserMetadata(userId, {
+            unsafeMetadata: {
+                ...user.unsafeMetadata,
+                wishlinkId
+            }
+        });
+
+        return { success: true, message: "Wishlink connected successfully." };
+    } catch (error) {
+        console.error("linkWishlink error:", error);
+        return { success: false, message: "Failed to connect Wishlink." };
+    }
+}
+
 export async function calculateAvailableBalance(userId: string): Promise<number> {
     if (!userId) return 0;
     try {
@@ -307,22 +336,15 @@ export async function calculateAvailableBalance(userId: string): Promise<number>
         // 1. Base balance from signups (synced in walletBalance field)
         const baseBalance = (sanityDoc?.walletBalance as number) || (user.unsafeMetadata.walletBalance as number) || 0;
 
-        // 2. Matured Order Commissions
+        // 2. Matured Order Commissions (Completed Orders)
         let maturedOrdersCommission = 0;
-        const referralOrdersQuery = `*[_type == "order" && referralCode == $referralCode && status == "delivered"] {
-            totalPrice,
-            createdAt,
-            deliveredAt
+        const referralOrdersQuery = `*[_type == "order" && referralCode == $referralCode && status == "completed"] {
+            totalPrice
         }`;
         const referralOrders = await client.fetch(referralOrdersQuery, { referralCode }) || [];
-        const now = Date.now();
-        const TEN_DAYS_MS = 10 * 24 * 60 * 60 * 1000;
         
         referralOrders.forEach((o: any) => {
-            const deliveredTime = o.deliveredAt ? new Date(o.deliveredAt).getTime() : new Date(o.createdAt).getTime() + (48 * 60 * 60 * 1000);
-            if (now - deliveredTime >= TEN_DAYS_MS) {
-                maturedOrdersCommission += Math.round((o.totalPrice || 0) * 0.15);
-            }
+            maturedOrdersCommission += Math.round((o.totalPrice || 0) * 0.15);
         });
 
         // 3. Deductions (Withdrawn to Bank + Spent on Store)

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Copy, Share2, CheckCircle2, Building2, TrendingUp, Wallet, Banknote, Check, Loader2, Lock, MousePointerClick, Users, ShoppingCart, Clock } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { linkBankAccount, redeemReferralBalance } from "@/app/actions";
+import { linkBankAccount, redeemReferralBalance, linkWishlink } from "@/app/actions";
 
 interface ClientCircleDashboardProps {
     referralCode: string;
@@ -26,13 +26,15 @@ interface ClientCircleDashboardProps {
         accountNumber?: string;
         ifscCode?: string;
     } | null;
+    initialWishlinkId?: string;
 }
 
 export default function ClientCircleDashboard({ 
     referralCode, 
     userId, 
     initialStats, 
-    initialBankDetails
+    initialBankDetails,
+    initialWishlinkId
 }: ClientCircleDashboardProps) {
     const [copiedLink, setCopiedLink] = useState(false);
     const [copiedCode, setCopiedCode] = useState(false);
@@ -57,6 +59,11 @@ export default function ClientCircleDashboard({
     const [isValidatingIFSC, setIsValidatingIFSC] = useState(false);
     const [resolvedBankName, setResolvedBankName] = useState(initialBankDetails?.bankName || "");
     const [accountNumberError, setAccountNumberError] = useState("");
+
+    // Wishlink State
+    const [wishlinkId, setWishlinkId] = useState(initialWishlinkId || "");
+    const [isSavingWishlink, setIsSavingWishlink] = useState(false);
+    const [wishlinkMessage, setWishlinkMessage] = useState("");
 
     // Real-time IFSC Verification
     useEffect(() => {
@@ -186,6 +193,15 @@ export default function ClientCircleDashboard({
         }
     };
 
+    const handleLinkWishlink = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsSavingWishlink(true);
+        setWishlinkMessage("");
+        const res = await linkWishlink(userId, wishlinkId);
+        setIsSavingWishlink(false);
+        setWishlinkMessage(res.message);
+    };
+
     const handleRedeem = async () => {
         if (availableBalance <= 0) return;
         if (!bankDetails) {
@@ -230,7 +246,7 @@ export default function ClientCircleDashboard({
                 <div>
                     <h3 className="font-bold text-xs uppercase tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED] mb-1.5">Your Circle Assets</h3>
                     <p className="text-xs text-neutral-400 font-sans leading-relaxed">
-                        Share your unique invite assets. Referred patrons receive an extra <strong className="text-[#1A1A1A] dark:text-[#F4F1ED] font-semibold">15% discount</strong> at checkout. You earn a flat <strong className="text-[#1A1A1A] dark:text-[#F4F1ED] font-semibold">₹15 signup bonus</strong> instantly for every verified new registration + <strong className="text-[#1A1A1A] dark:text-[#F4F1ED] font-semibold">15% commission</strong> on their purchases.
+                        Share your referral assets to earn. Patrons get an extra <strong className="text-[#1A1A1A] dark:text-[#F4F1ED] font-semibold">15% off</strong>. You earn <strong className="text-[#1A1A1A] dark:text-[#F4F1ED] font-semibold">₹10</strong> per verified registration + <strong className="text-[#1A1A1A] dark:text-[#F4F1ED] font-semibold">15% commission</strong> on successful purchases.
                     </p>
                 </div>
 
@@ -590,6 +606,43 @@ export default function ClientCircleDashboard({
                         </div>
                     </form>
                 )}
+            </div>
+
+            {/* Integrations Section */}
+            <div className="bg-white dark:bg-[#111111] border border-neutral-200/60 rounded-2xl p-6 xs:p-8 shadow-sm space-y-6">
+                <div className="flex items-center gap-2.5 border-b border-neutral-100 dark:border-neutral-800 pb-4">
+                    <Lock className="w-5 h-5 text-neutral-400" />
+                    <h3 className="font-bold text-xs uppercase tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED]">External Integrations</h3>
+                </div>
+
+                <form onSubmit={handleLinkWishlink} className="space-y-4 max-w-xl">
+                    <p className="text-xs text-neutral-400 font-sans mb-4">
+                        Connect your Wishlink account to automatically track traffic from your Wishlink storefront.
+                    </p>
+                    <div className="space-y-1">
+                        <label className="text-[9px] font-bold uppercase tracking-wider text-neutral-400">Wishlink Profile ID</label>
+                        <input
+                            type="text"
+                            placeholder="e.g. wl_eyJ1IjoidG..."
+                            value={wishlinkId}
+                            onChange={(e) => setWishlinkId(e.target.value)}
+                            className="w-full border border-neutral-200 dark:border-neutral-800 rounded-xl px-4 py-2.5 text-xs font-sans focus:outline-none focus:border-black bg-neutral-50/40"
+                        />
+                    </div>
+                    {wishlinkMessage && (
+                        <p className={`text-[10px] font-sans mt-0.5 ${wishlinkMessage.includes("success") ? "text-emerald-500" : "text-red-500"}`}>{wishlinkMessage}</p>
+                    )}
+                    <div className="flex gap-2.5 pt-2">
+                        <button
+                            type="submit"
+                            disabled={isSavingWishlink}
+                            className="px-6 py-3 bg-[#1A1A1A] hover:bg-black text-white font-sans text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-1.5 cursor-pointer"
+                        >
+                            {isSavingWishlink && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
+                            Connect Wishlink
+                        </button>
+                    </div>
+                </form>
             </div>
 
             {/* Referred Community Section */}

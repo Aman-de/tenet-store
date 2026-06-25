@@ -120,19 +120,12 @@ export default async function InnerCirclePage() {
     
     let totalSales = 0;
     let pendingOrders = 0;
-    const now = Date.now();
-    const TEN_DAYS_MS = 10 * 24 * 60 * 60 * 1000;
 
     referralOrders.forEach((o: any) => {
         totalSales += (o.totalPrice || 0);
 
-        if (o.status !== 'delivered') {
+        if (o.status !== 'completed' && o.status !== 'cancelled') {
             pendingOrders++;
-        } else {
-            const deliveredTime = o.deliveredAt ? new Date(o.deliveredAt).getTime() : new Date(o.createdAt).getTime() + (48 * 60 * 60 * 1000);
-            if (now - deliveredTime < TEN_DAYS_MS) {
-                pendingOrders++;
-            }
         }
     });
 
@@ -157,22 +150,22 @@ export default async function InnerCirclePage() {
 
     return (
         <div className="min-h-screen pt-32 lg:pt-28 pb-20 px-4 animate-in fade-in duration-500">
-            <div className="max-w-4xl mx-auto space-y-8">
-                <div className="flex items-center gap-4 mb-10">
-                    <div className="w-12 h-12 bg-[#1A1A1A] rounded-full flex items-center justify-center shadow-md">
-                        <Crown className="w-6 h-6 text-[#D4AF37]" />
-                    </div>
+            <div className="max-w-4xl mx-auto">
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
                     <div>
-                        <h1 className="font-serif text-3xl md:text-4xl text-[#1A1A1A] dark:text-[#F4F1ED]">The Circle</h1>
-                        <p className="font-sans text-neutral-500 text-sm">Welcome back, {user.firstName || 'Patron'}.</p>
+                        <h1 className="text-4xl md:text-5xl font-serif text-[#1A1A1A] dark:text-[#F4F1ED] mb-2 tracking-tight">The Circle</h1>
+                        <p className="text-sm text-neutral-400 font-sans">
+                            Welcome back, <span className="text-[#1A1A1A] dark:text-[#F4F1ED] font-semibold">{user.firstName || "Partner"}</span>. Manage your invites and assets.
+                        </p>
                     </div>
                 </div>
 
                 <ClientCircleDashboard 
                     referralCode={referralCode} 
-                    userId={userId}
-                    initialStats={initialStats}
+                    userId={userId} 
+                    initialStats={initialStats} 
                     initialBankDetails={bankDetails}
+                    initialWishlinkId={sanityDoc?.wishlinkId as string | undefined}
                 />
 
                 {/* How it works */}

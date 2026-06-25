@@ -154,8 +154,8 @@ export default function Navbar() {
         const solid = isScrolledOrNotHome || isDesktop || idSuffix === "mobile-bar" || idSuffix === "mobile-top-bar";
         
         const activeClass = solid 
-            ? "bg-[#1A1A1A] text-white dark:bg-[#F4F1ED] dark:text-[#1A1A1A] shadow-md border-transparent" 
-            : "bg-white text-[#1A1A1A] shadow-md border-transparent";
+            ? "bg-white text-[#1A1A1A] dark:bg-neutral-900 dark:text-[#F4F1ED] shadow-sm border-neutral-200 dark:border-neutral-800" 
+            : "bg-black/10 text-black dark:bg-white/10 dark:text-white border-transparent backdrop-blur-md";
             
         const inactiveClass = solid 
             ? "bg-[#1A1A1A]/5 text-[#1A1A1A] dark:bg-white/10 dark:text-[#F4F1ED] border-transparent hover:bg-[#1A1A1A]/10 dark:hover:bg-white/20" 
@@ -168,11 +168,10 @@ export default function Navbar() {
             <button 
                 onClick={() => setGender(gender === 'man' ? 'woman' : 'man')}
                 className={`relative z-10 tracking-widest uppercase transition-all duration-300 rounded-full border cursor-pointer hover:scale-105 active:scale-95 ${layoutClasses} ${textSize} ${activeClass}`}
-                style={{ backgroundColor: accentColor, color: 'white' }}
                 aria-label={`Switch to ${gender === 'man' ? 'Women' : 'Men'}`}
             >
-                <span className="font-bold">{gender === 'man' ? 'MEN' : 'WOMEN'}</span>
-                <ArrowLeftRight className={isMini ? "w-2.5 h-2.5" : "w-3 h-3"} strokeWidth={2.5} />
+                <span className="font-bold opacity-90">{gender === 'man' ? 'MEN' : 'WOMEN'}</span>
+                <ArrowLeftRight className={isMini ? "w-2.5 h-2.5 opacity-70" : "w-3 h-3 opacity-70"} strokeWidth={2} />
             </button>
         );
     };

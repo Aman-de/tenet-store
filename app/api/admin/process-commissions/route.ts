@@ -5,8 +5,8 @@ export async function POST(req: Request) {
     try {
         // Authenticate admin (you'd normally check headers/auth here)
 
-        // 1. Find all delivered orders that haven't had commission processed yet
-        const query = `*[_type == "order" && status == "delivered" && commissionProcessed != true && defined(referralCode)]`;
+        // 1. Find all delivered orders
+        const query = `*[_type == "order" && status == "delivered"]`;
         const orders = await client.fetch(query);
 
         let processedCount = 0;
@@ -20,27 +20,16 @@ export async function POST(req: Request) {
             const daysSinceDelivery = (now.getTime() - deliveredDate.getTime()) / (1000 * 3600 * 24);
 
             if (daysSinceDelivery >= 10) {
-                // Find the referrer
-                const partner = await client.fetch(
-                    `*[_type == "partner" && (referralCode == $code || wishlinkId == $code)][0]`,
-                    { code: order.referralCode }
-                );
-
-                if (partner) {
-                    const commissionAmount = order.totalPrice * 0.15; // 15% commission
-
-                    // Use Sanity Transaction to update both atomicallly
-                    await client.transaction()
-                        .patch(partner._id, (p) => p.inc({ walletBalance: commissionAmount, revenue: order.totalPrice }))
-                        .patch(order._id, (p) => p.set({ commissionProcessed: true }))
-                        .commit();
-                    
-                    processedCount++;
-                }
+                // Switch status to completed
+                await client.patch(order._id)
+                    .set({ status: 'completed' })
+                    .commit();
+                
+                processedCount++;
             }
         }
 
-        return NextResponse.json({ success: true, processedCount, message: `Processed ${processedCount} commissions.` });
+        return NextResponse.json({ success: true, processedCount, message: `Switched ${processedCount} orders to completed.` });
 
     } catch (error) {
         console.error('Error processing commissions:', error);
