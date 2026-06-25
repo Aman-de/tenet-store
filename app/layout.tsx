@@ -10,6 +10,7 @@ const WishlistDrawer = dynamic(() => import('@/components/WishlistDrawer'));
 const OnboardingModal = dynamic(() => import('@/components/OnboardingModal'));
 const WhatsAppWidget = dynamic(() => import('@/components/WhatsAppWidget'));
 const InstallPWA = dynamic(() => import('@/components/InstallPWA'));
+const SpinWheelPopup = dynamic(() => import('@/components/SpinWheelPopup'));
 import ReferralTracker from '@/components/ReferralTracker';
 
 const playfair = Playfair_Display({
@@ -118,7 +119,9 @@ export default async function RootLayout({
             <SettingsProvider settings={settings}>
             <GenderThemeWrapper settings={settings}>
               <Navbar />
-              {children}
+              <div className="flex-1 w-full flex flex-col pt-16 lg:pt-[72px]">
+                {children}
+              </div>
               <div className="lg:hidden">
                 <MobileBottomNav />
               </div>
@@ -131,6 +134,7 @@ export default async function RootLayout({
               <Suspense fallback={null}>
                 <ReferralTracker />
               </Suspense>
+              <SpinWheelPopup />
               <WhatsAppWidget />
               <SpeedInsights />
               <Analytics />

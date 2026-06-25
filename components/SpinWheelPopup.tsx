@@ -1,0 +1,234 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { X } from "lucide-react";
+
+const segments = [
+    { label: "10% Discount", color: "#8EACF7", code: "TENET10" },
+    { label: "15% Discount", color: "#E0E0E0", code: "TENET15" },
+    { label: "Buy 1, Get 1", color: "#8EACF7", code: "BOGO1" },
+    { label: "40% Discount", color: "#E0E0E0", code: "FORTYOFF" },
+    { label: "INR 200 Off", color: "#8EACF7", code: "SAVE200" },
+    { label: "INR 500 Off", color: "#E0E0E0", code: "SAVE500" },
+    { label: "Buy 2, Get 2", color: "#8EACF7", code: "BOGO2" },
+    { label: "5% Discount", color: "#E0E0E0", code: "TENET5" },
+];
+
+export default function SpinWheelPopup() {
+    const [isOpen, setIsOpen] = useState(false);
+    const [isSpinning, setIsSpinning] = useState(false);
+    const [spinRotation, setSpinRotation] = useState(0);
+    const [wonSegment, setWonSegment] = useState<any>(null);
+    const [email, setEmail] = useState("");
+    const [phone, setPhone] = useState("");
+    const [error, setError] = useState("");
+
+    // Automatically open after 5 seconds on first visit
+    useEffect(() => {
+        const hasSeenPopup = localStorage.getItem("hasSeenSpinWheel");
+        if (!hasSeenPopup) {
+            const timer = setTimeout(() => {
+                setIsOpen(true);
+            }, 5000);
+            return () => clearTimeout(timer);
+        }
+    }, []);
+
+    const handleClose = () => {
+        setIsOpen(false);
+        localStorage.setItem("hasSeenSpinWheel", "true");
+    };
+
+    const handleSpin = () => {
+        if (!email.includes("@")) {
+            setError("Enter a valid email id.");
+            return;
+        }
+        if (phone.length !== 10 || isNaN(Number(phone))) {
+            setError("Enter a valid 10-digit mobile number.");
+            return;
+        }
+        
+        setError("");
+        setIsSpinning(true);
+
+        // Rig the wheel to land on "15% Discount" (index 1) to protect margins, or pick a random one if you prefer.
+        // Let's rig it to always land on 15% Discount for now.
+        const targetIndex = 1; 
+        
+        // Calculate degrees
+        const segmentDegrees = 360 / segments.length;
+        
+        // Calculate the exact rotation needed to land on the center of target index
+        // Since CSS rotation is clockwise and 0deg is top. 
+        // We want the target segment to land at the TOP (0deg).
+        // Each segment takes up segmentDegrees. The center of segment i is at (i * segmentDegrees) + (segmentDegrees / 2)
+        const targetAngle = (targetIndex * segmentDegrees) + (segmentDegrees / 2);
+        
+        // We need to rotate BY: 360 - targetAngle + (multiple spins)
+        const extraSpins = 5 * 360; 
+        const finalRotation = spinRotation + extraSpins + (360 - targetAngle);
+
+        setSpinRotation(finalRotation);
+
+        setTimeout(() => {
+            setIsSpinning(false);
+            setWonSegment(segments[targetIndex]);
+            localStorage.setItem("hasSeenSpinWheel", "true");
+        }, 5000); // 5s animation
+    };
+
+    return (
+        <AnimatePresence>
+            {isOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                    <motion.div 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+                        onClick={handleClose}
+                    />
+                    <motion.div 
+                        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                        className="relative w-full max-w-md bg-white rounded-lg shadow-2xl overflow-hidden flex flex-col p-6 lg:p-8 z-10"
+                    >
+                        <button 
+                            onClick={handleClose}
+                            className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-neutral-100 hover:bg-neutral-200 text-neutral-600 transition-colors z-20"
+                        >
+                            <X className="w-4 h-4" />
+                        </button>
+
+                        {!wonSegment ? (
+                            <>
+                                {/* Wheel Section */}
+                                <div className="relative w-full aspect-square max-w-[280px] mx-auto mb-6 mt-4">
+                                    {/* The Wheel */}
+                                    <div 
+                                        className="w-full h-full rounded-full border-[10px] border-[#2A315C] relative overflow-hidden transition-transform shadow-lg"
+                                        style={{ 
+                                            transform: `rotate(${spinRotation}deg)`,
+                                            transitionDuration: isSpinning ? '5s' : '0s',
+                                            transitionTimingFunction: 'cubic-bezier(0.25, 0.1, 0.25, 1)'
+                                        }}
+                                    >
+                                        <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
+                                            {segments.map((seg, i) => {
+                                                // 8 segments -> 45deg each
+                                                const angle = 360 / segments.length;
+                                                const strokeWidth = 50 * Math.PI * (angle / 180); // approx logic for circumference
+                                                // Actually, simpler to just draw path wedges.
+                                                
+                                                // Calculate SVG arc path for a wedge of 45 degrees
+                                                const a1 = (i * angle) * (Math.PI / 180);
+                                                const a2 = ((i + 1) * angle) * (Math.PI / 180);
+                                                
+                                                const x1 = 50 + 50 * Math.cos(a1);
+                                                const y1 = 50 + 50 * Math.sin(a1);
+                                                const x2 = 50 + 50 * Math.cos(a2);
+                                                const y2 = 50 + 50 * Math.sin(a2);
+
+                                                return (
+                                                    <g key={i}>
+                                                        <path 
+                                                            d={`M 50 50 L ${x1} ${y1} A 50 50 0 0 1 ${x2} ${y2} Z`} 
+                                                            fill={seg.color}
+                                                        />
+                                                        {/* Text rotation */}
+                                                        <text 
+                                                            x="80" 
+                                                            y="50" 
+                                                            fill="#111" 
+                                                            fontSize="4.5" 
+                                                            fontWeight="bold"
+                                                            fontFamily="sans-serif"
+                                                            transform={`rotate(${i * angle + angle / 2}, 50, 50)`}
+                                                            alignmentBaseline="middle"
+                                                            textAnchor="middle"
+                                                        >
+                                                            {seg.label}
+                                                        </text>
+                                                    </g>
+                                                );
+                                            })}
+                                        </svg>
+                                    </div>
+                                    
+                                    {/* Center Dot & Pointer */}
+                                    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-[8px] z-10 drop-shadow-md">
+                                        <svg width="24" height="32" viewBox="0 0 24 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M12 32C12 32 0 16.4772 0 12C0 5.37258 5.37258 0 12 0C18.6274 0 24 5.37258 24 12C24 16.4772 12 32 12 32Z" fill="#2A315C"/>
+                                        </svg>
+                                    </div>
+                                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-[#2A315C] rounded-full shadow-inner border-4 border-white z-10" />
+                                </div>
+
+                                <div className="text-center mb-6">
+                                    <h2 className="font-serif text-2xl font-bold text-neutral-900 mb-1">Spin and Get Rewarded</h2>
+                                    <p className="text-sm text-neutral-500">Ready to test your luck?</p>
+                                </div>
+
+                                <div className="space-y-4">
+                                    <div className="space-y-1">
+                                        <label className="text-[11px] font-medium text-neutral-600 uppercase tracking-wider pl-1">Enter your email Id *</label>
+                                        <input
+                                            type="email"
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            className="w-full px-4 py-3 border border-neutral-200 rounded-md focus:outline-none focus:border-[#2A315C] text-sm text-black"
+                                        />
+                                    </div>
+                                    <div className="space-y-1">
+                                        <label className="text-[11px] font-medium text-neutral-600 uppercase tracking-wider pl-1">Enter your mobile number *</label>
+                                        <input
+                                            type="tel"
+                                            value={phone}
+                                            onChange={(e) => setPhone(e.target.value)}
+                                            className="w-full px-4 py-3 border border-neutral-200 rounded-md focus:outline-none focus:border-[#2A315C] text-sm text-black"
+                                        />
+                                        {error && <p className="text-xs text-red-500 mt-1 pl-1">{error}</p>}
+                                    </div>
+                                    <button
+                                        onClick={handleSpin}
+                                        disabled={isSpinning}
+                                        className="w-full mt-2 bg-[#2A315C] hover:bg-[#1f2445] text-white py-3.5 rounded-md font-bold text-xs uppercase tracking-widest transition-colors disabled:opacity-70"
+                                    >
+                                        {isSpinning ? "SPINNING..." : "TRY YOUR LUCK"}
+                                    </button>
+                                </div>
+                            </>
+                        ) : (
+                            <motion.div 
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                className="flex flex-col items-center justify-center py-10 text-center space-y-4"
+                            >
+                                <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 text-3xl mb-2 shadow-sm">
+                                    🎉
+                                </div>
+                                <h2 className="font-serif text-3xl font-bold text-neutral-900">You Won!</h2>
+                                <p className="text-neutral-600 font-medium">{wonSegment.label}</p>
+                                
+                                <div className="mt-4 p-4 bg-neutral-100 rounded-lg border border-neutral-200 border-dashed w-full">
+                                    <p className="text-xs text-neutral-500 mb-1 uppercase tracking-wider">Your Coupon Code</p>
+                                    <p className="text-2xl font-black text-[#2A315C] tracking-widest">{wonSegment.code}</p>
+                                </div>
+
+                                <button
+                                    onClick={handleClose}
+                                    className="w-full mt-6 bg-[#1A1A1A] hover:bg-black text-white py-3.5 rounded-md font-bold text-xs uppercase tracking-widest transition-colors"
+                                >
+                                    Start Shopping
+                                </button>
+                            </motion.div>
+                        )}
+                    </motion.div>
+                </div>
+            )}
+        </AnimatePresence>
+    );
+}
