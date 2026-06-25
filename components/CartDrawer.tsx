@@ -23,12 +23,12 @@ const FAST_CITIES = [
 ];
 
 const getDeliveryText = (city: string) => {
-    if (!city) return "2 to 4 days (based on pincode)";
+    if (!city) return "Delivered in 2 to 4 days";
     const normalizedCity = city.trim().toLowerCase();
     if (FAST_CITIES.includes(normalizedCity)) {
-        return `Delivery in 2 days to ${city}`;
+        return `Delivered in ${city} in 2 days`;
     }
-    return `Delivery in 3 to 4 days to ${city}`;
+    return `Delivered in ${city} in 4 days`;
 };
 // Helper Component for Swipeable logic with visual feedback
 const CartItemRow = ({ item, removeFromCart, updateQuantity, toggleWishlist, isInWishlist }: any) => {
