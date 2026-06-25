@@ -90,6 +90,7 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
     const accentColor = "var(--accent-color)";
     const cardBg = isWoman ? "bg-[#FFF2F4] dark:bg-[#1C1416]" : "bg-[#F4F8FC] dark:bg-[#12161B]";
     const cardGradientFrom = isWoman ? "from-[#FFF2F4] dark:from-[#1C1416]" : "from-[#F4F8FC] dark:from-[#12161B]";
+    const cardGradientVia = isWoman ? "via-[#FFF2F4]/60 dark:via-[#1C1416]/60" : "via-[#F4F8FC]/60 dark:via-[#12161B]/60";
     const cardGradientTo = isWoman ? "to-[#FFF2F4]/0 dark:to-[#1C1416]/0" : "to-[#F4F8FC]/0 dark:to-[#12161B]/0";
 
     const trustPillars = [
@@ -239,9 +240,9 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                                     fill
                                     sizes="60vw"
                                     priority
-                                    className="object-cover object-[85%_center] scale-[1.04]"
+                                    className="object-cover object-[85%_center]"
                                 />
-                                <div className={`absolute inset-y-0 -left-2 w-20 bg-gradient-to-r ${cardGradientFrom} ${cardGradientTo}`} />
+                                <div className={`absolute inset-y-0 -left-6 w-32 bg-gradient-to-r ${cardGradientFrom} ${cardGradientVia} ${cardGradientTo}`} />
                             </div>
                             
                             <div className="relative z-10 w-[55%] pl-5 flex flex-col items-start justify-center pointer-events-none">
@@ -298,11 +299,11 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                                                     alt={product.title}
                                                     fill
                                                     sizes="60vw"
-                                                    className="object-cover object-[85%_center] scale-[1.04]"
+                                                    className="object-cover object-[85%_center]"
                                                     unoptimized={heroImage.startsWith("http")}
                                                 />
                                             )}
-                                            <div className={`absolute inset-y-0 -left-2 w-20 bg-gradient-to-r ${cardGradientFrom} ${cardGradientTo}`} />
+                                            <div className={`absolute inset-y-0 -left-6 w-32 bg-gradient-to-r ${cardGradientFrom} ${cardGradientVia} ${cardGradientTo}`} />
                                         </div>
                                         
                                         <div className="relative z-10 w-[55%] pl-5 flex flex-col items-start justify-center pointer-events-none">

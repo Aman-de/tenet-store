@@ -1193,23 +1193,23 @@ export default function CartDrawer() {
                                         <span>₹{finalTotal.toLocaleString('en-IN')}</span>
                                     </div>
                                     {paymentMethod === 'cod' ? (
-                                        <div className="bg-red-50/50 dark:bg-red-950/10 rounded-xl p-4 border border-red-100 dark:border-red-900/30 space-y-3 mb-4">
-                                            <div className="flex items-center justify-between text-xs font-sans text-red-800 dark:text-red-300">
+                                        <div className="bg-neutral-50 dark:bg-[#141414] rounded-xl p-4 border border-neutral-200 dark:border-neutral-800 space-y-3 mb-4">
+                                            <div className="flex items-center justify-between text-xs font-sans text-neutral-800 dark:text-neutral-300">
                                                 <span className="font-medium">COD Shipping Fee (Pay Upfront)</span>
-                                                <span className="font-bold">₹{shippingAmount}</span>
+                                                <span className="font-bold text-neutral-900 dark:text-white">₹{shippingAmount}</span>
                                             </div>
-                                            <div className="flex items-center justify-between text-xs font-sans text-neutral-600 dark:text-neutral-400">
+                                            <div className="flex items-center justify-between text-xs font-sans text-neutral-500 dark:text-neutral-500">
                                                 <span>Product Price (Pay on Delivery)</span>
                                                 <span className="font-bold text-[#1A1A1A] dark:text-[#F4F1ED]">₹{Math.max(0, subtotal - walletDeduction).toLocaleString('en-IN')}</span>
                                             </div>
                                             
-                                            <div className="pt-3 mt-3 border-t border-red-100 dark:border-red-900/20 flex flex-col gap-2">
-                                                <span className="text-xs font-bold text-red-700 dark:text-red-400">
+                                            <div className="pt-3 mt-3 border-t border-neutral-200 dark:border-neutral-800 flex flex-col gap-2">
+                                                <span className="text-xs font-bold text-[#1A1A1A] dark:text-[#F4F1ED]">
                                                     💡 Prepay your order to get FREE Shipping (Save ₹92)!
                                                 </span>
                                                 <button
                                                     onClick={() => setPaymentMethod('razorpay')}
-                                                    className="w-full py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-bold uppercase tracking-wider rounded-lg transition-colors"
+                                                    className="w-full py-2 bg-[#1A1A1A] hover:bg-black text-white dark:bg-[#F4F1ED] dark:hover:bg-white dark:text-[#1A1A1A] text-xs font-bold uppercase tracking-wider rounded-lg transition-colors shadow-sm"
                                                 >
                                                     Get Free Shipping
                                                 </button>
