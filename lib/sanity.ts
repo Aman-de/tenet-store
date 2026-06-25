@@ -371,7 +371,7 @@ function mapProduct(p: any): Product {
     let title = renameProductTitle(p.title);
     
     let images = p.images || resolveImages(p.title, p.images?.[0], p.images?.[1]);
-    let colors = p.colors || [];
+    let colors = (p.colors || []).map((c: any) => typeof c === 'object' && c?.hex ? c.hex : c);
     
     if (titleLower === "the amalfi stripe") {
         const originalMain = p.images?.[0] || "/images/original_mains/the_amalfi_stripe_main.webp";
@@ -492,7 +492,7 @@ export async function getProduct(slug: string) {
     if (!product || HIDDEN_PRODUCT_TITLES.has(product.title)) return null;
 
     const defaultImages = product.variants?.[0]?.images || [];
-    const defaultColors = product.variants?.map((v: any) => v.colorHex) || [];
+    const defaultColors = product.variants?.map((v: any) => typeof v.colorHex === 'object' && v.colorHex?.hex ? v.colorHex.hex : v.colorHex) || [];
 
     let title = renameProductTitle(product.title);
     if (product.title?.toLowerCase() === "the amalfi stripe") {
@@ -600,6 +600,7 @@ export async function getProduct(slug: string) {
         sizes: product.sizes || [],
         variants: product.variants?.map((v: any) => ({
             ...v,
+            colorHex: typeof v.colorHex === 'object' && v.colorHex?.hex ? v.colorHex.hex : v.colorHex,
             images: resolveVariantImages(product.title, v.images || [])
         })) || [],
         gender: product.gender,

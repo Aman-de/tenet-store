@@ -210,13 +210,9 @@ export const product = {
                     },
                     {
                         name: 'colorHex',
-                        title: 'Color Hex Code',
-                        type: 'string',
-                        description: 'e.g. #000000',
-                        validation: (Rule: any) => Rule.required().regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, {
-                            name: 'hex',
-                            invert: false
-                        })
+                        title: 'Color',
+                        type: 'color',
+                        description: 'Select the color visually'
                     },
                     {
                         name: 'images',
