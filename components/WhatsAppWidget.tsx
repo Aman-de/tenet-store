@@ -16,13 +16,13 @@ export default function WhatsAppWidget() {
                 exit={{ opacity: 0, scale: 0.8, y: 20 }}
                     whileHover={{ opacity: 1 }}
                     transition={{ duration: 0.3 }}
-                    className="fixed bottom-32 lg:bottom-12 right-4 lg:right-6 z-40 flex flex-col items-end"
+                    className="fixed bottom-24 lg:bottom-6 right-4 lg:right-6 z-40 flex flex-col items-end"
                 >
                     <a
                         href={whatsappUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-5 h-5 lg:w-6 lg:h-6 flex items-center justify-center hover:scale-105 active:scale-95 transition-all duration-300 relative group cursor-pointer"
+                        className="w-10 h-10 lg:w-12 lg:h-12 flex items-center justify-center hover:scale-105 active:scale-95 transition-all duration-300 relative group cursor-pointer"
                         aria-label="Contact support on WhatsApp"
                     >
                         <img 
