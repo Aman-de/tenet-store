@@ -222,6 +222,14 @@ export const product = {
                         hidden: ({ document }: any) => document?.apparelType !== 'set'
                     },
                     {
+                        name: 'onlyAvailableAsSet',
+                        title: 'Only Available as Full Set',
+                        type: 'boolean',
+                        description: 'Check this if this variant should NOT be sold individually as a Top or Bottom',
+                        initialValue: false,
+                        hidden: ({ document }: any) => document?.apparelType !== 'set'
+                    },
+                    {
                         name: 'images',
                         title: 'Variant Images',
                         type: 'array',

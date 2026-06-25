@@ -483,6 +483,7 @@ export async function getProduct(slug: string) {
         colorName,
         colorHex,
         secondaryColorHex,
+        onlyAvailableAsSet,
         stock,
         "images": images[].asset->url
     }
@@ -603,6 +604,7 @@ export async function getProduct(slug: string) {
             ...v,
             colorHex: typeof v.colorHex === 'object' && v.colorHex?.hex ? v.colorHex.hex : v.colorHex,
             secondaryColorHex: typeof v.secondaryColorHex === 'object' && v.secondaryColorHex?.hex ? v.secondaryColorHex.hex : v.secondaryColorHex,
+            onlyAvailableAsSet: !!v.onlyAvailableAsSet,
             images: resolveVariantImages(product.title, v.images || [])
         })) || [],
         gender: product.gender,

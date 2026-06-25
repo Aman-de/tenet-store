@@ -1,7 +1,7 @@
 "use client";
 
 import { useStore } from "@/lib/store";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import { ChevronDown, ChevronUp, AlertCircle, Heart, Ruler, Star, Loader2, Truck, ShieldCheck, RefreshCw, ShoppingBag, Check, Copy, MapPin, Tag, Sparkles, CreditCard, Plus } from "lucide-react";
@@ -335,8 +335,36 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
     const [selectedPiece, setSelectedPiece] = useState<'top' | 'bottom' | 'set'>('set');
     const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
 
-    // Desktop Sticky Buy Bar Scroll State removed as per user feedback
-    
+    const availableVariants = useMemo(() => {
+        if (!product.variants) return [];
+        return product.variants.filter((variant, index, self) => {
+            // Filter out variants that are only available as a set if a single piece is selected
+            if (selectedPiece !== 'set' && variant.onlyAvailableAsSet) return false;
+
+            // Deduplicate variants that resolve to the exact same color for the selected piece
+            const colorHexForPiece = (selectedPiece === 'bottom' && variant.secondaryColorHex) 
+                ? variant.secondaryColorHex 
+                : variant.colorHex;
+                
+            const firstIndex = self.findIndex(v => {
+                if (selectedPiece !== 'set' && v.onlyAvailableAsSet) return false;
+                const vHex = (selectedPiece === 'bottom' && v.secondaryColorHex) ? v.secondaryColorHex : v.colorHex;
+                return vHex === colorHexForPiece;
+            });
+            
+            return index === firstIndex;
+        });
+    }, [product.variants, selectedPiece]);
+
+    useEffect(() => {
+        if (availableVariants.length > 0) {
+            const isValid = availableVariants.some(v => v.colorName === selectedVariant?.colorName);
+            if (!isValid) {
+                setSelectedVariant(availableVariants[0]);
+            }
+        }
+    }, [selectedPiece, availableVariants, selectedVariant]);
+
     // Derived State
     let currentImages = (selectedVariant ? selectedVariant.images : product.images)?.filter(Boolean);
     
@@ -1038,7 +1066,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                             <span className="text-xs font-serif text-[#1A1A1A] dark:text-[#F4F1ED]">{selectedVariant?.colorName}</span>
                         </div>
                         <div className="flex gap-3">
-                            {product.variants!.map((variant) => (
+                            {availableVariants.map((variant) => (
                                 <button
                                     key={variant.colorName}
                                     onClick={() => setSelectedVariant(variant)}
