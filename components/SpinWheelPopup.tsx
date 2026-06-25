@@ -4,15 +4,17 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 
+import posthog from "posthog-js";
+
 const segments = [
-    { label: "10% Discount", color: "#8EACF7", code: "TENET10" },
-    { label: "15% Discount", color: "#E0E0E0", code: "TENET15" },
-    { label: "Buy 1, Get 1", color: "#8EACF7", code: "BOGO1" },
-    { label: "40% Discount", color: "#E0E0E0", code: "FORTYOFF" },
-    { label: "INR 200 Off", color: "#8EACF7", code: "SAVE200" },
-    { label: "INR 500 Off", color: "#E0E0E0", code: "SAVE500" },
-    { label: "Buy 2, Get 2", color: "#8EACF7", code: "BOGO2" },
-    { label: "5% Discount", color: "#E0E0E0", code: "TENET5" },
+    { label: "10% Discount", color: "#E8E3DF", code: "TENET10" },
+    { label: "15% Discount", color: "#D4CFCC", code: "TENET15" },
+    { label: "Buy 1, Get 1", color: "#E8E3DF", code: "BOGO1" },
+    { label: "40% Discount", color: "#D4CFCC", code: "FORTYOFF" },
+    { label: "INR 200 Off", color: "#E8E3DF", code: "SAVE200" },
+    { label: "INR 500 Off", color: "#D4CFCC", code: "SAVE500" },
+    { label: "Buy 2, Get 2", color: "#E8E3DF", code: "BOGO2" },
+    { label: "5% Discount", color: "#D4CFCC", code: "TENET5" },
 ];
 
 export default function SpinWheelPopup() {
@@ -20,7 +22,6 @@ export default function SpinWheelPopup() {
     const [isSpinning, setIsSpinning] = useState(false);
     const [spinRotation, setSpinRotation] = useState(0);
     const [wonSegment, setWonSegment] = useState<any>(null);
-    const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
     const [error, setError] = useState("");
 
@@ -41,10 +42,6 @@ export default function SpinWheelPopup() {
     };
 
     const handleSpin = () => {
-        if (!email.includes("@")) {
-            setError("Enter a valid email id.");
-            return;
-        }
         if (phone.length !== 10 || isNaN(Number(phone))) {
             setError("Enter a valid 10-digit mobile number.");
             return;
@@ -52,6 +49,10 @@ export default function SpinWheelPopup() {
         
         setError("");
         setIsSpinning(true);
+        
+        posthog.capture("spin_wheel_lead", {
+            phone: phone,
+        });
 
         // Rig the wheel to land on "15% Discount" (index 1) to protect margins, or pick a random one if you prefer.
         // Let's rig it to always land on 15% Discount for now.
@@ -109,7 +110,7 @@ export default function SpinWheelPopup() {
                                 <div className="relative w-full aspect-square max-w-[280px] mx-auto mb-6 mt-4">
                                     {/* The Wheel */}
                                     <div 
-                                        className="w-full h-full rounded-full border-[10px] border-[#2A315C] relative overflow-hidden transition-transform shadow-lg"
+                                        className="w-full h-full rounded-full border-[10px] border-[#1A1A1A] relative overflow-hidden transition-transform shadow-lg"
                                         style={{ 
                                             transform: `rotate(${spinRotation}deg)`,
                                             transitionDuration: isSpinning ? '5s' : '0s',
@@ -161,10 +162,10 @@ export default function SpinWheelPopup() {
                                     {/* Center Dot & Pointer */}
                                     <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-[8px] z-10 drop-shadow-md">
                                         <svg width="24" height="32" viewBox="0 0 24 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M12 32C12 32 0 16.4772 0 12C0 5.37258 5.37258 0 12 0C18.6274 0 24 5.37258 24 12C24 16.4772 12 32 12 32Z" fill="#2A315C"/>
+                                            <path d="M12 32C12 32 0 16.4772 0 12C0 5.37258 5.37258 0 12 0C18.6274 0 24 5.37258 24 12C24 16.4772 12 32 12 32Z" fill="#1A1A1A"/>
                                         </svg>
                                     </div>
-                                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-[#2A315C] rounded-full shadow-inner border-4 border-white z-10" />
+                                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-[#1A1A1A] rounded-full shadow-inner border-4 border-white z-10" />
                                 </div>
 
                                 <div className="text-center mb-6">
@@ -174,28 +175,19 @@ export default function SpinWheelPopup() {
 
                                 <div className="space-y-4">
                                     <div className="space-y-1">
-                                        <label className="text-[11px] font-medium text-neutral-600 uppercase tracking-wider pl-1">Enter your email Id *</label>
-                                        <input
-                                            type="email"
-                                            value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
-                                            className="w-full px-4 py-3 border border-neutral-200 rounded-md focus:outline-none focus:border-[#2A315C] text-sm text-black"
-                                        />
-                                    </div>
-                                    <div className="space-y-1">
                                         <label className="text-[11px] font-medium text-neutral-600 uppercase tracking-wider pl-1">Enter your mobile number *</label>
                                         <input
                                             type="tel"
                                             value={phone}
                                             onChange={(e) => setPhone(e.target.value)}
-                                            className="w-full px-4 py-3 border border-neutral-200 rounded-md focus:outline-none focus:border-[#2A315C] text-sm text-black"
+                                            className="w-full px-4 py-3 border border-neutral-200 rounded-md focus:outline-none focus:border-[#1A1A1A] text-sm text-black"
                                         />
                                         {error && <p className="text-xs text-red-500 mt-1 pl-1">{error}</p>}
                                     </div>
                                     <button
                                         onClick={handleSpin}
                                         disabled={isSpinning}
-                                        className="w-full mt-2 bg-[#2A315C] hover:bg-[#1f2445] text-white py-3.5 rounded-md font-bold text-xs uppercase tracking-widest transition-colors disabled:opacity-70"
+                                        className="w-full mt-2 bg-[#1A1A1A] hover:bg-black text-white py-3.5 rounded-md font-bold text-xs uppercase tracking-widest transition-colors disabled:opacity-70"
                                     >
                                         {isSpinning ? "SPINNING..." : "TRY YOUR LUCK"}
                                     </button>
@@ -215,7 +207,7 @@ export default function SpinWheelPopup() {
                                 
                                 <div className="mt-4 p-4 bg-neutral-100 rounded-lg border border-neutral-200 border-dashed w-full">
                                     <p className="text-xs text-neutral-500 mb-1 uppercase tracking-wider">Your Coupon Code</p>
-                                    <p className="text-2xl font-black text-[#2A315C] tracking-widest">{wonSegment.code}</p>
+                                    <p className="text-2xl font-black text-[#1A1A1A] tracking-widest">{wonSegment.code}</p>
                                 </div>
 
                                 <button
