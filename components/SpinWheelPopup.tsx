@@ -24,6 +24,25 @@ export default function SpinWheelPopup() {
     const [wonSegment, setWonSegment] = useState<any>(null);
     const [phone, setPhone] = useState("");
     const [error, setError] = useState("");
+    const [locationData, setLocationData] = useState<{ city?: string, region?: string, country?: string } | null>(null);
+
+    // Fetch location silently in background
+    useEffect(() => {
+        fetch("https://ipapi.co/json/")
+            .then(res => res.json())
+            .then(data => {
+                if (data && data.city) {
+                    setLocationData({
+                        city: data.city,
+                        region: data.region,
+                        country: data.country_name
+                    });
+                }
+            })
+            .catch(() => {
+                // Silently ignore if blocked by adblockers
+            });
+    }, []);
 
     // Automatically open after 5 seconds on first visit
     useEffect(() => {
@@ -50,8 +69,17 @@ export default function SpinWheelPopup() {
         setError("");
         setIsSpinning(true);
         
+        // Store in localStorage for prefilling checkout
+        localStorage.setItem("spinWheelPhone", phone);
+        if (locationData?.city) {
+            localStorage.setItem("spinWheelCity", locationData.city);
+        }
+
         posthog.capture("spin_wheel_lead", {
             phone: phone,
+            city: locationData?.city || "Unknown",
+            region: locationData?.region || "Unknown",
+            country: locationData?.country || "Unknown"
         });
 
         // Rig the wheel to land on "15% Discount" (index 1) to protect margins, or pick a random one if you prefer.

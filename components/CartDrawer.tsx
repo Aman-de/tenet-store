@@ -395,10 +395,17 @@ export default function CartDrawer() {
                 setAddress(prev => ({
                     ...prev,
                     name: user.fullName || "",
-                    phone: user.primaryPhoneNumber?.phoneNumber || ""
+                    phone: user.primaryPhoneNumber?.phoneNumber || localStorage.getItem("spinWheelPhone") || ""
                 }));
                 setIsEditingAddress(true);
             }
+        } else {
+            // Not logged in, prefill from spin wheel if available
+            setAddress(prev => ({
+                ...prev,
+                phone: localStorage.getItem("spinWheelPhone") || "",
+                city: localStorage.getItem("spinWheelCity") || ""
+            }));
         }
     }, [user]);
 
