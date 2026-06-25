@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import useEmblaCarousel from 'embla-carousel-react';
 import { useStore } from "@/lib/store";
 import { useGender } from "@/context/GenderContext";
 import { Plus, Heart, Loader2, Check } from "lucide-react";
@@ -24,6 +25,7 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
     const [isImg1Loading, setIsImg1Loading] = useState(true);
     const [isImg2Loading, setIsImg2Loading] = useState(true);
     const [mounted, setMounted] = useState(false);
+    const [emblaRef] = useEmblaCarousel({ loop: true });
     const { addToCart, openCart, toggleWishlist, isInWishlist } = useStore();
     
     useEffect(() => {
@@ -74,39 +76,41 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
         >
             {/* Image Container */}
             <div className="relative aspect-[3/4] w-full overflow-hidden bg-neutral-100 dark:bg-[#111111] mb-3 rounded-2xl">
-                {/* Scroll container for swiping */}
-                <div className="flex overflow-x-auto snap-x snap-mandatory w-full h-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-                    {product.images && product.images.length > 0 ? (
-                        product.images.map((img, index) => (
-                            <div key={index} className="flex-none w-full h-full snap-center relative">
+                {/* Embla Carousel for swiping */}
+                <div className="overflow-hidden w-full h-full touch-pan-y" ref={emblaRef}>
+                    <div className="flex w-full h-full">
+                        {product.images && product.images.length > 0 ? (
+                            product.images.map((img, index) => (
+                                <div key={index} className="flex-[0_0_100%] min-w-0 w-full h-full relative">
+                                    <Link href={`/product/${product.handle}`} onClick={handleViewItem} className="absolute inset-0 z-0 block w-full h-full">
+                                        {index === 0 && isImg1Loading && (
+                                            <div className="absolute inset-0 bg-neutral-200 dark:bg-neutral-800 animate-pulse z-10" />
+                                        )}
+                                        <Image
+                                            src={img}
+                                            alt={`${product.title} - Image ${index + 1}`}
+                                            fill
+                                            className="object-cover absolute inset-0 z-0"
+                                            sizes="(max-width: 768px) 50vw, 33vw"
+                                            unoptimized={img.startsWith("http")}
+                                            loading={index === 0 ? "eager" : "lazy"}
+                                            onLoad={() => {
+                                                if (index === 0) setIsImg1Loading(false);
+                                            }}
+                                        />
+                                    </Link>
+                                </div>
+                            ))
+                        ) : (
+                            <div className="flex-[0_0_100%] min-w-0 w-full h-full relative">
                                 <Link href={`/product/${product.handle}`} onClick={handleViewItem} className="absolute inset-0 z-0 block w-full h-full">
-                                    {index === 0 && isImg1Loading && (
-                                        <div className="absolute inset-0 bg-neutral-200 dark:bg-neutral-800 animate-pulse z-10" />
-                                    )}
-                                    <Image
-                                        src={img}
-                                        alt={`${product.title} - Image ${index + 1}`}
-                                        fill
-                                        className="object-cover absolute inset-0 z-0"
-                                        sizes="(max-width: 768px) 50vw, 33vw"
-                                        unoptimized={img.startsWith("http")}
-                                        loading={index === 0 ? "eager" : "lazy"}
-                                        onLoad={() => {
-                                            if (index === 0) setIsImg1Loading(false);
-                                        }}
-                                    />
+                                    <div className="w-full h-full bg-neutral-200 dark:bg-neutral-800 flex items-center justify-center text-neutral-400 text-xs">
+                                        No Image
+                                    </div>
                                 </Link>
                             </div>
-                        ))
-                    ) : (
-                        <div className="flex-none w-full h-full snap-center relative">
-                            <Link href={`/product/${product.handle}`} onClick={handleViewItem} className="absolute inset-0 z-0 block w-full h-full">
-                                <div className="w-full h-full bg-neutral-200 dark:bg-neutral-800 flex items-center justify-center text-neutral-400 text-xs">
-                                    No Image
-                                </div>
-                            </Link>
-                        </div>
-                    )}
+                        )}
+                    </div>
                 </div>
 
                 {/* Hover overlay for Desktop */}
