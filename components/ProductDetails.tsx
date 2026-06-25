@@ -1151,13 +1151,13 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         </div>
                         
                         {/* Size Scarcity Indicator */}
-                        {selectedSize && !error && (
+                        {selectedSize && !error && selectedVariant?.stock !== undefined && selectedVariant.stock <= 5 && selectedVariant.stock > 0 && (
                             <div className="text-[11px] font-medium text-rose-700 dark:text-rose-400 mb-4 flex items-center gap-1.5 animate-in fade-in slide-in-from-top-1">
                                 <span className="relative flex h-2 w-2">
                                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
                                   <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
                                 </span>
-                                Only {selectedSize === 'S' || selectedSize === 'M' ? 2 : 4} left in {selectedSize}
+                                Only {selectedVariant.stock} left in stock
                             </div>
                         )}
                     </div>
@@ -1234,10 +1234,14 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                     )}
                 </div>                {/* Action Buttons (Desktop Only) */}
                 <div className="hidden md:flex flex-col gap-2.5 mb-6">
-                    <div className="flex items-center gap-2 justify-center mb-1">
-                        <span className="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
-                        <span className="text-[10px] uppercase font-bold tracking-wider text-red-600">Only 7 Sets Left In Size M</span>
-                    </div>
+                    {selectedVariant?.stock !== undefined && selectedVariant.stock <= 5 && selectedVariant.stock > 0 && (
+                        <div className="flex items-center gap-2 justify-center mb-1">
+                            <span className="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
+                            <span className="text-[10px] uppercase font-bold tracking-wider text-red-600">
+                                Only {selectedVariant.stock} {selectedPiece === 'set' ? 'Sets' : 'Items'} Left In Stock
+                            </span>
+                        </div>
+                    )}
                     <div className="flex gap-3">
                         <button
                             onClick={handleBuyNow}
