@@ -19,6 +19,25 @@ import useEmblaCarousel from "embla-carousel-react";
 import { useGender } from "@/context/GenderContext";
 import posthog from "posthog-js";
 
+const FAST_CITIES = [
+    'mumbai', 'delhi', 'new delhi', 'bangalore', 'bengaluru', 'hyderabad', 'ahmedabad', 
+    'chennai', 'kolkata', 'surat', 'pune', 'jaipur', 'lucknow', 'kanpur', 'nagpur', 
+    'indore', 'thane', 'bhopal', 'visakhapatnam', 'pimpri-chinchwad', 'patna', 'vadodara', 
+    'ghaziabad', 'ludhiana', 'agra', 'nashik', 'faridabad', 'meerut', 'rajkot', 'kalyan-dombivli', 
+    'vasai-virar', 'varanasi', 'srinagar', 'aurangabad', 'dhanbad', 'amritsar', 'navi mumbai', 
+    'allahabad', 'howrah', 'ranchi', 'gwalior', 'jabalpur', 'coimbatore', 'vijayawada', 
+    'jodhpur', 'madurai', 'raipur', 'kota', 'chandigarh', 'guwahati', 'solapur'
+];
+
+const getDeliveryDays = (city: string) => {
+    if (!city) return 4;
+    const normalizedCity = city.trim().toLowerCase();
+    if (FAST_CITIES.includes(normalizedCity)) {
+        return 2;
+    }
+    return 4;
+};
+
 interface ProductDetailsProps {
     product: Product;
     reviews?: Review[];
@@ -1151,7 +1170,8 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         {deliveryInfo && (
                             <div className="flex flex-col gap-2 mt-2 pt-2">
                                 <div className="flex flex-col gap-2 text-xs font-bold text-[#1A1A1A] dark:text-[#F4F1ED]">
-                                    <span className="flex items-center gap-2"><span className="text-emerald-600 text-sm">✅</span> Get it in 10 Days in {deliveryInfo.city || "your location"}</span>
+                                    <span className="flex items-center gap-2"><span className="text-emerald-600 text-sm">✅</span> Delivered in {deliveryInfo.city || "your location"} in {getDeliveryDays(deliveryInfo.city || "")} days</span>
+                                    <span className="flex items-center gap-2"><span className="text-emerald-600 text-sm">✅</span> Easy 10-Day Returns</span>
                                     <span className="flex items-center gap-2"><span className="text-emerald-600 text-sm">✅</span> FREE Shipping (Pay Online)</span>
                                     <span className="flex items-center gap-2"><span className="text-emerald-600 text-sm">✅</span> COD Available (Prepaid shipping)</span>
                                 </div>
