@@ -1209,7 +1209,7 @@ export default function CartDrawer() {
                                                 </span>
                                                 <button
                                                     onClick={() => setPaymentMethod('razorpay')}
-                                                    className="w-full py-2 bg-[#1A1A1A] hover:bg-black text-white dark:bg-[#F4F1ED] dark:hover:bg-white dark:text-[#1A1A1A] text-xs font-bold uppercase tracking-wider rounded-lg transition-colors shadow-sm"
+                                                    className="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold uppercase tracking-wider rounded-lg transition-colors shadow-sm"
                                                 >
                                                     Get Free Shipping
                                                 </button>
