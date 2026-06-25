@@ -241,7 +241,6 @@ export default function CartDrawer() {
         phone: ""
     });
     const [paymentMethod, setPaymentMethod] = useState<'razorpay' | 'cod'>('razorpay');
-    const [shippingSpeed, setShippingSpeed] = useState<'standard' | 'express'>('standard');
     const [errors, setErrors] = useState({
         name: false,
         houseNumber: false,
@@ -451,12 +450,10 @@ export default function CartDrawer() {
     const walletBalance = user?.unsafeMetadata?.walletBalance as number || 0;
     const [useWallet, setUseWallet] = useState(false);
     
-    // Shipping Calculation based on payment method and speed:
-    // Online prepay: standard = FREE, express = ₹40
-    // COD: standard = ₹80, express = ₹120
-    const shippingAmount = paymentMethod === 'razorpay'
-        ? (shippingSpeed === 'express' ? 40 : 0)
-        : (shippingSpeed === 'express' ? 120 : 80);
+    // Shipping Calculation based on payment method:
+    // Online prepay = FREE
+    // COD = ₹92
+    const shippingAmount = paymentMethod === 'razorpay' ? 0 : 92;
     
     const totalBeforeWallet = subtotal + shippingAmount;
     
@@ -492,7 +489,7 @@ export default function CartDrawer() {
 
     // Calculate Offers above has `const totalBeforeWallet` and `finalTotal`...
 
-    const isFreeShipping = paymentMethod === 'razorpay' && shippingSpeed === 'standard';
+    const isFreeShipping = paymentMethod === 'razorpay';
     const progress = isFreeShipping ? 100 : 0;
     const amountNeeded = 0;
 
@@ -1071,39 +1068,13 @@ export default function CartDrawer() {
 
                                     {/* Payment Method Selection */}
                                     {/* Delivery Option Selection */}
-                                    <div className="mt-6 flex flex-col gap-2">
-                                        <div className="flex items-center justify-between">
-                                            <label className="block text-xs font-bold uppercase tracking-widest text-[#1A1A1A] dark:text-[#F4F1ED]">Delivery Option</label>
-                                            <span className="text-[10px] text-neutral-500 dark:text-neutral-400 font-sans">
-                                                {shippingSpeed === 'express' ? "Delivered in 10 days" : "Delivered in 10 days"}
-                                            </span>
+                                    {/* Estimated Delivery */}
+                                    <div className="mt-6 p-3 bg-neutral-50 dark:bg-neutral-800/50 rounded-xl border border-neutral-100 dark:border-neutral-800 flex items-center justify-between">
+                                        <div className="flex items-center gap-2">
+                                            <Truck className="w-4 h-4 text-neutral-500" />
+                                            <span className="text-xs font-medium text-[#1A1A1A] dark:text-[#F4F1ED]">Estimated Delivery</span>
                                         </div>
-                                        <div className="flex gap-1.5 bg-neutral-100/60 dark:bg-[#141414] p-1 rounded-xl border border-neutral-200/50 dark:border-neutral-800">
-                                            {/* Standard Delivery */}
-                                            <button
-                                                onClick={() => setShippingSpeed('standard')}
-                                                className={`flex-1 py-2.5 text-[11px] font-bold uppercase tracking-wider rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
-                                                    shippingSpeed === 'standard'
-                                                        ? 'bg-white dark:bg-[#222] text-[#1A1A1A] dark:text-[#F4F1ED] shadow-sm'
-                                                        : 'text-neutral-500 hover:text-[#1A1A1A] dark:hover:text-white'
-                                                }`}
-                                            >
-                                                <Truck className="w-3.5 h-3.5 opacity-80" />
-                                                Standard ({paymentMethod === 'razorpay' ? "FREE" : "₹80"})
-                                            </button>
-                                            {/* Express Delivery */}
-                                            <button
-                                                onClick={() => setShippingSpeed('express')}
-                                                className={`flex-1 py-2.5 text-[11px] font-bold uppercase tracking-wider rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
-                                                    shippingSpeed === 'express'
-                                                        ? 'bg-white dark:bg-[#222] text-[#1A1A1A] dark:text-[#F4F1ED] shadow-sm'
-                                                        : 'text-neutral-500 hover:text-[#1A1A1A] dark:hover:text-white'
-                                                }`}
-                                            >
-                                                <Zap className="w-3.5 h-3.5 opacity-80 text-[#3B82F6]" />
-                                                Express ({paymentMethod === 'razorpay' ? "₹40" : "₹120"})
-                                            </button>
-                                        </div>
+                                        <span className="text-xs text-neutral-500 font-sans">2 to 4 days (based on pincode)</span>
                                     </div>
 
                                     {/* Payment Method Selection */}
@@ -1185,7 +1156,7 @@ export default function CartDrawer() {
                                         <span>₹{subtotal.toLocaleString('en-IN')}</span>
                                     </div>
                                     <div className="flex items-center justify-between text-xs font-sans mb-2">
-                                        <span>Shipping ({shippingSpeed === 'express' ? 'Express' : 'Standard'})</span>
+                                        <span>Shipping</span>
                                         {shippingAmount === 0 ? (
                                             <span className="text-green-700 font-bold">FREE (Prepay Benefit)</span>
                                         ) : (
@@ -1205,31 +1176,36 @@ export default function CartDrawer() {
                                         <span>₹{finalTotal.toLocaleString('en-IN')}</span>
                                     </div>
                                     {paymentMethod === 'cod' ? (
-                                        <div className="bg-red-50/50 dark:bg-red-950/10 rounded-xl p-3 border border-red-100 dark:border-red-900/30 space-y-2 mb-4">
+                                        <div className="bg-red-50/50 dark:bg-red-950/10 rounded-xl p-4 border border-red-100 dark:border-red-900/30 space-y-3 mb-4">
                                             <div className="flex items-center justify-between text-xs font-sans text-red-800 dark:text-red-300">
-                                                <span className="font-medium">COD Shipping Fee ({shippingSpeed === 'express' ? 'Express' : 'Standard'} - Pay Upfront)</span>
+                                                <span className="font-medium">COD Shipping Fee (Pay Upfront)</span>
                                                 <span className="font-bold">₹{shippingAmount}</span>
                                             </div>
                                             <div className="flex items-center justify-between text-xs font-sans text-neutral-600 dark:text-neutral-400">
                                                 <span>Product Price (Pay on Delivery)</span>
                                                 <span className="font-bold text-[#1A1A1A] dark:text-[#F4F1ED]">₹{Math.max(0, subtotal - walletDeduction).toLocaleString('en-IN')}</span>
                                             </div>
-                                            <div className="text-[10px] text-red-600 dark:text-red-400 font-medium pt-1 border-t border-red-100 dark:border-red-900/20">
-                                                💡 Tip: Pay online now to get {shippingSpeed === 'express' ? 'Express Delivery for just ₹40 (Save ₹80)' : 'FREE Standard Delivery (Save ₹80)'}!
+                                            
+                                            <div className="pt-3 mt-3 border-t border-red-100 dark:border-red-900/20 flex flex-col gap-2">
+                                                <span className="text-xs font-bold text-red-700 dark:text-red-400">
+                                                    💡 Prepay your order to get FREE Shipping (Save ₹92)!
+                                                </span>
+                                                <button
+                                                    onClick={() => setPaymentMethod('razorpay')}
+                                                    className="w-full py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-bold uppercase tracking-wider rounded-lg transition-colors"
+                                                >
+                                                    Get Free Shipping
+                                                </button>
                                             </div>
                                         </div>
                                     ) : (
                                         <div className="bg-green-50/50 dark:bg-green-950/10 rounded-xl p-3 border border-green-100 dark:border-green-900/30 space-y-1 mb-4">
                                             <div className="flex items-center justify-between text-xs font-sans text-green-800 dark:text-green-300 font-bold">
-                                                <span>Prepay Shipping Fee ({shippingSpeed === 'express' ? 'Express' : 'Standard'})</span>
-                                                <span>{shippingAmount === 0 ? 'FREE' : `₹${shippingAmount}`}</span>
+                                                <span>Prepaid Shipping Fee</span>
+                                                <span>FREE</span>
                                             </div>
                                             <div className="text-[10px] text-green-700 dark:text-green-400 font-medium">
-                                                {shippingSpeed === 'express' ? (
-                                                    "🚀 Upgraded to 2-Day Express Delivery for just ₹40 (Saved ₹80 compared to COD)!"
-                                                ) : (
-                                                    "🎉 You saved ₹80 with Free Prepay Delivery!"
-                                                )}
+                                                🎉 You saved ₹92 by paying online!
                                             </div>
                                         </div>
                                     )}
