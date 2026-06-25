@@ -3,7 +3,6 @@
 import { useStore } from "@/lib/store";
 import { getCartUpsells } from "@/lib/sanity";
 import { trackBeginCheckout, trackPurchase, trackAddToCart } from "@/lib/analytics";
-
 import { motion, AnimatePresence, useMotionValue, useTransform, animate } from "framer-motion";
 import { X, ShoppingBag, Plus, Minus, Heart, Trash2, ArrowLeft, MapPin, ShieldCheck, Truck, Zap } from "lucide-react";
 import Image from "next/image";
@@ -13,6 +12,24 @@ import { useUser, useClerk } from "@clerk/nextjs";
 import { checkReferralCodeValidity, trackReferralClick, trackReferralJoin } from "@/app/actions";
 import { useGender } from "@/context/GenderContext";
 
+const FAST_CITIES = [
+    'mumbai', 'delhi', 'new delhi', 'bangalore', 'bengaluru', 'hyderabad', 'ahmedabad', 
+    'chennai', 'kolkata', 'surat', 'pune', 'jaipur', 'lucknow', 'kanpur', 'nagpur', 
+    'indore', 'thane', 'bhopal', 'visakhapatnam', 'pimpri-chinchwad', 'patna', 'vadodara', 
+    'ghaziabad', 'ludhiana', 'agra', 'nashik', 'faridabad', 'meerut', 'rajkot', 'kalyan-dombivli', 
+    'vasai-virar', 'varanasi', 'srinagar', 'aurangabad', 'dhanbad', 'amritsar', 'navi mumbai', 
+    'allahabad', 'howrah', 'ranchi', 'gwalior', 'jabalpur', 'coimbatore', 'vijayawada', 
+    'jodhpur', 'madurai', 'raipur', 'kota', 'chandigarh', 'guwahati', 'solapur'
+];
+
+const getDeliveryText = (city: string) => {
+    if (!city) return "2 to 4 days (based on pincode)";
+    const normalizedCity = city.trim().toLowerCase();
+    if (FAST_CITIES.includes(normalizedCity)) {
+        return `Delivery in 2 days to ${city}`;
+    }
+    return `Delivery in 3 to 4 days to ${city}`;
+};
 // Helper Component for Swipeable logic with visual feedback
 const CartItemRow = ({ item, removeFromCart, updateQuantity, toggleWishlist, isInWishlist }: any) => {
     const x = useMotionValue(0);
@@ -1074,7 +1091,7 @@ export default function CartDrawer() {
                                             <Truck className="w-4 h-4 text-neutral-500" />
                                             <span className="text-xs font-medium text-[#1A1A1A] dark:text-[#F4F1ED]">Estimated Delivery</span>
                                         </div>
-                                        <span className="text-xs text-neutral-500 font-sans">2 to 4 days (based on pincode)</span>
+                                        <span className="text-xs text-neutral-500 font-sans">{getDeliveryText(address.city)}</span>
                                     </div>
 
                                     {/* Payment Method Selection */}
