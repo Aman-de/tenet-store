@@ -351,6 +351,11 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 : variant.colorHex;
                 
             const firstIndex = self.findIndex(v => {
+                if (selectedPiece === 'set') {
+                    // For sets, only deduplicate if BOTH colors match exactly
+                    return v.colorHex === variant.colorHex && v.secondaryColorHex === variant.secondaryColorHex;
+                }
+                
                 if (selectedPiece !== 'set' && v.onlyAvailableAsSet) return false;
                 if (selectedPiece === 'top' && (!v.topImages || v.topImages.length === 0)) return false;
                 if (selectedPiece === 'bottom' && (!v.bottomImages || v.bottomImages.length === 0)) return false;
