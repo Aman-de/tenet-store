@@ -8,11 +8,6 @@ import path from 'path';
 
 const token = process.env.SANITY_API_TOKEN;
 
-if (!token) {
-    console.error("SANITY_API_TOKEN is missing in environment variables.");
-    process.exit(1);
-}
-
 const client = createClient({
     projectId,
     dataset,
@@ -26,12 +21,12 @@ function getHexCodes(topName: string, bottomName: string) {
         'chocolate': '#7B3F00',
         'choclate': '#7B3F00',
         'white': '#FFFFFF',
-        'blue': '#1D4ED8',
+        'blue': '#242C44',      // Navy Blue
         'lightpink': '#FFB6C1',
         'light pink': '#FFB6C1',
-        'red': '#EF4444',
-        'yellow': '#EAB308',
-        'light blue': '#32445E' // Denim blue
+        'red': '#6B2D36',       // Deep Burgundy Red
+        'yellow': '#D49B2C',    // Mustard Yellow
+        'light blue': '#A8B8CD' // Silvery blue
     };
     return {
         topHex: map[topName.toLowerCase().trim()] || '#000000',
@@ -85,17 +80,35 @@ async function main() {
     try {
         console.log("Searching for Chocolate & Denim Set...");
         const products = await client.fetch(`*[_type == "product" && title == "Chocolate & Denim Set"]{_id}`);
-        
-        if (products.length === 0) {
-            console.error("Could not find product matching 'Chocolate & Denim Set'");
-            return;
-        }
         const productId = products[0]._id;
+
+        // Fetch original Chocolate & Denim variant from history
+        const history = await client.request({
+            uri: `/data/history/${dataset}/documents/${productId}?time=2026-06-25T11:00:00Z`
+        });
+        
+        const oldVariants = history.documents[0]?.variants || [];
+        const originalChocolate = oldVariants.find((v: any) => v.colorName === "Chocolate & Denim");
+        
+        if (originalChocolate) {
+            // Update its secondary hex to the new light blue so they all match
+            if (originalChocolate.secondaryColorHex && typeof originalChocolate.secondaryColorHex === 'object') {
+                originalChocolate.secondaryColorHex.hex = '#A8B8CD';
+            } else {
+                originalChocolate.secondaryColorHex = '#A8B8CD';
+            }
+        }
 
         const baseDir = '/Users/uditsharma/Downloads/colour varient ';
         const folders = fs.readdirSync(baseDir).filter(f => fs.statSync(path.join(baseDir, f)).isDirectory());
 
         const newVariants = [];
+
+        // Put original chocolate variant first if it exists
+        if (originalChocolate) {
+            console.log("Found original Chocolate variant from history, restoring it...");
+            newVariants.push(originalChocolate);
+        }
 
         for (const folder of folders) {
             console.log(`\nProcessing folder: ${folder}`);
@@ -103,7 +116,14 @@ async function main() {
             
             const parsed = parseFolderName(folder);
             const hexes = getHexCodes(parsed.top, parsed.bottom);
-            const colorName = parsed.top.charAt(0).toUpperCase() + parsed.top.slice(1);
+            let colorName = parsed.top.charAt(0).toUpperCase() + parsed.top.slice(1);
+            
+            // Format specific color names nicely
+            if (folder.includes('choclate')) {
+                colorName = 'Chocolate & White';
+            } else if (colorName === 'Lightpink') {
+                colorName = 'Light Pink';
+            }
 
             const files = fs.readdirSync(folderPath).filter(f => f.endsWith('.webp') || f.endsWith('.png') || f.endsWith('.jpg') || f.endsWith('.jpeg'));
 
@@ -114,9 +134,9 @@ async function main() {
 
             for (const file of files) {
                 const lower = file.toLowerCase();
-                if (lower.includes('set only')) setOnlyFiles.push(file);
-                else if (lower.includes('top only')) topOnlyFiles.push(file);
-                else if (lower.includes('bottom only')) bottomOnlyFiles.push(file);
+                if (lower.includes('set only') || lower.includes('setonly')) setOnlyFiles.push(file);
+                else if (lower.includes('top only') || lower.includes('toponly')) topOnlyFiles.push(file);
+                else if (lower.includes('bottom only') || lower.includes('buttom only')) bottomOnlyFiles.push(file);
                 else randomFiles.push(file);
             }
 
@@ -126,17 +146,17 @@ async function main() {
                 uploads[file] = await uploadImage(path.join(folderPath, file));
             }
 
-            // Construct arrays
-            const setImages = [...randomFiles, ...setOnlyFiles].map(f => uploads[f]);
-            const topImages = topOnlyFiles.length > 0 ? [...randomFiles, ...topOnlyFiles].map(f => uploads[f]) : [];
-            const bottomImages = bottomOnlyFiles.length > 0 ? [...randomFiles, ...bottomOnlyFiles].map(f => uploads[f]) : [];
+            // Construct arrays with labeled images FIRST
+            const setImages = [...setOnlyFiles, ...randomFiles].map(f => uploads[f]);
+            const topImages = topOnlyFiles.length > 0 ? [...topOnlyFiles, ...randomFiles].map(f => uploads[f]) : [];
+            const bottomImages = bottomOnlyFiles.length > 0 ? [...bottomOnlyFiles, ...randomFiles].map(f => uploads[f]) : [];
 
             newVariants.push({
                 _key: `variant_${Date.now()}_${Math.random().toString(36).substring(7)}`,
                 colorName: colorName,
                 colorHex: hexes.topHex,
                 secondaryColorHex: hexes.bottomHex,
-                onlyAvailableAsSet: false, // Wait, if it has no top/bottom images, the frontend filters it anyway!
+                onlyAvailableAsSet: false, 
                 stock: 10,
                 images: setImages,
                 topImages: topImages,

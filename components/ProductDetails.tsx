@@ -1000,7 +1000,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                             {(['set', 'top', 'bottom'] as const).map((piece) => {
                                 let label = "Full Set";
                                 let priceVal = product.setPrice ?? product.price;
-                                let pieceImage = product.images[0];
+                                let pieceImage = selectedVariant?.images?.[0] || product.images[0];
                                 
                                 if (piece === 'top') {
                                     label = product.topName || "Top Only";
