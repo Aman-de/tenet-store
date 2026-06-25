@@ -1044,9 +1044,11 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                     onClick={() => setSelectedVariant(variant)}
                                     className="w-8 h-8 rounded-full border border-neutral-200/50 transition-all relative hover:scale-105 active:scale-95 cursor-pointer"
                                     style={{ 
-                                        background: variant.secondaryColorHex 
+                                        background: (variant.secondaryColorHex && selectedPiece === 'set') 
                                             ? `linear-gradient(135deg, ${variant.colorHex} 50%, ${variant.secondaryColorHex} 50%)`
-                                            : variant.colorHex,
+                                            : (selectedPiece === 'bottom' && variant.secondaryColorHex)
+                                                ? variant.secondaryColorHex
+                                                : variant.colorHex,
                                         boxShadow: selectedVariant?.colorName === variant.colorName 
                                             ? `0 0 0 2px #FDFBF7, 0 0 0 3.5px ${accentColor}` 
                                             : undefined 
