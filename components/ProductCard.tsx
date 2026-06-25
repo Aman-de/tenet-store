@@ -74,45 +74,62 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
         >
             {/* Image Container */}
             <div className="relative aspect-[3/4] w-full overflow-hidden bg-neutral-100 dark:bg-[#111111] mb-3 rounded-2xl">
-                <Link href={`/product/${product.handle}`} onClick={handleViewItem} className="absolute inset-0 z-0 block w-full h-full">
-                    {primaryImage ? (
-                        <>
-                            {isImg1Loading && (
-                                <div className="absolute inset-0 bg-neutral-200 dark:bg-neutral-800 animate-pulse z-10" />
-                            )}
-                            <Image
-                                src={primaryImage}
-                                alt={product.title}
-                                fill
-                                className="object-cover absolute inset-0 z-0 transition-opacity duration-200 ease-in-out group-hover:opacity-0"
-                                sizes="(max-width: 768px) 50vw, 33vw"
-                                unoptimized={primaryImage.startsWith("http")}
-                                onLoad={() => setIsImg1Loading(false)}
-                            />
-                        </>
+                {/* Scroll container for swiping */}
+                <div className="flex overflow-x-auto snap-x snap-mandatory w-full h-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                    {product.images && product.images.length > 0 ? (
+                        product.images.map((img, index) => (
+                            <div key={index} className="flex-none w-full h-full snap-center relative">
+                                <Link href={`/product/${product.handle}`} onClick={handleViewItem} className="absolute inset-0 z-0 block w-full h-full">
+                                    {index === 0 && isImg1Loading && (
+                                        <div className="absolute inset-0 bg-neutral-200 dark:bg-neutral-800 animate-pulse z-10" />
+                                    )}
+                                    <Image
+                                        src={img}
+                                        alt={`${product.title} - Image ${index + 1}`}
+                                        fill
+                                        className="object-cover absolute inset-0 z-0"
+                                        sizes="(max-width: 768px) 50vw, 33vw"
+                                        unoptimized={img.startsWith("http")}
+                                        loading={index === 0 ? "eager" : "lazy"}
+                                        onLoad={() => {
+                                            if (index === 0) setIsImg1Loading(false);
+                                        }}
+                                    />
+                                </Link>
+                            </div>
+                        ))
                     ) : (
-                        <div className="w-full h-full bg-neutral-200 dark:bg-neutral-800 flex items-center justify-center text-neutral-400 text-xs z-0 absolute inset-0 group-hover:opacity-0 transition-opacity duration-200">
-                            No Image
+                        <div className="flex-none w-full h-full snap-center relative">
+                            <Link href={`/product/${product.handle}`} onClick={handleViewItem} className="absolute inset-0 z-0 block w-full h-full">
+                                <div className="w-full h-full bg-neutral-200 dark:bg-neutral-800 flex items-center justify-center text-neutral-400 text-xs">
+                                    No Image
+                                </div>
+                            </Link>
                         </div>
                     )}
-                    {secondaryImage && !altImgError && (
+                </div>
+
+                {/* Hover overlay for Desktop */}
+                <div className="hidden lg:block pointer-events-none absolute inset-0 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    {product.images && product.images.length > 1 && !altImgError && (
                         <>
                             {isImg2Loading && isHovered && (
-                                <div className="absolute inset-0 bg-neutral-200 dark:bg-neutral-800 animate-pulse z-10" />
+                                <div className="absolute inset-0 bg-neutral-200 dark:bg-neutral-800 animate-pulse" />
                             )}
                             <Image
-                                src={secondaryImage}
-                                alt={product.title}
+                                src={product.images[1]}
+                                alt={`${product.title} Alternate`}
                                 fill
-                                className="object-cover absolute inset-0 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-in-out"
+                                className="object-cover absolute inset-0"
                                 sizes="(max-width: 768px) 50vw, 33vw"
-                                unoptimized={secondaryImage.startsWith("http")}
+                                unoptimized={product.images[1].startsWith("http")}
+                                loading="lazy"
                                 onError={() => setAltImgError(true)}
                                 onLoad={() => setIsImg2Loading(false)}
                             />
                         </>
                     )}
-                </Link>
+                </div>
 
                 {/* Out of Stock Badge */}
                     {product.isOutOfStock ? (
