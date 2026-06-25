@@ -35,16 +35,6 @@ export default function MobileStickyBar({ product, selectedVariant, onAddToCart,
                         className="fixed bottom-4 left-3 right-3 z-40 bg-white/95 dark:bg-[#111111]/95 backdrop-blur-2xl border border-neutral-200/60 dark:border-white/10 py-2.5 px-3 lg:landscape:hidden xl:hidden shadow-[0_16px_40px_-10px_rgba(0,0,0,0.25)] rounded-full"
                     >
                         <div className="flex justify-between items-center w-full relative gap-3">
-                            {/* Floating WhatsApp Logo Above the Button */}
-                            <a 
-                                href="https://wa.me/917737796817?text=Hello%20Tenet%20Archives%2C%20I%20have%20a%20question%20about%20your%20collection..."
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="absolute -top-[58px] right-2 w-[42px] h-[42px] flex items-center justify-center bg-white/80 dark:bg-black/60 backdrop-blur-xl rounded-full shadow-[0_4px_12px_rgba(0,0,0,0.1)] border border-neutral-200/80 dark:border-white/10 opacity-90 hover:opacity-100 transition-all duration-300"
-                            >
-                                <img src="/whatsapp-logo.svg" className="w-[22px] h-[22px] opacity-90 grayscale-0" alt="WhatsApp" />
-                            </a>
-
                             {/* Price Section */}
                             <div className="flex flex-col justify-center shrink-0 pl-2">
                                 <div className="flex items-center gap-1.5">

@@ -1230,15 +1230,6 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                             <ShoppingBag className="w-5 h-5 stroke-[1.5]" />
                         </button>
 
-                        <a 
-                            href="https://wa.me/917737796817?text=Hello%20Tenet%20Archives%2C%20I%20have%20a%20question%20about%20your%20collection..."
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="w-[54px] h-[54px] flex items-center justify-center rounded-xl opacity-20 hover:opacity-100 hover:scale-[1.05] active:scale-[0.95] transition-all duration-300 shrink-0"
-                            title="Contact on WhatsApp"
-                        >
-                            <img src="/whatsapp-logo.svg" className="w-4 h-4 opacity-70 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-300" alt="WhatsApp" />
-                        </a>
                     </div>
                 </div>
 
