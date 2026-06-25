@@ -129,6 +129,7 @@ export default async function RootLayout({
               <Suspense fallback={null}>
                 <ReferralTracker />
               </Suspense>
+              <WhatsAppWidget />
               <SpeedInsights />
               <Analytics />
             </GenderThemeWrapper>
