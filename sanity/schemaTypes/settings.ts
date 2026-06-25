@@ -47,5 +47,25 @@ export const settings = defineType({
             type: 'string',
             initialValue: '#0E1217',
         }),
+        defineField({
+            name: 'whatsappNumber',
+            title: 'WhatsApp Number (with country code, no +)',
+            type: 'string',
+            initialValue: '917737796817',
+            description: 'Example: 917737796817'
+        }),
+        defineField({
+            name: 'whatsappMessage',
+            title: 'WhatsApp Pre-filled Message',
+            type: 'string',
+            initialValue: 'Hello Tenet Archives, I have a question about your collection...',
+            description: 'The default message that appears when they open WhatsApp.'
+        }),
+        defineField({
+            name: 'instagramUrl',
+            title: 'Instagram URL',
+            type: 'url',
+            initialValue: 'https://www.instagram.com/tenet_archives/',
+        }),
     ],
 })

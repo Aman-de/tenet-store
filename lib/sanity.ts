@@ -847,7 +847,20 @@ export async function searchProducts(searchTerm: string) {
         .map(mapProduct);
 }
 
-export async function getSettings() {
+export interface SiteSettings {
+    title: string;
+    womanAccentColor: string;
+    manAccentColor: string;
+    womanBgColorLight: string;
+    womanBgColorDark: string;
+    manBgColorLight: string;
+    manBgColorDark: string;
+    whatsappNumber: string;
+    whatsappMessage: string;
+    instagramUrl: string;
+}
+
+export async function getSettings(): Promise<SiteSettings> {
     const query = `*[_type == "settings"][0]{
         title,
         womanAccentColor,
@@ -855,7 +868,10 @@ export async function getSettings() {
         womanBgColorLight,
         womanBgColorDark,
         manBgColorLight,
-        manBgColorDark
+        manBgColorDark,
+        whatsappNumber,
+        whatsappMessage,
+        instagramUrl
     }`;
     try {
         const data = await client.fetch(query, {}, CACHE_60S);
@@ -866,7 +882,10 @@ export async function getSettings() {
             womanBgColorLight: '#FDFBF7',
             womanBgColorDark: '#160F11',
             manBgColorLight: '#F4F6F9',
-            manBgColorDark: '#0E1217'
+            manBgColorDark: '#0E1217',
+            whatsappNumber: '917737796817',
+            whatsappMessage: 'Hello Tenet Archives, I have a question about your collection...',
+            instagramUrl: 'https://www.instagram.com/tenet_archives/'
         };
     } catch (e) {
         console.error("Failed to fetch settings, using fallback", e);
@@ -877,7 +896,10 @@ export async function getSettings() {
             womanBgColorLight: '#FDFBF7',
             womanBgColorDark: '#160F11',
             manBgColorLight: '#F4F6F9',
-            manBgColorDark: '#0E1217'
+            manBgColorDark: '#0E1217',
+            whatsappNumber: '917737796817',
+            whatsappMessage: 'Hello Tenet Archives, I have a question about your collection...',
+            instagramUrl: 'https://www.instagram.com/tenet_archives/'
         };
     }
 }

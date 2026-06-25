@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Instagram, Check } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useSettings } from "@/context/SettingsContext";
 
 const WhatsAppIcon = ({ className }: { className?: string }) => (
     <svg
@@ -17,6 +18,7 @@ const WhatsAppIcon = ({ className }: { className?: string }) => (
 );
 
 export default function Footer() {
+    const settings = useSettings();
     const [email, setEmail] = useState("");
     const [isSubscribed, setIsSubscribed] = useState(false);
     const [error, setError] = useState("");
@@ -124,7 +126,7 @@ export default function Footer() {
                         </Link>
                         <div className="flex gap-4">
                             <a 
-                                href="https://www.instagram.com/tenet_archives/" 
+                                href={settings.instagramUrl} 
                                 target="_blank" 
                                 rel="noopener noreferrer" 
                                 className="p-2.5 border border-white/10 rounded-full hover:bg-white hover:text-black dark:hover:text-white transition-all hover:scale-105 active:scale-95 text-neutral-400 hover:border-white"
@@ -133,7 +135,7 @@ export default function Footer() {
                                 <Instagram className="w-4 h-4" />
                             </a>
                             <a 
-                                href="https://wa.me/917737796817?text=Hello%20Tenet%20Archives%2C%20I%20have%20a%20question%20about%20your%20collection..." 
+                                href={`https://wa.me/${settings.whatsappNumber}?text=${encodeURIComponent(settings.whatsappMessage)}`}
                                 target="_blank" 
                                 rel="noopener noreferrer" 
                                 className="p-2.5 border border-white/10 rounded-full hover:bg-white hover:text-black dark:hover:text-white transition-all hover:scale-105 active:scale-95 text-neutral-400 hover:border-white"

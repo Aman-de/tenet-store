@@ -2,9 +2,11 @@
 
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import { useState } from "react";
+import { useSettings } from "@/context/SettingsContext";
 
 export default function WhatsAppWidget() {
-    const whatsappUrl = "https://wa.me/917737796817?text=Hello%20Tenet%20Archives%2C%20I%20have%20a%20question%20about%20your%20collection...";
+    const settings = useSettings();
+    const whatsappUrl = `https://wa.me/${settings.whatsappNumber}?text=${encodeURIComponent(settings.whatsappMessage)}`;
     const { scrollY } = useScroll();
     const [isVisible, setIsVisible] = useState(false);
 

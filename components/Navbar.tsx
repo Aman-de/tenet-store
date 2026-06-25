@@ -1,6 +1,6 @@
 "use client";
 
-import { ShoppingBag, Menu, X, Heart, User, Package, Crown, LayoutGrid, Search, Home, Moon, Sun, Monitor, Mic, Camera, ArrowLeftRight } from "lucide-react";
+import { ShoppingBag, Menu, X, Heart, User, Package, Crown, LayoutGrid, Search, Home, Moon, Sun, Monitor, Mic, Camera, ArrowLeftRight, Smartphone } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -14,7 +14,7 @@ import { useGender } from "@/context/GenderContext";
 
 export default function Navbar() {
     const pathname = usePathname();
-    const { openCart, openWishlist, cart, wishlist } = useStore();
+    const { openCart, openWishlist, cart, wishlist, openInstallPrompt } = useStore();
     const { gender, setGender } = useGender();
     const isWoman = gender === "woman";
     const accentColor = "var(--accent-color)";
@@ -359,7 +359,7 @@ export default function Navbar() {
                                 ) : (
                                     <SignInButton mode="modal">
                                         <button aria-label="Sign in" className="flex items-center justify-center">
-                                            <User className="w-5 h-5 opacity-80 group-hover:opacity-100 transition-opacity duration-200" strokeWidth={2} />
+                                            <User className="w-5 h-5 opacity-80 group-hover:opacity-100 transition-opacity duration-200 animate-pulse" strokeWidth={2} />
                                         </button>
                                     </SignInButton>
                                 )}
@@ -499,6 +499,16 @@ export default function Navbar() {
                                         </button>
                                     </SignInButton>
                                 </SignedOut>
+                                <button
+                                    onClick={() => {
+                                        setIsMobileMenuOpen(false);
+                                        openInstallPrompt();
+                                    }}
+                                    className="px-6 py-4 text-xs font-bold tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED] hover:bg-neutral-50 dark:hover:bg-[#1A1A1A] transition-colors text-center border-b border-neutral-100 dark:border-white/5 flex items-center justify-center gap-2"
+                                >
+                                    <Smartphone className="w-4 h-4" strokeWidth={2} />
+                                    INSTALL APP
+                                </button>
                                 
                                 <div className="px-6 py-4 border-b border-neutral-100 dark:border-white/5 flex flex-col items-center">
                                     <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-neutral-400 dark:text-neutral-500 mb-2 block text-center">Theme Mode</span>

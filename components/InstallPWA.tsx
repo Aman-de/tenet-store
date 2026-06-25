@@ -3,13 +3,14 @@
 import { useState, useEffect } from "react";
 import { X, Share, MoreVertical, PlusSquare, Smartphone } from "lucide-react";
 import { useGender } from "@/context/GenderContext";
+import { useStore } from "@/lib/store";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function InstallPWA() {
     const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
-    const [isVisible, setIsVisible] = useState(false);
     const [isIOS, setIsIOS] = useState(false);
     const [showInstructions, setShowInstructions] = useState(false);
+    const { isInstallPromptOpen, closeInstallPrompt } = useStore();
     const { gender } = useGender();
     const accentColor = "var(--accent-color)";
 
@@ -35,21 +36,6 @@ export default function InstallPWA() {
 
         window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
 
-        // Show banner only after significant scroll or longer timeout
-        const handleScroll = () => {
-            if (window.scrollY > 1200) { // Require more scrolling (2+ full screens)
-                setIsVisible(true);
-                window.removeEventListener('scroll', handleScroll);
-            }
-        };
-
-        window.addEventListener('scroll', handleScroll);
-
-        const timer = setTimeout(() => {
-            setIsVisible(true);
-            window.removeEventListener('scroll', handleScroll);
-        }, 45000); // 45 seconds timeout (up from 20)
-
         // Auto-reload when new service worker takes over
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.addEventListener('controllerchange', () => {
@@ -58,8 +44,6 @@ export default function InstallPWA() {
         }
 
         return () => {
-            clearTimeout(timer);
-            window.removeEventListener('scroll', handleScroll);
             window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
         };
     }, []);
@@ -74,7 +58,7 @@ export default function InstallPWA() {
             deferredPrompt.prompt();
             const { outcome } = await deferredPrompt.userChoice;
             if (outcome === 'accepted') {
-                setIsVisible(false);
+                closeInstallPrompt();
             }
             setDeferredPrompt(null);
         } else {
@@ -83,13 +67,13 @@ export default function InstallPWA() {
         }
     };
 
-    if (!isVisible && !showInstructions) return null;
+    if (!isInstallPromptOpen && !showInstructions) return null;
 
     return (
         <>
             {/* The Compact Install Pill */}
             <AnimatePresence>
-                {isVisible && !showInstructions && (
+                {isInstallPromptOpen && !showInstructions && (
                     <motion.div 
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -112,15 +96,11 @@ export default function InstallPWA() {
                             GET
                         </button>
                         
-                        <button 
-                            onClick={() => {
-                                localStorage.setItem('pwa_dismissed', 'true');
-                                setIsVisible(false);
-                            }}
-                            className="p-1 text-neutral-400 hover:text-neutral-600 dark:hover:text-white transition-colors shrink-0"
-                            aria-label="Close"
+                        <button
+                            onClick={() => closeInstallPrompt()}
+                            className="w-7 h-7 flex items-center justify-center shrink-0 text-neutral-400 hover:text-black dark:hover:text-white transition-colors"
                         >
-                            <X className="w-3 h-3" />
+                            <X className="w-4 h-4" />
                         </button>
                     </motion.div>
                 )}
@@ -135,7 +115,10 @@ export default function InstallPWA() {
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             className="fixed inset-0 z-[100] bg-black/40 backdrop-blur-sm"
-                            onClick={() => setShowInstructions(false)}
+                            onClick={() => {
+                                setShowInstructions(false);
+                                closeInstallPrompt();
+                            }}
                         />
                         <motion.div
                             initial={{ opacity: 0, y: "100%" }}
@@ -154,7 +137,10 @@ export default function InstallPWA() {
                                         <p className="text-xs text-neutral-500">Fast, offline & seamless</p>
                                     </div>
                                 </div>
-                                <button onClick={() => setShowInstructions(false)} className="p-2.5 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors rounded-full">
+                                <button onClick={() => {
+                                    setShowInstructions(false);
+                                    closeInstallPrompt();
+                                }} className="p-2.5 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors rounded-full">
                                     <X className="w-5 h-5 text-neutral-500 dark:text-neutral-400" />
                                 </button>
                             </div>

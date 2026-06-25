@@ -11,6 +11,9 @@ interface SiteSettings {
     womanBgColorDark: string;
     manBgColorLight: string;
     manBgColorDark: string;
+    whatsappNumber?: string;
+    whatsappMessage?: string;
+    instagramUrl?: string;
 }
 
 export default function GenderThemeWrapper({ 

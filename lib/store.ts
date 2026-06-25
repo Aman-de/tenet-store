@@ -28,6 +28,9 @@ interface StoreState {
     // --- Direct Checkout State ---
     checkoutItem: CartItem | null;
 
+    // --- App Install State ---
+    isInstallPromptOpen: boolean;
+
     // --- Actions ---
 
     // Cart Actions
@@ -48,6 +51,10 @@ interface StoreState {
     isInWishlist: (productId: string) => boolean;
     clearWishlist: () => void;
     removeFromWishlist: (productId: string) => void;
+
+    // App Install Actions
+    openInstallPrompt: () => void;
+    closeInstallPrompt: () => void;
 
     // Direct Checkout Actions
     setCheckoutItem: (item: CartItem) => void;
@@ -72,6 +79,7 @@ export const useStore = create<StoreState>()(
             wishlist: [],
             isWishlistOpen: false,
             checkoutItem: null,
+            isInstallPromptOpen: false,
             referralCode: null,
             engagement: {},
 
@@ -229,17 +237,20 @@ export const useStore = create<StoreState>()(
                 }
             },
 
-            removeFromWishlist: (productId) => {
+            removeFromWishlist: (productId) =>
                 set((state) => ({
-                    wishlist: state.wishlist.filter((item) => item.id !== productId)
-                }));
-            },
+                    wishlist: state.wishlist.filter((item) => item.id !== productId),
+                })),
 
             isInWishlist: (productId) => {
                 return get().wishlist.some((item) => item.id === productId);
             },
 
             clearWishlist: () => set({ wishlist: [] }),
+
+            // --- App Install Actions ---
+            openInstallPrompt: () => set({ isInstallPromptOpen: true }),
+            closeInstallPrompt: () => set({ isInstallPromptOpen: false }),
 
             // --- Direct Checkout Implementation ---
             setCheckoutItem: (item) => {
