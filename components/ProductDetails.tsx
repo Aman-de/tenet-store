@@ -368,13 +368,38 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 const vHex = (selectedPiece === 'bottom' && v.secondaryColorHex) ? v.secondaryColorHex : v.colorHex;
                 
                 if (vHex === colorHexForPiece) {
-                    // If the currently selected variant belongs to this color group, it MUST be the representative!
+                    // 1. If the currently selected variant belongs to this color group, it MUST be the representative!
                     const selectedHex = (selectedPiece === 'bottom' && selectedVariant?.secondaryColorHex) 
                         ? selectedVariant?.secondaryColorHex 
                         : selectedVariant?.colorHex;
                     if (selectedHex === colorHexForPiece) {
                         return v.colorName === selectedVariant?.colorName;
                     }
+                    
+                    // 2. If we are browsing Bottoms, try to pick a representative that shares our CURRENT Top color!
+                    if (selectedPiece === 'bottom' && selectedVariant?.colorHex) {
+                        const hasMatchingTop = self.some(sv => {
+                            if (sv.onlyAvailableAsSet || (!sv.bottomImages || sv.bottomImages.length === 0)) return false;
+                            const svHex = sv.secondaryColorHex || sv.colorHex;
+                            return svHex === colorHexForPiece && sv.colorHex === selectedVariant.colorHex;
+                        });
+                        if (hasMatchingTop) {
+                            return v.colorHex === selectedVariant.colorHex;
+                        }
+                    }
+                    
+                    // 3. If we are browsing Tops, try to pick a representative that shares our CURRENT Bottom color!
+                    if (selectedPiece === 'top' && selectedVariant?.secondaryColorHex) {
+                        const hasMatchingBottom = self.some(sv => {
+                            if (sv.onlyAvailableAsSet || (!sv.topImages || sv.topImages.length === 0)) return false;
+                            return sv.colorHex === colorHexForPiece && sv.secondaryColorHex === selectedVariant.secondaryColorHex;
+                        });
+                        if (hasMatchingBottom) {
+                            return v.secondaryColorHex === selectedVariant.secondaryColorHex;
+                        }
+                    }
+
+                    // 4. Otherwise, just pick the first one we find.
                     return true;
                 }
                 return false;
