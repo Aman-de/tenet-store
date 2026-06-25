@@ -350,23 +350,39 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 ? variant.secondaryColorHex 
                 : variant.colorHex;
                 
+            // If this variant IS the selected one, keep it!
+            if (variant.colorName === selectedVariant?.colorName) {
+                return true;
+            }
+                
             const firstIndex = self.findIndex(v => {
                 if (selectedPiece === 'set') {
                     // For sets, only deduplicate if BOTH colors match exactly
                     return v.colorHex === variant.colorHex && v.secondaryColorHex === variant.secondaryColorHex;
                 }
                 
-                if (selectedPiece !== 'set' && v.onlyAvailableAsSet) return false;
+                if (v.onlyAvailableAsSet) return false;
                 if (selectedPiece === 'top' && (!v.topImages || v.topImages.length === 0)) return false;
                 if (selectedPiece === 'bottom' && (!v.bottomImages || v.bottomImages.length === 0)) return false;
                 
                 const vHex = (selectedPiece === 'bottom' && v.secondaryColorHex) ? v.secondaryColorHex : v.colorHex;
-                return vHex === colorHexForPiece;
+                
+                if (vHex === colorHexForPiece) {
+                    // If the currently selected variant belongs to this color group, it MUST be the representative!
+                    const selectedHex = (selectedPiece === 'bottom' && selectedVariant?.secondaryColorHex) 
+                        ? selectedVariant?.secondaryColorHex 
+                        : selectedVariant?.colorHex;
+                    if (selectedHex === colorHexForPiece) {
+                        return v.colorName === selectedVariant?.colorName;
+                    }
+                    return true;
+                }
+                return false;
             });
             
             return index === firstIndex;
         });
-    }, [product.variants, selectedPiece]);
+    }, [product.variants, selectedPiece, selectedVariant]);
 
     useEffect(() => {
         if (availableVariants.length > 0) {
