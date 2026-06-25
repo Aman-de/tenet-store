@@ -12,7 +12,7 @@ export default function WhatsAppWidget() {
         <AnimatePresence>
             <motion.div 
                 initial={{ opacity: 0, scale: 0.8, y: 20 }}
-                animate={{ opacity: 0.7, scale: 1, y: 0 }}
+                animate={{ opacity: 0.5, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.8, y: 20 }}
                     whileHover={{ opacity: 1 }}
                     transition={{ duration: 0.3 }}

@@ -101,7 +101,7 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
     ];
 
     return (
-        <section className="relative w-full pt-[72px] lg:pt-0 p-0 lg:p-6 overflow-hidden bg-transparent lg:h-[100dvh]">
+        <section className="relative w-full p-0 lg:p-6 overflow-hidden bg-transparent lg:h-[100dvh]">
             
             {/* DESKTOP LAYOUT (hidden lg:flex) */}
             <div className="hidden lg:flex w-full h-full gap-6">
