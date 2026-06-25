@@ -18,6 +18,21 @@ function PostHogPageView() {
             posthog.capture('$pageview', {
                 $current_url: url,
             });
+
+            const handleBeforeUnload = () => {
+                posthog.capture('$pageleave', {
+                    $current_url: url,
+                });
+            };
+
+            window.addEventListener('beforeunload', handleBeforeUnload);
+
+            return () => {
+                window.removeEventListener('beforeunload', handleBeforeUnload);
+                posthog.capture('$pageleave', {
+                    $current_url: url,
+                });
+            };
         }
     }, [pathname, searchParams]);
 
