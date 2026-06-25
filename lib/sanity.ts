@@ -370,11 +370,11 @@ function mapProduct(p: any): Product {
     
     let title = renameProductTitle(p.title);
     
-    let images = p.images || resolveImages(p.title, p.imageUrl, p.hoverImageUrl);
+    let images = p.images || resolveImages(p.title, p.images?.[0], p.images?.[1]);
     let colors = p.colors || [];
     
     if (titleLower === "the amalfi stripe") {
-        const originalMain = p.imageUrl || "/images/original_mains/the_amalfi_stripe_main.webp";
+        const originalMain = p.images?.[0] || "/images/original_mains/the_amalfi_stripe_main.webp";
         const originalAlt = "/images/generated/the_amalfi_stripe_real_alt_matching.webp";
         const originalThird = "/images/generated/the_amalfi_stripe_third.webp";
         images = [originalMain, originalAlt, originalThird];
@@ -382,7 +382,7 @@ function mapProduct(p: any): Product {
     }
 
     if (titleLower === "the hamptons weekend edit") {
-        const originalMain = p.imageUrl || "/images/original_mains/the_hamptons_weekend_edit_main.webp";
+        const originalMain = p.images?.[0] || "/images/original_mains/the_hamptons_weekend_edit_main.webp";
         const originalAlt = "/images/generated/the_hamptons_weekend_edit_blue_red_alt_1779882261092.webp";
         images = [originalMain, originalAlt];
         colors = ["#CD5C5C", "#F5F5DC"];
@@ -420,8 +420,7 @@ export async function getProducts() {
     "slug": slug.current,
     price,
     originalPrice,
-    "imageUrl": variants[0].images[0].asset->url,
-    "hoverImageUrl": variants[0].images[1].asset->url,
+    "images": variants[0].images[].asset->url,
     category,
     "colors": variants[].colorHex,
     sizes,
@@ -634,8 +633,7 @@ export async function getRecommendedProducts(category: string, currentSlug: stri
     "slug": slug.current,
     price,
     originalPrice,
-    "imageUrl": variants[0].images[0].asset->url,
-    "hoverImageUrl": variants[0].images[1].asset->url,
+    "images": variants[0].images[].asset->url,
     category,
     "colors": variants[].colorHex,
     gender,
@@ -654,8 +652,7 @@ export async function getRecommendedProducts(category: string, currentSlug: stri
         "slug": slug.current,
         price,
         originalPrice,
-        "imageUrl": variants[0].images[0].asset->url,
-        "hoverImageUrl": variants[0].images[1].asset->url,
+        "images": variants[0].images[].asset->url,
         category,
         "colors": variants[].colorHex,
         gender,
@@ -740,8 +737,7 @@ export async function getCollection(slug: string) {
         "slug": slug.current,
         price,
         originalPrice,
-        "imageUrl": variants[0].images[0].asset->url,
-        "hoverImageUrl": variants[0].images[1].asset->url,
+        "images": variants[0].images[].asset->url,
         category,
         "colors": variants[].colorHex,
         sizes,
@@ -779,8 +775,7 @@ export async function getCartUpsells(cartProductIds: string[]) {
     "slug": slug.current,
     price,
     originalPrice,
-    "imageUrl": variants[0].images[0].asset->url,
-    "hoverImageUrl": variants[0].images[1].asset->url,
+    "images": variants[0].images[].asset->url,
     category,
     "colors": variants[].colorHex,
     sizeType,
@@ -819,8 +814,7 @@ export async function searchProducts(searchTerm: string) {
     "slug": slug.current,
     price,
     originalPrice,
-    "imageUrl": variants[0].images[0].asset->url,
-    "hoverImageUrl": variants[0].images[1].asset->url,
+    "images": variants[0].images[].asset->url,
     category,
     "colors": variants[].colorHex,
     sizeType,
