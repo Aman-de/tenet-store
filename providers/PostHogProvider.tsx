@@ -31,10 +31,11 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
         const posthogKey = process.env.NEXT_PUBLIC_POSTHOG_KEY;
         const posthogHost = process.env.NEXT_PUBLIC_POSTHOG_HOST;
 
-        if (posthogKey && posthogHost && typeof window !== 'undefined') {
+        if (posthogKey && typeof window !== 'undefined') {
             if (!posthog.__loaded) {
                 posthog.init(posthogKey, {
-                    api_host: posthogHost,
+                    api_host: "/ingest",
+                    ui_host: posthogHost, // keep for identifying where to send user to the dashboard
                     person_profiles: 'always',
                     capture_pageview: false // We capture manually below
                 });
