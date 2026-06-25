@@ -231,7 +231,21 @@ export const product = {
                     },
                     {
                         name: 'images',
-                        title: 'Variant Images',
+                        title: 'Variant Set Images',
+                        type: 'array',
+                        of: [{ type: 'image' }],
+                        options: { hotspot: true }
+                    },
+                    {
+                        name: 'topImages',
+                        title: 'Variant Top Only Images',
+                        type: 'array',
+                        of: [{ type: 'image' }],
+                        options: { hotspot: true }
+                    },
+                    {
+                        name: 'bottomImages',
+                        title: 'Variant Bottom Only Images',
                         type: 'array',
                         of: [{ type: 'image' }],
                         options: { hotspot: true }

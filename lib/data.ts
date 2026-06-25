@@ -4,6 +4,8 @@ export interface Variant {
     secondaryColorHex?: string;
     onlyAvailableAsSet?: boolean;
     images: string[];
+    topImages?: string[];
+    bottomImages?: string[];
     stock: number;
 }
 

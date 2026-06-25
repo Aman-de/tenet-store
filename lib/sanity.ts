@@ -485,7 +485,9 @@ export async function getProduct(slug: string) {
         secondaryColorHex,
         onlyAvailableAsSet,
         stock,
-        "images": images[].asset->url
+        "images": images[].asset->url,
+        "topImages": topImages[].asset->url,
+        "bottomImages": bottomImages[].asset->url
     }
   }`;
 
@@ -605,7 +607,9 @@ export async function getProduct(slug: string) {
             colorHex: typeof v.colorHex === 'object' && v.colorHex?.hex ? v.colorHex.hex : v.colorHex,
             secondaryColorHex: typeof v.secondaryColorHex === 'object' && v.secondaryColorHex?.hex ? v.secondaryColorHex.hex : v.secondaryColorHex,
             onlyAvailableAsSet: !!v.onlyAvailableAsSet,
-            images: resolveVariantImages(product.title, v.images || [])
+            images: resolveVariantImages(product.title, v.images || []),
+            topImages: resolveVariantImages(product.title, v.topImages || []),
+            bottomImages: resolveVariantImages(product.title, v.bottomImages || [])
         })) || [],
         gender: product.gender,
         isOutOfStock: product.isOutOfStock || false,

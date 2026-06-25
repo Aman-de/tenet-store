@@ -341,6 +341,10 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
             // Filter out variants that are only available as a set if a single piece is selected
             if (selectedPiece !== 'set' && variant.onlyAvailableAsSet) return false;
 
+            // Filter out variants that lack images for the selected piece
+            if (selectedPiece === 'top' && (!variant.topImages || variant.topImages.length === 0)) return false;
+            if (selectedPiece === 'bottom' && (!variant.bottomImages || variant.bottomImages.length === 0)) return false;
+
             // Deduplicate variants that resolve to the exact same color for the selected piece
             const colorHexForPiece = (selectedPiece === 'bottom' && variant.secondaryColorHex) 
                 ? variant.secondaryColorHex 
@@ -348,6 +352,9 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 
             const firstIndex = self.findIndex(v => {
                 if (selectedPiece !== 'set' && v.onlyAvailableAsSet) return false;
+                if (selectedPiece === 'top' && (!v.topImages || v.topImages.length === 0)) return false;
+                if (selectedPiece === 'bottom' && (!v.bottomImages || v.bottomImages.length === 0)) return false;
+                
                 const vHex = (selectedPiece === 'bottom' && v.secondaryColorHex) ? v.secondaryColorHex : v.colorHex;
                 return vHex === colorHexForPiece;
             });
@@ -368,8 +375,8 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
     // Derived State
     let currentImages = (selectedVariant ? selectedVariant.images : product.images)?.filter(Boolean);
     
-    let activeTopImages = product.topImages?.filter(Boolean) || [];
-    let activeBottomImages = product.bottomImages?.filter(Boolean) || [];
+    let activeTopImages = (selectedVariant && selectedVariant.topImages?.length ? selectedVariant.topImages : product.topImages)?.filter(Boolean) || [];
+    let activeBottomImages = (selectedVariant && selectedVariant.bottomImages?.length ? selectedVariant.bottomImages : product.bottomImages)?.filter(Boolean) || [];
 
     const collectionTitle = product.title || "The Product";
 
