@@ -17,6 +17,7 @@ interface ClientCircleDashboardProps {
         joinsCount: number;
         cartsCount: number;
         ordersCount: number;
+        pendingOrders: number;
     };
     initialBankDetails: {
         upiId?: string;
@@ -328,7 +329,7 @@ export default function ClientCircleDashboard({
             {/* Traffic & Engagement Funnel */}
             <div className="space-y-4">
                 <h3 className="font-bold text-xs uppercase tracking-[0.2em] text-neutral-400">Traffic & Engagement Funnel</h3>
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
                     {/* Funnel 1: Click Traffic */}
                     <div className="bg-white dark:bg-[#111111] border border-neutral-200/60 rounded-2xl p-5 shadow-sm space-y-2 relative overflow-hidden group hover:border-[#1A1A1A] transition-all">
                         <div className="flex justify-between items-center text-neutral-400">
@@ -366,7 +367,17 @@ export default function ClientCircleDashboard({
                             <CheckCircle2 className="w-4 h-4 text-emerald-600/70" />
                         </div>
                         <h3 className="font-serif text-2xl text-[#1A1A1A] dark:text-[#F4F1ED]">{initialStats.ordersCount}</h3>
-                        <p className="text-[9px] text-neutral-400 font-sans">Conversions using assets</p>
+                        <p className="text-[9px] text-neutral-400 font-sans">Total referral orders</p>
+                    </div>
+
+                    {/* Funnel 5: Pending Orders */}
+                    <div className="bg-white dark:bg-[#111111] border border-neutral-200/60 rounded-2xl p-5 shadow-sm space-y-2 relative overflow-hidden group hover:border-[#1A1A1A] transition-all">
+                        <div className="flex justify-between items-center text-neutral-400">
+                            <span className="text-[9px] font-bold uppercase tracking-wider">Pending Orders</span>
+                            <Clock className="w-4 h-4 text-orange-500/70" />
+                        </div>
+                        <h3 className="font-serif text-2xl text-[#1A1A1A] dark:text-[#F4F1ED]">{initialStats.pendingOrders}</h3>
+                        <p className="text-[9px] text-neutral-400 font-sans">COD or within 10-day hold</p>
                     </div>
                 </div>
             </div>

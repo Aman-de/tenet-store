@@ -56,9 +56,9 @@ const client = createClient({
 export async function findUserByReferralCode(code: string, clerk: any) {
     if (!code) return null;
     try {
-        // O(1) lookup: Query Sanity for the partner with this referral code
+        // O(1) lookup: Query Sanity for the partner with this referral code or wishlink ID
         const partner = await client.fetch(
-            `*[_type == "partner" && referralCode == $code][0]{ clerkId }`,
+            `*[_type == "partner" && (referralCode == $code || wishlinkId == $code)][0]{ clerkId }`,
             { code }
         );
         if (partner?.clerkId) {
@@ -74,7 +74,7 @@ export async function findUserByReferralCode(code: string, clerk: any) {
         const limit = 500;
         while (true) {
             const users = await clerk.users.getUserList({ limit, offset });
-            const match = users.data.find((u: any) => u.unsafeMetadata?.referralCode === code);
+            const match = users.data.find((u: any) => u.unsafeMetadata?.referralCode === code || u.unsafeMetadata?.wishlinkId === code);
             if (match) return match;
             if (users.data.length < limit) break;
             offset += limit;

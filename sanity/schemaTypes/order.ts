@@ -103,6 +103,26 @@ export const order = defineType({
             title: 'Delivered At',
             type: 'datetime',
             description: 'The date and time when the order was delivered. Used for calculating return windows and commission payouts.',
+        }),
+        defineField({
+            name: 'paymentMethod',
+            title: 'Payment Method',
+            type: 'string',
+            options: {
+                list: [
+                    { title: 'Prepaid', value: 'prepaid' },
+                    { title: 'Cash on Delivery', value: 'cod' },
+                ],
+                layout: 'radio',
+            },
+            initialValue: 'prepaid',
+        }),
+        defineField({
+            name: 'commissionProcessed',
+            title: 'Commission Processed',
+            type: 'boolean',
+            description: 'True if this order has passed the 10-day return window and the 15% commission has been added to the referrer wallet.',
+            initialValue: false,
         })
     ],
 })

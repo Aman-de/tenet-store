@@ -119,8 +119,21 @@ export default async function InnerCirclePage() {
     const referralOrders = await client.fetch(referralOrdersQuery, { referralCode }) || [];
     
     let totalSales = 0;
+    let pendingOrders = 0;
+    const now = Date.now();
+    const TEN_DAYS_MS = 10 * 24 * 60 * 60 * 1000;
+
     referralOrders.forEach((o: any) => {
         totalSales += (o.totalPrice || 0);
+
+        if (o.status !== 'delivered') {
+            pendingOrders++;
+        } else {
+            const deliveredTime = o.deliveredAt ? new Date(o.deliveredAt).getTime() : new Date(o.createdAt).getTime() + (48 * 60 * 60 * 1000);
+            if (now - deliveredTime < TEN_DAYS_MS) {
+                pendingOrders++;
+            }
+        }
     });
 
     const totalEarnings = Math.round(totalSales * 0.15) + signupBonusTotal;
@@ -138,7 +151,8 @@ export default async function InnerCirclePage() {
         clicksCount,
         joinsCount,
         cartsCount,
-        ordersCount: referralOrders.length
+        ordersCount: referralOrders.length,
+        pendingOrders
     };
 
     return (

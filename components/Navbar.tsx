@@ -1,6 +1,6 @@
 "use client";
 
-import { ShoppingBag, Menu, X, Heart, User, Package, Crown, LayoutGrid, Search, Home, Moon, Sun, Monitor, Mic, Camera } from "lucide-react";
+import { ShoppingBag, Menu, X, Heart, User, Package, Crown, LayoutGrid, Search, Home, Moon, Sun, Monitor, Mic, Camera, ArrowLeftRight } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -149,51 +149,31 @@ export default function Navbar() {
         ? "bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20" 
         : "bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 lg:bg-white/10 lg:hover:bg-white/20 lg:dark:bg-white/10 lg:dark:hover:bg-white/20";
 
-    // Ultra-premium Apple-style segmented control (Liquid Glass)
+    // Ultra-premium concise Apple-style toggle
     const GenderToggle = ({ idSuffix, isDesktop = false, isMini = false }: { idSuffix: string, isDesktop?: boolean, isMini?: boolean }) => {
         const solid = isScrolledOrNotHome || isDesktop || idSuffix === "mobile-bar" || idSuffix === "mobile-top-bar";
-        const toggleBg = solid ? "bg-[#1A1A1A]/5 dark:bg-white/10" : "bg-white/10";
         
-        const btnText = (active: boolean) => {
-            if (active) return "text-white dark:text-[#1A1A1A] dark:text-[#F4F1ED] font-bold";
-            return solid ? "text-[#1A1A1A] dark:text-[#F4F1ED] font-medium" : "text-white/80 font-medium";
-        };
-        const manWidth = isMini ? "w-[46px]" : "w-14 sm:w-20";
-        const womanWidth = isMini ? "w-[56px]" : "w-16 sm:w-20";
-        const layoutClasses = isMini ? "h-full flex items-center justify-center" : "py-1.5 sm:py-2 inline-flex items-center justify-center";
-        const textSize = isMini ? "text-[9px]" : "text-[10px] sm:text-xs";
+        const activeClass = solid 
+            ? "bg-[#1A1A1A] text-white dark:bg-[#F4F1ED] dark:text-[#1A1A1A] shadow-md border-transparent" 
+            : "bg-white text-[#1A1A1A] shadow-md border-transparent";
+            
+        const inactiveClass = solid 
+            ? "bg-[#1A1A1A]/5 text-[#1A1A1A] dark:bg-white/10 dark:text-[#F4F1ED] border-transparent hover:bg-[#1A1A1A]/10 dark:hover:bg-white/20" 
+            : "bg-white/20 text-white border-white/20 hover:bg-white/30";
+            
+        const layoutClasses = isMini ? "h-[32px] px-3 flex items-center justify-center gap-1.5" : "py-1.5 sm:py-2 px-4 inline-flex items-center justify-center gap-2";
+        const textSize = isMini ? "text-[10px]" : "text-[10px] sm:text-xs";
         
         return (
-            <div className={`relative flex items-center rounded-full transition-colors duration-500 backdrop-blur-md cursor-pointer ${toggleBg} ${isMini ? 'p-0.5 h-[32px]' : 'p-1 sm:p-1'}`}>
-                <button 
-                    onClick={() => setGender('man')}
-                    className={`relative z-10 tracking-widest uppercase transition-colors duration-300 rounded-full cursor-pointer hover:bg-black/5 dark:hover:bg-white/10 ${manWidth} ${layoutClasses} ${textSize} ${btnText(gender === 'man')}`}
-                >
-                    MEN
-                    {gender === 'man' && (
-                        <motion.div
-                            layoutId={`nav-gender-active-${idSuffix}`}
-                            className="absolute inset-0 rounded-full -z-10 shadow-sm"
-                            style={{ backgroundColor: accentColor }}
-                            transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                        />
-                    )}
-                </button>
-                <button 
-                    onClick={() => setGender('woman')}
-                    className={`relative tracking-widest uppercase transition-colors duration-300 rounded-full cursor-pointer hover:bg-black/5 dark:hover:bg-white/10 z-10 ${womanWidth} ${layoutClasses} ${textSize} ${btnText(gender === 'woman')}`}
-                >
-                    WOMEN
-                    {gender === 'woman' && (
-                        <motion.div
-                            layoutId={`nav-gender-active-${idSuffix}`}
-                            className="absolute inset-0 rounded-full -z-10 shadow-sm"
-                            style={{ backgroundColor: accentColor }}
-                            transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                        />
-                    )}
-                </button>
-            </div>
+            <button 
+                onClick={() => setGender(gender === 'man' ? 'woman' : 'man')}
+                className={`relative z-10 tracking-widest uppercase transition-all duration-300 rounded-full border cursor-pointer hover:scale-105 active:scale-95 ${layoutClasses} ${textSize} ${activeClass}`}
+                style={{ backgroundColor: accentColor, color: 'white' }}
+                aria-label={`Switch to ${gender === 'man' ? 'Women' : 'Men'}`}
+            >
+                <span className="font-bold">{gender === 'man' ? 'MEN' : 'WOMEN'}</span>
+                <ArrowLeftRight className={isMini ? "w-2.5 h-2.5" : "w-3 h-3"} strokeWidth={2.5} />
+            </button>
         );
     };
 

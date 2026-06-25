@@ -25,6 +25,12 @@ export const partner = {
             type: 'string',
         },
         {
+            name: 'wishlinkId',
+            title: 'Wishlink SubId (wl_...)',
+            type: 'string',
+            description: 'Optional ID if this partner uses Wishlink. This maps Wishlink traffic to this partner.',
+        },
+        {
             name: 'clicks',
             title: 'Total Link Clicks',
             type: 'number',

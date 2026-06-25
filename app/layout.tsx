@@ -10,6 +10,7 @@ const WishlistDrawer = dynamic(() => import('@/components/WishlistDrawer'));
 const OnboardingModal = dynamic(() => import('@/components/OnboardingModal'));
 const WhatsAppWidget = dynamic(() => import('@/components/WhatsAppWidget'));
 const InstallPWA = dynamic(() => import('@/components/InstallPWA'));
+import ReferralTracker from '@/components/ReferralTracker';
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -125,6 +126,9 @@ export default async function RootLayout({
               <WishlistDrawer />
               <OnboardingModal />
               <InstallPWA />
+              <Suspense fallback={null}>
+                <ReferralTracker />
+              </Suspense>
               <SpeedInsights />
               <Analytics />
             </GenderThemeWrapper>
