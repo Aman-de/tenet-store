@@ -110,7 +110,7 @@ export default async function InnerCirclePage() {
 
 
     // Fetch dynamic referral orders from Sanity
-    const referralOrdersQuery = `*[_type == "order" && referralCode == $referralCode && status != "cancelled"] {
+    const referralOrdersQuery = `*[_type == "order" && lower(referralCode) == lower($referralCode) && status != "cancelled"] {
         totalPrice,
         status,
         createdAt,

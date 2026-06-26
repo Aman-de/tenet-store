@@ -58,7 +58,7 @@ export async function findUserByReferralCode(code: string, clerk: any) {
     try {
         // O(1) lookup: Query Sanity for the partner with this referral code or wishlink ID
         const partner = await client.fetch(
-            `*[_type == "partner" && (referralCode == $code || wishlinkId == $code)][0]{ clerkId }`,
+            `*[_type == "partner" && (lower(referralCode) == lower($code) || lower(wishlinkId) == lower($code))][0]{ clerkId }`,
             { code }
         );
         if (partner?.clerkId) {
@@ -74,7 +74,12 @@ export async function findUserByReferralCode(code: string, clerk: any) {
         const limit = 500;
         while (true) {
             const users = await clerk.users.getUserList({ limit, offset });
-            const match = users.data.find((u: any) => u.unsafeMetadata?.referralCode === code || u.unsafeMetadata?.wishlinkId === code);
+            const match = users.data.find((u: any) => {
+                const rCode = u.unsafeMetadata?.referralCode;
+                const wCode = u.unsafeMetadata?.wishlinkId;
+                return (rCode && rCode.toLowerCase() === code.toLowerCase()) ||
+                       (wCode && wCode.toLowerCase() === code.toLowerCase());
+            });
             if (match) return match;
             if (users.data.length < limit) break;
             offset += limit;
@@ -338,7 +343,7 @@ export async function calculateAvailableBalance(userId: string): Promise<number>
 
         // 2. Matured Order Commissions (Completed Orders)
         let maturedOrdersCommission = 0;
-        const referralOrdersQuery = `*[_type == "order" && referralCode == $referralCode && status == "completed"] {
+        const referralOrdersQuery = `*[_type == "order" && lower(referralCode) == lower($referralCode) && status == "completed"] {
             totalPrice
         }`;
         const referralOrders = await client.fetch(referralOrdersQuery, { referralCode }) || [];

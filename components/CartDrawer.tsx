@@ -232,6 +232,16 @@ export default function CartDrawer() {
         }
     }, [searchParams, openCart, router, setReferralCode]);
 
+    // Sync referral code from localStorage on mount if store referralCode is empty
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const storedCode = localStorage.getItem('referralCode');
+            if (storedCode && !referralCode) {
+                setReferralCode(storedCode);
+            }
+        }
+    }, [referralCode, setReferralCode]);
+
     // Track user join if referral code exists in store
     useEffect(() => {
         if (user && referralCode) {
