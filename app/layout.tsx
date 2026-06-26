@@ -43,7 +43,7 @@ export const viewport: Viewport = {
   themeColor: "#F8F5EF",
 };
 
-import { ClerkProvider } from "@clerk/nextjs";
+import ClerkThemeProvider from "@/providers/ClerkThemeProvider";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import Navbar from "@/components/Navbar";
 import Script from "next/script";
@@ -113,7 +113,7 @@ export default async function RootLayout({
             {/* Global Film Grain / Noise Overlay */}
             <div className="fixed inset-0 z-[9999] pointer-events-none opacity-[0.05]" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E")' }} />
 
-            <ClerkProvider>
+            <ClerkThemeProvider>
               <PostHogProvider>
                 <GenderProvider>
                   <SettingsProvider settings={settings}>
@@ -142,7 +142,7 @@ export default async function RootLayout({
                   </SettingsProvider>
                 </GenderProvider>
               </PostHogProvider>
-            </ClerkProvider>
+            </ClerkThemeProvider>
           </body>
         </html>
   );
