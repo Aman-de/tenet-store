@@ -21,6 +21,7 @@ export default function OnboardingModal() {
     const [isLocating, setIsLocating] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errors, setErrors] = useState<any>({});
+    const [hasTriggeredLocate, setHasTriggeredLocate] = useState(false);
 
     useEffect(() => {
         if (isLoaded && user) {
@@ -33,11 +34,16 @@ export default function OnboardingModal() {
                     name: user.fullName || "",
                     phone: user.primaryPhoneNumber?.phoneNumber || ""
                 }));
-                // Auto trigger GPS
-                handleAutoLocate();
+                // Auto trigger GPS once
+                if (!hasTriggeredLocate) {
+                    setHasTriggeredLocate(true);
+                    setTimeout(() => {
+                        handleAutoLocate();
+                    }, 600);
+                }
             }
         }
-    }, [isLoaded, user]);
+    }, [isLoaded, user, hasTriggeredLocate]);
 
     const handleAutoLocate = () => {
         if (!navigator.geolocation) return;
@@ -55,6 +61,9 @@ export default function OnboardingModal() {
                     let street = addr.road || addr.pedestrian || addr.residential || addr.neighbourhood || addr.suburb || addr.hamlet || "";
                     let city = addr.city || addr.town || addr.village || addr.county || addr.state_district || addr.state || "";
                     let zip = addr.postcode || "";
+                    if (zip) {
+                        zip = zip.replace(/[^0-9]/g, '').slice(0, 6);
+                    }
 
                     if (!street && data.display_name) {
                         const parts = data.display_name.split(',').map((s: any) => s.trim());
@@ -76,7 +85,14 @@ export default function OnboardingModal() {
             } finally {
                 setIsLocating(false);
             }
-        }, () => setIsLocating(false));
+        }, (err) => {
+            console.warn("Geolocation prompt or retrieval failed:", err);
+            setIsLocating(false);
+        }, {
+            enableHighAccuracy: false,
+            timeout: 8000,
+            maximumAge: 10000
+        });
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -132,8 +148,8 @@ export default function OnboardingModal() {
                     className="bg-[#FDFBF7] dark:bg-[#0A0A0A] w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
                 >
                     <div className="p-6 md:p-8 overflow-y-auto flex-1">
-                        <h2 className="font-serif text-3xl mb-2">Complete Profile</h2>
-                        <p className="text-neutral-500 text-sm mb-8">
+                        <h2 className="font-serif text-3xl mb-2 text-[#1A1A1A] dark:text-[#F4F1ED]">Complete Profile</h2>
+                        <p className="text-neutral-500 dark:text-neutral-400 text-sm mb-8">
                             Please provide your delivery details. We'll securely save this to your account for lightning-fast checkout.
                         </p>
 
@@ -148,7 +164,7 @@ export default function OnboardingModal() {
                                             setFormData({ ...formData, name: e.target.value });
                                             setErrors({ ...errors, name: false });
                                         }}
-                                        className={`w-full border-b py-2 text-sm bg-transparent outline-none transition-colors ${errors.name ? 'border-red-500 text-red-500' : 'border-neutral-300 focus:border-black'}`}
+                                        className={`w-full border-b py-2 text-sm bg-transparent outline-none transition-colors text-[#1A1A1A] dark:text-[#F4F1ED] placeholder:text-neutral-400 dark:placeholder:text-neutral-600 ${errors.name ? 'border-red-500 text-red-500' : 'border-neutral-300 dark:border-neutral-800 focus:border-black dark:focus:border-white'}`}
                                         placeholder="Jane Doe"
                                     />
                                 </div>
@@ -163,7 +179,7 @@ export default function OnboardingModal() {
                                             setFormData({ ...formData, phone: e.target.value });
                                             setErrors({ ...errors, phone: false });
                                         }}
-                                        className={`w-full border-b py-2 text-sm bg-transparent outline-none transition-colors ${errors.phone ? 'border-red-500 text-red-500' : 'border-neutral-300 focus:border-black'}`}
+                                        className={`w-full border-b py-2 text-sm bg-transparent outline-none transition-colors text-[#1A1A1A] dark:text-[#F4F1ED] placeholder:text-neutral-400 dark:placeholder:text-neutral-600 ${errors.phone ? 'border-red-500 text-red-500' : 'border-neutral-300 dark:border-neutral-800 focus:border-black dark:focus:border-white'}`}
                                         placeholder="+91 XXXXX XXXXX"
                                     />
                                 </div>
@@ -191,7 +207,7 @@ export default function OnboardingModal() {
                                                 setFormData({ ...formData, houseNumber: e.target.value });
                                                 setErrors({ ...errors, houseNumber: false });
                                             }}
-                                            className={`w-full border-b py-2 text-sm bg-transparent outline-none transition-colors ${errors.houseNumber ? 'border-red-500 placeholder:text-red-300' : 'border-neutral-300 focus:border-black placeholder:text-neutral-400'}`}
+                                            className={`w-full border-b py-2 text-sm bg-transparent outline-none transition-colors text-[#1A1A1A] dark:text-[#F4F1ED] ${errors.houseNumber ? 'border-red-500 placeholder:text-red-300' : 'border-neutral-300 dark:border-neutral-800 focus:border-black dark:focus:border-white placeholder:text-neutral-400 dark:placeholder:text-neutral-600'}`}
                                             placeholder="House No. / Building Name / Flat"
                                         />
                                     </div>
@@ -203,7 +219,7 @@ export default function OnboardingModal() {
                                                 setFormData({ ...formData, street: e.target.value });
                                                 setErrors({ ...errors, street: false });
                                             }}
-                                            className={`w-full border-b py-2 text-sm bg-transparent outline-none transition-colors ${errors.street ? 'border-red-500 placeholder:text-red-300' : 'border-neutral-300 focus:border-black placeholder:text-neutral-400'}`}
+                                            className={`w-full border-b py-2 text-sm bg-transparent outline-none transition-colors text-[#1A1A1A] dark:text-[#F4F1ED] ${errors.street ? 'border-red-500 placeholder:text-red-300' : 'border-neutral-300 dark:border-neutral-800 focus:border-black dark:focus:border-white placeholder:text-neutral-400 dark:placeholder:text-neutral-600'}`}
                                             placeholder="Street / Neighborhood / Landmark"
                                         />
                                     </div>
@@ -216,7 +232,7 @@ export default function OnboardingModal() {
                                                     setFormData({ ...formData, city: e.target.value });
                                                     setErrors({ ...errors, city: false });
                                                 }}
-                                                className={`w-full border-b py-2 text-sm bg-transparent outline-none transition-colors ${errors.city ? 'border-red-500 placeholder:text-red-300' : 'border-neutral-300 focus:border-black placeholder:text-neutral-400'}`}
+                                                className={`w-full border-b py-2 text-sm bg-transparent outline-none transition-colors text-[#1A1A1A] dark:text-[#F4F1ED] ${errors.city ? 'border-red-500 placeholder:text-red-300' : 'border-neutral-300 dark:border-neutral-800 focus:border-black dark:focus:border-white placeholder:text-neutral-400 dark:placeholder:text-neutral-600'}`}
                                                 placeholder="City"
                                             />
                                         </div>
@@ -228,7 +244,7 @@ export default function OnboardingModal() {
                                                     setFormData({ ...formData, zip: e.target.value });
                                                     setErrors({ ...errors, zip: false });
                                                 }}
-                                                className={`w-full border-b py-2 text-sm bg-transparent outline-none transition-colors ${errors.zip ? 'border-red-500 placeholder:text-red-300' : 'border-neutral-300 focus:border-black placeholder:text-neutral-400'}`}
+                                                className={`w-full border-b py-2 text-sm bg-transparent outline-none transition-colors text-[#1A1A1A] dark:text-[#F4F1ED] ${errors.zip ? 'border-red-500 placeholder:text-red-300' : 'border-neutral-300 dark:border-neutral-800 focus:border-black dark:focus:border-white placeholder:text-neutral-400 dark:placeholder:text-neutral-600'}`}
                                                 placeholder="ZIP Code"
                                             />
                                         </div>

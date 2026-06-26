@@ -4,7 +4,7 @@ import { useStore } from "@/lib/store";
 import { useState, useEffect, useRef, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
-import { ChevronDown, ChevronUp, AlertCircle, Heart, Ruler, Star, Loader2, Truck, ShieldCheck, RefreshCw, ShoppingBag, Check, Copy, MapPin, Tag, Sparkles, CreditCard, Plus } from "lucide-react";
+import { ChevronDown, ChevronUp, AlertCircle, Heart, Ruler, Star, Loader2, Truck, ShieldCheck, RefreshCw, ShoppingBag, Check, Copy, MapPin, Tag, Sparkles, CreditCard, Plus, Locate } from "lucide-react";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 const SizeGuide = dynamic(() => import("./SizeGuide"), { ssr: false });
@@ -68,14 +68,14 @@ const ReviewForm = ({ productId, onCancel }: { productId: string, onCancel: () =
     }
 
     return (
-        <form action={handleSubmit} className="bg-neutral-50/70 p-6 rounded-2xl border border-neutral-100/80 shadow-sm space-y-4 mt-6 animate-in fade-in slide-in-from-top-2">
+        <form action={handleSubmit} className="bg-neutral-50/70 dark:bg-[#111111]/70 p-6 rounded-2xl border border-neutral-100/80 dark:border-neutral-800/80 shadow-sm space-y-4 mt-6 animate-in fade-in slide-in-from-top-2">
             <h3 className="font-serif text-lg text-[#1A1A1A] dark:text-[#F4F1ED] font-medium">Write a Review</h3>
             <div className="space-y-1">
                 <label className="text-[10px] uppercase tracking-wider font-bold text-neutral-500">Name</label>
                 <input 
                     required 
                     name="name" 
-                    className="w-full p-3 border border-neutral-200 dark:border-neutral-800 focus:border-[var(--accent-color)] focus:ring-1 focus:ring-[var(--accent-color)] outline-none text-sm rounded-xl transition-all bg-white dark:bg-[#111111]" 
+                    className="w-full p-3 border border-neutral-200 dark:border-neutral-800 focus:border-[var(--accent-color)] focus:ring-1 focus:ring-[var(--accent-color)] outline-none text-sm rounded-xl transition-all bg-white dark:bg-[#111111] text-[#1A1A1A] dark:text-[#F4F1ED] placeholder:text-neutral-400 dark:placeholder:text-neutral-600" 
                     style={{ '--accent-color': accentColor } as React.CSSProperties}
                     placeholder="Your name" 
                 />
@@ -85,7 +85,7 @@ const ReviewForm = ({ productId, onCancel }: { productId: string, onCancel: () =
                 <select 
                     required 
                     name="rating" 
-                    className="w-full p-3 border border-neutral-200 dark:border-neutral-800 focus:border-[var(--accent-color)] focus:ring-1 focus:ring-[var(--accent-color)] outline-none text-sm bg-white dark:bg-[#111111] rounded-xl transition-all cursor-pointer" 
+                    className="w-full p-3 border border-neutral-200 dark:border-neutral-800 focus:border-[var(--accent-color)] focus:ring-1 focus:ring-[var(--accent-color)] outline-none text-sm bg-white dark:bg-[#111111] text-[#1A1A1A] dark:text-[#F4F1ED] rounded-xl transition-all cursor-pointer" 
                     style={{ '--accent-color': accentColor } as React.CSSProperties}
                 >
                     <option value="5">5 - Excellent</option>
@@ -101,7 +101,7 @@ const ReviewForm = ({ productId, onCancel }: { productId: string, onCancel: () =
                     required 
                     name="comment" 
                     rows={3} 
-                    className="w-full p-3 border border-neutral-200 dark:border-neutral-800 focus:border-[var(--accent-color)] focus:ring-1 focus:ring-[var(--accent-color)] outline-none text-sm rounded-xl transition-all bg-white dark:bg-[#111111]" 
+                    className="w-full p-3 border border-neutral-200 dark:border-neutral-800 focus:border-[var(--accent-color)] focus:ring-1 focus:ring-[var(--accent-color)] outline-none text-sm rounded-xl transition-all bg-white dark:bg-[#111111] text-[#1A1A1A] dark:text-[#F4F1ED] placeholder:text-neutral-400 dark:placeholder:text-neutral-600" 
                     style={{ '--accent-color': accentColor } as React.CSSProperties}
                     placeholder="Share your thoughts..." 
                 />
@@ -349,9 +349,9 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
             // Filter out variants that are only available as a set if a single piece is selected
             if (selectedPiece !== 'set' && variant.onlyAvailableAsSet) return false;
 
-            // Filter out variants that lack images for the selected piece
-            if (selectedPiece === 'top' && (!variant.topImages || variant.topImages.length === 0)) return false;
-            if (selectedPiece === 'bottom' && (!variant.bottomImages || variant.bottomImages.length === 0)) return false;
+            // Filter out variants that lack images for the selected piece (allowing fallback to product images)
+            if (selectedPiece === 'top' && (!variant.topImages || variant.topImages.length === 0) && (!product.topImages || product.topImages.length === 0)) return false;
+            if (selectedPiece === 'bottom' && (!variant.bottomImages || variant.bottomImages.length === 0) && (!product.bottomImages || product.bottomImages.length === 0)) return false;
 
             // Deduplicate variants that resolve to the exact same color for the selected piece
             const colorHexForPiece = (selectedPiece === 'bottom' && variant.secondaryColorHex) 
@@ -370,8 +370,8 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 }
                 
                 if (v.onlyAvailableAsSet) return false;
-                if (selectedPiece === 'top' && (!v.topImages || v.topImages.length === 0)) return false;
-                if (selectedPiece === 'bottom' && (!v.bottomImages || v.bottomImages.length === 0)) return false;
+                if (selectedPiece === 'top' && (!v.topImages || v.topImages.length === 0) && (!product.topImages || product.topImages.length === 0)) return false;
+                if (selectedPiece === 'bottom' && (!v.bottomImages || v.bottomImages.length === 0) && (!product.bottomImages || product.bottomImages.length === 0)) return false;
                 
                 const vHex = (selectedPiece === 'bottom' && v.secondaryColorHex) ? v.secondaryColorHex : v.colorHex;
                 
@@ -389,7 +389,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         const targetTopHex = preferredTopHexRef.current || selectedVariant?.colorHex;
                         if (targetTopHex) {
                             const hasMatchingTop = self.some(sv => {
-                                if (sv.onlyAvailableAsSet || (!sv.bottomImages || sv.bottomImages.length === 0)) return false;
+                                if (sv.onlyAvailableAsSet || ((!sv.bottomImages || sv.bottomImages.length === 0) && (!product.bottomImages || product.bottomImages.length === 0))) return false;
                                 const svHex = sv.secondaryColorHex || sv.colorHex;
                                 return svHex === colorHexForPiece && sv.colorHex === targetTopHex;
                             });
@@ -402,7 +402,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                     // 3. If we are browsing Tops, try to pick a representative that shares our CURRENT Bottom color!
                     if (selectedPiece === 'top' && selectedVariant?.secondaryColorHex) {
                         const hasMatchingBottom = self.some(sv => {
-                            if (sv.onlyAvailableAsSet || (!sv.topImages || sv.topImages.length === 0)) return false;
+                            if (sv.onlyAvailableAsSet || ((!sv.topImages || sv.topImages.length === 0) && (!product.topImages || product.topImages.length === 0))) return false;
                             return sv.colorHex === colorHexForPiece && sv.secondaryColorHex === selectedVariant.secondaryColorHex;
                         });
                         if (hasMatchingBottom) {
@@ -457,15 +457,28 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
         if (selectedPiece === 'top') {
             displayPrice = product.topPrice ?? product.price;
             displayOriginalPrice = product.topOriginalPrice ?? product.originalPrice;
-            displayTitle = product.topName || "Top Only";
+            
+            // Custom top name prefix matching color (e.g. "Chocolate" or "Blue")
+            const colorPrefix = selectedVariant ? selectedVariant.colorName.split(' &')[0] : "Chocolate";
+            displayTitle = `${colorPrefix} Tassel Kurti`;
         } else if (selectedPiece === 'bottom') {
             displayPrice = product.bottomPrice ?? product.price;
             displayOriginalPrice = product.bottomOriginalPrice ?? product.originalPrice;
-            displayTitle = product.bottomName || "Bottom Only";
+            
+            // Pants title matching selected color
+            displayTitle = (selectedVariant?.colorName === "Chocolate & White") ? "White Pants" : "Denim Pants";
         } else if (selectedPiece === 'set') {
             displayPrice = product.setPrice ?? product.price;
             displayOriginalPrice = product.setOriginalPrice ?? product.originalPrice;
-            displayTitle = product.title;
+            
+            // Format set title dynamically (e.g. "Blue & Denim Set")
+            let variantTitle = selectedVariant?.colorName || product.title;
+            if (variantTitle === "Blue") variantTitle = "Blue & Denim";
+            else if (variantTitle === "Light Pink") variantTitle = "Light Pink & Denim";
+            else if (variantTitle === "Red") variantTitle = "Red & Denim";
+            else if (variantTitle === "Yellow") variantTitle = "Yellow & Denim";
+            
+            displayTitle = variantTitle.endsWith("Set") ? variantTitle : variantTitle + " Set";
         }
     }
     // If variants exist, use variant color. Else fallback to product.colors
@@ -499,6 +512,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
     // Pincode State
     const { user, isLoaded } = useUser();
     const [pincode, setPincode] = useState("");
+    const [isLocating, setIsLocating] = useState(false);
     const [isEligibleForFirst20, setIsEligibleForFirst20] = useState(true);
     const [copied, setCopied] = useState(false);
 
@@ -582,6 +596,50 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 });
             }
         }
+    };
+
+    const handleAutoLocate = () => {
+        if (!navigator.geolocation) return;
+
+        setIsLocating(true);
+        setPincodeError(null);
+        navigator.geolocation.getCurrentPosition(async (position) => {
+            try {
+                const { latitude, longitude } = position.coords;
+                const res = await fetch(`/api/geocode?lat=${latitude}&lon=${longitude}`);
+                if (!res.ok) throw new Error("Network error");
+                
+                const data = await res.json();
+                if (data && !data.error) {
+                    const addr = data.address || {};
+                    let zip = addr.postcode || "";
+                    if (zip) {
+                        zip = zip.replace(/[^0-9]/g, '').slice(0, 6);
+                    }
+                    if (zip && zip.length === 6) {
+                        setPincode(zip);
+                        handleCheckPincode(zip);
+                    } else {
+                        setPincodeError("Could not detect a valid 6-digit pincode automatically.");
+                    }
+                } else {
+                    setPincodeError("Could not resolve location. Please enter pincode manually.");
+                }
+            } catch (error) {
+                console.error("Auto-locate failed", error);
+                setPincodeError("Location access failed or timed out.");
+            } finally {
+                setIsLocating(false);
+            }
+        }, (err) => {
+            console.error(err);
+            setPincodeError("Please enable location access to auto-locate.");
+            setIsLocating(false);
+        }, {
+            enableHighAccuracy: false,
+            timeout: 8000,
+            maximumAge: 10000
+        });
     };
 
     useEffect(() => {
@@ -1133,7 +1191,16 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                             {availableVariants.map((variant) => (
                                 <button
                                     key={variant.colorName}
-                                    onClick={() => setSelectedVariant(variant)}
+                                    onClick={() => {
+                                        setSelectedVariant(variant);
+                                        // Reset selected piece back to 'set' if the new variant doesn't support the currently selected piece
+                                        if (selectedPiece === 'top' && variant.topImages && variant.topImages.length === 0) {
+                                            setSelectedPiece('set');
+                                        }
+                                        if (selectedPiece === 'bottom' && variant.bottomImages && variant.bottomImages.length === 0) {
+                                            setSelectedPiece('set');
+                                        }
+                                    }}
                                     className="w-8 h-8 rounded-full border border-neutral-200/50 transition-all relative hover:scale-105 active:scale-95 cursor-pointer"
                                     style={{ 
                                         background: (variant.secondaryColorHex && selectedPiece === 'set') 
@@ -1230,7 +1297,18 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 {/* Pincode Check (Moved Down below Size) */}
                 <div className="mb-6 bg-neutral-50 dark:bg-[#111111] border border-neutral-100/80 dark:border-white/5 p-4 rounded-xl shadow-sm flex items-start gap-3">
                     <div className="flex-1 w-full flex flex-col gap-2 relative">
-                        <div className="text-[13px] font-bold text-[#1A1A1A] dark:text-[#F4F1ED]">📍 Deliver to</div>
+                        <div className="flex items-center justify-between w-full">
+                            <div className="text-[13px] font-bold text-[#1A1A1A] dark:text-[#F4F1ED]">📍 Deliver to</div>
+                            <button
+                                type="button"
+                                onClick={handleAutoLocate}
+                                disabled={isLocating}
+                                className="text-[10px] uppercase font-bold tracking-widest flex items-center gap-1 text-[#1A1A1A] dark:text-[#F4F1ED] hover:opacity-70 transition-opacity disabled:opacity-50"
+                            >
+                                {isLocating ? <Loader2 className="w-3 h-3 animate-spin" /> : <Locate className="w-3 h-3" />}
+                                Auto-Locate
+                            </button>
+                        </div>
                         
                         <div className="flex w-full gap-2 relative z-10 mt-1 bg-white dark:bg-[#141414] border border-neutral-200/80 dark:border-white/10 rounded-xl overflow-hidden focus-within:border-[#1A1A1A] dark:focus-within:border-[#F4F1ED] transition-colors p-1 shadow-sm">
                             <input 
@@ -1738,7 +1816,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                                             <h4 className="font-semibold text-[#1A1A1A] dark:text-[#F4F1ED] text-xs xs:text-sm">{review.name}</h4>
                                                             <span className="text-[8px] xs:text-[9px] bg-emerald-50/60 text-emerald-700 border border-emerald-100/30 rounded px-1.5 py-0.5 uppercase tracking-wider font-semibold">Verified Buy</span>
                                                         </div>
-                                                        <span className="text-[9px] xs:text-[10px] text-neutral-500 block font-sans">{new Date(review.date).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                                                        <span className="text-[9px] xs:text-[10px] text-neutral-500 block font-sans">{new Date(review.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
                                                     </div>
                                                 </div>
                                                 <div className="flex">

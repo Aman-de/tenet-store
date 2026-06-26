@@ -115,13 +115,9 @@ export default function SpinWheelPopup() {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setIsOpen(true)}
-                    className="fixed bottom-24 lg:bottom-6 left-4 lg:left-6 z-40 w-12 h-12 lg:w-14 lg:h-14 bg-[#1A1A1A] text-white rounded-full flex items-center justify-center shadow-lg cursor-pointer border border-white/10"
+                    className="fixed bottom-24 lg:bottom-6 left-4 lg:left-6 z-40 w-10 h-10 lg:w-11 lg:h-11 bg-[#1A1A1A]/85 hover:bg-[#1A1A1A] text-white/90 hover:text-white rounded-full flex items-center justify-center shadow-md cursor-pointer border border-white/10 opacity-80 hover:opacity-100 transition-all duration-200"
                 >
-                    <Gift className="w-5 h-5 lg:w-6 lg:h-6" />
-                    <span className="absolute -top-1 -right-1 flex h-3 w-3">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
-                    </span>
+                    <Gift className="w-4 h-4 lg:w-4.5 lg:h-4.5" />
                 </motion.div>
             )}
 
@@ -138,11 +134,11 @@ export default function SpinWheelPopup() {
                         initial={{ opacity: 0, scale: 0.95, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                        className="relative w-full max-w-md bg-white rounded-lg shadow-2xl overflow-hidden flex flex-col p-6 lg:p-8 z-10"
+                        className="relative w-full max-w-md bg-white dark:bg-[#0A0A0A] rounded-2xl shadow-2xl overflow-hidden flex flex-col p-6 lg:p-8 z-10 border border-neutral-100 dark:border-neutral-900"
                     >
                         <button 
                             onClick={handleClose}
-                            className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-neutral-100 hover:bg-neutral-200 text-neutral-600 transition-colors z-20"
+                            className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-600 dark:text-neutral-400 transition-colors z-20"
                         >
                             <X className="w-4 h-4" />
                         </button>
@@ -212,25 +208,25 @@ export default function SpinWheelPopup() {
                                 </div>
 
                                 <div className="text-center mb-6">
-                                    <h2 className="font-serif text-2xl font-bold text-neutral-900 mb-1">Spin and Get Rewarded</h2>
-                                    <p className="text-sm text-neutral-500">Ready to test your luck?</p>
+                                    <h2 className="font-serif text-2xl font-bold text-neutral-900 dark:text-[#F4F1ED] mb-1">Spin and Get Rewarded</h2>
+                                    <p className="text-sm text-neutral-500 dark:text-neutral-400">Ready to test your luck?</p>
                                 </div>
 
                                 <div className="space-y-4">
                                     <div className="space-y-1">
-                                        <label className="text-[11px] font-medium text-neutral-600 uppercase tracking-wider pl-1">Enter your mobile number *</label>
+                                        <label className="text-[11px] font-medium text-neutral-600 dark:text-neutral-400 uppercase tracking-wider pl-1">Enter your mobile number *</label>
                                         <input
                                             type="tel"
                                             value={phone}
                                             onChange={(e) => setPhone(e.target.value)}
-                                            className="w-full px-4 py-3 border border-neutral-200 rounded-md focus:outline-none focus:border-[#1A1A1A] text-sm text-black"
+                                            className="w-full px-4 py-3 border border-neutral-200 dark:border-neutral-800 rounded-md focus:outline-none focus:border-[#1A1A1A] dark:focus:border-white text-sm text-black dark:text-[#F4F1ED] bg-white dark:bg-[#111111]"
                                         />
                                         {error && <p className="text-xs text-red-500 mt-1 pl-1">{error}</p>}
                                     </div>
                                     <button
                                         onClick={handleSpin}
                                         disabled={isSpinning}
-                                        className="w-full mt-2 bg-[#1A1A1A] hover:bg-black text-white py-3.5 rounded-md font-bold text-xs uppercase tracking-widest transition-colors disabled:opacity-70"
+                                        className="w-full mt-2 bg-[#1A1A1A] hover:bg-black dark:bg-white dark:hover:bg-neutral-100 text-white dark:text-[#1A1A1A] py-3.5 rounded-md font-bold text-xs uppercase tracking-widest transition-colors disabled:opacity-70"
                                     >
                                         {isSpinning ? "SPINNING..." : "TRY YOUR LUCK"}
                                     </button>
@@ -245,17 +241,17 @@ export default function SpinWheelPopup() {
                                 <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 text-3xl mb-2 shadow-sm">
                                     🎉
                                 </div>
-                                <h2 className="font-serif text-3xl font-bold text-neutral-900">You Won!</h2>
-                                <p className="text-neutral-600 font-medium">{wonSegment.label}</p>
+                                <h2 className="font-serif text-3xl font-bold text-neutral-900 dark:text-[#F4F1ED]">You Won!</h2>
+                                <p className="text-neutral-600 dark:text-neutral-300 font-medium">{wonSegment.label}</p>
                                 
-                                <div className="mt-4 p-4 bg-neutral-100 rounded-lg border border-neutral-200 border-dashed w-full">
-                                    <p className="text-xs text-neutral-500 mb-1 uppercase tracking-wider">Your Coupon Code</p>
-                                    <p className="text-2xl font-black text-[#1A1A1A] tracking-widest">{wonSegment.code}</p>
+                                <div className="mt-4 p-4 bg-neutral-100 dark:bg-neutral-900 rounded-lg border border-neutral-200 dark:border-neutral-800 border-dashed w-full">
+                                    <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-1 uppercase tracking-wider">Your Coupon Code</p>
+                                    <p className="text-2xl font-black text-[#1A1A1A] dark:text-[#F4F1ED] tracking-widest">{wonSegment.code}</p>
                                 </div>
 
                                 <button
                                     onClick={handleCopy}
-                                    className="w-full mt-6 bg-[#1A1A1A] hover:bg-black text-white py-3.5 rounded-md font-bold text-xs uppercase tracking-widest transition-colors flex items-center justify-center gap-2"
+                                    className="w-full mt-6 bg-[#1A1A1A] hover:bg-black dark:bg-white dark:hover:bg-neutral-100 text-white dark:text-[#1A1A1A] py-3.5 rounded-md font-bold text-xs uppercase tracking-widest transition-colors flex items-center justify-center gap-2"
                                 >
                                     <Copy className="w-4 h-4" />
                                     Copy Code & Shop
