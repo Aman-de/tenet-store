@@ -579,6 +579,8 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         free: true,
                         city: city
                     });
+                    localStorage.setItem("checkoutPincode", code);
+                    localStorage.setItem("checkoutCity", city);
                 } else {
                     setPincodeError("Oops, we don't deliver to this pincode or it is invalid.");
                 }
@@ -594,6 +596,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                     date: dateText, 
                     free: true 
                 });
+                localStorage.setItem("checkoutPincode", code);
             }
         }
     };
@@ -815,6 +818,12 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
         if (product.isOutOfStock) return;
         const selection = validateSelection();
         if (selection) {
+            if (pincode && pincode.length === 6) {
+                localStorage.setItem("checkoutPincode", pincode);
+                if (deliveryInfo?.city) {
+                    localStorage.setItem("checkoutCity", deliveryInfo.city);
+                }
+            }
             posthog.capture('buy_now_clicked', {
                 product_id: product.id,
                 product_name: finalTitle,

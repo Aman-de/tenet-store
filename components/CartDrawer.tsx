@@ -4,7 +4,7 @@ import { useStore } from "@/lib/store";
 import { getCartUpsells } from "@/lib/sanity";
 import { trackBeginCheckout, trackPurchase, trackAddToCart } from "@/lib/analytics";
 import { motion, AnimatePresence, useMotionValue, useTransform, animate } from "framer-motion";
-import { X, ShoppingBag, Plus, Minus, Heart, Trash2, ArrowLeft, MapPin, ShieldCheck, Truck, Zap } from "lucide-react";
+import { X, ShoppingBag, Plus, Minus, Heart, Trash2, ArrowLeft, MapPin, ShieldCheck, Truck, Zap, CreditCard, ArrowRight, Check } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -330,6 +330,9 @@ export default function CartDrawer() {
                     let street = addr.road || addr.pedestrian || addr.residential || addr.neighbourhood || addr.suburb || addr.hamlet || "";
                     let city = addr.city || addr.town || addr.village || addr.county || addr.state_district || addr.state || "";
                     let zip = addr.postcode || "";
+                    if (zip) {
+                        zip = zip.replace(/[^0-9]/g, '').slice(0, 6);
+                    }
 
                     if (!street && data.display_name) {
                         const parts = data.display_name.split(',').map((s: any) => s.trim());
@@ -356,8 +359,12 @@ export default function CartDrawer() {
             }
         }, (error) => {
             console.error("Geolocation error:", error);
-            alert(`Unable to retrieve your location: ${error?.message}`);
+            alert(`Unable to retrieve your location: ${error?.message || "Permission denied or disabled."}`);
             setIsLocating(false);
+        }, {
+            enableHighAccuracy: false,
+            timeout: 8000,
+            maximumAge: 10000
         });
     };
 
@@ -377,7 +384,17 @@ export default function CartDrawer() {
         setMounted(true);
     }, []);
 
+    // Skip checkout step to direct address if checkoutItem (Buy Now) is active
     useEffect(() => {
+        if (isCartOpen && checkoutItem) {
+            setCheckoutStep('address');
+        }
+    }, [isCartOpen, checkoutItem]);
+
+    useEffect(() => {
+        const localPincode = typeof window !== 'undefined' ? localStorage.getItem("checkoutPincode") : "";
+        const localCity = typeof window !== 'undefined' ? localStorage.getItem("checkoutCity") : "";
+
         if (user) {
             const savedAddress = user.unsafeMetadata?.address as any;
             if (savedAddress) {
@@ -395,16 +412,19 @@ export default function CartDrawer() {
                 setAddress(prev => ({
                     ...prev,
                     name: user.fullName || "",
-                    phone: user.primaryPhoneNumber?.phoneNumber || localStorage.getItem("spinWheelPhone") || ""
+                    phone: user.primaryPhoneNumber?.phoneNumber || localStorage.getItem("spinWheelPhone") || "",
+                    zip: prev.zip || localPincode || "",
+                    city: prev.city || localCity || ""
                 }));
                 setIsEditingAddress(true);
             }
         } else {
-            // Not logged in, prefill from spin wheel if available
+            // Not logged in, prefill from spin wheel or product details localstorage if available
             setAddress(prev => ({
                 ...prev,
-                phone: localStorage.getItem("spinWheelPhone") || "",
-                city: localStorage.getItem("spinWheelCity") || ""
+                phone: prev.phone || localStorage.getItem("spinWheelPhone") || "",
+                city: prev.city || localCity || localStorage.getItem("spinWheelCity") || "",
+                zip: prev.zip || localPincode || ""
             }));
         }
     }, [user]);
@@ -484,6 +504,15 @@ export default function CartDrawer() {
     const walletDeduction = useWallet ? Math.min(walletBalance, totalBeforeWallet) : 0;
     const finalTotal = totalBeforeWallet - walletDeduction;
 
+    const isAddressComplete = !!(
+        address.name &&
+        address.houseNumber &&
+        address.street &&
+        address.city &&
+        address.zip &&
+        address.phone
+    );
+
     // Local wrappers for actions to handle both modes transparently
     const handleDelete = (id: string, size?: string, color?: string, piece?: 'top' | 'bottom' | 'set') => {
         if (checkoutItem) {
@@ -504,10 +533,13 @@ export default function CartDrawer() {
 
     const handleClose = () => {
         closeCart();
-        if (checkoutItem) {
-            // Delay clearing to avoid UI flicker during close animation
-            setTimeout(() => clearCheckoutItem(), 300);
-        }
+        // Delay clearing to avoid UI flicker during close animation
+        setTimeout(() => {
+            if (checkoutItem) {
+                clearCheckoutItem();
+            }
+            setCheckoutStep('cart');
+        }, 300);
     };
 
 
@@ -531,7 +563,6 @@ export default function CartDrawer() {
 
     const handleCheckout = async () => {
         // Validation
-        // Validation
         const newErrors = {
             name: !address.name,
             houseNumber: !address.houseNumber,
@@ -543,6 +574,8 @@ export default function CartDrawer() {
 
         if (Object.values(newErrors).some(Boolean)) {
             setErrors(newErrors);
+            setCheckoutStep('address');
+            setIsEditingAddress(true);
             return;
         }
 
@@ -807,6 +840,93 @@ export default function CartDrawer() {
 
                                 {/* Footer */}
                                 <div className={`p-6 border-t border-neutral-200 dark:border-neutral-800 ${cardBg} space-y-4 shadow-[0_-5px_20px_rgba(0,0,0,0.05)]`}>
+                                    {/* Checkout Info Box: Address summary & Payment options (Prepay vs COD) */}
+                                    <div className="border border-neutral-200 dark:border-neutral-800 rounded-xl p-3 space-y-3 bg-neutral-50/50 dark:bg-neutral-900/30">
+                                        {/* Address Summary */}
+                                        <div className="flex items-start justify-between text-xs">
+                                            <div className="flex items-start gap-2">
+                                                <span className="text-neutral-500 mt-0.5">📍</span>
+                                                <div className="text-left font-sans text-neutral-700 dark:text-neutral-300">
+                                                    <span className="font-bold text-[#1A1A1A] dark:text-[#F4F1ED]">Deliver to:</span>{' '}
+                                                    {isAddressComplete ? (
+                                                        <span>
+                                                            {address.name}, {address.houseNumber ? `${address.houseNumber}, ` : ''}{address.street}, {address.city} - {address.zip}
+                                                        </span>
+                                                    ) : (
+                                                        <span>
+                                                            {address.city || address.zip ? (
+                                                                `${address.city}${address.zip ? ` (${address.zip})` : ''} - Please complete address details`
+                                                            ) : (
+                                                                'No address added yet'
+                                                            )}
+                                                        </span>
+                                                    )}
+                                                </div>
+                                            </div>
+                                            <button 
+                                                onClick={() => {
+                                                    if (!user) {
+                                                        closeCart();
+                                                        openSignIn({ forceRedirectUrl: '/?cart=open' });
+                                                    } else {
+                                                        setCheckoutStep('address');
+                                                        setIsEditingAddress(true);
+                                                    }
+                                                }}
+                                                className="text-[10px] font-bold uppercase tracking-widest text-[#1A1A1A] dark:text-[#F4F1ED] hover:underline shrink-0 ml-2"
+                                            >
+                                                {isAddressComplete ? 'Change' : 'Add'}
+                                            </button>
+                                        </div>
+
+                                        {/* Payment Method Selector Buttons */}
+                                        <div className="grid grid-cols-2 gap-2 pt-1">
+                                            <button
+                                                onClick={() => setPaymentMethod('razorpay')}
+                                                className={`flex items-center justify-between p-2 border rounded-lg transition-all text-left ${
+                                                    paymentMethod === 'razorpay'
+                                                        ? 'border-black dark:border-white bg-black/5 dark:bg-white/5'
+                                                        : 'border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 bg-transparent'
+                                                }`}
+                                            >
+                                                <div className="flex items-center gap-1.5 min-w-0">
+                                                    <div className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center shrink-0 ${
+                                                        paymentMethod === 'razorpay' ? 'border-black dark:border-white' : 'border-neutral-300 dark:border-neutral-700'
+                                                    }`}>
+                                                        {paymentMethod === 'razorpay' && <div className="w-1.5 h-1.5 rounded-full bg-black dark:bg-white" />}
+                                                    </div>
+                                                    <div className="min-w-0 flex flex-col">
+                                                        <span className="text-[11px] font-bold text-[#1A1A1A] dark:text-[#F4F1ED] truncate">Prepay</span>
+                                                        <span className="text-[9px] text-green-700 dark:text-green-400 font-medium truncate">Save ₹80</span>
+                                                    </div>
+                                                </div>
+                                                {paymentMethod === 'razorpay' && <Check className="w-3.5 h-3.5 text-black dark:text-white shrink-0 ml-1" />}
+                                            </button>
+
+                                            <button
+                                                onClick={() => setPaymentMethod('cod')}
+                                                className={`flex items-center justify-between p-2 border rounded-lg transition-all text-left ${
+                                                    paymentMethod === 'cod'
+                                                        ? 'border-black dark:border-white bg-black/5 dark:bg-white/5'
+                                                        : 'border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 bg-transparent'
+                                                }`}
+                                            >
+                                                <div className="flex items-center gap-1.5 min-w-0">
+                                                    <div className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center shrink-0 ${
+                                                        paymentMethod === 'cod' ? 'border-black dark:border-white' : 'border-neutral-300 dark:border-neutral-700'
+                                                    }`}>
+                                                        {paymentMethod === 'cod' && <div className="w-1.5 h-1.5 rounded-full bg-black dark:bg-white" />}
+                                                    </div>
+                                                    <div className="min-w-0 flex flex-col">
+                                                        <span className="text-[11px] font-bold text-[#1A1A1A] dark:text-[#F4F1ED] truncate">COD</span>
+                                                        <span className="text-[9px] text-neutral-500 truncate">Standard Pay</span>
+                                                    </div>
+                                                </div>
+                                                {paymentMethod === 'cod' && <Check className="w-3.5 h-3.5 text-black dark:text-white shrink-0 ml-1" />}
+                                            </button>
+                                        </div>
+                                    </div>
+
                                     <div className="flex items-center justify-between font-serif text-lg">
                                         <span>Subtotal</span>
                                         <span className="line-through text-neutral-500 mr-2 text-sm">₹{rawSubtotal.toLocaleString('en-IN')}</span>
@@ -883,11 +1003,36 @@ export default function CartDrawer() {
                                                 return;
                                             }
                                             trackBeginCheckout(cartItems, finalTotal);
-                                            setCheckoutStep('address');
+                                            if (isAddressComplete) {
+                                                handleCheckout();
+                                            } else {
+                                                setCheckoutStep('address');
+                                            }
                                         }}
                                     >
-                                        Proceed to Checkout
-                                        <ShieldCheck className="w-4 h-4" />
+                                        {!user ? (
+                                            <>
+                                                Proceed to Checkout
+                                                <ShieldCheck className="w-4 h-4" />
+                                            </>
+                                        ) : isAddressComplete ? (
+                                            paymentMethod === 'razorpay' ? (
+                                                <>
+                                                    Pay Now & Place Order (₹{finalTotal.toLocaleString('en-IN')})
+                                                    <CreditCard className="w-4 h-4" />
+                                                </>
+                                            ) : (
+                                                <>
+                                                    Confirm Order & Pay Shipping (₹{Math.min(shippingAmount, finalTotal).toLocaleString('en-IN')})
+                                                    <ShieldCheck className="w-4 h-4" />
+                                                </>
+                                            )
+                                        ) : (
+                                            <>
+                                                Proceed to Checkout
+                                                <ArrowRight className="w-4 h-4" />
+                                            </>
+                                        )}
                                     </button>
                                 </div>
                             </>
@@ -906,7 +1051,7 @@ export default function CartDrawer() {
                                                         Edit / Change
                                                     </button>
                                                 </div>
-                                                <div className="text-sm text-neutral-700 leading-relaxed font-sans">
+                                                <div className="text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed font-sans">
                                                     <p className="font-bold text-[#1A1A1A] dark:text-[#F4F1ED]">{address.name}</p>
                                                     {address.houseNumber && <p>{address.houseNumber}</p>}
                                                     <p>{address.street}</p>
@@ -931,10 +1076,10 @@ export default function CartDrawer() {
                                                 }}
                                                 animate={errors.name ? { x: [0, -10, 10, -5, 5, 0] } : {}}
                                                 transition={{ duration: 0.4 }}
-                                                className={`w-full border-b py-3 text-sm outline-none bg-transparent transition-all placeholder:text-neutral-500
+                                                className={`w-full border-b py-3 text-sm outline-none bg-transparent transition-all placeholder:text-neutral-400 dark:placeholder:text-neutral-600
                                                     ${errors.name
-                                                        ? 'border-red-500 text-red-700 placeholder:text-red-300'
-                                                        : 'border-neutral-300 focus:border-black text-[#1A1A1A] dark:text-[#F4F1ED]'}`}
+                                                        ? 'border-red-500 text-red-700 dark:text-red-400 placeholder:text-red-300'
+                                                        : 'border-neutral-300 dark:border-neutral-800 focus:border-black dark:focus:border-white text-[#1A1A1A] dark:text-[#F4F1ED]'}`}
                                                 placeholder="John Doe"
                                             />
                                             {errors.name && (
@@ -958,10 +1103,10 @@ export default function CartDrawer() {
                                                 }}
                                                 animate={errors.houseNumber ? { x: [0, -10, 10, -5, 5, 0] } : {}}
                                                 transition={{ duration: 0.4 }}
-                                                className={`w-full border-b py-3 text-sm outline-none bg-transparent transition-all placeholder:text-neutral-500
+                                                className={`w-full border-b py-3 text-sm outline-none bg-transparent transition-all placeholder:text-neutral-400 dark:placeholder:text-neutral-600
                                                     ${errors.houseNumber
-                                                        ? 'border-red-500 text-red-700 placeholder:text-red-300'
-                                                        : 'border-neutral-300 focus:border-black text-[#1A1A1A] dark:text-[#F4F1ED]'}`}
+                                                        ? 'border-red-500 text-red-700 dark:text-red-400 placeholder:text-red-300'
+                                                        : 'border-neutral-300 dark:border-neutral-800 focus:border-black dark:focus:border-white text-[#1A1A1A] dark:text-[#F4F1ED]'}`}
                                                 placeholder="Flat 101, Luxury Towers"
                                             />
                                         </div>
@@ -991,10 +1136,10 @@ export default function CartDrawer() {
                                                 }}
                                                 animate={errors.street ? { x: [0, -10, 10, -5, 5, 0] } : {}}
                                                 transition={{ duration: 0.4 }}
-                                                className={`w-full border-b py-3 text-sm outline-none bg-transparent transition-all placeholder:text-neutral-500
+                                                className={`w-full border-b py-3 text-sm outline-none bg-transparent transition-all placeholder:text-neutral-400 dark:placeholder:text-neutral-600
                                                     ${errors.street
-                                                        ? 'border-red-500 text-red-700 placeholder:text-red-300'
-                                                        : 'border-neutral-300 focus:border-black text-[#1A1A1A] dark:text-[#F4F1ED]'}`}
+                                                        ? 'border-red-500 text-red-700 dark:text-red-400 placeholder:text-red-300'
+                                                        : 'border-neutral-300 dark:border-neutral-800 focus:border-black dark:focus:border-white text-[#1A1A1A] dark:text-[#F4F1ED]'}`}
                                                 placeholder="123 Fashion St"
                                             />
                                             {errors.street && (
@@ -1019,10 +1164,10 @@ export default function CartDrawer() {
                                                     }}
                                                     animate={errors.city ? { x: [0, -10, 10, -5, 5, 0] } : {}}
                                                     transition={{ duration: 0.4 }}
-                                                    className={`w-full border-b py-3 text-sm outline-none bg-transparent transition-all placeholder:text-neutral-500
+                                                    className={`w-full border-b py-3 text-sm outline-none bg-transparent transition-all placeholder:text-neutral-400 dark:placeholder:text-neutral-600
                                                         ${errors.city
-                                                            ? 'border-red-500 text-red-700 placeholder:text-red-300'
-                                                            : 'border-neutral-300 focus:border-black text-[#1A1A1A] dark:text-[#F4F1ED]'}`}
+                                                            ? 'border-red-500 text-red-700 dark:text-red-400 placeholder:text-red-300'
+                                                            : 'border-neutral-300 dark:border-neutral-800 focus:border-black dark:focus:border-white text-[#1A1A1A] dark:text-[#F4F1ED]'}`}
                                                     placeholder="New York"
                                                 />
                                                 {errors.city && (
@@ -1046,10 +1191,10 @@ export default function CartDrawer() {
                                                     }}
                                                     animate={errors.zip ? { x: [0, -10, 10, -5, 5, 0] } : {}}
                                                     transition={{ duration: 0.4 }}
-                                                    className={`w-full border-b py-3 text-sm outline-none bg-transparent transition-all placeholder:text-neutral-500
+                                                    className={`w-full border-b py-3 text-sm outline-none bg-transparent transition-all placeholder:text-neutral-400 dark:placeholder:text-neutral-600
                                                         ${errors.zip
-                                                            ? 'border-red-500 text-red-700 placeholder:text-red-300'
-                                                            : 'border-neutral-300 focus:border-black text-[#1A1A1A] dark:text-[#F4F1ED]'}`}
+                                                            ? 'border-red-500 text-red-700 dark:text-red-400 placeholder:text-red-300'
+                                                            : 'border-neutral-300 dark:border-neutral-800 focus:border-black dark:focus:border-white text-[#1A1A1A] dark:text-[#F4F1ED]'}`}
                                                     placeholder="10001"
                                                 />
                                                 {errors.zip && (
@@ -1075,10 +1220,10 @@ export default function CartDrawer() {
                                                 }}
                                                 animate={errors.phone ? { x: [0, -10, 10, -5, 5, 0] } : {}}
                                                 transition={{ duration: 0.4 }}
-                                                className={`w-full border-b py-3 text-sm outline-none bg-transparent transition-all placeholder:text-neutral-500
+                                                className={`w-full border-b py-3 text-sm outline-none bg-transparent transition-all placeholder:text-neutral-400 dark:placeholder:text-neutral-600
                                                     ${errors.phone
-                                                        ? 'border-red-500 text-red-700 placeholder:text-red-300'
-                                                        : 'border-neutral-300 focus:border-black text-[#1A1A1A] dark:text-[#F4F1ED]'}`}
+                                                        ? 'border-red-500 text-red-700 dark:text-red-400 placeholder:text-red-300'
+                                                        : 'border-neutral-300 dark:border-neutral-800 focus:border-black dark:focus:border-white text-[#1A1A1A] dark:text-[#F4F1ED]'}`}
                                                 placeholder="+91 99999 99999"
                                             />
                                             {errors.phone && (
