@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  env: {
+    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || "pk_test_bHV4dXJ5LWRlbW8tNDkuY2xlcmsuYWNjb3VudHMuZGV2JA",
+    CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY || "sk_test_dummy",
+  },
   images: {
     formats: ['image/avif', 'image/webp'],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],

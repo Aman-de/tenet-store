@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_bHV4dXJ5LWRlbW8tNDkuY2xlcmsuYWNjb3VudHMuZGV2JA next build --webpack",
+    "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint",
     "seed": "npx tsx scripts/seed-sanity.ts"
