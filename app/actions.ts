@@ -55,31 +55,57 @@ const client = createClient({
 
 export async function findUserByReferralCode(code: string, clerk: any) {
     if (!code) return null;
+    
+    // Normalize input: trim, remove leading/trailing slashes, and strip "wl_" prefix
+    const rawCode = code.trim();
+    const cleanCode = rawCode.replace(/^(wl_)/i, "");
+
     try {
-        // O(1) lookup: Query Sanity for the partner with this referral code or wishlink ID
+        // Query Sanity: match code/cleanCode with referralCode or wishlink URL (full or wildcard end matching)
         const partner = await client.fetch(
-            `*[_type == "partner" && (lower(referralCode) == lower($code) || lower(wishlinkId) == lower($code))][0]{ clerkId }`,
-            { code }
+            `*[_type == "partner" && (
+                lower(referralCode) == lower($rawCode) || 
+                lower(referralCode) == lower($cleanCode) || 
+                lower(wishlinkId) == lower($rawCode) || 
+                lower(wishlinkId) == lower($cleanCode) || 
+                wishlinkId match "*"+$rawCode || 
+                wishlinkId match "*"+$cleanCode
+            )][0]{ clerkId }`,
+            { rawCode, cleanCode }
         );
+
         if (partner?.clerkId) {
             try {
                 return await clerk.users.getUser(partner.clerkId);
             } catch (e) {
-                // clerkId in Sanity might be stale — fall through to scan
                 console.warn(`Sanity partner clerkId ${partner.clerkId} not found in Clerk, falling back to scan`);
             }
         }
+
         // Fallback: scan Clerk users (handles case where partner doc doesn't exist yet)
         let offset = 0;
         const limit = 500;
         while (true) {
             const users = await clerk.users.getUserList({ limit, offset });
             const match = users.data.find((u: any) => {
-                const rCode = u.unsafeMetadata?.referralCode;
-                const wCode = u.unsafeMetadata?.wishlinkId;
-                return (rCode && rCode.toLowerCase() === code.toLowerCase()) ||
-                       (wCode && wCode.toLowerCase() === code.toLowerCase());
+                const rCode = u.unsafeMetadata?.referralCode as string | undefined;
+                const wCode = u.unsafeMetadata?.wishlinkId as string | undefined;
+                
+                const matchesReferral = rCode && (
+                    rCode.toLowerCase() === rawCode.toLowerCase() || 
+                    rCode.toLowerCase() === cleanCode.toLowerCase()
+                );
+                
+                const matchesWishlink = wCode && (
+                    wCode.toLowerCase() === rawCode.toLowerCase() || 
+                    wCode.toLowerCase() === cleanCode.toLowerCase() ||
+                    wCode.toLowerCase().includes(rawCode.toLowerCase()) ||
+                    wCode.toLowerCase().includes(cleanCode.toLowerCase())
+                );
+
+                return matchesReferral || matchesWishlink;
             });
+
             if (match) return match;
             if (users.data.length < limit) break;
             offset += limit;

@@ -1,46 +1,69 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, usePathname } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
 import { trackReferralClick } from "@/app/actions";
 
 export default function ReferralTracker() {
     const searchParams = useSearchParams();
+    const pathname = usePathname();
+    const { user } = useUser();
     const hasTracked = useRef(false);
 
+    // 1. URL Parameter Tracking (Landed Referral)
     useEffect(() => {
-        // Prevent double tracking in React Strict Mode
-        if (hasTracked.current) return;
-
+        // Prevent double tracking in React Strict Mode for the same URL params
         const ref = searchParams?.get('ref');
-        const source = searchParams?.get('source');
+        const wishlink = searchParams?.get('wishlink');
+        const wl = searchParams?.get('wl');
         const subId1 = searchParams?.get('subId1');
+        const source = searchParams?.get('source');
 
         let referralId = null;
 
-        // Try standard ?ref=XYZ
         if (ref) {
             referralId = ref;
-        } 
-        // Wishlink uses ?subId1=wl_xyz
-        else if (subId1 && subId1.startsWith('wl_')) {
+        } else if (wishlink) {
+            referralId = wishlink;
+        } else if (wl) {
+            referralId = wl;
+        } else if (subId1) {
             referralId = subId1;
-        }
-        // Fallback for custom campaigns
-        else if (source) {
+        } else if (source) {
             referralId = source;
         }
 
         if (referralId) {
-            hasTracked.current = true;
-            
-            // 1. Store in localStorage so it persists until checkout
+            // Store in localStorage so it persists until checkout
             localStorage.setItem('referralCode', referralId);
 
-            // 2. Register the click using the server action
+            // Register the click using the server action
             trackReferralClick(referralId).catch(console.error);
         }
     }, [searchParams]);
+
+    // 2. Address Bar Referral Appender for Partners
+    useEffect(() => {
+        if (user?.unsafeMetadata?.referralCode && typeof window !== "undefined") {
+            const refCode = user.unsafeMetadata.referralCode as string;
+            const currentParams = new URLSearchParams(window.location.search);
+            
+            // Only set if not already present or matching
+            if (currentParams.get('ref') !== refCode) {
+                currentParams.set('ref', refCode);
+                const queryStr = currentParams.toString();
+                const newUrl = `${pathname}${queryStr ? `?${queryStr}` : ""}`;
+                
+                // Update address bar dynamically without re-rendering or reloading
+                window.history.replaceState(
+                    { ...window.history.state, as: newUrl, url: newUrl }, 
+                    '', 
+                    newUrl
+                );
+            }
+        }
+    }, [user, pathname, searchParams]);
 
     return null; // Invisible component
 }
