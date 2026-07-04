@@ -90,7 +90,7 @@ export default async function OrdersPage(props: { searchParams: Promise<{ [key: 
         return <GuestOrderForm />;
     }
 
-    const query = `*[_type == "order" && email == $email] | order(createdAt desc) {
+    const query = `*[_type == "order" && lower(email) == lower($email)] | order(createdAt desc) {
     _id,
     orderNumber,
     status,

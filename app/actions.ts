@@ -158,7 +158,7 @@ export async function createReview(productId: string, formData: FormData) {
 export async function checkUserOrderHistory(email: string) {
     if (!email) return { hasOrders: false };
     try {
-        const count = await client.fetch(`count(*[_type == "order" && email == $email])`, { email });
+        const count = await client.fetch(`count(*[_type == "order" && lower(email) == lower($email)])`, { email });
         return { hasOrders: count > 0 };
     } catch (error) {
         console.error("checkUserOrderHistory error:", error);
@@ -178,7 +178,7 @@ export async function checkReferralCodeValidity(code: string, email?: string) {
         }
 
         if (email) {
-            const count = await client.fetch(`count(*[_type == "order" && email == $email && status != 'cancelled'])`, { email });
+            const count = await client.fetch(`count(*[_type == "order" && lower(email) == lower($email) && status != 'cancelled'])`, { email });
             if (count > 0) {
                 return { isValid: false, message: "Referral discounts are only valid for your first purchase." };
             }
