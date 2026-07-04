@@ -32,6 +32,11 @@ export default function TermsPage() {
                         <h2 className="font-serif text-2xl text-[#1A1A1A] dark:text-[#F4F1ED] mb-4">5. Modifications</h2>
                         <p>We reserve the right to modify these terms at any time. Your continued use of the website following any changes indicates your acceptance of the new terms. You should periodically check this page for updates.</p>
                     </section>
+
+                    <section>
+                        <h2 className="font-serif text-2xl text-[#1A1A1A] dark:text-[#F4F1ED] mb-4">6. Order Fulfillment & Third-Party Software Disclaimers</h2>
+                        <p>This website operates as an e-commerce platform. All technology partners, freelance software developers, marketing agents, and third-party referral/affiliate partners (including but not limited to those providing referral tracking systems, promotional links, or customer acquisition services) are strictly software providers or marketing channels. They bear zero responsibility, ownership, or liability for physical product inventory, manufacturing, shipping delays, unfulfilled orders, or transactional disputes. All liability for order fulfillment, product quality, returns, and merchant operations lies 100% with the brand and storefront management entity (Tenet Archives). Any customer disputes, refund requests, or fulfillment claims must be directed exclusively to the storefront support channels.</p>
+                    </section>
                 </div>
             </div>
         </main>

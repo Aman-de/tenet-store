@@ -148,19 +148,7 @@ export default async function OrdersPage(props: { searchParams: Promise<{ [key: 
                             const expected = new Date(created);
                             expected.setDate(created.getDate() + 10);
 
-                            // Simulate Status Progression based on time elapsed
-                            // 0-12h: Pending -> 12-24h: Processing -> 1-2d: Shipped -> 2d+: Delivered
-                            const now = new Date();
-                            const diffInHours = (now.getTime() - created.getTime()) / (1000 * 60 * 60);
-
                             let displayStatus = order.status || 'pending';
-
-                            // Only simulate progression if the admin hasn't cancelled it
-                            if (displayStatus !== 'cancelled') {
-                                if (diffInHours >= 48) displayStatus = 'delivered';
-                                else if (diffInHours >= 24) displayStatus = 'shipped';
-                                else if (diffInHours >= 12) displayStatus = 'processing';
-                            }
 
                             return (
                                 <div key={order._id} className="bg-white dark:bg-[#111111] border border-neutral-200 dark:border-neutral-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
