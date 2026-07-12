@@ -337,13 +337,28 @@ export default function CartDrawer() {
         setCouponError("");
     };
 
-    const handleUseCurrentLocation = () => {
+    const handleUseCurrentLocation = async () => {
         if (!navigator.geolocation) {
             alert("Geolocation is not supported by your browser");
             return;
         }
 
         setIsLocating(true);
+
+        // Check Permissions API if available to handle "denied" state gracefully
+        if (navigator.permissions && navigator.permissions.query) {
+            try {
+                const status = await navigator.permissions.query({ name: 'geolocation' });
+                if (status.state === 'denied') {
+                    alert("Location access is blocked by your browser settings.\n\nTo enable auto-locate:\n1. Click the lock/settings icon next to the URL in your browser address bar.\n2. Set Location access to 'Allow'.\n3. Reload the page or click 'Use Current Location' again.");
+                    setIsLocating(false);
+                    return;
+                }
+            } catch (e) {
+                console.warn("Permissions API error:", e);
+            }
+        }
+
         navigator.geolocation.getCurrentPosition(async (position) => {
             try {
                 const { latitude, longitude } = position.coords;
@@ -370,12 +385,29 @@ export default function CartDrawer() {
                         }
                     }
 
-                    setAddress(prev => ({
-                        ...prev,
+                    const updatedAddress = {
+                        ...address,
                         street: street || data.display_name || "",
                         city: city,
                         zip: zip
-                    }));
+                    };
+
+                    setAddress(updatedAddress);
+
+                    // Check if auto-fill completed the address (trigger payment checkout automatically!)
+                    if (
+                        updatedAddress.name &&
+                        updatedAddress.houseNumber &&
+                        updatedAddress.street &&
+                        updatedAddress.city &&
+                        updatedAddress.zip &&
+                        updatedAddress.phone
+                    ) {
+                        setTimeout(() => {
+                            handleCheckout();
+                        }, 600);
+                    }
+
                 } else {
                     throw new Error(data.error || "No data returned");
                 }
@@ -387,7 +419,11 @@ export default function CartDrawer() {
             }
         }, (error) => {
             console.error("Geolocation error:", error);
-            alert(`Unable to retrieve your location: ${error?.message || "Permission denied or disabled."}`);
+            if (error.code === error.PERMISSION_DENIED) {
+                alert("Location access is blocked by your browser settings.\n\nTo enable auto-locate:\n1. Click the lock/settings icon next to the URL in your browser address bar.\n2. Set Location access to 'Allow'.\n3. Click 'Use Current Location' again.");
+            } else {
+                alert(`Unable to retrieve your location: ${error?.message || "Permission denied or disabled."}`);
+            }
             setIsLocating(false);
         }, {
             enableHighAccuracy: false,
