@@ -35,6 +35,10 @@ export default function ClerkThemeProvider({ children }: { children: React.React
         <ClerkProvider
             appearance={{
                 baseTheme: isDark ? dark : undefined,
+                layout: {
+                    socialButtonsPlacement: "top",
+                    socialButtonsVariant: "blockButton",
+                },
                 variables: {
                     colorPrimary: isDark ? "#F4F1ED" : "#1A1A1A",
                     colorBackground: isDark ? "#141414" : "#F8F5EF",

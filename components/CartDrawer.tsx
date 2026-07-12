@@ -8,7 +8,7 @@ import { X, ShoppingBag, Plus, Minus, Heart, Trash2, ArrowLeft, MapPin, ShieldCh
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useUser, useClerk } from "@clerk/nextjs";
+import { useUser, useClerk, useSignIn } from "@clerk/nextjs";
 import { checkReferralCodeValidity, trackReferralClick, trackReferralJoin } from "@/app/actions";
 import { useGender } from "@/context/GenderContext";
 
@@ -192,12 +192,30 @@ const CartItemRow = ({ item, removeFromCart, updateQuantity, toggleWishlist, isI
 
 export default function CartDrawer() {
     const { openSignIn } = useClerk();
+    const { signIn } = useSignIn();
     const {
         isCartOpen, closeCart, openCart, cart, removeFromCart, updateQuantity, getCartTotal,
         toggleWishlist, isInWishlist, addToCart, clearCart,
         checkoutItem, clearCheckoutItem, updateCheckoutItemQuantity,
         referralCode, setReferralCode
     } = useStore();
+
+    const handleGoogleLogin = () => {
+        if (signIn) {
+            closeCart();
+            signIn.authenticateWithRedirect({
+                strategy: 'oauth_google',
+                redirectUrl: '/?cart=open',
+                redirectUrlComplete: '/?cart=open'
+            }).catch((err) => {
+                console.error("Google OAuth error:", err);
+                openSignIn({ forceRedirectUrl: '/?cart=open' });
+            });
+        } else {
+            closeCart();
+            openSignIn({ forceRedirectUrl: '/?cart=open' });
+        }
+    };
     const { gender } = useGender();
     const isWoman = gender === "woman";
     const drawerBg = isWoman ? "bg-[#FCF0F2] dark:bg-[#160F11]" : "bg-[#F0F4F8] dark:bg-[#0E1217]";
@@ -261,7 +279,6 @@ export default function CartDrawer() {
     const [hasAutoLocated, setHasAutoLocated] = useState(false);
     const [address, setAddress] = useState({
         name: "",
-        email: "",
         houseNumber: "",
         street: "",
         city: "",
@@ -271,7 +288,6 @@ export default function CartDrawer() {
     const [paymentMethod, setPaymentMethod] = useState<'razorpay' | 'cod'>('razorpay');
     const [errors, setErrors] = useState({
         name: false,
-        email: false,
         houseNumber: false,
         street: false,
         city: false,
@@ -518,7 +534,6 @@ export default function CartDrawer() {
 
     const isAddressComplete = !!(
         address.name &&
-        (user || (address.email && /\S+@\S+\.\S+/.test(address.email))) &&
         address.houseNumber &&
         address.street &&
         address.city &&
@@ -576,10 +591,8 @@ export default function CartDrawer() {
 
     const handleCheckout = async () => {
         // Validation
-        const isEmailInvalid = !user && (!address.email || !/\S+@\S+\.\S+/.test(address.email));
         const newErrors = {
             name: !address.name,
-            email: isEmailInvalid,
             houseNumber: !address.houseNumber,
             street: !address.street,
             city: !address.city,
@@ -660,7 +673,7 @@ export default function CartDrawer() {
                         body: JSON.stringify({
                             cart: cartItems,
                             paymentId: response.razorpay_payment_id,
-                            email: user?.primaryEmailAddress?.emailAddress || address.email || "guest@tenet.com",
+                            email: user?.primaryEmailAddress?.emailAddress || "guest@tenet.com",
                             userId: user?.id || null,
                             totalAmount: totalBeforeWallet, // before wallet
                             amountPaid: amountToCharge,
@@ -676,7 +689,7 @@ export default function CartDrawer() {
                         clearCart();
                         closeCart();
                         setCheckoutStep('cart'); // Reset step
-                        setAddress({ name: "", email: "", houseNumber: "", street: "", city: "", zip: "", phone: "" }); // Reset form
+                        setAddress({ name: "", houseNumber: "", street: "", city: "", zip: "", phone: "" }); // Reset form
                         setUseWallet(false);
                         if (activeReferral) {
                             setReferralCode(null); // Clear referral after use
@@ -688,11 +701,7 @@ export default function CartDrawer() {
                                 console.error("Failed to save address to Clerk:", e);
                             }
                         }
-                        if (!user && address.email) {
-                            router.push(`/orders?email=${encodeURIComponent(address.email)}`);
-                        } else {
-                            router.push("/orders");
-                        }
+                        router.push("/orders");
                     } else {
                         alert("Payment successful but order creation failed. Please contact support.");
                     }
@@ -704,7 +713,7 @@ export default function CartDrawer() {
             },
             prefill: {
                 name: address.name || user?.fullName || "Tenet Client",
-                email: user?.primaryEmailAddress?.emailAddress || address.email || "client@tenet.com",
+                email: user?.primaryEmailAddress?.emailAddress || "client@tenet.com",
                 contact: address.phone || "9999999999",
             },
             theme: {
@@ -885,8 +894,7 @@ export default function CartDrawer() {
                                             <button 
                                                 onClick={() => {
                                                     if (!user) {
-                                                        closeCart();
-                                                        openSignIn({ forceRedirectUrl: '/?cart=open' });
+                                                        handleGoogleLogin();
                                                     } else {
                                                         setCheckoutStep('address');
                                                         setIsEditingAddress(true);
@@ -1017,8 +1025,7 @@ export default function CartDrawer() {
                                         disabled={cartItems.length === 0}
                                         onClick={() => {
                                             if (!user) {
-                                                closeCart();
-                                                openSignIn({ forceRedirectUrl: '/?cart=open' });
+                                                handleGoogleLogin();
                                                 return;
                                             }
                                             trackBeginCheckout(cartItems, finalTotal);
@@ -1107,35 +1114,6 @@ export default function CartDrawer() {
                                                 </span>
                                             )}
                                         </div>
-
-                                        {/* Email Address (Only for guest checkout) */}
-                                        {!user && (
-                                            <div className="group">
-                                                <label className={`block text-xs font-bold uppercase tracking-widest mb-2 transition-colors ${errors.email ? 'text-red-600' : 'text-[#1A1A1A] dark:text-[#F4F1ED]'}`}>
-                                                    Email Address
-                                                </label>
-                                                <motion.input
-                                                    type="email"
-                                                    value={address.email}
-                                                    onChange={(e) => {
-                                                        setAddress({ ...address, email: e.target.value });
-                                                        if (errors.email) setErrors({ ...errors, email: false });
-                                                    }}
-                                                    animate={errors.email ? { x: [0, -10, 10, -5, 5, 0] } : {}}
-                                                    transition={{ duration: 0.4 }}
-                                                    className={`w-full border-b py-3 text-sm outline-none bg-transparent transition-all placeholder:text-neutral-400 dark:placeholder:text-neutral-600
-                                                        ${errors.email
-                                                            ? 'border-red-500 text-red-700 dark:text-red-400 placeholder:text-red-300'
-                                                            : 'border-neutral-300 dark:border-neutral-800 focus:border-black dark:focus:border-white text-[#1A1A1A] dark:text-[#F4F1ED]'}`}
-                                                    placeholder="you@example.com"
-                                                />
-                                                {errors.email && (
-                                                    <span className="text-[10px] text-red-500 font-medium mt-1 block tracking-wide">
-                                                        A valid email address is required
-                                                    </span>
-                                                )}
-                                            </div>
-                                        )}
 
                                         {/* House Number */}
                                         <div className="group">
