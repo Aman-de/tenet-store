@@ -33,13 +33,13 @@ export default function MobileStickyBar({ product, selectedVariant, onAddToCart,
                         exit={{ y: "150%", opacity: 0 }}
                         transition={{ type: "spring", stiffness: 300, damping: 30 }}
                         className={cn(
-                            "fixed bottom-[18px] left-4 right-4 z-40 py-2.5 px-3 lg:landscape:hidden xl:hidden shadow-xl rounded-2xl",
+                            "fixed bottom-0 left-0 right-0 z-40 px-4 border-t pb-[env(safe-area-inset-bottom,0px)] shadow-[0_-2px_10px_rgba(0,0,0,0.03)] backdrop-blur-[20px] saturate-[180%] dark:saturate-100 lg:landscape:hidden xl:hidden",
                             isWoman
-                                ? "bg-[#FCF0F2]/90 dark:bg-[#160F11]/90 backdrop-blur-xl border border-rose-100/50 dark:border-rose-950/20 shadow-[0_12px_40px_rgba(252,240,242,0.4)] dark:shadow-[0_12px_40px_rgba(0,0,0,0.5)]"
-                                : "bg-[#F0F4F8]/90 dark:bg-[#0E1217]/90 backdrop-blur-xl border border-blue-100/50 dark:border-blue-950/20 shadow-[0_12px_40px_rgba(240,244,248,0.4)] dark:shadow-[0_12px_40px_rgba(0,0,0,0.5)]"
+                                ? "bg-[#FCF0F2]/90 dark:bg-[#160F11]/90 border-rose-100/50 dark:border-rose-950/20"
+                                : "bg-[#F0F4F8]/90 dark:bg-[#0E1217]/90 border-blue-100/50 dark:border-blue-950/20"
                         )}
                     >
-                        <div className="flex justify-between items-center w-full relative gap-3">
+                        <div className="flex justify-between items-center w-full relative gap-3 h-[52px]">
                             {/* Price Section */}
                             <div className="flex flex-col justify-center shrink-0 pl-2">
                                 <div className="flex items-center gap-1.5">
