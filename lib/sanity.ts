@@ -803,55 +803,90 @@ export async function getCartUpsells(cartProductIds: string[]) {
     return uniqueProducts.map(mapProduct);
 }
 
-export async function searchProducts(searchTerm: string) {
-    const terms = (searchTerm || "").trim().split(/\s+/).filter(Boolean);
-    if (terms.length === 0) {
-        return [];
+export async function searchProducts(searchTerm: string, category?: string, gender?: string) {
+    let baseQuery = `*[_type == "product"`;
+    const params: Record<string, string> = {};
+
+    if (category) {
+        baseQuery += ` && category == $category`;
+        params.category = category.toLowerCase();
     }
 
-    const termFilters = terms.map((_, index) => `(
-    title match $term${index} + "*" ||
-    category match $term${index} + "*" ||
-    description match $term${index} + "*" ||
-    filterTag match $term${index} + "*" ||
-    variants[].colorName match $term${index} + "*"
-  )`).join(" && ");
+    if (gender && gender !== "all") {
+        if (gender === "gadget") {
+            baseQuery += ` && (category == "gadgets" || category == "electronics")`;
+        } else {
+            baseQuery += ` && (gender == $gender || gender == "unisex") && category != "gadgets" && category != "electronics"`;
+            params.gender = gender.toLowerCase();
+        }
+    }
 
-    const query = `*[_type == "product" && (${termFilters})] | order(_score desc) {
-    _id,
-    title,
-    "slug": slug.current,
-    price,
-    originalPrice,
-    "images": variants[0].images[].asset->url,
-    category,
-    "colors": variants[].colorHex,
-    sizeType,
-    sizes,
-    gender,
-    isOutOfStock
-  }`;
-
-    const params: Record<string, string> = {};
-    terms.forEach((term, index) => {
-        params[`term${index}`] = term;
-    });
-
-    const products = await client.fetch(query, params, CACHE_60S);
-
-    // Filter artificial products to only those that match the search query term(s)
-    const matchingArtificial = ARTIFICIAL_PRODUCTS.filter(p => {
-        return terms.every(term => {
-            const lowerTerm = term.toLowerCase();
-            return (
-                p.title?.toLowerCase().includes(lowerTerm) ||
-                p.category?.toLowerCase().includes(lowerTerm) ||
-                p.variants?.some((v: any) => v.colorName?.toLowerCase().includes(lowerTerm))
-            );
+    const terms = (searchTerm || "").trim().split(/\s+/).filter(Boolean);
+    if (terms.length > 0) {
+        const termFilters = terms.map((_, index) => `(
+            title match $term${index} + "*" ||
+            category match $term${index} + "*" ||
+            description match $term${index} + "*" ||
+            filterTag match $term${index} + "*" ||
+            variants[].colorName match $term${index} + "*"
+        )`).join(" && ");
+        baseQuery += ` && (${termFilters})`;
+        terms.forEach((term, index) => {
+            params[`term${index}`] = term;
         });
-    });
+    }
 
-    return [...matchingArtificial, ...(products || [])]
+    baseQuery += `] | order(_score desc) {
+        _id,
+        title,
+        "slug": slug.current,
+        price,
+        originalPrice,
+        "images": variants[0].images[].asset->url,
+        category,
+        "colors": variants[].colorHex,
+        sizeType,
+        sizes,
+        gender,
+        isOutOfStock
+    }`;
+
+    const products = await client.fetch(baseQuery, params, CACHE_60S);
+
+    // Filter ARTIFICIAL_PRODUCTS
+    let results = [...ARTIFICIAL_PRODUCTS];
+    if (category) {
+        results = results.filter(p => p.category?.toLowerCase() === category.toLowerCase());
+    }
+    if (gender && gender !== "all") {
+        if (gender === "gadget") {
+            results = results.filter(p => p.category?.toLowerCase() === "gadgets" || p.category?.toLowerCase() === "electronics");
+        } else {
+            results = results.filter(p => {
+                const g = p.gender ? p.gender.toLowerCase() : "man";
+                const cat = p.category ? p.category.toLowerCase() : "";
+                return (g === gender.toLowerCase() || g === "unisex") && cat !== "gadgets" && cat !== "electronics";
+            });
+        }
+    }
+    if (terms.length > 0) {
+        results = results.filter(p => {
+            return terms.every(term => {
+                const lowerTerm = term.toLowerCase();
+                return (
+                    p.title?.toLowerCase().includes(lowerTerm) ||
+                    p.category?.toLowerCase().includes(lowerTerm) ||
+                    p.variants?.some((v: any) => v.colorName?.toLowerCase().includes(lowerTerm))
+                );
+            });
+        });
+    }
+
+    const combined = searchTerm || category || (gender && gender !== "all") 
+        ? [...results, ...(products || [])] 
+        : [...ARTIFICIAL_PRODUCTS, ...(products || [])];
+
+    return combined
         .filter((p: any) => p && !HIDDEN_PRODUCT_TITLES.has(p.title))
         .map(mapProduct);
 }

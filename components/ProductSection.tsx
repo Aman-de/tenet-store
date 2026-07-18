@@ -50,9 +50,20 @@ export default function ProductSection({ products }: ProductSectionProps) {
         }
     }, []);
 
-    // Filter products based on gender
-    // Default to 'man' if gender is missing (legacy data safety)
+    // Filter products based on gender / category view
     const filteredProducts = products.filter(p => {
+        const cat = p.category ? p.category.toLowerCase() : "";
+        
+        if (activeGender === "gadget") {
+            return cat === "gadgets" || cat === "electronics";
+        }
+        if (activeGender === "all") {
+            return true;
+        }
+        
+        // Hide gadgets from clothes lists
+        if (cat === "gadgets" || cat === "electronics") return false;
+        
         const g = p.gender ? p.gender.toLowerCase() : 'man';
         return g === activeGender || g === 'unisex';
     });

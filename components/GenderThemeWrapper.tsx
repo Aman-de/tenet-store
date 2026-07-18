@@ -31,11 +31,29 @@ export default function GenderThemeWrapper({
         setMounted(true);
     }, []);
 
-    const accentColor = isWoman ? settings.womanAccentColor : settings.manAccentColor;
-    const lightBg = isWoman 
+    const accentColor = gender === "woman" 
+        ? settings.womanAccentColor 
+        : gender === "man"
+            ? settings.manAccentColor
+            : gender === "gadget"
+                ? "#7C3AED" // Vibrant tech purple
+                : "#1A1A1A"; // Sleek premium charcoal for 'all'
+
+    const lightBg = gender === "woman" 
         ? (settings.womanBgColorLight === '#FDFBF7' ? '#FCF0F2' : settings.womanBgColorLight)
-        : (settings.manBgColorLight === '#F4F6F9' ? '#F0F4F8' : settings.manBgColorLight);
-    const darkBg = isWoman ? settings.womanBgColorDark : settings.manBgColorDark;
+        : gender === "man"
+            ? (settings.manBgColorLight === '#F4F6F9' ? '#F0F4F8' : settings.manBgColorLight)
+            : gender === "gadget"
+                ? "#FAF9F6" // Minimalist off-white for gadgets
+                : "#FAF9F6"; // Elegant warm-white for 'all'
+
+    const darkBg = gender === "woman" 
+        ? settings.womanBgColorDark 
+        : gender === "man"
+            ? settings.manBgColorDark
+            : gender === "gadget"
+                ? "#0B0F19" // Deep tech navy/black
+                : "#0A0A0A"; // Solid deep black for 'all'
 
     return (
         <div className="min-h-screen transition-colors duration-500">

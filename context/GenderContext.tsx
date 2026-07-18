@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 
-type Gender = "man" | "woman";
+type Gender = "man" | "woman" | "gadget" | "all";
 
 interface GenderContextType {
     gender: Gender;
@@ -12,13 +12,13 @@ interface GenderContextType {
 const GenderContext = createContext<GenderContextType | undefined>(undefined);
 
 export function GenderProvider({ children }: { children: React.ReactNode }) {
-    const [gender, setGenderState] = useState<Gender>("woman");
+    const [gender, setGenderState] = useState<Gender>("all");
 
     useEffect(() => {
         // Read from localStorage only after component mounts in the browser
         try {
             const savedGender = localStorage.getItem("tenet-active-gender") as Gender | null;
-            if (savedGender === "man" || savedGender === "woman") {
+            if (savedGender === "man" || savedGender === "woman" || savedGender === "gadget" || savedGender === "all") {
                 setGenderState(savedGender);
             }
         } catch (error) {

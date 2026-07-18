@@ -149,30 +149,36 @@ export default function Navbar() {
         ? "bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20" 
         : "bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 lg:bg-white/10 lg:hover:bg-white/20 lg:dark:bg-white/10 lg:dark:hover:bg-white/20";
 
-    // Ultra-premium concise Apple-style toggle
+    // Premium Segmented capsule switcher for categories
     const GenderToggle = ({ idSuffix, isDesktop = false, isMini = false }: { idSuffix: string, isDesktop?: boolean, isMini?: boolean }) => {
-        const solid = isScrolledOrNotHome || isDesktop || idSuffix === "mobile-bar" || idSuffix === "mobile-top-bar";
-        
-        const activeClass = solid 
-            ? "bg-white text-[#1A1A1A] dark:bg-neutral-900 dark:text-[#F4F1ED] shadow-sm border-neutral-200 dark:border-neutral-800" 
-            : "bg-black/10 text-black dark:bg-white/10 dark:text-white border-transparent backdrop-blur-md";
-            
-        const inactiveClass = solid 
-            ? "bg-[#1A1A1A]/5 text-[#1A1A1A] dark:bg-white/10 dark:text-[#F4F1ED] border-transparent hover:bg-[#1A1A1A]/10 dark:hover:bg-white/20" 
-            : "bg-white/20 text-white border-white/20 hover:bg-white/30";
-            
-        const layoutClasses = isMini ? "h-[32px] px-3 flex items-center justify-center gap-1.5" : "py-1.5 sm:py-2 px-4 inline-flex items-center justify-center gap-2";
-        const textSize = isMini ? "text-[10px]" : "text-[10px] sm:text-xs";
-        
+        const options: { label: string; value: typeof gender }[] = [
+            { label: "All", value: "all" },
+            { label: "Men", value: "man" },
+            { label: "Women", value: "woman" },
+            { label: "Gadgets", value: "gadget" }
+        ];
+
+        const padding = isMini ? "px-2.5 py-1 text-[8px]" : "px-3.5 py-1.5 text-[9px] sm:text-[10px]";
+
         return (
-            <button 
-                onClick={() => setGender(gender === 'man' ? 'woman' : 'man')}
-                className={`relative z-10 tracking-widest uppercase transition-all duration-300 rounded-full border cursor-pointer hover:scale-105 active:scale-95 ${layoutClasses} ${textSize} ${activeClass}`}
-                aria-label={`Switch to ${gender === 'man' ? 'Women' : 'Men'}`}
-            >
-                <span className="font-bold opacity-90">{gender === 'man' ? 'MEN' : 'WOMEN'}</span>
-                <ArrowLeftRight className={isMini ? "w-2.5 h-2.5 opacity-70" : "w-3 h-3 opacity-70"} strokeWidth={2} />
-            </button>
+            <div className="relative flex items-center bg-[#1A1A1A]/5 dark:bg-white/5 p-0.5 rounded-full border border-black/5 dark:border-white/5 pointer-events-auto">
+                {options.map((opt) => {
+                    const isActive = gender === opt.value;
+                    return (
+                        <button
+                            key={opt.value}
+                            onClick={() => setGender(opt.value)}
+                            className={`relative ${padding} font-sans tracking-widest uppercase font-extrabold transition-all duration-300 rounded-full cursor-pointer focus:outline-none ${
+                                isActive 
+                                    ? "text-black dark:text-white bg-white dark:bg-neutral-800 shadow-xs"
+                                    : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200"
+                            }`}
+                        >
+                            {opt.label}
+                        </button>
+                    );
+                })}
+            </div>
         );
     };
 

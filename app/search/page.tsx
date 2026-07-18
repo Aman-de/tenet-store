@@ -15,10 +15,12 @@ interface SearchPageProps {
 }
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
-    const { q } = await searchParams;
+    const { q, category, gender } = await searchParams;
     const query = typeof q === "string" ? q : "";
+    const categoryQuery = typeof category === "string" ? category : undefined;
+    const genderQuery = typeof gender === "string" ? gender : undefined;
 
-    const products = query ? await searchProducts(query) : [];
+    const products = await searchProducts(query, categoryQuery, genderQuery);
 
     return (
         <main className="min-h-screen">

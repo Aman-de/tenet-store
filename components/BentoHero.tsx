@@ -191,7 +191,8 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                     <div className="w-full h-full grid grid-cols-2 grid-rows-2 gap-4">
                         {filteredCollections.map((collection) => {
                             const catKey = (collection.filterTag || collection.handle || "").toLowerCase();
-                            const coverPhoto = CATEGORY_IMAGES[catKey]?.[gender] || collection.imageUrl;
+                            const lookupGender = (gender === "woman" || gender === "man") ? gender : "man";
+                            const coverPhoto = CATEGORY_IMAGES[catKey]?.[lookupGender] || collection.imageUrl;
                             const subtitle = CATEGORY_SUBTITLES[catKey] || "Explore the collection";
 
                             return (
@@ -361,7 +362,8 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                     <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none snap-x snap-mandatory">
                         {filteredCollections.map((collection) => {
                             const catKey = (collection.filterTag || collection.handle || "").toLowerCase();
-                            const coverPhoto = CATEGORY_IMAGES[catKey]?.[gender] || collection.imageUrl;
+                            const lookupGender = (gender === "woman" || gender === "man") ? gender : "man";
+                            const coverPhoto = CATEGORY_IMAGES[catKey]?.[lookupGender] || collection.imageUrl;
                             const subtitle = CATEGORY_SUBTITLES[catKey] || "Explore Now";
                             
                             return (

@@ -16,23 +16,54 @@ interface HomePageClientProps {
 export default function HomePageClient({ products, collections }: HomePageClientProps) {
     const { gender } = useGender();
     const isWoman = gender === "woman";
-    const cardBg = isWoman ? "bg-[#FFF2F4] dark:bg-[#1C1416]" : "bg-[#F4F8FC] dark:bg-[#12161B]";
+    const cardBg = gender === "woman"
+        ? "bg-[#FFF2F4] dark:bg-[#1C1416]"
+        : gender === "man"
+            ? "bg-[#F4F8FC] dark:bg-[#12161B]"
+            : gender === "gadget"
+                ? "bg-[#FAF5FF] dark:bg-[#130E1C]"
+                : "bg-neutral-50 dark:bg-neutral-900/50";
 
-    // Dynamically filter spotlight products based on selected gender
+    // Dynamically filter spotlight products based on selected gender/view
     const spotlightProducts = products
         .filter(p => {
+            if (p.isOutOfStock) return false;
+            
+            const cat = p.category ? p.category.toLowerCase() : "";
+            
+            if (gender === "gadget") {
+                return cat === "gadgets" || cat === "electronics";
+            }
+            if (gender === "all") {
+                return true;
+            }
+            
+            // Standard Men/Women filtering
+            if (cat === "gadgets" || cat === "electronics") return false;
+            
             const g = p.gender ? p.gender.toLowerCase() : "man";
-            const isCorrectGender = gender === "man"
+            return gender === "man"
                 ? (g === "man" || g === "unisex")
                 : (g === "woman" || g === "unisex");
-            return isCorrectGender && !p.isOutOfStock && p.category && !["accessories", "fragrance", "perfume", "shoes"].includes(p.category.toLowerCase());
         })
         .sort((a, b) => b.price - a.price)
         .slice(0, 10);
 
-    // Filter bestseller products for the active gender
+    // Filter bestseller products for the active view
     const bestsellerProducts = products
         .filter(p => {
+            const cat = p.category ? p.category.toLowerCase() : "";
+            
+            if (gender === "gadget") {
+                return cat === "gadgets" || cat === "electronics";
+            }
+            if (gender === "all") {
+                return true;
+            }
+            
+            // Standard Men/Women filtering
+            if (cat === "gadgets" || cat === "electronics") return false;
+            
             const g = p.gender ? p.gender.toLowerCase() : "man";
             return gender === "man"
                 ? (g === "man" || g === "unisex")
@@ -62,6 +93,14 @@ export default function HomePageClient({ products, collections }: HomePageClient
 
     const summerEditBg = isWoman ? '/images/editorial_campaign_women.webp' : '/images/editorial_campaign.webp';
 
+    const bestsellerViewAllHref = gender === "woman" 
+        ? '/collection/kurti' 
+        : gender === "man"
+            ? '/collection/shirts'
+            : gender === "gadget"
+                ? '/search?category=gadgets'
+                : '/search';
+
     return (
         <div className="min-h-screen">
             {/* Unified Bento Box Hero & Categories */}
@@ -73,7 +112,7 @@ export default function HomePageClient({ products, collections }: HomePageClient
                     <h2 className="font-serif text-[22px] lg:text-3xl font-bold tracking-wider text-neutral-800 dark:text-[#F4F1ED] uppercase">
                         Bestsellers
                     </h2>
-                    <Link href={`/collection/${isWoman ? 'kurti' : 'shirts'}`} className="flex items-center gap-1 text-[10px] lg:text-xs font-bold uppercase tracking-widest text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors">
+                    <Link href={bestsellerViewAllHref} className="flex items-center gap-1 text-[10px] lg:text-xs font-bold uppercase tracking-widest text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors">
                         <span>View all</span>
                         <ArrowRight className="w-3 lg:w-4 h-3 lg:h-4" />
                     </Link>
