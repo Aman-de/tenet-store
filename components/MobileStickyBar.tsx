@@ -32,7 +32,12 @@ export default function MobileStickyBar({ product, selectedVariant, onAddToCart,
                         animate={{ y: 0, opacity: 1 }}
                         exit={{ y: "150%", opacity: 0 }}
                         transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                        className="fixed bottom-4 left-3 right-3 z-40 bg-white/95 dark:bg-[#111111]/95 backdrop-blur-2xl border border-neutral-200/60 dark:border-white/10 py-2.5 px-3 lg:landscape:hidden xl:hidden shadow-[0_16px_40px_-10px_rgba(0,0,0,0.25)] rounded-full"
+                        className={cn(
+                            "fixed bottom-[18px] left-4 right-4 z-40 py-2.5 px-3 lg:landscape:hidden xl:hidden shadow-xl rounded-2xl",
+                            isWoman
+                                ? "bg-[#FCF0F2]/90 dark:bg-[#160F11]/90 backdrop-blur-xl border border-rose-100/50 dark:border-rose-950/20 shadow-[0_12px_40px_rgba(252,240,242,0.4)] dark:shadow-[0_12px_40px_rgba(0,0,0,0.5)]"
+                                : "bg-[#F0F4F8]/90 dark:bg-[#0E1217]/90 backdrop-blur-xl border border-blue-100/50 dark:border-blue-950/20 shadow-[0_12px_40px_rgba(240,244,248,0.4)] dark:shadow-[0_12px_40px_rgba(0,0,0,0.5)]"
+                        )}
                     >
                         <div className="flex justify-between items-center w-full relative gap-3">
                             {/* Price Section */}
