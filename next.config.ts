@@ -1,9 +1,30 @@
 import type { NextConfig } from "next";
+import fs from "fs";
+import path from "path";
+
+// Try to read keyless.json for fallback keys
+let fallbackPublishableKey = "pk_test_bHV4dXJ5LWRlbW8tNDkuY2xlcmsuYWNjb3VudHMuZGV2JA";
+let fallbackSecretKey = "sk_test_dummy";
+
+try {
+  const keylessPath = path.join(process.cwd(), ".clerk", ".tmp", "keyless.json");
+  if (fs.existsSync(keylessPath)) {
+    const keylessData = JSON.parse(fs.readFileSync(keylessPath, "utf-8"));
+    if (keylessData.publishableKey) {
+      fallbackPublishableKey = keylessData.publishableKey;
+    }
+    if (keylessData.secretKey) {
+      fallbackSecretKey = keylessData.secretKey;
+    }
+  }
+} catch (e) {
+  console.warn("Failed to load keyless.json fallback:", e);
+}
 
 const nextConfig: NextConfig = {
   env: {
-    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || "pk_test_bHV4dXJ5LWRlbW8tNDkuY2xlcmsuYWNjb3VudHMuZGV2JA",
-    CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY || "sk_test_dummy",
+    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || fallbackPublishableKey,
+    CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY || fallbackSecretKey,
   },
   images: {
     formats: ['image/avif', 'image/webp'],
