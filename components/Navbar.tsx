@@ -1,6 +1,6 @@
 "use client";
 
-import { ShoppingBag, Menu, X, Heart, User, Package, Crown, LayoutGrid, Search, Home, Moon, Sun, Monitor, Mic, Camera, ArrowLeftRight, Smartphone } from "lucide-react";
+import { ShoppingBag, Menu, X, Heart, User, Package, Crown, LayoutGrid, Search, Home, Moon, Sun, Monitor, Mic, Camera, ArrowLeftRight, Smartphone, ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -149,8 +149,9 @@ export default function Navbar() {
         ? "bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20" 
         : "bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 lg:bg-white/10 lg:hover:bg-white/20 lg:dark:bg-white/10 lg:dark:hover:bg-white/20";
 
-    // Premium Segmented capsule switcher for categories
+    // Premium Segmented capsule switcher for categories / Mobile dropdown
     const GenderToggle = ({ idSuffix, isDesktop = false, isMini = false }: { idSuffix: string, isDesktop?: boolean, isMini?: boolean }) => {
+        const [isDropdownOpen, setIsDropdownOpen] = useState(false);
         const options: { label: string; value: typeof gender }[] = [
             { label: "All", value: "all" },
             { label: "Men", value: "man" },
@@ -158,7 +159,62 @@ export default function Navbar() {
             { label: "Gadgets", value: "gadget" }
         ];
 
-        const padding = isMini ? "px-2.5 py-1 text-[8px]" : "px-3.5 py-1.5 text-[9px] sm:text-[10px]";
+        const activeOption = options.find(opt => opt.value === gender) || options[0];
+
+        if (isMini) {
+            return (
+                <div className="relative pointer-events-auto">
+                    <button
+                        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                        className="h-[32px] px-3 border border-neutral-200/50 dark:border-neutral-700/50 bg-[#1A1A1A]/5 dark:bg-white/5 text-[#1A1A1A] dark:text-[#F4F1ED] rounded-full flex items-center justify-center gap-1 cursor-pointer transition-all hover:scale-105 active:scale-95 focus:outline-none"
+                    >
+                        <span className="text-[10px] font-sans tracking-widest font-extrabold uppercase">{activeOption.label}</span>
+                        <ChevronDown className="w-3 h-3 opacity-70" strokeWidth={2.5} />
+                    </button>
+
+                    <AnimatePresence>
+                        {isDropdownOpen && (
+                            <>
+                                {/* Overlay to close dropdown */}
+                                <div 
+                                    className="fixed inset-0 z-40" 
+                                    onClick={() => setIsDropdownOpen(false)}
+                                />
+                                <motion.div
+                                    initial={{ opacity: 0, y: 5, scale: 0.95 }}
+                                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                                    exit={{ opacity: 0, y: 5, scale: 0.95 }}
+                                    transition={{ duration: 0.15 }}
+                                    className="absolute right-0 mt-1.5 w-32 bg-white/95 dark:bg-neutral-900/95 border border-neutral-200/50 dark:border-neutral-800/50 rounded-xl shadow-lg py-1 z-50 backdrop-blur-xl flex flex-col"
+                                >
+                                    {options.map((opt) => {
+                                        const isActive = gender === opt.value;
+                                        return (
+                                            <button
+                                                key={opt.value}
+                                                onClick={() => {
+                                                    setGender(opt.value);
+                                                    setIsDropdownOpen(false);
+                                                }}
+                                                className={`px-4 py-2.5 text-left text-[9px] font-sans font-extrabold tracking-widest uppercase transition-colors focus:outline-none cursor-pointer ${
+                                                    isActive
+                                                        ? "text-black dark:text-white bg-neutral-900/5 dark:bg-white/5 font-black"
+                                                        : "text-neutral-500 dark:text-neutral-400 hover:bg-neutral-50 dark:hover:bg-neutral-800/50 hover:text-neutral-800 dark:hover:text-neutral-200"
+                                                }`}
+                                            >
+                                                {opt.label}
+                                            </button>
+                                        );
+                                    })}
+                                </motion.div>
+                            </>
+                        )}
+                    </AnimatePresence>
+                </div>
+            );
+        }
+
+        const padding = "px-3.5 py-1.5 text-[9px] sm:text-[10px]";
 
         return (
             <div className="relative flex items-center bg-[#1A1A1A]/5 dark:bg-white/5 p-0.5 rounded-full border border-black/5 dark:border-white/5 pointer-events-auto">
