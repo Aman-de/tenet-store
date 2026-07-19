@@ -288,7 +288,7 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
                 </Link>
 
                 <div className="flex items-baseline gap-2 text-xs md:text-sm">
-                    <span className="font-sans font-extrabold text-[13px]" style={{ color: accentColor }}>
+                    <span className="font-sans font-extrabold text-[13px] text-[#1A1A1A] dark:text-[#F4F1ED]">
                         ₹{product.price.toLocaleString('en-IN')}
                     </span>
                     {product.originalPrice && (

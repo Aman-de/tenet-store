@@ -114,9 +114,9 @@ export default function SortedProductGrid({ products: rawProducts, showSizeFilte
                                         <button
                                             key={size}
                                             onClick={() => setSelectedSize(selectedSize === size ? null : size)}
-                                            className={`text-[10px] sm:text-xs font-sans tracking-widest transition-all ${selectedSize === size
-                                                ? "text-[#1A1A1A] dark:text-[#F4F1ED] border-b border-[#1A1A1A]"
-                                                : "text-neutral-400 hover:text-[#1A1A1A] dark:text-[#F4F1ED]"
+                                            className={`text-[10px] sm:text-xs font-sans tracking-widest transition-all cursor-pointer ${selectedSize === size
+                                                ? "text-[#1A1A1A] dark:text-[#F4F1ED] border-b border-[#1A1A1A] dark:border-[#F4F1ED]"
+                                                : "text-neutral-400 hover:text-[#1A1A1A] dark:text-neutral-500 dark:hover:text-[#F4F1ED]"
                                                 }`}
                                         >
                                             {size}
@@ -125,7 +125,7 @@ export default function SortedProductGrid({ products: rawProducts, showSizeFilte
                                 {selectedSize && (
                                     <button
                                         onClick={() => setSelectedSize(null)}
-                                        className="h-9 px-3 flex items-center justify-center text-[10px] uppercase font-bold text-neutral-400 hover:text-[#1A1A1A] dark:text-[#F4F1ED]"
+                                        className="h-9 px-3 flex items-center justify-center text-[10px] uppercase font-bold text-neutral-400 hover:text-[#1A1A1A] dark:text-neutral-500 dark:hover:text-[#F4F1ED] cursor-pointer"
                                     >
                                         Clear
                                     </button>
@@ -149,9 +149,9 @@ export default function SortedProductGrid({ products: rawProducts, showSizeFilte
                                 <button
                                     key={tier}
                                     onClick={() => setPriceFilter(tier)}
-                                    className={`text-[10px] sm:text-xs font-sans tracking-widest uppercase transition-all ${priceFilter === tier
-                                        ? "text-[#1A1A1A] dark:text-[#F4F1ED] border-b border-[#1A1A1A]"
-                                        : "text-neutral-400 hover:text-[#1A1A1A] dark:text-[#F4F1ED]"
+                                    className={`text-[10px] sm:text-xs font-sans tracking-widest uppercase transition-all cursor-pointer ${priceFilter === tier
+                                        ? "text-[#1A1A1A] dark:text-[#F4F1ED] border-b border-[#1A1A1A] dark:border-[#F4F1ED]"
+                                        : "text-neutral-400 hover:text-[#1A1A1A] dark:text-neutral-500 dark:hover:text-[#F4F1ED]"
                                         }`}
                                 >
                                     {tier === 'all' && 'All'}
