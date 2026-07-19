@@ -114,7 +114,7 @@ export default function SortedProductGrid({ products: rawProducts, showSizeFilte
                                         <button
                                             key={size}
                                             onClick={() => setSelectedSize(selectedSize === size ? null : size)}
-                                            className={`text-[10px] sm:text-xs font-sans tracking-widest transition-all cursor-pointer ${selectedSize === size
+                                            className={`text-[10px] sm:text-xs font-sans font-bold tracking-widest transition-all cursor-pointer ${selectedSize === size
                                                 ? "text-[#1A1A1A] dark:text-[#F4F1ED] border-b border-[#1A1A1A] dark:border-[#F4F1ED]"
                                                 : "text-neutral-400 hover:text-[#1A1A1A] dark:text-neutral-500 dark:hover:text-[#F4F1ED]"
                                                 }`}
@@ -149,7 +149,7 @@ export default function SortedProductGrid({ products: rawProducts, showSizeFilte
                                 <button
                                     key={tier}
                                     onClick={() => setPriceFilter(tier)}
-                                    className={`text-[10px] sm:text-xs font-sans tracking-widest uppercase transition-all cursor-pointer ${priceFilter === tier
+                                    className={`text-[10px] sm:text-xs font-sans font-bold tracking-widest uppercase transition-all cursor-pointer ${priceFilter === tier
                                         ? "text-[#1A1A1A] dark:text-[#F4F1ED] border-b border-[#1A1A1A] dark:border-[#F4F1ED]"
                                         : "text-neutral-400 hover:text-[#1A1A1A] dark:text-neutral-500 dark:hover:text-[#F4F1ED]"
                                         }`}

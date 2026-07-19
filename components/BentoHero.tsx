@@ -233,7 +233,7 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                 <div ref={mobileEmblaRef} className="overflow-hidden w-full rounded-2xl">
                     <div className="flex w-full">
                         {/* Slide 1: Main Static Hero */}
-                        <div className={`relative flex-[0_0_100%] w-full h-[220px] overflow-hidden ${cardBg} border border-neutral-200/50 dark:border-white/5 flex items-center`}>
+                        <div className={`relative flex-[0_0_100%] w-full aspect-[16/9] overflow-hidden ${cardBg} border border-neutral-200/50 dark:border-white/5 flex items-center`}>
                             <div className="absolute right-0 top-0 bottom-0 w-[60%] h-full overflow-hidden">
                                 <Image
                                     src={mainHeroSrc}
@@ -247,27 +247,27 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                             </div>
                             
                             <div className="relative z-10 w-[55%] pl-5 flex flex-col items-start justify-center pointer-events-none">
-                                <h1 className="font-serif text-xl sm:text-2xl font-bold tracking-tight text-neutral-800 dark:text-[#F4F1ED] leading-[1.25] mb-1.5 pointer-events-auto">
+                                <h1 className="font-serif text-[13px] sm:text-lg font-bold tracking-tight text-neutral-800 dark:text-[#F4F1ED] leading-[1.25] mb-1 pointer-events-auto">
                                     {isWoman ? (
                                         <>Premium Cotton<br/>Kurtis & Linen<br/>Essentials</>
                                     ) : (
                                         <>Premium Linen<br/>Shirts & Tailored<br/>Essentials</>
                                     )}
                                 </h1>
-                                <div className="flex items-center gap-1 mb-4 text-[9px] text-neutral-500 dark:text-neutral-400">
+                                <div className="flex items-center gap-1 mb-2.5 text-[8px] text-neutral-500 dark:text-neutral-400">
                                     <span className="text-[#FF9900]">★★★★★</span>
                                     <span className="font-bold text-neutral-700 dark:text-neutral-300">4.8</span>
                                     <span>|</span>
-                                    <span>{isWoman ? "Rated by 6,321 Women" : "Rated by 4,892 Men"}</span>
+                                    <span>{isWoman ? "6k+ Women" : "4k+ Men"}</span>
                                 </div>
                                 <Link 
                                     href="#new-arrivals" 
-                                    className="flex items-center justify-between gap-3 bg-[#1A1A1A] dark:bg-[#F4F1ED] text-white dark:text-[#1A1A1A] px-4 py-2.5 rounded-full hover:scale-[1.02] active:scale-[0.98] transition-all shadow-sm pointer-events-auto"
+                                    className="flex items-center justify-between gap-2.5 bg-[#1A1A1A] dark:bg-[#F4F1ED] text-white dark:text-[#1A1A1A] px-3.5 py-2 rounded-full hover:scale-[1.02] active:scale-[0.98] transition-all shadow-sm pointer-events-auto"
                                 >
-                                    <span className="text-[9px] font-bold uppercase tracking-wider">
+                                    <span className="text-[8px] font-bold uppercase tracking-wider">
                                         Shop Bestsellers
                                     </span>
-                                    <ArrowRight className="w-3.5 h-3.5" />
+                                    <ArrowRight className="w-3 h-3" />
                                 </Link>
                             </div>
                         </div>
@@ -292,7 +292,7 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                             return finalProducts.map(product => {
                                 const heroImage = product.images[0] || product.images[1];
                                 return (
-                                    <div key={product.id} className={`relative flex-[0_0_100%] w-full h-[220px] overflow-hidden ${cardBg} border border-neutral-200/50 dark:border-white/5 flex items-center`}>
+                                    <div key={product.id} className={`relative flex-[0_0_100%] w-full aspect-[16/9] overflow-hidden ${cardBg} border border-neutral-200/50 dark:border-white/5 flex items-center`}>
                                         <div className="absolute right-0 top-0 bottom-0 w-[60%] h-full overflow-hidden">
                                             {heroImage && (
                                                 <Image
@@ -308,23 +308,23 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                                         </div>
                                         
                                         <div className="relative z-10 w-[55%] pl-5 flex flex-col items-start justify-center pointer-events-none">
-                                            <span className="text-[9px] uppercase font-bold tracking-widest text-[#FF9900] mb-1">
+                                            <span className="text-[8px] uppercase font-bold tracking-widest text-[#FF9900] mb-0.5">
                                                 Featured
                                             </span>
-                                            <h1 className="font-serif text-lg sm:text-xl font-bold tracking-tight text-neutral-800 dark:text-[#F4F1ED] leading-[1.25] mb-2 pointer-events-auto line-clamp-3">
+                                            <h1 className="font-serif text-[13px] sm:text-lg font-bold tracking-tight text-neutral-800 dark:text-[#F4F1ED] leading-[1.25] mb-2 pointer-events-auto line-clamp-2">
                                                 {product.title}
                                             </h1>
-                                            <div className="flex items-center gap-1.5 font-sans mb-4 pointer-events-auto">
-                                                <span className="font-bold text-sm" style={{ color: accentColor }}>₹{product.price.toLocaleString('en-IN')}</span>
+                                            <div className="flex items-center gap-1.5 font-sans mb-3 pointer-events-auto">
+                                                <span className="font-bold text-xs sm:text-sm" style={{ color: accentColor }}>₹{product.price.toLocaleString('en-IN')}</span>
                                             </div>
                                             <Link 
                                                 href={`/product/${product.handle}`} 
-                                                className="flex items-center justify-between gap-3 bg-[#1A1A1A] dark:bg-[#F4F1ED] text-white dark:text-[#1A1A1A] px-4 py-2.5 rounded-full hover:scale-[1.02] active:scale-[0.98] transition-all shadow-sm pointer-events-auto w-fit"
+                                                className="flex items-center justify-between gap-2.5 bg-[#1A1A1A] dark:bg-[#F4F1ED] text-white dark:text-[#1A1A1A] px-3.5 py-2 rounded-full hover:scale-[1.02] active:scale-[0.98] transition-all shadow-sm pointer-events-auto w-fit"
                                             >
-                                                <span className="text-[9px] font-bold uppercase tracking-wider">
+                                                <span className="text-[8px] font-bold uppercase tracking-wider">
                                                     Buy Now
                                                 </span>
-                                                <ArrowRight className="w-3.5 h-3.5" />
+                                                <ArrowRight className="w-3 h-3" />
                                             </Link>
                                         </div>
                                     </div>
@@ -359,36 +359,31 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                     <h2 className="font-serif text-sm font-bold tracking-wider text-neutral-800 dark:text-[#F4F1ED] uppercase mb-3">
                         Shop By Category
                     </h2>
-                    <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none snap-x snap-mandatory">
+                    <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-none snap-x snap-mandatory">
                         {filteredCollections.map((collection) => {
                             const catKey = (collection.filterTag || collection.handle || "").toLowerCase();
                             const lookupGender = (gender === "woman" || gender === "man") ? gender : "man";
                             const coverPhoto = CATEGORY_IMAGES[catKey]?.[lookupGender] || collection.imageUrl;
-                            const subtitle = CATEGORY_SUBTITLES[catKey] || "Explore Now";
                             
                             return (
                                 <Link 
                                     key={collection.id} 
                                     href={`/collection/${collection.handle}`} 
-                                    className="relative flex-shrink-0 w-[130px] h-[180px] rounded-2xl overflow-hidden group snap-align-start shadow-sm"
+                                    className="flex flex-col items-center gap-2 flex-shrink-0 snap-align-start w-[72px]"
                                 >
-                                    <Image
-                                        src={coverPhoto}
-                                        alt={collection.title}
-                                        fill
-                                        sizes="130px"
-                                        unoptimized={coverPhoto.startsWith("http")}
-                                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                                    />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent" />
-                                    <div className="absolute bottom-3 left-3 right-3 flex flex-col justify-end">
-                                        <h3 className="font-sans text-[10px] font-bold text-white tracking-widest uppercase leading-snug">
-                                            {collection.title}
-                                        </h3>
-                                        <div className="w-5 h-5 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center mt-1.5 border border-white/10 self-start group-hover:bg-white/40 transition-colors">
-                                            <ArrowRight className="w-2.5 h-2.5 text-white" strokeWidth={2.5} />
-                                        </div>
+                                    <div className="relative w-[64px] h-[64px] rounded-full overflow-hidden border border-neutral-200/60 dark:border-white/10 shadow-xs active:scale-95 transition-transform duration-200">
+                                        <Image
+                                            src={coverPhoto}
+                                            alt={collection.title}
+                                            fill
+                                            sizes="64px"
+                                            unoptimized={coverPhoto.startsWith("http")}
+                                            className="object-cover"
+                                        />
                                     </div>
+                                    <span className="font-sans text-[9px] font-bold text-center tracking-wider text-neutral-700 dark:text-neutral-300 uppercase truncate w-full">
+                                        {collection.title}
+                                    </span>
                                 </Link>
                             );
                         })}
