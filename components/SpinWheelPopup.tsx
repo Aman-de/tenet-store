@@ -115,7 +115,7 @@ export default function SpinWheelPopup() {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setIsOpen(true)}
-                    className="fixed bottom-[72px] lg:bottom-6 right-[60px] lg:right-[78px] z-40 w-[36px] h-[36px] lg:w-[42px] lg:h-[42px] bg-[#1A1A1A]/85 hover:bg-[#1A1A1A] text-white/90 hover:text-white rounded-full flex items-center justify-center shadow-md cursor-pointer border border-white/10 opacity-80 hover:opacity-100 transition-all duration-200"
+                    className="fixed bottom-[72px] lg:bottom-6 left-4 lg:left-6 z-40 w-[36px] h-[36px] lg:w-[42px] lg:h-[42px] bg-[#1A1A1A]/85 hover:bg-[#1A1A1A] text-white/90 hover:text-white rounded-full flex items-center justify-center shadow-md cursor-pointer border border-white/10 opacity-80 hover:opacity-100 transition-all duration-200"
                 >
                     <Gift className="w-4 h-4 lg:w-[18px] lg:h-[18px]" />
                 </motion.div>
