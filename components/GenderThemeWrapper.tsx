@@ -63,11 +63,11 @@ export default function GenderThemeWrapper({
                     --theme-bg-light: ${lightBg};
                     --theme-bg-dark: ${darkBg};
                 }
-                body {
+                html, body {
                     background-color: var(--theme-bg-light) !important;
                     transition: background-color 0.5s ease, color 0.3s ease;
                 }
-                .dark body {
+                .dark html, .dark body {
                     background-color: var(--theme-bg-dark) !important;
                 }
             `}</style>
