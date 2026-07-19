@@ -112,7 +112,7 @@ export default async function OrdersPage(props: { searchParams: Promise<{ [key: 
     const orders = await client.fetch(query, { email });
 
     return (
-        <div className="min-h-screen pt-32 lg:pt-24 pb-12 px-4 md:px-8">
+        <div className="min-h-screen pt-32 lg:pt-24 pb-32 lg:pb-12 px-4 md:px-8">
             <div className="max-w-4xl mx-auto space-y-8">
                 {/* Header */}
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-neutral-200 dark:border-neutral-800 pb-6">

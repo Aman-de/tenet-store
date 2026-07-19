@@ -1,6 +1,6 @@
 export default function RefundCancellationPage() {
     return (
-        <main className="pt-32 pb-24 bg-[#FAFAFA] min-h-screen">
+        <main className="pt-32 pb-32 lg:pb-24 min-h-screen">
             <div className="max-w-3xl mx-auto px-6">
                 <header className="mb-16 text-center">
                     <h1 className="font-serif text-4xl md:text-5xl text-[#1A1A1A] dark:text-[#F4F1ED] mb-6">Refund & Cancellation</h1>

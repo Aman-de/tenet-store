@@ -44,7 +44,7 @@ export default function Footer() {
     };
 
     return (
-        <footer className="bg-[#0A0A0A] text-white pt-24 pb-8 overflow-hidden">
+        <footer className="bg-[#0A0A0A] text-white pt-24 pb-28 lg:pb-8 overflow-hidden">
             <div className="max-w-[2000px] w-full mx-auto px-6 xl:px-12">
 
                 {/* Top Section: Newsletter */}

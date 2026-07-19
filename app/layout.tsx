@@ -102,7 +102,7 @@ export default async function RootLayout({
             </Script>
           </head>
           <body
-            className={`${playfair.variable} ${inter.variable} antialiased text-[#1A1A1A] dark:text-[#F4F1ED] dark:selection:bg-white dark:selection:text-black font-sans relative pb-20 lg:pb-0 overflow-x-hidden`}
+            className={`${playfair.variable} ${inter.variable} antialiased text-[#1A1A1A] dark:text-[#F4F1ED] dark:selection:bg-white dark:selection:text-black font-sans relative overflow-x-hidden`}
           >
             <noscript>
               <img

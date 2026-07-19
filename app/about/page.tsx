@@ -33,7 +33,7 @@ export default function AboutPage() {
     ];
 
     return (
-        <main className="min-h-screen pb-24 text-[#1A1A1A] dark:text-[#F4F1ED]">
+        <main className="min-h-screen pb-32 lg:pb-24 text-[#1A1A1A] dark:text-[#F4F1ED]">
             {/* Hero Section */}
             <div className="relative overflow-hidden py-32 md:py-48 px-6 border-b border-neutral-100 dark:border-neutral-800 bg-white dark:bg-[#111111]">
                 <div className="max-w-4xl mx-auto text-center relative z-10">

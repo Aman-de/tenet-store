@@ -37,7 +37,7 @@ export default function SupportPage() {
     };
 
     return (
-        <main className="min-h-screen pb-24 text-[#1A1A1A] dark:text-[#F4F1ED]">
+        <main className="min-h-screen pb-32 lg:pb-24 text-[#1A1A1A] dark:text-[#F4F1ED]">
             {/* Header */}
             <div className="py-24 px-6 border-b border-neutral-100 dark:border-neutral-800 bg-white dark:bg-[#111111] text-center">
                 <div className="max-w-3xl mx-auto">
