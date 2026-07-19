@@ -185,8 +185,27 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
                         </motion.button>
                     )}
 
-                    {/* Quick Add and Wishlist Overlay - Desktop Only */}
-                    <div className="absolute bottom-4 left-4 right-4 z-30 hidden md:flex gap-2 justify-center pointer-events-none">
+                    {/* Desktop Wishlist Button - Top Right of Image */}
+                    <motion.button
+                        whileTap={{ scale: 1.2 }}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            toggleWishlist(product);
+                        }}
+                        className="hidden md:flex absolute top-4 right-4 z-30 pointer-events-auto w-8 h-8 bg-white dark:bg-[#1A1A1A] text-neutral-800 dark:text-[#F4F1ED] rounded-full items-center justify-center shadow-md border border-neutral-100/50 dark:border-white/10 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer"
+                        aria-label="Wishlist"
+                    >
+                        <Heart
+                            size={16}
+                            className="transition-all duration-300"
+                            style={isWishlisted ? { fill: accentColor, stroke: accentColor } : { stroke: "currentColor" }}
+                            strokeWidth={2}
+                        />
+                    </motion.button>
+
+                    {/* Quick Add Overlay - Desktop Only */}
+                    <div className="absolute bottom-4 left-4 right-4 z-30 hidden md:block pointer-events-none">
                         {/* Desktop: Full Width Text Button */}
                         <button
                             onClick={(e) => {
@@ -209,31 +228,6 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
                                 ? "Sold Out"
                                 : (addingState === 'idle' ? "Quick Add +" : (addingState === 'adding' ? "Adding..." : "Added"))}
                         </button>
-                        
-                        {/* Desktop: Wishlist Button */}
-                        <motion.button
-                            whileTap={{ scale: 1.2 }}
-                            onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                toggleWishlist(product);
-                            }}
-                            className={`
-                                absolute top-4 right-4 pointer-events-auto
-                                w-8 h-8 text-[#1A1A1A] dark:text-[#F4F1ED]
-                                flex items-center justify-center
-                                active:scale-90 transition-all duration-500 ease-out
-                                opacity-0 group-hover:opacity-100
-                            `}
-                            aria-label="Wishlist"
-                        >
-                            <Heart
-                                size={22}
-                                className="transition-all duration-300"
-                                style={isWishlisted ? { fill: accentColor, stroke: accentColor } : { stroke: "black" }}
-                                strokeWidth={2}
-                            />
-                        </motion.button>
                     </div>
 
                     {/* Size Selector Popup Overlay */}
