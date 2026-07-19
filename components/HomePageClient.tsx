@@ -94,11 +94,11 @@ export default function HomePageClient({ products, collections }: HomePageClient
     const summerEditBg = isWoman ? '/images/editorial_campaign_women.webp' : '/images/editorial_campaign.webp';
 
     const bestsellerViewAllHref = gender === "woman" 
-        ? '/collection/kurti' 
+        ? '/search?gender=woman' 
         : gender === "man"
-            ? '/collection/shirts'
+            ? '/search?gender=man'
             : gender === "gadget"
-                ? '/search?category=gadgets'
+                ? '/search?gender=gadget'
                 : '/search';
 
     return (

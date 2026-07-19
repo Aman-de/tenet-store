@@ -25,7 +25,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     return (
         <main className="min-h-screen">
             {/* Header */}
-            <section className="max-w-7xl mx-auto px-4 md:px-6 pt-32 pb-8">
+            <section className="max-w-7xl mx-auto px-4 md:px-6 pt-20 lg:pt-28 pb-4">
                 <div className="flex flex-col gap-2">
                     <span className="text-xs font-bold uppercase tracking-widest text-[#1A1A1A] dark:text-[#F4F1ED]/60">Search Results</span>
                     <h1 className="text-3xl md:text-4xl font-serif text-[#1A1A1A] dark:text-[#F4F1ED]">
@@ -38,7 +38,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
             </section>
 
             {/* Results Grid */}
-            <section className="max-w-7xl mx-auto px-4 md:px-6 pb-20">
+            <section className="max-w-7xl mx-auto px-4 md:px-6 pb-10 lg:pb-16">
                 <SortedProductGrid products={products} sizeType="mixed" />
             </section>
 
