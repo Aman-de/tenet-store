@@ -100,7 +100,7 @@ export default function SortedProductGrid({ products: rawProducts, showSizeFilte
     return (
         <div>
             {/* Utility Bar */}
-            <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3 mb-3.5 lg:mb-6">
+            <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-2.5 mb-2.5 lg:mb-6">
                 {/* Left side: Results Count and Size Filter */}
                 <div className={`${showSizeFilter ? 'flex' : 'hidden md:flex'} flex-wrap items-center gap-4`}>
                     <span className="hidden md:flex text-xs font-bold tracking-widest text-neutral-400 uppercase items-center h-9">

@@ -44,7 +44,7 @@ export default function Footer() {
     };
 
     return (
-        <footer className="bg-[#0A0A0A] dark:bg-[var(--theme-bg-dark)] text-white pt-24 pb-28 lg:pb-8 overflow-hidden transition-colors duration-500">
+        <footer className="bg-[#0A0A0A] dark:bg-[var(--theme-bg-dark)] text-white pt-12 md:pt-20 pb-28 lg:pb-8 overflow-hidden transition-colors duration-500">
             <div className="max-w-[2000px] w-full mx-auto px-6 xl:px-12">
 
                 {/* Top Section: Newsletter */}

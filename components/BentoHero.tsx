@@ -228,7 +228,7 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
             </div>
 
             {/* MOBILE LAYOUT (lg:hidden) */}
-            <div className="lg:hidden flex flex-col w-full gap-4 px-4 pt-3 pb-2">
+            <div className="lg:hidden flex flex-col w-full gap-3 px-4 pt-2 pb-1">
                 {/* 1. Hero Banner Carousel */}
                 <div ref={mobileEmblaRef} className="overflow-hidden w-full rounded-2xl">
                     <div className="flex w-full">
@@ -355,8 +355,8 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                 </div>
 
                 {/* 3. Shop By Category Section */}
-                <div className="w-full pt-2">
-                    <h2 className="font-serif text-sm font-bold tracking-wider text-neutral-800 dark:text-[#F4F1ED] uppercase mb-3">
+                <div className="w-full">
+                    <h2 className="font-serif text-[11px] font-bold tracking-wider text-neutral-800 dark:text-[#F4F1ED] uppercase mb-2">
                         Shop By Category
                     </h2>
                     <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-none snap-x snap-mandatory">

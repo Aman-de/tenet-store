@@ -107,8 +107,8 @@ export default function HomePageClient({ products, collections }: HomePageClient
             <BentoHero spotlightProducts={spotlightProducts} collections={collections} />
 
             {/* BESTSELLERS SLIDER */}
-            <div className="w-full pt-4 pb-6 lg:py-12">
-                <div className="flex items-center justify-between mb-4 px-4 lg:px-12">
+            <div className="w-full pt-2 pb-4 lg:py-12">
+                <div className="flex items-center justify-between mb-2 px-4 lg:px-12">
                     <h2 className="font-serif text-[22px] lg:text-3xl font-bold tracking-wider text-neutral-800 dark:text-[#F4F1ED] uppercase">
                         Bestsellers
                     </h2>
@@ -119,7 +119,7 @@ export default function HomePageClient({ products, collections }: HomePageClient
                 </div>
                 
                 {/* Horizontal Scroll Container */}
-                <div className="flex gap-4 lg:gap-6 overflow-x-auto px-4 lg:px-12 pb-6 scrollbar-none snap-x snap-mandatory">
+                <div className="flex gap-4 lg:gap-6 overflow-x-auto px-4 lg:px-12 pb-4 scrollbar-none snap-x snap-mandatory">
                     {bestsellerProducts.map((product) => (
                         <div key={product.id} className="flex-shrink-0 w-[180px] lg:w-[240px] snap-align-start">
                             <ProductCard product={product} />
@@ -180,8 +180,8 @@ export default function HomePageClient({ products, collections }: HomePageClient
             </div>
 
             {/* CUSTOMER REVIEWS SLIDER */}
-            <div className="w-full px-6 xl:px-12 py-10">
-                <div className="flex items-center justify-between mb-6">
+            <div className="w-full px-6 xl:px-12 pt-4 pb-6 lg:py-12">
+                <div className="flex items-center justify-between mb-3">
                     <h2 className="font-serif text-xl md:text-2xl font-bold tracking-tight text-[#1A1A1A] dark:text-[#F4F1ED] uppercase">
                         {isWoman ? "Loved By Real Women" : "Loved By Real Men"}
                     </h2>
@@ -192,7 +192,7 @@ export default function HomePageClient({ products, collections }: HomePageClient
                 </div>
                 
                 {/* Horizontal Review Scroll Container */}
-                <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-none snap-x snap-mandatory">
+                <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-none snap-x snap-mandatory">
                     {reviews.map((rev, index) => (
                         <div 
                             key={index} 
