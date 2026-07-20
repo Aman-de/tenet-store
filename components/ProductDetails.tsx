@@ -979,7 +979,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
         <>
             {/* Desktop Sticky Buy Bar removed */}
 
-            <div className="max-w-[2000px] w-full mx-auto px-0 md:px-8 xl:px-12 pt-0 grid grid-cols-1 lg:landscape:grid-cols-[1.3fr_1fr] xl:grid-cols-[1.3fr_1fr] 2xl:grid-cols-[1.5fr_1fr] gap-0 lg:landscape:gap-[4vw] xl:gap-[6vw] 2xl:gap-[8vw]">
+            <div className="max-w-[2000px] w-full mx-auto px-0 md:px-8 xl:px-12 pt-0 md:pt-6 xl:pt-10 grid grid-cols-1 lg:landscape:grid-cols-[1.3fr_1fr] xl:grid-cols-[1.3fr_1fr] 2xl:grid-cols-[1.5fr_1fr] gap-0 lg:landscape:gap-[4vw] xl:gap-[6vw] 2xl:gap-[8vw]">
                 <SizeGuide isOpen={isSizeGuideOpen} onClose={() => setIsSizeGuideOpen(false)} />
 
             {/* Left Column: Gallery */}
