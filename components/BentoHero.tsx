@@ -228,7 +228,7 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
             </div>
 
             {/* MOBILE LAYOUT (lg:hidden) */}
-            <div className="lg:hidden flex flex-col w-full gap-4 px-4 pb-2">
+            <div className="lg:hidden flex flex-col w-full gap-6 px-4 pt-5 pb-4">
                 {/* 1. Hero Banner Carousel */}
                 <div ref={mobileEmblaRef} className="overflow-hidden w-full rounded-2xl">
                     <div className="flex w-full">
