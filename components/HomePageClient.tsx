@@ -119,9 +119,9 @@ export default function HomePageClient({ products, collections }: HomePageClient
                 </div>
                 
                 {/* Horizontal Scroll Container */}
-                <div className="flex gap-4 lg:gap-6 overflow-x-auto px-4 lg:px-12 pb-4 scrollbar-none snap-x snap-mandatory">
+                <div className="flex gap-3 lg:gap-6 overflow-x-auto px-4 lg:px-12 pb-4 scrollbar-none snap-x snap-mandatory">
                     {bestsellerProducts.map((product) => (
-                        <div key={product.id} className="flex-shrink-0 w-[180px] lg:w-[240px] snap-align-start">
+                        <div key={product.id} className="flex-shrink-0 w-[145px] sm:w-[165px] lg:w-[240px] snap-align-start">
                             <ProductCard product={product} />
                         </div>
                     ))}
