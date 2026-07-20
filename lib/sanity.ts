@@ -410,6 +410,7 @@ function mapProduct(p: any): Product {
         setOriginalPrice: p.setOriginalPrice,
         isBestSeller: p.isBestSeller,
         bestSellerRank: p.bestSellerRank,
+        description: p.description,
     };
 }
 
@@ -463,6 +464,7 @@ export async function getProduct(slug: string) {
     price,
     originalPrice,
     category,
+    description,
     sizeType,
     sizes,
     gender,

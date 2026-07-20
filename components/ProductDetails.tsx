@@ -38,6 +38,117 @@ const getDeliveryDays = (city: string) => {
     return 4;
 };
 
+interface SignatureInfo {
+    title: string;
+    details: string[];
+}
+
+function getSignatureDetails(category: string, gender: string): SignatureInfo {
+    const catLower = (category || "").trim().toLowerCase();
+    const isGadget = catLower === 'gadgets' || catLower === 'electronics';
+    const isAccessory = catLower === 'accessories' || catLower === 'footwear';
+    
+    if (isGadget) {
+        return {
+            title: "Tech Highlights",
+            details: [
+                "Premium design and flawless build quality",
+                "Meticulously engineered for modern convenience",
+                "Officially sealed with warranty and support"
+            ]
+        };
+    } else if (isAccessory) {
+        return {
+            title: "Craftsmanship Details",
+            details: [
+                "Handcrafted from premium selected materials",
+                "Durable details designed to elevate your everyday carry",
+                "Clean silhouette that ages beautifully over time"
+            ]
+        };
+    } else {
+        // Apparel
+        return {
+            title: "Signature details",
+            details: [
+                "Breathable Cotton Blend that keeps you cool",
+                "Tailored Straight Silhouette flatters all body types",
+                "Designed For All-Day Comfort without losing shape"
+            ]
+        };
+    }
+}
+
+function getProductStory(category: string, gender: string, dbDescription?: string) {
+    const catLower = (category || "").trim().toLowerCase();
+    const isGadget = catLower === 'gadgets' || catLower === 'electronics';
+    const isAccessory = catLower === 'accessories' || catLower === 'footwear';
+
+    if (isGadget) {
+        return {
+            heading: "The Engineering",
+            sub: dbDescription || "Built for everyday efficiency.",
+            bullets: [
+                "Crafted with aerospace-grade durable materials.",
+                "Tested to meet rigorous flagship standards.",
+                "Seamless integration. Guaranteed."
+            ],
+            styleNotesTitle: "HIGHLIGHTS",
+            styleNotesText: "Pair with premium accessories for a fully connected, high-performance ecosystem.",
+            materialTitle: "Specifications",
+            materials: [
+                "Aerospace-grade construction",
+                "Scratch-resistant glass coating",
+                "Splashproof and dustproof sealing",
+                "Advanced rechargeable cells"
+            ],
+            careText: "Keep away from direct heat source. Use authorized chargers only."
+        };
+    } else if (isAccessory) {
+        return {
+            heading: "The Design",
+            sub: dbDescription || "Built for daily distinction.",
+            bullets: [
+                "Handcrafted from select high-grade materials.",
+                "Heavy-duty stitching and premium fittings.",
+                "Gets better with age. Guaranteed."
+            ],
+            styleNotesTitle: "STYLE NOTES",
+            styleNotesText: "A versatile statement piece that pairs effortlessly with quiet luxury ensembles.",
+            materialTitle: "Material & Build",
+            materials: [
+                "Premium tanned material",
+                "High-tensile stitching",
+                "Reinforced structural design",
+                "Rust-resistant metal alloy details"
+            ],
+            careText: "Wipe clean with a dry microfibre cloth. Keep away from direct moisture."
+        };
+    } else {
+        return {
+            heading: "The Story",
+            sub: dbDescription || "Built for everyday luxury.",
+            bullets: [
+                "Handcrafted with premium fade-resistant cotton.",
+                "Tailored fit that flatters without restricting.",
+                "Gets softer with every wash. Guaranteed."
+            ],
+            styleNotesTitle: "STYLE NOTES",
+            styleNotesText: gender === 'woman' 
+                ? "Pair with neutral heels and minimal pearl jewelry for an effortlessly elevated evening look."
+                : "Pair with premium sneakers and a structured jacket for a modern, refined casual look.",
+            materialTitle: "Material & Care",
+            materials: [
+                "92% Premium Cotton",
+                "8% Elastane",
+                "Breathable weave",
+                "Soft-touch finish"
+            ],
+            careText: "Dry clean or gentle hand wash recommended. Store folded to maintain shape."
+        };
+    }
+}
+
 interface ProductDetailsProps {
     product: Product;
     reviews?: Review[];
@@ -317,6 +428,9 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
     const targetGender = product.gender ? product.gender.toLowerCase() : gender;
     const isWoman = targetGender === "woman" || (targetGender === "unisex" && gender === "woman");
     const accentColor = "var(--accent-color)";
+    
+    const signatureInfo = useMemo(() => getSignatureDetails(product.category, product.gender || "man"), [product.category, product.gender]);
+    const story = useMemo(() => getProductStory(product.category, product.gender || "man", product.description), [product.category, product.gender, product.description]);
     
     const [mounted, setMounted] = useState(false);
     useEffect(() => {
@@ -602,47 +716,56 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
     };
 
     const handleAutoLocate = () => {
-        if (!navigator.geolocation) return;
+        if (typeof window === "undefined" || !navigator || !navigator.geolocation) {
+            setPincodeError("Location access is not supported by your browser.");
+            return;
+        }
 
         setIsLocating(true);
         setPincodeError(null);
-        navigator.geolocation.getCurrentPosition(async (position) => {
-            try {
-                const { latitude, longitude } = position.coords;
-                const res = await fetch(`/api/geocode?lat=${latitude}&lon=${longitude}`);
-                if (!res.ok) throw new Error("Network error");
-                
-                const data = await res.json();
-                if (data && !data.error) {
-                    const addr = data.address || {};
-                    let zip = addr.postcode || "";
-                    if (zip) {
-                        zip = zip.replace(/[^0-9]/g, '').slice(0, 6);
-                    }
-                    if (zip && zip.length === 6) {
-                        setPincode(zip);
-                        handleCheckPincode(zip);
+        try {
+            navigator.geolocation.getCurrentPosition(async (position) => {
+                try {
+                    const { latitude, longitude } = position.coords;
+                    const res = await fetch(`/api/geocode?lat=${latitude}&lon=${longitude}`);
+                    if (!res.ok) throw new Error("Network error");
+                    
+                    const data = await res.json();
+                    if (data && !data.error) {
+                        const addr = data.address || {};
+                        let zip = addr.postcode || "";
+                        if (zip) {
+                            zip = zip.replace(/[^0-9]/g, '').slice(0, 6);
+                        }
+                        if (zip && zip.length === 6) {
+                            setPincode(zip);
+                            handleCheckPincode(zip);
+                        } else {
+                            setPincodeError("Could not detect a valid 6-digit pincode automatically.");
+                        }
                     } else {
-                        setPincodeError("Could not detect a valid 6-digit pincode automatically.");
+                        setPincodeError("Could not resolve location. Please enter pincode manually.");
                     }
-                } else {
-                    setPincodeError("Could not resolve location. Please enter pincode manually.");
+                } catch (error) {
+                    console.error("Auto-locate failed", error);
+                    setPincodeError("Location access failed or timed out.");
+                } finally {
+                    setIsLocating(false);
                 }
-            } catch (error) {
-                console.error("Auto-locate failed", error);
-                setPincodeError("Location access failed or timed out.");
-            } finally {
+            }, (err) => {
+                console.error(err);
+                setPincodeError("Please enable location access to auto-locate.");
                 setIsLocating(false);
-            }
-        }, (err) => {
-            console.error(err);
-            setPincodeError("Please enable location access to auto-locate.");
+            }, {
+                enableHighAccuracy: false,
+                timeout: 8000,
+                maximumAge: 10000
+            });
+        } catch (err) {
+            console.error("Geolocation call failed", err);
+            setPincodeError("Location detection is currently unavailable.");
             setIsLocating(false);
-        }, {
-            enableHighAccuracy: false,
-            timeout: 8000,
-            maximumAge: 10000
-        });
+        }
     };
 
     useEffect(() => {
@@ -1082,36 +1205,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
  
                 </div>
 
-                {/* Why You'll Love It */}
-                <div className="bg-white/45 dark:bg-black/15 backdrop-blur-sm border border-white/50 dark:border-white/5 rounded-2xl p-5 mb-5 shadow-sm relative overflow-hidden">
-                    <div className="absolute -top-6 -right-6 opacity-[0.03] dark:opacity-[0.02]">
-                        <Sparkles className="w-32 h-32 text-[#1A1A1A] dark:text-white" />
-                    </div>
-                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-amber-800 dark:text-amber-400 block mb-4 flex items-center gap-2 relative z-10">
-                        <Sparkles className="w-3.5 h-3.5" />
-                        Signature details
-                    </span>
-                    <div className="flex flex-col gap-3.5 relative z-10">
-                        <div className="flex items-start gap-3">
-                            <div className="w-5 h-5 rounded-full bg-amber-50 dark:bg-amber-950/20 border border-amber-200/40 dark:border-amber-900/30 flex items-center justify-center shrink-0 mt-0.5">
-                                <Check className="w-3 h-3 text-amber-700 dark:text-amber-400" strokeWidth={3} />
-                            </div>
-                            <span className="text-[12.5px] font-medium text-neutral-700 dark:text-neutral-300 leading-snug">Breathable Cotton Blend that keeps you cool</span>
-                        </div>
-                        <div className="flex items-start gap-3">
-                            <div className="w-5 h-5 rounded-full bg-amber-50 dark:bg-amber-950/20 border border-amber-200/40 dark:border-amber-900/30 flex items-center justify-center shrink-0 mt-0.5">
-                                <Check className="w-3 h-3 text-amber-700 dark:text-amber-400" strokeWidth={3} />
-                            </div>
-                            <span className="text-[12.5px] font-medium text-neutral-700 dark:text-neutral-300 leading-snug">Tailored Straight Silhouette flatters all body types</span>
-                        </div>
-                        <div className="flex items-start gap-3">
-                            <div className="w-5 h-5 rounded-full bg-amber-50 dark:bg-amber-950/20 border border-amber-200/40 dark:border-amber-900/30 flex items-center justify-center shrink-0 mt-0.5">
-                                <Check className="w-3 h-3 text-amber-700 dark:text-amber-400" strokeWidth={3} />
-                            </div>
-                            <span className="text-[12.5px] font-medium text-neutral-700 dark:text-neutral-300 leading-snug">Designed For All-Day Comfort without losing shape</span>
-                        </div>
-                    </div>
-                </div>
+
 
 
 
@@ -1468,6 +1562,27 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                     </div>
                 </div>
 
+                {/* Why You'll Love It / Signature Details */}
+                <div className="bg-white/45 dark:bg-black/15 backdrop-blur-sm border border-white/50 dark:border-white/5 rounded-2xl p-5 mb-6 shadow-sm relative overflow-hidden">
+                    <div className="absolute -top-6 -right-6 opacity-[0.03] dark:opacity-[0.02]">
+                        <Sparkles className="w-32 h-32 text-[#1A1A1A] dark:text-white" />
+                    </div>
+                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-amber-800 dark:text-amber-400 block mb-4 flex items-center gap-2 relative z-10">
+                        <Sparkles className="w-3.5 h-3.5" />
+                        {signatureInfo.title}
+                    </span>
+                    <div className="flex flex-col gap-3.5 relative z-10">
+                        {signatureInfo.details.map((detail, idx) => (
+                            <div key={idx} className="flex items-start gap-3">
+                                <div className="w-5 h-5 rounded-full bg-amber-50 dark:bg-amber-950/20 border border-amber-200/40 dark:border-amber-900/30 flex items-center justify-center shrink-0 mt-0.5">
+                                    <Check className="w-3 h-3 text-amber-700 dark:text-amber-400" strokeWidth={3} />
+                                </div>
+                                <span className="text-[12.5px] font-medium text-neutral-700 dark:text-neutral-300 leading-snug">{detail}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
                 {/* Luxury Coupon Block */}
                 {isEligibleForFirst20 && (
                     <div className="mb-6 relative overflow-hidden flex flex-col items-center justify-center bg-gradient-to-br from-white/30 to-[#F5F2EB]/30 dark:from-[#111111]/30 dark:to-[#1A1A1A]/30 backdrop-blur-md border-y-2 border-dashed border-[#A0604A]/30 px-4 py-4 rounded-sm shadow-sm">
@@ -1581,20 +1696,24 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
 
                 {/* Editorial Product Story */}
                 <div className="pt-8 pb-6 border-t border-neutral-200/60 dark:border-white/10 mt-2">
-                    <h2 className="font-serif text-2xl md:text-3xl text-[#1A1A1A] dark:text-[#F4F1ED] mb-4">The Story</h2>
+                    <h2 className="font-serif text-2xl md:text-3xl text-[#1A1A1A] dark:text-[#F4F1ED] mb-4">{story.heading}</h2>
                     <div className="text-sm md:text-base text-neutral-600 dark:text-neutral-400 leading-relaxed mb-6 font-sans">
-                        <p className="font-bold text-[#1A1A1A] dark:text-[#F4F1ED] mb-2">Built for everyday luxury.</p>
+                        <p className="font-bold text-[#1A1A1A] dark:text-[#F4F1ED] mb-2">{story.sub}</p>
                         <ul className="space-y-2">
-                            <li className="flex items-center gap-2"><Check className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0"/> Handcrafted with premium fade-resistant cotton.</li>
-                            <li className="flex items-center gap-2"><Check className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0"/> Tailored fit that flatters without restricting.</li>
-                            <li className="flex items-center gap-2"><Check className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0"/> Gets softer with every wash. Guaranteed.</li>
+                            {story.bullets.map((bullet, idx) => (
+                                <li key={idx} className="flex items-center gap-2">
+                                    <Check className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0"/> {bullet}
+                                </li>
+                            ))}
                         </ul>
                     </div>
                     {/* Style Notes */}
                     <div className="mb-8 bg-white/30 dark:bg-black/20 backdrop-blur-md p-5 border border-neutral-200/60 dark:border-white/5 rounded-xl shadow-sm">
-                        <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#1A1A1A] dark:text-[#F4F1ED] block mb-2 flex items-center gap-2"><Sparkles className="w-3 h-3"/> STYLE NOTES</span>
+                        <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#1A1A1A] dark:text-[#F4F1ED] block mb-2 flex items-center gap-2">
+                            <Sparkles className="w-3 h-3"/> {story.styleNotesTitle}
+                        </span>
                         <p className="text-sm font-sans text-neutral-600 dark:text-neutral-400">
-                            Pair with neutral heels and minimal pearl jewelry for an effortlessly elevated evening look.
+                            {story.styleNotesText}
                         </p>
                     </div>
                     
@@ -1623,18 +1742,16 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         <div className="bg-neutral-50 dark:bg-[#111111] p-5 rounded-xl border border-neutral-100 dark:border-white/5">
                             <h3 className="text-[10px] font-bold uppercase tracking-wider text-[#1A1A1A] dark:text-[#F4F1ED] mb-2 flex items-center gap-1.5">
                                 <Sparkles className="w-3.5 h-3.5" />
-                                Material & Care
+                                {story.materialTitle}
                             </h3>
                             <div className="text-[11px] xs:text-xs text-neutral-500 leading-relaxed">
                                 <ul className="list-disc pl-4 space-y-1 mt-1 text-neutral-600 dark:text-neutral-400">
-                                    <li>92% Premium Cotton</li>
-                                    <li>8% Elastane</li>
-                                    <li>Breathable weave</li>
-                                    <li>Soft-touch finish</li>
+                                    {story.materials.map((mat, idx) => (
+                                        <li key={idx}>{mat}</li>
+                                    ))}
                                 </ul>
                                 <p className="mt-3">
-                                    Dry clean or gentle hand wash recommended.<br />
-                                    Store folded to maintain shape.
+                                    {story.careText}
                                 </p>
                             </div>
                         </div>
