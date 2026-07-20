@@ -1170,7 +1170,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 {/* Breadcrumb pseudo */}
                 <span className="text-[9px] xs:text-[10px] font-bold tracking-[0.3em] uppercase text-neutral-500 mb-2">{product.category}</span>
 
-                <div className="flex flex-col mb-4">
+                <div className="flex flex-col mb-2">
                     <h1 className="font-serif text-[24px] md:text-[40px] lg:text-[44px] text-[#1A1A1A] dark:text-[#F4F1ED] font-bold leading-[1.2] tracking-tight mb-2.5">
                         {(() => {
                             const raw = displayTitle.toLowerCase() === 'blue denim' 
@@ -1212,8 +1212,8 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
 
                 {/* Piece Selector (for Set Components) */}
                 {product.enableSetComponents && (
-                    <div className="mb-6 mt-1">
-                        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED] block mb-3">Choose Option</span>
+                    <div className="mb-4 mt-1">
+                        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED] block mb-2">Choose Option</span>
                         <div className="grid grid-cols-3 gap-3 pb-1">
                             {(['set', 'top', 'bottom'] as const).map((piece) => {
                                 let label = "Full Set";
@@ -1285,7 +1285,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
 
                 {/* Color Selector (Variants) */}
                 {hasVariants ? (
-                    <div className="mb-6">
+                    <div className="mb-4">
                         <div className="flex justify-between items-center mb-2">
                             <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Selected Color</span>
                             <span className="text-xs font-serif text-[#1A1A1A] dark:text-[#F4F1ED]">{selectedVariant?.colorName}</span>
@@ -1322,7 +1322,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                     </div>
                 ) : (
                     /* Legacy Colors Fallback */
-                    <div className="mb-6">
+                    <div className="mb-4">
                         <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500 block mb-2">Color</span>
                         <div className="flex gap-3">
                             {product.colors && product.colors.map((color) => (
@@ -1338,8 +1338,8 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
 
                 {/* Size Selector */}
                 {showSizeSelector && (
-                    <div id="size-selector-section" className="mb-6">
-                        <div className="flex justify-between items-center mb-3">
+                    <div id="size-selector-section" className="mb-4">
+                        <div className="flex justify-between items-center mb-2">
                             <div className="flex items-baseline gap-2">
                                 <span className="text-[10px] font-bold uppercase tracking-wider text-[#1A1A1A] dark:text-[#F4F1ED]">Select Size</span>
                                 <span className="text-[9px] uppercase tracking-widest font-bold text-neutral-400">| Model is 5'8" wearing M</span>
@@ -1398,7 +1398,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 )}
 
                 {/* Pincode Check (Moved Down below Size) */}
-                <div className="mb-6 bg-neutral-50 dark:bg-[#111111] border border-neutral-100/80 dark:border-white/5 p-4 rounded-xl shadow-sm flex items-start gap-3">
+                <div className="mb-4 bg-neutral-50 dark:bg-[#111111] border border-neutral-100/80 dark:border-white/5 p-4 rounded-xl shadow-sm flex items-start gap-3">
                     <div className="flex-1 w-full flex flex-col gap-2 relative">
                         <div className="flex items-center justify-between w-full">
                             <div className="text-[13px] font-bold text-[#1A1A1A] dark:text-[#F4F1ED]">📍 Deliver to</div>
@@ -1458,7 +1458,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 </div>
 
                 {/* PRICING BLOCK (Moved down for Desktop, hidden on Mobile because Sticky CTA handles price) */}
-                <div className="hidden md:flex items-center justify-between bg-white/30 dark:bg-black/20 backdrop-blur-md border border-neutral-200/50 dark:border-white/10 rounded-xl p-4 mb-6 shadow-sm relative overflow-hidden">
+                <div className="hidden md:flex items-center justify-between bg-white/30 dark:bg-black/20 backdrop-blur-md border border-neutral-200/50 dark:border-white/10 rounded-xl p-4 mb-4 shadow-sm relative overflow-hidden">
                     <div className="flex flex-col">
                         <div className="flex items-end gap-2 mb-1">
                             <span className="font-serif text-[38px] leading-none text-[#1A1A1A] dark:text-[#F4F1ED] font-bold tracking-tight">₹{displayPrice.toLocaleString('en-IN')}</span>
@@ -1478,7 +1478,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         </div>
                     )}
                 </div>                {/* Action Buttons (Desktop Only) */}
-                <div className="hidden md:flex flex-col gap-2.5 mb-6">
+                <div className="hidden md:flex flex-col gap-2.5 mb-4">
                     {selectedVariant?.stock !== undefined && selectedVariant.stock <= 5 && selectedVariant.stock > 0 && (
                         <div className="flex items-center gap-2 justify-center mb-1">
                             <span className="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
@@ -1535,7 +1535,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 </div>
 
                 {/* Core Trust Guarantees */}
-                <div className="grid grid-cols-2 gap-y-3 gap-x-4 mb-6 mt-2 px-1 text-[12px] sm:text-[13px] font-semibold text-[#1A1A1A] dark:text-[#F4F1ED]">
+                <div className="grid grid-cols-2 gap-y-3 gap-x-4 mb-4 mt-2 px-1 text-[12px] sm:text-[13px] font-semibold text-[#1A1A1A] dark:text-[#F4F1ED]">
                     <div className="flex items-center gap-2">
                         <div className="bg-emerald-100 dark:bg-emerald-900/30 p-0.5 rounded-full shrink-0">
                             <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" strokeWidth={3} />
