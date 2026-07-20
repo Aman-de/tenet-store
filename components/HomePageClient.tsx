@@ -107,7 +107,7 @@ export default function HomePageClient({ products, collections }: HomePageClient
             <BentoHero spotlightProducts={spotlightProducts} collections={collections} />
 
             {/* BESTSELLERS SLIDER */}
-            <div className="w-full pt-2 pb-4 lg:py-12">
+            <div className="w-full pt-0 pb-1 lg:py-12">
                 <div className="flex items-center justify-between mb-2 px-4 lg:px-12">
                     <h2 className="font-serif text-[22px] lg:text-3xl font-bold tracking-wider text-neutral-800 dark:text-[#F4F1ED] uppercase">
                         Bestsellers
