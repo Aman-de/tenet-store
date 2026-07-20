@@ -747,13 +747,13 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         setPincodeError("Could not resolve location. Please enter pincode manually.");
                     }
                 } catch (error) {
-                    console.error("Auto-locate failed", error);
+                    console.warn("Auto-locate geocode failed", error);
                     setPincodeError("Location access failed or timed out.");
                 } finally {
                     setIsLocating(false);
                 }
             }, (err) => {
-                console.error(err);
+                console.warn("Geolocation browser error:", err.message || err);
                 setPincodeError("Please enable location access to auto-locate.");
                 setIsLocating(false);
             }, {
@@ -762,7 +762,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 maximumAge: 10000
             });
         } catch (err) {
-            console.error("Geolocation call failed", err);
+            console.warn("Geolocation call failed:", err);
             setPincodeError("Location detection is currently unavailable.");
             setIsLocating(false);
         }
