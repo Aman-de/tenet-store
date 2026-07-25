@@ -12,14 +12,16 @@ interface GenderContextType {
 const GenderContext = createContext<GenderContextType | undefined>(undefined);
 
 export function GenderProvider({ children }: { children: React.ReactNode }) {
-    const [gender, setGenderState] = useState<Gender>("all");
+    const [gender, setGenderState] = useState<Gender>("man");
 
     useEffect(() => {
         // Read from localStorage only after component mounts in the browser
         try {
             const savedGender = localStorage.getItem("tenet-active-gender") as Gender | null;
-            if (savedGender === "man" || savedGender === "woman" || savedGender === "gadget" || savedGender === "all") {
+            if (savedGender === "man" || savedGender === "woman") {
                 setGenderState(savedGender);
+            } else {
+                setGenderState("man");
             }
         } catch (error) {
             console.error("Failed to read from localStorage:", error);
