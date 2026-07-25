@@ -37,6 +37,8 @@ export default function SortedProductGrid({ products: rawProducts, showSizeFilte
 
     // Filter products dynamically by the active global gender
     const products = rawProducts.filter(p => {
+        const cat = p.category ? p.category.toLowerCase() : '';
+        if (cat === 'gadgets' || cat === 'electronics') return false;
         const g = p.gender ? p.gender.toLowerCase() : 'man';
         return g === activeGender || g === 'unisex';
     });

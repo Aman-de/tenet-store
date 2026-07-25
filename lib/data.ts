@@ -18,6 +18,16 @@ export interface Review {
     images?: string[];
 }
 
+export interface GadgetModelOption {
+    name: string;
+    price: number;
+    originalPrice?: number;
+    discountLabel?: string;
+    image?: string;
+    description?: string;
+    variants?: Variant[];
+}
+
 export interface Product {
     id: string;
     title: string;
@@ -53,6 +63,9 @@ export interface Product {
     topImages?: string[];
     bottomName?: string;
     bottomImages?: string[];
+
+    // Gadget Lineup Model Options
+    gadgetModels?: GadgetModelOption[];
 }
 
 export const products: Product[] = [

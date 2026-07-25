@@ -294,6 +294,31 @@ export const product = {
             type: 'array',
             of: [{ type: 'reference', to: [{ type: 'product' }] }],
             description: 'Select products that pair well with this item'
+        },
+        {
+            name: 'gadgetModels',
+            title: 'Gadget Model Variants (Choose Option)',
+            type: 'array',
+            of: [{
+                type: 'object',
+                title: 'Model Option',
+                fields: [
+                    { name: 'name', title: 'Sub-Model Name', type: 'string' },
+                    { name: 'price', title: 'Price (INR)', type: 'number' },
+                    { name: 'originalPrice', title: 'Original Price (INR)', type: 'number' },
+                    { name: 'discountLabel', title: 'Discount Label', type: 'string' },
+                    { name: 'image', title: 'Option Thumbnail', type: 'image' },
+                    { name: 'description', title: 'Sub-Model Description', type: 'text' },
+                    { name: 'variants', title: 'Color Variants', type: 'array', of: [{
+                        type: 'object',
+                        fields: [
+                            { name: 'colorName', title: 'Color Name', type: 'string' },
+                            { name: 'colorHex', title: 'Color Hex', type: 'color' },
+                            { name: 'images', title: 'Color Images', type: 'array', of: [{ type: 'image' }] }
+                        ]
+                    }]}
+                ]
+            }]
         }
     ],
 }

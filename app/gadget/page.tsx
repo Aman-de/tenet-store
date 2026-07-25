@@ -9,7 +9,7 @@ export default function GadgetRedirect() {
     const router = useRouter();
 
     useEffect(() => {
-        setGender("gadget");
+        setGender("all");
         router.replace("/");
     }, [setGender, router]);
 

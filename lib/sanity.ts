@@ -411,6 +411,20 @@ function mapProduct(p: any): Product {
         isBestSeller: p.isBestSeller,
         bestSellerRank: p.bestSellerRank,
         description: p.description,
+        gadgetModels: (p.gadgetModels || []).map((m: any) => ({
+            name: m.name,
+            price: m.price,
+            originalPrice: m.originalPrice,
+            discountLabel: m.discountLabel,
+            image: m.image,
+            description: m.description,
+            variants: (m.variants || []).map((v: any) => ({
+                colorName: v.colorName,
+                colorHex: typeof v.colorHex === 'object' && v.colorHex?.hex ? v.colorHex.hex : v.colorHex,
+                stock: v.stock || 10,
+                images: v.images || []
+            }))
+        }))
     };
 }
 
@@ -490,6 +504,19 @@ export async function getProduct(slug: string) {
         "images": images[].asset->url,
         "topImages": topImages[].asset->url,
         "bottomImages": bottomImages[].asset->url
+    },
+    gadgetModels[]{
+        name,
+        price,
+        originalPrice,
+        discountLabel,
+        "image": image.asset->url,
+        description,
+        variants[]{
+            colorName,
+            colorHex,
+            "images": images[].asset->url
+        }
     }
   }`;
 
@@ -629,6 +656,21 @@ export async function getProduct(slug: string) {
         topImages: product.topImages,
         bottomName: product.bottomName,
         bottomImages: product.bottomImages,
+        description: product.description,
+        gadgetModels: (product.gadgetModels || []).map((m: any) => ({
+            name: m.name,
+            price: m.price,
+            originalPrice: m.originalPrice,
+            discountLabel: m.discountLabel,
+            image: m.image,
+            description: m.description,
+            variants: (m.variants || []).map((v: any) => ({
+                colorName: v.colorName,
+                colorHex: typeof v.colorHex === 'object' && v.colorHex?.hex ? v.colorHex.hex : v.colorHex,
+                stock: v.stock || 10,
+                images: v.images || []
+            }))
+        }))
     };
 }
 

@@ -437,9 +437,28 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
         setMounted(true);
     }, []);
 
+    // Gadget Sub-Model Options Logic
+    const hasGadgetModels = Boolean(product.gadgetModels && product.gadgetModels.length > 0);
+    const [selectedGadgetModelIndex, setSelectedGadgetModelIndex] = useState(0);
+    const activeGadgetModel = hasGadgetModels ? product.gadgetModels![selectedGadgetModelIndex] || product.gadgetModels![0] : null;
+
+    // Active Variants (from active sub-model or fallback to product.variants)
+    const activeVariants = useMemo(() => {
+        if (activeGadgetModel && activeGadgetModel.variants && activeGadgetModel.variants.length > 0) {
+            return activeGadgetModel.variants;
+        }
+        return product.variants || [];
+    }, [activeGadgetModel, product.variants]);
+
     // Variant Logic
-    const hasVariants = product.variants && product.variants.length > 0;
-    const [selectedVariant, setSelectedVariant] = useState<Variant | undefined>(hasVariants ? product.variants![0] : undefined);
+    const hasVariants = activeVariants.length > 0;
+    const [selectedVariant, setSelectedVariant] = useState<Variant | undefined>(hasVariants ? activeVariants[0] : undefined);
+
+    useEffect(() => {
+        if (activeVariants.length > 0) {
+            setSelectedVariant(activeVariants[0]);
+        }
+    }, [selectedGadgetModelIndex, activeVariants]);
 
     const isProgrammaticRef = useRef(false);
     const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -449,7 +468,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
     const [selectedPiece, setSelectedPiece] = useState<'top' | 'bottom' | 'set'>('set');
     const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
     
-    // Remember the user's preferred top color so that clicking around bottoms doesn't permanently lose their top choice
+    // Remember the user's preferred top color
     const preferredTopHexRef = useRef<string | undefined>(undefined);
     useEffect(() => {
         if (selectedVariant && selectedPiece !== 'bottom') {
@@ -458,81 +477,31 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
     }, [selectedVariant, selectedPiece]);
 
     const availableVariants = useMemo(() => {
-        if (!product.variants) return [];
-        return product.variants.filter((variant, index, self) => {
-            // Filter out variants that are only available as a set if a single piece is selected
+        if (!activeVariants || activeVariants.length === 0) return [];
+        return activeVariants.filter((variant, index, self) => {
             if (selectedPiece !== 'set' && variant.onlyAvailableAsSet) return false;
-
-            // Filter out variants that lack images for the selected piece (allowing fallback to product images)
             if (selectedPiece === 'top' && (!variant.topImages || variant.topImages.length === 0) && (!product.topImages || product.topImages.length === 0)) return false;
             if (selectedPiece === 'bottom' && (!variant.bottomImages || variant.bottomImages.length === 0) && (!product.bottomImages || product.bottomImages.length === 0)) return false;
 
-            // Deduplicate variants that resolve to the exact same color for the selected piece
             const colorHexForPiece = (selectedPiece === 'bottom' && variant.secondaryColorHex) 
                 ? variant.secondaryColorHex 
                 : variant.colorHex;
                 
-            // If this variant IS the selected one, keep it!
             if (variant.colorName === selectedVariant?.colorName) {
                 return true;
             }
                 
             const firstIndex = self.findIndex(v => {
                 if (selectedPiece === 'set') {
-                    // For sets, only deduplicate if BOTH colors match exactly
                     return v.colorHex === variant.colorHex && v.secondaryColorHex === variant.secondaryColorHex;
                 }
-                
-                if (v.onlyAvailableAsSet) return false;
-                if (selectedPiece === 'top' && (!v.topImages || v.topImages.length === 0) && (!product.topImages || product.topImages.length === 0)) return false;
-                if (selectedPiece === 'bottom' && (!v.bottomImages || v.bottomImages.length === 0) && (!product.bottomImages || product.bottomImages.length === 0)) return false;
-                
                 const vHex = (selectedPiece === 'bottom' && v.secondaryColorHex) ? v.secondaryColorHex : v.colorHex;
-                
-                if (vHex === colorHexForPiece) {
-                    // 1. If the currently selected variant belongs to this color group, it MUST be the representative!
-                    const selectedHex = (selectedPiece === 'bottom' && selectedVariant?.secondaryColorHex) 
-                        ? selectedVariant?.secondaryColorHex 
-                        : selectedVariant?.colorHex;
-                    if (selectedHex === colorHexForPiece) {
-                        return v.colorName === selectedVariant?.colorName;
-                    }
-                    
-                    // 2. If we are browsing Bottoms, try to pick a representative that shares our PREFERRED Top color!
-                    if (selectedPiece === 'bottom') {
-                        const targetTopHex = preferredTopHexRef.current || selectedVariant?.colorHex;
-                        if (targetTopHex) {
-                            const hasMatchingTop = self.some(sv => {
-                                if (sv.onlyAvailableAsSet || ((!sv.bottomImages || sv.bottomImages.length === 0) && (!product.bottomImages || product.bottomImages.length === 0))) return false;
-                                const svHex = sv.secondaryColorHex || sv.colorHex;
-                                return svHex === colorHexForPiece && sv.colorHex === targetTopHex;
-                            });
-                            if (hasMatchingTop) {
-                                return v.colorHex === targetTopHex;
-                            }
-                        }
-                    }
-                    
-                    // 3. If we are browsing Tops, try to pick a representative that shares our CURRENT Bottom color!
-                    if (selectedPiece === 'top' && selectedVariant?.secondaryColorHex) {
-                        const hasMatchingBottom = self.some(sv => {
-                            if (sv.onlyAvailableAsSet || ((!sv.topImages || sv.topImages.length === 0) && (!product.topImages || product.topImages.length === 0))) return false;
-                            return sv.colorHex === colorHexForPiece && sv.secondaryColorHex === selectedVariant.secondaryColorHex;
-                        });
-                        if (hasMatchingBottom) {
-                            return v.secondaryColorHex === selectedVariant.secondaryColorHex;
-                        }
-                    }
-
-                    // 4. Otherwise, just pick the first one we find.
-                    return true;
-                }
-                return false;
+                return vHex === colorHexForPiece;
             });
             
             return index === firstIndex;
         });
-    }, [product.variants, selectedPiece, selectedVariant]);
+    }, [activeVariants, selectedPiece, selectedVariant]);
 
     useEffect(() => {
         if (availableVariants.length > 0) {
@@ -541,10 +510,10 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 setSelectedVariant(availableVariants[0]);
             }
         }
-    }, [selectedPiece, availableVariants, selectedVariant]);
+    }, [availableVariants, selectedVariant]);
 
     // Derived State
-    let currentImages = (selectedVariant ? selectedVariant.images : product.images)?.filter(Boolean);
+    let currentImages = (selectedVariant ? selectedVariant.images : (activeGadgetModel?.variants?.[0]?.images || product.images))?.filter(Boolean);
     
     let activeTopImages = (selectedVariant && selectedVariant.topImages?.length ? selectedVariant.topImages : product.topImages)?.filter(Boolean) || [];
     let activeBottomImages = (selectedVariant && selectedVariant.bottomImages?.length ? selectedVariant.bottomImages : product.bottomImages)?.filter(Boolean) || [];
@@ -557,41 +526,65 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
         currentImages = activeBottomImages;
     }
 
-    // Fallback: If variant has no images, use product default images to prevent crash
+    // Fallback: If variant has no images, use product default images
     const rawImages = currentImages && currentImages.length > 0 ? currentImages : product.images.filter(Boolean);
     const baseImages = [...rawImages].reverse();
     const displayImages = [...baseImages].slice(0, 8);
 
-    // Component Pricing & Titles overrides
-    let displayPrice = product.price;
-    let displayOriginalPrice = product.originalPrice;
-    let displayTitle = product.title;
+    // Category & Type Helpers
+    const catLower = (product.category || "").toLowerCase();
+    const isGadget = catLower === 'gadgets' || catLower === 'electronics';
+    const isAccessory = catLower === 'accessories' || catLower === 'footwear';
+
+    // Dynamic Storage Price Adjustments
+    const sizes = product.sizes && product.sizes.length > 0 ? product.sizes : ["S", "M", "L", "XL"];
+    const showSizeSelector = product.sizeType !== 'onesize';
+
+    // Auto pre-select base storage/size for gadgets
+    useEffect(() => {
+        if (isGadget && sizes.length > 0) {
+            setSelectedSize(prev => prev && sizes.includes(prev) ? prev : sizes[0]);
+        }
+    }, [isGadget, selectedGadgetModelIndex, product.id]);
+
+    let basePrice = activeGadgetModel ? activeGadgetModel.price : product.price;
+    let baseOriginalPrice = activeGadgetModel 
+        ? (activeGadgetModel.originalPrice || Math.round(basePrice * 1.15)) 
+        : (product.originalPrice || Math.round(product.price * 1.15));
+
+    let storageOffset = 0;
+    const activeSize = selectedSize || (isGadget ? sizes[0] : undefined);
+    if (activeSize && sizes.includes(activeSize)) {
+        const sIdx = sizes.indexOf(activeSize);
+        const titleLower = (product.title || "").toLowerCase();
+        const isMac = titleLower.includes('mac') || activeGadgetModel?.name?.toLowerCase().includes('mac');
+        if (isMac) {
+            const macOffsets = [0, 20000, 40000, 80000];
+            storageOffset = macOffsets[sIdx] || (sIdx * 20000);
+        } else {
+            const phoneOffsets = [0, 20000, 40000, 60000];
+            storageOffset = phoneOffsets[sIdx] || (sIdx * 20000);
+        }
+    }
+
+    let displayPrice = basePrice + storageOffset;
+    let displayOriginalPrice: number = Math.round(baseOriginalPrice * (1 + storageOffset / basePrice));
+    let displayTitle = activeGadgetModel ? activeGadgetModel.name : product.title;
 
     if (product.enableSetComponents) {
         if (selectedPiece === 'top') {
             displayPrice = product.topPrice ?? product.price;
-            displayOriginalPrice = product.topOriginalPrice ?? product.originalPrice;
-            
-            // Custom top name prefix matching color (e.g. "Chocolate" or "Blue")
+            displayOriginalPrice = product.topOriginalPrice ?? product.originalPrice ?? Math.round(displayPrice * 1.15);
             const colorPrefix = selectedVariant ? selectedVariant.colorName.split(' &')[0] : "Chocolate";
             displayTitle = `${colorPrefix} Tassel Kurti`;
         } else if (selectedPiece === 'bottom') {
             displayPrice = product.bottomPrice ?? product.price;
-            displayOriginalPrice = product.bottomOriginalPrice ?? product.originalPrice;
-            
-            // Pants title matching selected color
+            displayOriginalPrice = product.bottomOriginalPrice ?? product.originalPrice ?? Math.round(displayPrice * 1.15);
             displayTitle = (selectedVariant?.colorName === "Chocolate & White") ? "White Pants" : "Denim Pants";
         } else if (selectedPiece === 'set') {
             displayPrice = product.setPrice ?? product.price;
-            displayOriginalPrice = product.setOriginalPrice ?? product.originalPrice;
-            
-            // Format set title dynamically (e.g. "Blue & Denim Set")
+            displayOriginalPrice = product.setOriginalPrice ?? product.originalPrice ?? Math.round(displayPrice * 1.15);
             let variantTitle = selectedVariant?.colorName || product.title;
-            if (variantTitle === "Blue") variantTitle = "Blue & Denim";
-            else if (variantTitle === "Light Pink") variantTitle = "Light Pink & Denim";
-            else if (variantTitle === "Red") variantTitle = "Red & Denim";
-            else if (variantTitle === "Yellow") variantTitle = "Yellow & Denim";
-            
             displayTitle = variantTitle.endsWith("Set") ? variantTitle : variantTitle + " Set";
         }
     }
@@ -845,9 +838,6 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
     const averageRating = reviews.length > 0
         ? reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length
         : 0;
-
-    const sizes = product.sizes && product.sizes.length > 0 ? product.sizes : ["S", "M", "L", "XL"];
-    const showSizeSelector = product.sizeType !== 'onesize';
 
     // Accordion Component
     const AccordionItem = ({ title, children, defaultOpen = false }: { title: string, children: React.ReactNode, defaultOpen?: boolean }) => {
@@ -1205,10 +1195,69 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
  
                 </div>
 
-
-
-
-
+                {/* Gadget Model Options Selector */}
+                {hasGadgetModels && (
+                    <div className="mb-4 mt-1">
+                        <div className="flex justify-between items-center mb-2">
+                            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED]">
+                                Choose Model Option
+                            </span>
+                            <span className="text-xs font-serif font-bold text-[#1A1A1A] dark:text-[#F4F1ED]">
+                                {activeGadgetModel?.name}
+                            </span>
+                        </div>
+                        <div className={cn(
+                            "grid gap-2.5 w-full pb-1",
+                            product.gadgetModels!.length === 2 ? "grid-cols-2" :
+                            product.gadgetModels!.length === 3 ? "grid-cols-3" :
+                            product.gadgetModels!.length === 4 ? "grid-cols-2 sm:grid-cols-4" :
+                            "grid-cols-2 sm:grid-cols-3 md:grid-cols-5"
+                        )}>
+                            {product.gadgetModels!.map((gModel, idx) => {
+                                const isSelected = selectedGadgetModelIndex === idx;
+                                const modelImg = gModel.image || gModel.variants?.[0]?.images?.[0] || product.images[0];
+                                return (
+                                    <button
+                                        key={gModel.name}
+                                        onClick={() => {
+                                            setSelectedGadgetModelIndex(idx);
+                                            if (gModel.variants && gModel.variants.length > 0) {
+                                                setSelectedVariant(gModel.variants[0]);
+                                            }
+                                        }}
+                                        className={cn(
+                                            "group flex flex-col gap-1.5 p-2 rounded-2xl transition-all cursor-pointer w-full items-center text-center relative",
+                                            isSelected
+                                                ? "ring-[1.5px] ring-[#1A1A1A] dark:ring-white bg-white/80 dark:bg-white/10 shadow-[0_8px_20px_rgba(0,0,0,0.06)]"
+                                                : "border border-neutral-200/60 dark:border-white/5 opacity-80 hover:opacity-100 bg-white/30 dark:bg-black/10 hover:bg-white/50 dark:hover:bg-black/25"
+                                        )}
+                                    >
+                                        <div className="relative w-full aspect-[3/4] rounded-xl overflow-hidden bg-neutral-100 dark:bg-[#111] shrink-0 border border-neutral-100 dark:border-white/5">
+                                            {modelImg ? (
+                                                <Image src={modelImg} alt={gModel.name} fill sizes="120px" loading="lazy" quality={75} unoptimized={modelImg.startsWith("http")} className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                                            ) : (
+                                                <div className="w-full h-full bg-neutral-200 dark:bg-neutral-800 animate-pulse" />
+                                            )}
+                                            {isSelected && (
+                                                <div className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-[#1A1A1A] dark:bg-[#F4F1ED] text-white dark:text-black flex items-center justify-center shadow-md z-10">
+                                                    <Check className="w-2.5 h-2.5 stroke-[3.5]" />
+                                                </div>
+                                            )}
+                                        </div>
+                                        <div className="flex flex-col w-full px-0.5 pb-0.5">
+                                            <span className={cn("text-[10px] sm:text-[11px] leading-tight truncate transition-all uppercase tracking-wider font-bold", isSelected ? "text-[#1A1A1A] dark:text-[#F4F1ED]" : "text-neutral-500 dark:text-neutral-400")}>
+                                                {gModel.name}
+                                            </span>
+                                            <span className="text-[10px] sm:text-[11px] font-sans font-bold text-neutral-800 dark:text-[#F4F1ED] mt-0.5">
+                                                ₹{gModel.price.toLocaleString('en-IN')}
+                                            </span>
+                                        </div>
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    </div>
+                )}
 
                 {/* Piece Selector (for Set Components) */}
                 {product.enableSetComponents && (
@@ -1336,13 +1385,17 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                     </div>
                 )}
 
-                {/* Size Selector */}
+                {/* Size / Storage Selector */}
                 {showSizeSelector && (
                     <div id="size-selector-section" className="mb-4">
                         <div className="flex justify-between items-center mb-2">
                             <div className="flex items-baseline gap-2">
-                                <span className="text-[10px] font-bold uppercase tracking-wider text-[#1A1A1A] dark:text-[#F4F1ED]">Select Size</span>
-                                <span className="text-[9px] uppercase tracking-widest font-bold text-neutral-400">| Model is 5'8" wearing M</span>
+                                <span className="text-[10px] font-bold uppercase tracking-wider text-[#1A1A1A] dark:text-[#F4F1ED]">
+                                    {isGadget ? "Select Storage Capacity" : "Select Size"}
+                                </span>
+                                {!isGadget && !isAccessory && (
+                                    <span className="text-[9px] uppercase tracking-widest font-bold text-neutral-400">| Model is 5'8" wearing M</span>
+                                )}
                             </div>
                             <div className="flex items-center gap-3">
                                 {error && (
@@ -1355,13 +1408,15 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                         {error}
                                     </motion.div>
                                 )}
-                                <button
-                                    onClick={() => setIsSizeGuideOpen(true)}
-                                    className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider border-b border-neutral-300 pb-0.5 hover:opacity-70 transition-opacity cursor-pointer text-neutral-600 dark:text-neutral-400"
-                                >
-                                    <Ruler className="w-3 h-3" />
-                                    Size Guide
-                                </button>
+                                {!isGadget && (
+                                    <button
+                                        onClick={() => setIsSizeGuideOpen(true)}
+                                        className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider border-b border-neutral-300 pb-0.5 hover:opacity-70 transition-opacity cursor-pointer text-neutral-600 dark:text-neutral-400"
+                                    >
+                                        <Ruler className="w-3 h-3" />
+                                        Size Guide
+                                    </button>
+                                )}
                             </div>
                         </div>
                         <div className="flex gap-2 flex-wrap mb-4">
@@ -1370,9 +1425,9 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                     key={size}
                                     onClick={() => { setSelectedSize(size); setError(null); }}
                                     className={cn(
-                                        "w-11 h-11 border rounded-lg flex items-center justify-center font-sans text-xs font-medium tracking-wide transition-all duration-300 bg-white dark:bg-[#111111] cursor-pointer active:scale-90",
+                                        "min-w-[44px] h-11 px-3 border rounded-lg flex items-center justify-center font-sans text-xs font-medium tracking-wide transition-all duration-300 bg-white dark:bg-[#111111] cursor-pointer active:scale-90",
                                         selectedSize === size
-                                            ? "text-white shadow-md scale-110 border-transparent"
+                                            ? "text-white shadow-md scale-105 border-transparent"
                                             : error
                                                 ? "border-red-300 text-red-600 bg-red-50 hover:border-red-500"
                                                 : "border-neutral-200 dark:border-neutral-800 text-[#1A1A1A] dark:text-[#F4F1ED] hover:border-[#1A1A1A] dark:hover:border-[#F4F1ED] hover:bg-neutral-50 dark:hover:bg-neutral-900"
