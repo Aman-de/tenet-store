@@ -155,7 +155,8 @@ export default function Navbar() {
         const options: { label: string; value: typeof gender }[] = [
             { label: "All", value: "all" },
             { label: "Men", value: "man" },
-            { label: "Women", value: "woman" }
+            { label: "Women", value: "woman" },
+            { label: "Gadgets", value: "gadget" }
         ];
 
         const activeOption = options.find(opt => opt.value === gender) || options[0];

@@ -18,10 +18,8 @@ export function GenderProvider({ children }: { children: React.ReactNode }) {
         // Read from localStorage only after component mounts in the browser
         try {
             const savedGender = localStorage.getItem("tenet-active-gender") as Gender | null;
-            if (savedGender === "man" || savedGender === "woman") {
+            if (savedGender === "man" || savedGender === "woman" || savedGender === "gadget" || savedGender === "all") {
                 setGenderState(savedGender);
-            } else {
-                setGenderState("man");
             }
         } catch (error) {
             console.error("Failed to read from localStorage:", error);

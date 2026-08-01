@@ -35,13 +35,15 @@ export default function SortedProductGrid({ products: rawProducts, showSizeFilte
     const isWoman = activeGender === "woman";
     const accentColor = "var(--accent-color)";
 
-    // Filter products dynamically by active gender (Men or Women only)
+    // Filter products dynamically by active category / gender
     const products = rawProducts.filter(p => {
         const cat = p.category ? p.category.toLowerCase() : '';
-        if (cat === 'gadgets' || cat === 'electronics') return false;
+        const isTech = cat === 'gadgets' || cat === 'electronics';
+        if (activeGender === 'gadget') return isTech;
+        if (activeGender === 'all') return true;
+        if (isTech) return false;
         const g = p.gender ? p.gender.toLowerCase() : 'man';
-        const targetGender = activeGender === 'woman' ? 'woman' : 'man';
-        return g === targetGender || g === 'unisex';
+        return g === activeGender || g === 'unisex';
     });
 
     const { engagement } = useStore();
