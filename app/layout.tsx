@@ -122,7 +122,7 @@ export default async function RootLayout({
                   <SettingsProvider settings={settings}>
             <GenderThemeWrapper settings={settings}>
               <Navbar />
-              <div className="flex-1 w-full flex flex-col pt-[82px] md:pt-[92px] lg:pt-[100px]">
+              <div className="flex-1 w-full flex flex-col pt-[66px] md:pt-[72px] lg:pt-[80px]">
                 {children}
               </div>
               <div className="lg:hidden">

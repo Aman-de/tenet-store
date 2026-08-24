@@ -1596,6 +1596,8 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                     )}
                     <div className="flex gap-3">
                         <button
+                            id="pdp-buy-now-btn"
+                            data-buy-now="true"
                             onClick={handleBuyNow}
                             disabled={product.isOutOfStock}
                             className={cn(

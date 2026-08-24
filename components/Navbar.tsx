@@ -304,8 +304,8 @@ export default function Navbar() {
             </div>
 
             {/* The wrapper handles the floating position */}
-            <div className={`fixed top-[32px] left-0 w-full z-50 transition-all duration-500 ease-in-out pointer-events-none lg:pt-3 lg:pb-2 lg:px-6`}>
-                <nav className={`pointer-events-auto w-full mx-auto px-4 lg:px-8 py-2 lg:py-2.5 transition-all duration-500 ease-in-out lg:rounded-full lg:max-w-[800px] xl:max-w-[900px] ${navContainerClass}`}>
+            <div className={`fixed top-[24px] left-0 w-full z-50 transition-all duration-500 ease-in-out pointer-events-none lg:pt-2 lg:pb-1 lg:px-6`}>
+                <nav className={`pointer-events-auto w-full mx-auto px-3 lg:px-6 py-1 lg:py-1.5 transition-all duration-500 ease-in-out lg:rounded-full lg:max-w-[800px] xl:max-w-[900px] ${navContainerClass}`}>
                     
                     {/* MOBILE LAYOUT (lg:hidden) */}
                     <div className="flex lg:hidden flex-col w-full gap-1">
@@ -314,20 +314,20 @@ export default function Navbar() {
                             <div className="flex w-full items-center justify-between relative py-0.5">
                                 {/* LEFT SIDE: Menu & Search */}
                                 <div className="flex items-center gap-1.5 z-10 flex-1 justify-start">
-                                    <button className={`w-[32px] h-[32px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center shrink-0`} aria-label="Toggle mobile menu" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                                    <button className={`w-[30px] h-[30px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center shrink-0`} aria-label="Toggle mobile menu" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
                                         {isMobileMenuOpen ? (
-                                            <X className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
+                                            <X className={`w-3.5 h-3.5 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
                                         ) : (
-                                            <Menu className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
+                                            <Menu className={`w-3.5 h-3.5 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
                                         )}
                                     </button>
                                     
                                     {/* Little search bar in the place of circle icon */}
                                     <form onSubmit={handleSearchSubmit} className="flex-1 min-w-[60px] max-w-[76px] pointer-events-auto">
-                                        <div className="relative flex items-center bg-[#F4F1ED]/80 dark:bg-[#1C1C1E] border border-black/5 dark:border-white/5 rounded-full px-2 h-[32px] transition-all focus-within:border-black/25 dark:focus-within:border-white/25 shadow-[inset_0_1px_2px_rgba(0,0,0,0.02)]">
+                                        <div className="relative flex items-center bg-[#F4F1ED]/80 dark:bg-[#1C1C1E] border border-black/5 dark:border-white/5 rounded-full px-2 h-[30px] transition-all focus-within:border-black/25 dark:focus-within:border-white/25 shadow-[inset_0_1px_2px_rgba(0,0,0,0.02)]">
                                             <Search className="w-2 h-2 text-neutral-400 dark:text-neutral-500 shrink-0" strokeWidth={2} />
                                             <input 
-                                                type="text"
+                                                type="text" 
                                                 value={searchQuery}
                                                 onChange={(e) => setSearchQuery(e.target.value)}
                                                 placeholder="Search..."
@@ -339,7 +339,7 @@ export default function Navbar() {
 
                                 {/* CENTER: Logo (Absolute Centered) */}
                                 <Link href="/" className="absolute left-1/2 -translate-x-1/2 z-10 flex justify-center w-fit">
-                                    <span className={`text-xl sm:text-2xl font-serif font-bold tracking-widest sm:tracking-[0.2em] uppercase group-hover:opacity-80 transition-colors duration-500 ${logoColor} drop-shadow-sm ml-0.5`}>
+                                    <span className={`text-lg sm:text-xl font-serif font-bold tracking-widest sm:tracking-[0.2em] uppercase group-hover:opacity-80 transition-colors duration-500 ${logoColor} drop-shadow-sm ml-0.5`}>
                                         TENET
                                     </span>
                                 </Link>
@@ -352,48 +352,68 @@ export default function Navbar() {
                                     </div>
                                     
                                     {/* Circle icon replacing cart */}
-                                    <Link href="/circle" className={`w-[32px] h-[32px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center shrink-0`} aria-label="Open circle">
-                                        <Crown className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
+                                    <Link href="/circle" className={`w-[30px] h-[30px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center shrink-0`} aria-label="Open circle">
+                                        <Crown className={`w-3.5 h-3.5 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
                                     </Link>
                                 </div>
                             </div>
                         ) : (
-                            /* STANDARD MOBILE LAYOUT (OTHER PAGES) */
+                            /* STANDARD MOBILE LAYOUT (OTHER PAGES & PRODUCT DETAILS) */
                             <div className="flex w-full items-center justify-between relative py-0.5">
                                 {/* LEFT SIDE: Menu, Circle & Home buttons */}
                                 <div className="flex items-center gap-1.5 z-10 flex-1 justify-start">
-                                    <button className={`w-[32px] h-[32px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Toggle mobile menu" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                                    <button className={`w-[30px] h-[30px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Toggle mobile menu" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
                                         {isMobileMenuOpen ? (
-                                            <X className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
+                                            <X className={`w-3.5 h-3.5 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
                                         ) : (
-                                            <Menu className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
+                                            <Menu className={`w-3.5 h-3.5 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
                                         )}
                                     </button>
                                     
                                     {!isProductPage && (
-                                        <Link href="/circle" className={`w-[32px] h-[32px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center ml-0.5`} aria-label="Open circle">
-                                            <Crown className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
+                                        <Link href="/circle" className={`w-[30px] h-[30px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center ml-0.5`} aria-label="Open circle">
+                                            <Crown className={`w-3.5 h-3.5 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
                                         </Link>
                                     )}
                                     
                                     {isProductPage && (
-                                        <Link href="/" className={`w-[32px] h-[32px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center ml-0.5`} aria-label="Go to Home">
-                                            <Home className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
+                                        <Link href="/" className={`w-[30px] h-[30px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center ml-0.5`} aria-label="Go to Home">
+                                            <Home className={`w-3.5 h-3.5 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
                                         </Link>
                                     )}
                                 </div>
 
                                 {/* CENTER: Logo (Absolute Centered) */}
                                 <Link href="/" className="absolute left-1/2 -translate-x-1/2 z-10 flex justify-center w-fit">
-                                    <span className={`text-xl sm:text-2xl font-serif font-bold tracking-widest sm:tracking-[0.2em] uppercase group-hover:opacity-80 transition-colors duration-500 ${logoColor} drop-shadow-sm ml-0.5`}>
+                                    <span className={`text-lg sm:text-xl font-serif font-bold tracking-widest sm:tracking-[0.2em] uppercase group-hover:opacity-80 transition-colors duration-500 ${logoColor} drop-shadow-sm ml-0.5`}>
                                         TENET
                                     </span>
                                 </Link>
 
-                                {/* RIGHT SIDE: Cart and Circle */}
-                                <div className="flex items-center gap-1 z-10 flex-1 justify-end">
-                                    <button className={`relative w-[32px] h-[32px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center`} aria-label="Open cart" onClick={openCart}>
-                                        <ShoppingBag className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
+                                {/* RIGHT SIDE: Permanent Top BUY NOW & Cart */}
+                                <div className="flex items-center gap-1.5 z-10 flex-1 justify-end">
+                                    {isProductPage && (
+                                        <button
+                                            onClick={() => {
+                                                const buyBtn = (document.getElementById('pdp-buy-now-btn') || document.querySelector('[data-buy-now="true"]')) as HTMLElement;
+                                                if (buyBtn) {
+                                                    buyBtn.click();
+                                                } else {
+                                                    openCart();
+                                                }
+                                            }}
+                                            className="px-3 py-1 rounded-full text-white font-sans text-[10px] font-extrabold uppercase tracking-wider shadow-sm hover:brightness-110 active:scale-95 transition-all flex items-center gap-1 cursor-pointer shrink-0"
+                                            style={{
+                                                background: `linear-gradient(135deg, ${accentColor}, #E03154)`,
+                                                boxShadow: `0 2px 10px -2px ${accentColor}80`
+                                            }}
+                                        >
+                                            <span>BUY NOW</span>
+                                        </button>
+                                    )}
+
+                                    <button className={`relative w-[30px] h-[30px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center shrink-0`} aria-label="Open cart" onClick={openCart}>
+                                        <ShoppingBag className={`w-3.5 h-3.5 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
                                         {cartCount > 0 && (
                                             <span className="absolute -top-0.5 -right-0.5 min-w-[14px] h-[14px] rounded-full border border-white dark:border-neutral-900 flex items-center justify-center text-[8px] text-white font-sans font-bold px-1" style={{ backgroundColor: accentColor }}>
                                                 {cartCount}
@@ -401,9 +421,9 @@ export default function Navbar() {
                                         )}
                                     </button>
                                     
-                                    {isProductPage && (
-                                        <Link href="/circle" className={`w-[32px] h-[32px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center ml-0.5`} aria-label="Open circle">
-                                            <Crown className={`w-4 h-4 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
+                                    {!isProductPage && (
+                                        <Link href="/circle" className={`w-[30px] h-[30px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center ml-0.5`} aria-label="Open circle">
+                                            <Crown className={`w-3.5 h-3.5 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
                                         </Link>
                                     )}
                                 </div>
@@ -463,13 +483,13 @@ export default function Navbar() {
 
                         {/* CENTER: Logo */}
                         <Link href="/" className="block group shrink-0 mx-2">
-                            <span className={`text-3xl font-serif font-bold tracking-[0.25em] uppercase group-hover:opacity-80 transition-opacity duration-300 ${logoColor} drop-shadow-lg`}>
+                            <span className={`text-2xl lg:text-3xl font-serif font-bold tracking-[0.25em] uppercase group-hover:opacity-80 transition-opacity duration-300 ${logoColor} drop-shadow-lg`}>
                                 TENET
                             </span>
                         </Link>
 
-                        {/* RIGHT SIDE: Shop, Orders, Saves, Cart */}
-                        <div className={`flex items-center gap-5 lg:gap-6 transition-colors duration-500 ${textColor} flex-1 justify-start`}>
+                        {/* RIGHT SIDE: Shop, Orders, Saves, Cart, Buy Now */}
+                        <div className={`flex items-center gap-4 lg:gap-5 transition-colors duration-500 ${textColor} flex-1 justify-start`}>
                             {/* Shop / Collections */}
                             <Link href="/#new-arrivals" className="flex flex-col items-center gap-1 group">
                                 <LayoutGrid className="w-5 h-5 opacity-80 group-hover:opacity-100 transition-opacity duration-200" strokeWidth={2} />
@@ -503,6 +523,27 @@ export default function Navbar() {
                                 </div>
                                 <span className="text-[11px] font-semibold opacity-80 group-hover:opacity-100 transition-opacity duration-200">Cart</span>
                             </button>
+
+                            {/* Desktop Buy Now Button on Product Page */}
+                            {isProductPage && (
+                                <button
+                                    onClick={() => {
+                                        const buyBtn = (document.getElementById('pdp-buy-now-btn') || document.querySelector('[data-buy-now="true"]')) as HTMLElement;
+                                        if (buyBtn) {
+                                            buyBtn.click();
+                                        } else {
+                                            openCart();
+                                        }
+                                    }}
+                                    className="px-4 py-1.5 rounded-full text-white font-sans text-xs font-extrabold uppercase tracking-wider shadow-md hover:brightness-110 active:scale-95 transition-all flex items-center gap-1.5 cursor-pointer ml-1"
+                                    style={{
+                                        background: `linear-gradient(135deg, ${accentColor}, #E03154)`,
+                                        boxShadow: `0 2px 10px -2px ${accentColor}80`
+                                    }}
+                                >
+                                    <span>BUY NOW</span>
+                                </button>
+                            )}
                         </div>
                     </div>
                 </nav>

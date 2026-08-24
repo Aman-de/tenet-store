@@ -34,7 +34,7 @@ export default function AnnouncementBar() {
     ];
 
     return (
-        <div className="w-full bg-gradient-to-r from-[#170C0E] via-[#110D0A] to-[#170C0E] text-[#F3E5D8] border-b border-[#E0A96D]/30 overflow-hidden py-2 px-3 relative z-50 text-[10.5px] font-sans tracking-widest uppercase flex items-center shadow-md">
+        <div className="w-full bg-gradient-to-r from-[#170C0E] via-[#110D0A] to-[#170C0E] text-[#F3E5D8] border-b border-[#E0A96D]/30 overflow-hidden py-1 px-3 h-[24px] relative z-50 text-[10px] sm:text-[10.5px] font-sans tracking-widest uppercase flex items-center shadow-xs">
             <div className="flex shrink-0 animate-marquee whitespace-nowrap items-center gap-10">
                 {announcements.map((item, idx) => (
                     <span key={`a-${idx}`} className="inline-flex items-center gap-2.5">
