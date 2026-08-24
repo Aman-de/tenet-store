@@ -970,26 +970,15 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
         }
     };
 
-    // Sticky Top Buy Bar Scroll Tracking
-    const { scrollY } = useScroll();
-    const [isTopStickyVisible, setIsTopStickyVisible] = useState(false);
-
-    useMotionValueEvent(scrollY, "change", (latest) => {
-        setIsTopStickyVisible(latest > 220);
-    });
+    // Permanent Sticky Top Buy Bar (Always on screen from 0px scroll)
+    const isTopStickyVisible = true;
 
     return (
         <>
             {/* 💎 Permanent Sticky Top Buy Bar (Luxury Apple Store Style) */}
-            <AnimatePresence>
-                {isTopStickyVisible && (
-                    <motion.div
-                        initial={{ y: "-120%", opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        exit={{ y: "-120%", opacity: 0 }}
-                        transition={{ type: "spring", stiffness: 350, damping: 30 }}
-                        className="fixed top-[32px] sm:top-[34px] left-0 right-0 z-45 bg-white/95 dark:bg-[#110E0C]/95 backdrop-blur-xl border-b border-black/10 dark:border-white/10 shadow-[0_4px_25px_rgba(0,0,0,0.08)] py-2.5 px-3 sm:px-6 md:px-8 xl:px-12 flex items-center justify-between transition-all"
-                    >
+            <div
+                className="fixed top-[32px] sm:top-[34px] left-0 right-0 z-45 bg-white/95 dark:bg-[#110E0C]/95 backdrop-blur-xl border-b border-black/10 dark:border-white/10 shadow-[0_4px_25px_rgba(0,0,0,0.08)] py-2.5 px-3 sm:px-6 md:px-8 xl:px-12 flex items-center justify-between transition-all"
+            >
                         {/* Product Summary Left */}
                         <div className="flex items-center gap-2.5 sm:gap-3.5 min-w-0">
                             {displayImages[0] && (
@@ -1052,11 +1041,9 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                     <span>BUY NOW</span>
                                     <ArrowRight className="w-3.5 h-3.5" />
                                 </button>
-                            </div>
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+                    </div>
+                </div>
+            </div>
 
             <div className="max-w-[2000px] w-full mx-auto px-0 md:px-8 xl:px-12 pt-0 md:pt-6 xl:pt-10 grid grid-cols-1 lg:landscape:grid-cols-[1.3fr_1fr] xl:grid-cols-[1.3fr_1fr] 2xl:grid-cols-[1.5fr_1fr] gap-0 lg:landscape:gap-[4vw] xl:gap-[6vw] 2xl:gap-[8vw]">
                 <SizeGuide isOpen={isSizeGuideOpen} onClose={() => setIsSizeGuideOpen(false)} />
