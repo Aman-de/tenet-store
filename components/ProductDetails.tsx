@@ -4,7 +4,7 @@ import { useStore } from "@/lib/store";
 import { useState, useEffect, useRef, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
-import { ChevronDown, ChevronUp, AlertCircle, Heart, Ruler, Star, Loader2, Truck, ShieldCheck, RefreshCw, ShoppingBag, Check, Copy, MapPin, Tag, Sparkles, CreditCard, Plus, Locate } from "lucide-react";
+import { ChevronDown, ChevronUp, AlertCircle, Heart, Ruler, Star, Loader2, Truck, ShieldCheck, RefreshCw, ShoppingBag, Check, Copy, MapPin, Tag, Sparkles, CreditCard, Plus, Locate, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 const SizeGuide = dynamic(() => import("./SizeGuide"), { ssr: false });
@@ -967,13 +967,96 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 selectedColor: selection.color,
                 selectedPiece
             });
-            // setCheckoutItem automatically opens cart in store logic
         }
     };
 
+    // Sticky Top Buy Bar Scroll Tracking
+    const { scrollY } = useScroll();
+    const [isTopStickyVisible, setIsTopStickyVisible] = useState(false);
+
+    useMotionValueEvent(scrollY, "change", (latest) => {
+        setIsTopStickyVisible(latest > 220);
+    });
+
     return (
         <>
-            {/* Desktop Sticky Buy Bar removed */}
+            {/* 💎 Permanent Sticky Top Buy Bar (Luxury Apple Store Style) */}
+            <AnimatePresence>
+                {isTopStickyVisible && (
+                    <motion.div
+                        initial={{ y: "-120%", opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        exit={{ y: "-120%", opacity: 0 }}
+                        transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                        className="fixed top-[32px] sm:top-[34px] left-0 right-0 z-45 bg-white/95 dark:bg-[#110E0C]/95 backdrop-blur-xl border-b border-black/10 dark:border-white/10 shadow-[0_4px_25px_rgba(0,0,0,0.08)] py-2.5 px-3 sm:px-6 md:px-8 xl:px-12 flex items-center justify-between transition-all"
+                    >
+                        {/* Product Summary Left */}
+                        <div className="flex items-center gap-2.5 sm:gap-3.5 min-w-0">
+                            {displayImages[0] && (
+                                <div className="relative w-9 h-11 sm:w-11 sm:h-13 rounded-lg overflow-hidden shrink-0 bg-neutral-100 dark:bg-neutral-800 border border-black/5 dark:border-white/10">
+                                    <Image
+                                        src={displayImages[0]}
+                                        alt={displayTitle}
+                                        fill
+                                        sizes="52px"
+                                        className={isGadget ? "object-contain p-1" : "object-cover"}
+                                    />
+                                </div>
+                            )}
+                            <div className="flex flex-col min-w-0">
+                                <span className="font-serif text-xs sm:text-sm font-bold text-[#1A1A1A] dark:text-[#F4F1ED] truncate max-w-[140px] xs:max-w-[200px] sm:max-w-[320px] lg:max-w-[420px]">
+                                    {displayTitle}
+                                </span>
+                                <div className="flex items-center gap-1.5 text-[9px] sm:text-[10px] text-neutral-500 font-medium truncate">
+                                    {selectedVariant?.colorName && <span className="capitalize">{selectedVariant.colorName}</span>}
+                                    {selectedSize && <span>• Size {selectedSize}</span>}
+                                    <span className="text-[#E0A96D] font-extrabold hidden xs:inline">🪢 30% OFF RAKHI30</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Price & Instant Buy Now CTA Right */}
+                        <div className="flex items-center gap-2.5 sm:gap-5 shrink-0">
+                            <div className="flex flex-col items-end">
+                                <div className="flex items-center gap-1">
+                                    <span className="font-serif text-sm sm:text-xl font-extrabold text-[#1A1A1A] dark:text-[#F4F1ED]">
+                                        ₹{displayPrice.toLocaleString('en-IN')}
+                                    </span>
+                                </div>
+                                {displayOriginalPrice && displayOriginalPrice > displayPrice && (
+                                    <span className="text-[9px] sm:text-[10px] text-neutral-400 line-through">
+                                        ₹{displayOriginalPrice.toLocaleString('en-IN')}
+                                    </span>
+                                )}
+                            </div>
+
+                            <div className="flex items-center gap-1.5 sm:gap-2">
+                                <button
+                                    onClick={handleAddToCart}
+                                    disabled={product.isOutOfStock}
+                                    className="hidden sm:flex w-9 h-9 sm:w-10 sm:h-10 items-center justify-center rounded-full border border-neutral-300 dark:border-neutral-700 hover:bg-neutral-100 dark:hover:bg-white/10 active:scale-95 transition-all text-[#1A1A1A] dark:text-white"
+                                    title="Add to Cart"
+                                >
+                                    <ShoppingBag className="w-4 h-4" />
+                                </button>
+
+                                <button
+                                    onClick={handleBuyNow}
+                                    disabled={product.isOutOfStock}
+                                    className="h-9 sm:h-10 px-4 sm:px-6 rounded-full text-white font-sans text-[11px] sm:text-xs font-extrabold uppercase tracking-widest hover:brightness-110 active:scale-95 transition-all shadow-md flex items-center gap-1.5 cursor-pointer"
+                                    style={!product.isOutOfStock ? {
+                                        background: `linear-gradient(135deg, ${accentColor}, ${isWoman ? '#E03154' : '#1D4ED8'})`,
+                                        boxShadow: `0 4px 16px -2px ${accentColor}80`
+                                    } : { backgroundColor: '#ccc' }}
+                                >
+                                    <span>BUY NOW</span>
+                                    <ArrowRight className="w-3.5 h-3.5" />
+                                </button>
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
             <div className="max-w-[2000px] w-full mx-auto px-0 md:px-8 xl:px-12 pt-0 md:pt-6 xl:pt-10 grid grid-cols-1 lg:landscape:grid-cols-[1.3fr_1fr] xl:grid-cols-[1.3fr_1fr] 2xl:grid-cols-[1.5fr_1fr] gap-0 lg:landscape:gap-[4vw] xl:gap-[6vw] 2xl:gap-[8vw]">
                 <SizeGuide isOpen={isSizeGuideOpen} onClose={() => setIsSizeGuideOpen(false)} />
