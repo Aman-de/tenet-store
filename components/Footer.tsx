@@ -142,7 +142,7 @@ export default function Footer() {
                                 <Instagram className="w-4 h-4" />
                             </a>
                             <a 
-                                href={`https://wa.me/${settings.whatsappNumber || "919999999999"}?text=${encodeURIComponent(settings.whatsappMessage || "Hi TENET Concierge, I would like assistance with an order.")}`}
+                                href={`https://wa.me/${settings.whatsappNumber || "918590958131"}?text=${encodeURIComponent(settings.whatsappMessage || "Hi TENET Concierge, I would like assistance with an order.")}`}
                                 target="_blank" 
                                 rel="noopener noreferrer" 
                                 className="p-2.5 border border-white/15 rounded-full hover:bg-white hover:text-black transition-all hover:scale-105 active:scale-95 text-neutral-300"

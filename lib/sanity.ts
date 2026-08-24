@@ -975,8 +975,8 @@ export async function getSettings(): Promise<SiteSettings> {
             womanBgColorDark: '#160F11',
             manBgColorLight: '#F4F6F9',
             manBgColorDark: '#0E1217',
-            whatsappNumber: '916376159498',
-            whatsappMessage: 'Hello Tenet Archives, I have a question about your collection...',
+            whatsappNumber: '918590958131',
+            whatsappMessage: 'Hello Tenet Concierge, I have a question about your collection...',
             instagramUrl: 'https://www.instagram.com/tenet_archives/'
         };
     } catch (e) {
@@ -989,8 +989,8 @@ export async function getSettings(): Promise<SiteSettings> {
             womanBgColorDark: '#160F11',
             manBgColorLight: '#F4F6F9',
             manBgColorDark: '#0E1217',
-            whatsappNumber: '916376159498',
-            whatsappMessage: 'Hello Tenet Archives, I have a question about your collection...',
+            whatsappNumber: '918590958131',
+            whatsappMessage: 'Hello Tenet Concierge, I have a question about your collection...',
             instagramUrl: 'https://www.instagram.com/tenet_archives/'
         };
     }

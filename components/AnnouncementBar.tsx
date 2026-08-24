@@ -15,35 +15,35 @@ export default function AnnouncementBar() {
 
     const announcements = [
         {
-            icon: <Sparkles className="w-3.5 h-3.5 text-[#E0A96D]" />,
-            text: "LIMITED FESTIVE EDIT • GET 30% OFF FIRST ORDER",
-            code: "WELCOME30",
+            icon: <span className="text-[13px] leading-none">🪢</span>,
+            text: "RAKHI FESTIVE CELEBRATION • FLAT 30% OFF EVERYTHING",
+            code: "RAKHI30",
         },
         {
             icon: <Truck className="w-3.5 h-3.5 text-[#E0A96D]" />,
-            text: "COMPLIMENTARY EXPRESS SHIPPING & DOORSTEP EXCHANGES",
+            text: "GUARANTEED EXPRESS DELIVERY IN TIME FOR RAKHI",
         },
         {
             icon: <Sparkles className="w-3.5 h-3.5 text-[#E0A96D]" />,
-            text: "SIGNATURE BESPOKE PACKAGING INCLUDED ON ALL ACQUISITIONS",
+            text: "COMPLIMENTARY RAKHI GIFT BOXING & SIBLING NOTE",
         },
         {
             icon: <ShieldCheck className="w-3.5 h-3.5 text-[#E0A96D]" />,
-            text: "100% ARTISANAL AUTHENTICITY & 7-DAY HASSLE-FREE RETURNS",
+            text: "100% ARTISANAL NATURAL FABRICS & 7-DAY HASSLE-FREE RETURNS",
         },
     ];
 
     return (
-        <div className="w-full bg-[#110D0A] text-[#F3E5D8] border-b border-[#E0A96D]/20 overflow-hidden py-2 px-3 relative z-50 text-[10.5px] font-sans tracking-widest uppercase flex items-center shadow-sm">
+        <div className="w-full bg-gradient-to-r from-[#170C0E] via-[#110D0A] to-[#170C0E] text-[#F3E5D8] border-b border-[#E0A96D]/30 overflow-hidden py-2 px-3 relative z-50 text-[10.5px] font-sans tracking-widest uppercase flex items-center shadow-md">
             <div className="flex shrink-0 animate-marquee whitespace-nowrap items-center gap-10">
                 {announcements.map((item, idx) => (
                     <span key={`a-${idx}`} className="inline-flex items-center gap-2.5">
                         {item.icon}
-                        <span className="font-medium text-neutral-200">{item.text}</span>
+                        <span className="font-semibold text-neutral-100">{item.text}</span>
                         {item.code && (
                             <button
                                 onClick={() => handleCopyCode(item.code!)}
-                                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#E0A96D]/20 text-[#E0A96D] border border-[#E0A96D]/30 hover:bg-[#E0A96D]/30 transition-all cursor-pointer font-mono text-[9.5px] font-bold"
+                                className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#E0A96D]/25 text-[#E0A96D] border border-[#E0A96D]/45 hover:bg-[#E0A96D]/35 transition-all cursor-pointer font-mono text-[9.5px] font-extrabold shadow-sm active:scale-95"
                                 title="Click to copy promo code"
                             >
                                 {copied ? (
@@ -67,11 +67,11 @@ export default function AnnouncementBar() {
                 {announcements.map((item, idx) => (
                     <span key={`b-${idx}`} className="inline-flex items-center gap-2.5">
                         {item.icon}
-                        <span className="font-medium text-neutral-200">{item.text}</span>
+                        <span className="font-semibold text-neutral-100">{item.text}</span>
                         {item.code && (
                             <button
                                 onClick={() => handleCopyCode(item.code!)}
-                                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#E0A96D]/20 text-[#E0A96D] border border-[#E0A96D]/30 hover:bg-[#E0A96D]/30 transition-all cursor-pointer font-mono text-[9.5px] font-bold"
+                                className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#E0A96D]/25 text-[#E0A96D] border border-[#E0A96D]/45 hover:bg-[#E0A96D]/35 transition-all cursor-pointer font-mono text-[9.5px] font-extrabold shadow-sm active:scale-95"
                                 title="Click to copy promo code"
                             >
                                 {copied ? (

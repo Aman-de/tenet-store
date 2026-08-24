@@ -114,9 +114,9 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/20" />
                                 <div className="absolute inset-0 p-8 lg:p-14 flex flex-col justify-end items-start">
-                                    <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-[10px] font-sans font-bold uppercase tracking-[0.25em] text-white mb-4">
-                                        <Sparkles className="w-3 h-3 text-[#E0A96D]" />
-                                        {isWoman ? "AUTUMN / FESTIVE CAPSULE" : "SIGNATURE ARCHIVAL COLLECTION"}
+                                    <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-[#E0A96D]/40 text-[10px] font-sans font-extrabold uppercase tracking-[0.2em] text-[#E0A96D] mb-4 shadow-md">
+                                        <span className="text-xs">🪢</span>
+                                        {isWoman ? "RAKHI FESTIVE EDIT • FLAT 30% OFF • CODE: RAKHI30" : "RAKHI SPECIAL • FLAT 30% OFF • CODE: RAKHI30"}
                                     </span>
                                     <h1 className="font-serif text-4xl lg:text-7xl xl:text-[5.5rem] font-normal tracking-tight text-white leading-[1.05] drop-shadow-lg mb-3">
                                         {isWoman ? (
@@ -242,8 +242,8 @@ export default function BentoHero({ spotlightProducts, collections }: BentoHeroP
                             </div>
                             
                             <div className="relative z-10 w-[55%] pl-4 flex flex-col items-start justify-center pointer-events-none">
-                                <span className="text-[8px] font-bold uppercase tracking-[0.2em] text-[#E0A96D] mb-0.5">
-                                    {isWoman ? "Festive Edition" : "Classic Edit"}
+                                <span className="text-[8px] font-extrabold uppercase tracking-[0.16em] text-[#E0A96D] mb-0.5 flex items-center gap-1">
+                                    <span>🪢</span> RAKHI SPECIAL • 30% OFF (RAKHI30)
                                 </span>
                                 <h1 className="font-serif text-[14px] sm:text-lg font-bold tracking-tight text-neutral-900 dark:text-[#F4F1ED] leading-[1.2] mb-1 pointer-events-auto">
                                     {isWoman ? (

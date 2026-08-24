@@ -5,7 +5,7 @@ import { useSettings } from "@/context/SettingsContext";
 
 export default function WhatsAppWidget() {
     const settings = useSettings();
-    const whatsappUrl = `https://wa.me/${settings.whatsappNumber || "919999999999"}?text=${encodeURIComponent(settings.whatsappMessage || "Hi Shreya, I'd like styling advice and assistance with an order on TENET.")}`;
+    const whatsappUrl = `https://wa.me/${settings.whatsappNumber || "918590958131"}?text=${encodeURIComponent(settings.whatsappMessage || "Hi Shreya, I'd like styling advice and assistance with an order on TENET.")}`;
 
     return (
         <AnimatePresence>

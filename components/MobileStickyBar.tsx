@@ -35,7 +35,7 @@ export default function MobileStickyBar({ product, selectedVariant, onAddToCart,
                         exit={{ y: "150%", opacity: 0 }}
                         transition={{ type: "spring", stiffness: 300, damping: 30 }}
                         className={cn(
-                            "fixed bottom-0 left-0 right-0 z-40 px-3 py-2 border-t pb-[max(env(safe-area-inset-bottom),8px)] shadow-[0_-4px_20px_rgba(0,0,0,0.08)] backdrop-blur-[20px] saturate-[180%] dark:saturate-100 lg:landscape:hidden xl:hidden",
+                            "fixed bottom-0 left-0 right-0 z-45 px-3 py-2 border-t pb-[max(env(safe-area-inset-bottom),8px)] shadow-[0_-4px_20px_rgba(0,0,0,0.08)] backdrop-blur-[20px] saturate-[180%] dark:saturate-100 lg:landscape:hidden xl:hidden",
                             isWoman
                                 ? "bg-[#FCF0F2]/95 dark:bg-[#160F11]/95 border-rose-100/50 dark:border-rose-950/20"
                                 : "bg-[#F0F4F8]/95 dark:bg-[#0E1217]/95 border-blue-100/50 dark:border-blue-950/20"

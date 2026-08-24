@@ -649,7 +649,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
     }, [user, isLoaded]);
 
     const handleCopyCode = () => {
-        navigator.clipboard.writeText("FIRST20");
+        navigator.clipboard.writeText("RAKHI30");
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
     };
@@ -1565,28 +1565,30 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                     </div>
                 </div>
 
-                {/* PRICING BLOCK (Moved down for Desktop, hidden on Mobile because Sticky CTA handles price) */}
-                <div className="hidden md:flex items-center justify-between bg-white/30 dark:bg-black/20 backdrop-blur-md border border-neutral-200/50 dark:border-white/10 rounded-xl p-4 mb-4 shadow-sm relative overflow-hidden">
+                {/* PERMANENT PRICING BLOCK (Visible on both Mobile & Desktop) */}
+                <div className="flex items-center justify-between bg-white/40 dark:bg-black/30 backdrop-blur-md border border-neutral-200/60 dark:border-white/10 rounded-2xl p-4 mb-3 shadow-xs relative overflow-hidden">
                     <div className="flex flex-col">
-                        <div className="flex items-end gap-2 mb-1">
-                            <span className="font-serif text-[38px] leading-none text-[#1A1A1A] dark:text-[#F4F1ED] font-bold tracking-tight">₹{displayPrice.toLocaleString('en-IN')}</span>
+                        <div className="flex items-end gap-2 mb-0.5">
+                            <span className="font-serif text-[32px] sm:text-[38px] leading-none text-[#1A1A1A] dark:text-[#F4F1ED] font-extrabold tracking-tight">₹{displayPrice.toLocaleString('en-IN')}</span>
                             {displayOriginalPrice && displayOriginalPrice > displayPrice && !product.isOutOfStock && (
                                 <span className="text-[13px] text-neutral-400 line-through mb-1">₹{displayOriginalPrice.toLocaleString('en-IN')}</span>
                             )}
                         </div>
-                        <span className="text-[9px] uppercase tracking-widest text-neutral-500 font-medium">Inclusive of all taxes</span>
+                        <span className="text-[9px] uppercase tracking-widest text-neutral-500 dark:text-neutral-400 font-medium">Inclusive of all taxes & free shipping</span>
                     </div>
                     
                     {displayOriginalPrice && displayOriginalPrice > displayPrice && !product.isOutOfStock && (
                         <div className="flex flex-col items-end">
-                            <span className="bg-[#1A1A1A] dark:bg-white text-white dark:text-[#1A1A1A] px-3 py-1.5 text-[10px] font-bold tracking-[0.15em] uppercase rounded flex items-center gap-1.5">
+                            <span className="bg-emerald-700 dark:bg-emerald-600 text-white px-3 py-1.5 text-[10px] font-bold tracking-[0.15em] uppercase rounded-full flex items-center gap-1.5 shadow-sm">
                                 <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
                                 SAVE ₹{(displayOriginalPrice - displayPrice).toLocaleString('en-IN')}
                             </span>
                         </div>
                     )}
-                </div>                {/* Action Buttons (Desktop Only) */}
-                <div className="hidden md:flex flex-col gap-2.5 mb-4">
+                </div>
+
+                {/* PRIMARY ACTION BUTTONS (Permanent on both Mobile & Desktop) */}
+                <div className="flex flex-col gap-2.5 mb-4">
                     {selectedVariant?.stock !== undefined && selectedVariant.stock <= 5 && selectedVariant.stock > 0 && (
                         <div className="flex items-center gap-2 justify-center mb-1">
                             <span className="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
@@ -1600,7 +1602,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                             onClick={handleBuyNow}
                             disabled={product.isOutOfStock}
                             className={cn(
-                                "relative flex-grow h-[54px] flex flex-col items-center justify-center font-sans tracking-wide text-sm font-bold hover:scale-[1.02] hover:brightness-[1.1] active:scale-[0.98] rounded-xl transition-all duration-300 cursor-pointer leading-tight overflow-hidden group",
+                                "relative flex-grow h-[54px] flex flex-col items-center justify-center font-sans tracking-wide text-sm font-bold hover:scale-[1.01] hover:brightness-[1.08] active:scale-[0.98] rounded-xl transition-all duration-300 cursor-pointer leading-tight overflow-hidden group shadow-lg",
                                 product.isOutOfStock
                                     ? "bg-neutral-300 text-neutral-500 cursor-not-allowed"
                                     : "text-white"
@@ -1616,8 +1618,8 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                             {product.isOutOfStock ? "Out of Stock" : (
                                 <>
                                     <span className="text-[14px] tracking-widest flex items-center gap-1.5 relative z-10">BUY NOW</span>
-                                    <span className="text-[9px] uppercase tracking-widest font-medium opacity-90 mt-0.5 relative z-10">
-                                        {deliveryInfo ? `Order Today • ${deliveryInfo.date}` : "Order Today • Get in 10 Days"}
+                                    <span className="text-[9px] uppercase tracking-widest font-medium opacity-95 mt-0.5 relative z-10">
+                                        {deliveryInfo ? `Order Today • ${deliveryInfo.date}` : "🪢 Guaranteed Delivery In Time For Rakhi"}
                                     </span>
                                 </>
                             )}
@@ -1638,7 +1640,6 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         >
                             <ShoppingBag className="w-5 h-5 stroke-[1.5]" />
                         </button>
-
                     </div>
                 </div>
 
@@ -1648,13 +1649,13 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         <div className="bg-emerald-100 dark:bg-emerald-900/30 p-0.5 rounded-full shrink-0">
                             <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" strokeWidth={3} />
                         </div>
-                        Free Shipping
+                        Free Express Shipping
                     </div>
                     <div className="flex items-center gap-2">
                         <div className="bg-emerald-100 dark:bg-emerald-900/30 p-0.5 rounded-full shrink-0">
                             <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" strokeWidth={3} />
                         </div>
-                        Easy Returns
+                        7-Day Doorstep Returns
                     </div>
                     <div className="flex items-center gap-2">
                         <div className="bg-emerald-100 dark:bg-emerald-900/30 p-0.5 rounded-full shrink-0">
@@ -1666,12 +1667,12 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         <div className="bg-emerald-100 dark:bg-emerald-900/30 p-0.5 rounded-full shrink-0">
                             <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" strokeWidth={3} />
                         </div>
-                        Secure Checkout
+                        256-Bit SSL Secure
                     </div>
                 </div>
 
                 {/* Why You'll Love It / Signature Details */}
-                <div className="bg-white/45 dark:bg-black/15 backdrop-blur-sm border border-white/50 dark:border-white/5 rounded-2xl p-5 mb-6 shadow-sm relative overflow-hidden">
+                <div className="bg-white/45 dark:bg-black/15 backdrop-blur-sm border border-white/50 dark:border-white/5 rounded-2xl p-5 mb-5 shadow-sm relative overflow-hidden">
                     <div className="absolute -top-6 -right-6 opacity-[0.03] dark:opacity-[0.02]">
                         <Sparkles className="w-32 h-32 text-[#1A1A1A] dark:text-white" />
                     </div>
@@ -1691,24 +1692,22 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                     </div>
                 </div>
 
-                {/* Luxury Coupon Block */}
-                {isEligibleForFirst20 && (
-                    <div className="mb-6 relative overflow-hidden flex flex-col items-center justify-center bg-gradient-to-br from-white/30 to-[#F5F2EB]/30 dark:from-[#111111]/30 dark:to-[#1A1A1A]/30 backdrop-blur-md border-y-2 border-dashed border-[#A0604A]/30 px-4 py-4 rounded-sm shadow-sm">
-                        <div className="absolute -left-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-[var(--theme-bg-light)] dark:bg-[var(--theme-bg-dark)] rounded-full border border-neutral-200/80 dark:border-white/10 shadow-inner z-10"></div>
-                        <div className="absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-[var(--theme-bg-light)] dark:bg-[var(--theme-bg-dark)] rounded-full border border-neutral-200/80 dark:border-white/10 shadow-inner z-10"></div>
-                        
-                        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#A0604A] dark:text-[#E8A38B] mb-1.5 flex items-center gap-1.5">
-                            <Tag className="w-3.5 h-3.5" /> Welcome Offer
-                        </span>
-                        <span className="text-sm font-serif text-[#1A1A1A] dark:text-[#F4F1ED] mb-3">Get 15% Off Your First Order</span>
-                        <button
-                            onClick={handleCopyCode}
-                            className="bg-[#1A1A1A] dark:bg-white text-white dark:text-[#1A1A1A] px-6 py-2.5 text-[11px] font-bold uppercase tracking-[0.15em] rounded-sm hover:scale-[1.02] transition-transform cursor-pointer shadow-md flex items-center gap-2"
-                        >
-                            {copied ? "COPIED ✓" : "USE CODE: FIRST15"}
-                        </button>
-                    </div>
-                )}
+                {/* Rakhi Festive 30% Coupon Block */}
+                <div className="mb-6 relative overflow-hidden flex flex-col items-center justify-center bg-gradient-to-br from-amber-500/10 via-rose-500/5 to-amber-500/10 dark:from-amber-950/20 dark:to-rose-950/20 backdrop-blur-md border-y-2 border-dashed border-[#E0A96D]/50 px-4 py-4 rounded-xl shadow-sm">
+                    <div className="absolute -left-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-[var(--theme-bg-light)] dark:bg-[var(--theme-bg-dark)] rounded-full border border-neutral-200/80 dark:border-white/10 shadow-inner z-10"></div>
+                    <div className="absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-[var(--theme-bg-light)] dark:bg-[var(--theme-bg-dark)] rounded-full border border-neutral-200/80 dark:border-white/10 shadow-inner z-10"></div>
+                    
+                    <span className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#A0604A] dark:text-[#E8A38B] mb-1 flex items-center gap-1.5">
+                        <span className="text-xs">🪢</span> Rakhi Festive Celebration
+                    </span>
+                    <span className="text-sm font-serif font-bold text-[#1A1A1A] dark:text-[#F4F1ED] mb-2.5">Flat 30% Off Everything</span>
+                    <button
+                        onClick={handleCopyCode}
+                        className="bg-[#1A1A1A] dark:bg-white text-white dark:text-[#1A1A1A] px-6 py-2.5 text-[11px] font-extrabold uppercase tracking-[0.18em] rounded-full hover:scale-[1.03] active:scale-95 transition-all cursor-pointer shadow-md flex items-center gap-2"
+                    >
+                        {copied ? "COPIED RAKHI30 ✓" : "USE CODE: RAKHI30 (SAVE 30%)"}
+                    </button>
+                </div>
 
                 {/* Feature Spotlight & Description Banners */}
                 {((activeGadgetModel?.featureImages && activeGadgetModel.featureImages.length > 0) || (product.featureImages && product.featureImages.length > 0)) && (
