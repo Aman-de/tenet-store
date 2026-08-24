@@ -42,7 +42,7 @@ export default function SortedProductGrid({ products: rawProducts, showSizeFilte
         if (activeGender === 'gadget') return isTech;
         if (activeGender === 'all') return true;
         if (isTech) return false;
-        const g = p.gender ? p.gender.toLowerCase() : 'man';
+        const g = p.gender ? p.gender.toLowerCase() : 'woman';
         return g === activeGender || g === 'unisex';
     });
 

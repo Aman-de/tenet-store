@@ -9,7 +9,7 @@ export default function AllRedirect() {
     const router = useRouter();
 
     useEffect(() => {
-        setGender("man");
+        setGender("woman");
         router.replace("/");
     }, [setGender, router]);
 

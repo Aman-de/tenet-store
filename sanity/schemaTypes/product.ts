@@ -309,6 +309,7 @@ export const product = {
                     { name: 'discountLabel', title: 'Discount Label', type: 'string' },
                     { name: 'image', title: 'Option Thumbnail', type: 'image' },
                     { name: 'description', title: 'Sub-Model Description', type: 'text' },
+                    { name: 'featureImages', title: 'Feature Spotlight & Description Banners', type: 'array', of: [{ type: 'image' }] },
                     { name: 'variants', title: 'Color Variants', type: 'array', of: [{
                         type: 'object',
                         fields: [
@@ -319,6 +320,13 @@ export const product = {
                     }]}
                 ]
             }]
+        },
+        {
+            name: 'featureImages',
+            title: 'Feature Spotlight & Description Banners',
+            type: 'array',
+            of: [{ type: 'image' }],
+            description: 'Wide feature banners and detailed description images'
         }
     ],
 }

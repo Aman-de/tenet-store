@@ -56,6 +56,7 @@ const nextConfig: NextConfig = {
     pagesBufferLength: 5,
   },
   turbopack: {},
+  skipTrailingSlashRedirect: true,
   async rewrites() {
     return [
       {

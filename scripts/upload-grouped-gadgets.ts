@@ -1,82 +1,134 @@
-import { createClient } from '@sanity/client';
-import * as dotenv from 'dotenv';
+import { createClient } from 'next-sanity';
 import fs from 'fs';
 import path from 'path';
-
+import dotenv from 'dotenv';
 dotenv.config({ path: '.env.local' });
 
+const MOBILES_DIR = '/Users/amansharma/Downloads/mobiles_transparent';
+
 const client = createClient({
-    projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
+    projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || '9zyx0aef',
     dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
     token: process.env.SANITY_API_TOKEN,
     apiVersion: '2024-01-01',
     useCdn: false,
 });
 
-const MOBILES_DIR = '/Users/amansharma/Downloads/mobiles_optimized';
+// Hex color mapping — comprehensive list of all color folder names
+const COLOR_HEX_MAP: Record<string, string> = {
+    "Black": "#1C1C1E",
+    "Desert Titanium": "#C5B29D",
+    "Natural Titanium": "#A09E9B",
+    "White Titanium": "#E8E6E1",
+    "White": "#F2F2F2",
+    "Dark Blue": "#192841",
+    "Deep Blue": "#1B3A5C",
+    "Sky Blue": "#7BA7D7",
+    "Mist Blue": "#B0C4D8",
+    "Aston Blue": "#3B5998",
+    "Blue": "#4A7FBF",
+    "Mint Green": "#A8D8C8",
+    "Green": "#5A8A5C",
+    "Sage": "#9CAF88",
+    "Lavender": "#D6C7E8",
+    "Purple": "#7B5EA7",
+    "Silver": "#E3E4E5",
+    "Silver Shadow": "#C0C0C0",
+    "Almond Silver": "#D5C9B8",
+    "Pink": "#F4C2C2",
+    "Pink Gold": "#E8C5B0",
+    "Light Gold": "#E8D5B7",
+    "Coral Red": "#E0534C",
+    "Cosmic Orange": "#D97A3E",
+    "Orange": "#E8873D",
+    "Blue Black": "#1A2332",
+    "Icy Blue": "#A2C4D9",
+    "Titanium": "#8E8E93",
+    "Yellow": "#F9E076",
+    "Ultramarine": "#34495E",
+    "Teal": "#20B2AA",
+    "Space Gray": "#4A4A4A",
+    "Space Black": "#111111",
+    "Starlight": "#F5F2EB",
+    "Midnight": "#171E27",
+    "Gold": "#E5D3B3",
+    "Deep Purple": "#4B3859"
+};
+
+// Filename patterns to EXCLUDE from product images & feature banners
+// These are Apple Store marketing / exchange / trade-in / accessory images
+const EXCLUDED_PATTERNS = [
+    'trade_in', 'trade-in', 'tradein',
+    'exchange',
+    'incentive',
+    'compare',
+    'witb',               // "what's in the box"
+    'what_in_box', 'whats_in_box',
+    'techwoven',          // case accessory
+    'silicone_case', 'clear_case', 'wallet',
+    'case_techwoven', 'case_silicone', 'case_clear',
+    'specs_loader',       // loading placeholder
+    'loader__',
+    'personal_session',
+    'apple_store',
+    'store_app',
+    'education',
+    'incentive_card',
+    'incentive_support',
+    'incentive_setup',
+    'incentive_customize',
+    'delivery_and_pickup',
+    'apps_amazon',        // third-party app screenshots
+    'finish-white-202409', // tiny swatch dots
+    'finish-black-202409',
+    'swatch',
+    '_small',
+];
+
+/** Returns true if the file should be EXCLUDED from upload */
+function shouldExcludeImage(filePath: string): boolean {
+    const lower = path.basename(filePath).toLowerCase();
+    
+    // Size check: Exclude tiny swatch dots / icon thumbnails (< 20KB)
+    try {
+        if (fs.existsSync(filePath)) {
+            const stat = fs.statSync(filePath);
+            if (stat.size < 20 * 1024) return true; // Less than 20KB
+        }
+    } catch (e) {}
+
+    return EXCLUDED_PATTERNS.some(pat => lower.includes(pat));
+}
+
 const assetCache = new Map<string, string>();
 
 async function uploadImageToSanity(filePath: string): Promise<string | null> {
+    if (!fs.existsSync(filePath)) return null;
+
     if (assetCache.has(filePath)) {
         return assetCache.get(filePath)!;
     }
-    if (!fs.existsSync(filePath)) {
-        console.warn(`File does not exist: ${filePath}`);
-        return null;
-    }
+
     try {
-        const buffer = fs.readFileSync(filePath);
-        const filename = path.basename(filePath);
-        const asset = await client.assets.upload('image', buffer, { filename });
-        assetCache.set(filePath, asset._id);
-        return asset._id;
-    } catch (err: any) {
-        console.error(`Failed to upload ${filePath}:`, err.message || err);
+        const fileBuffer = fs.readFileSync(filePath);
+        const asset = await client.assets.upload('image', fileBuffer, {
+            filename: path.basename(filePath)
+        });
+
+        if (asset && (asset as any)._id) {
+            assetCache.set(filePath, (asset as any)._id);
+            return (asset as any)._id;
+        }
+        return null;
+    } catch (e: any) {
+        console.error(`Failed to upload ${path.basename(filePath)}:`, e.message || e);
         return null;
     }
 }
 
-// Color Hex map
-const COLOR_HEX_MAP: Record<string, string> = {
-    "Cosmic Orange": "#E86A33",
-    "Deep Blue": "#1E3A8A",
-    "Silver": "#E5E7EB",
-    "Natural Titanium": "#938E85",
-    "White Titanium": "#F8FAFC",
-    "Titanium": "#64748B",
-    "Black": "#1E293B",
-    "Black Titanium": "#1E293B",
-    "Lavender": "#C084FC",
-    "Mist Blue": "#7DD3FC",
-    "Sage": "#84A98C",
-    "White": "#FFFFFF",
-    "Pink Gold": "#F43F5E",
-    "Coral Red": "#EF4444",
-    "Blue Black": "#0F172A",
-    "Silver Shadow": "#94A3B8",
-    "Blue": "#2563EB",
-    "Green": "#10B981",
-    "Almond Silver": "#CBD5E1",
-    "Aston Blue": "#0284C7",
-    "Cool Blue": "#7DD3FC",
-    "Iron Gray": "#475569",
-    "Midnight": "#0F172A",
-    "Starlight": "#FEF08A",
-    "Purple": "#A855F7",
-    "Yellow": "#EAB308",
-    "Orange": "#F97316",
-    "Navy": "#1E3A8A",
-    "Craft Black": "#1E293B",
-    "Space Gray": "#475569",
-    "Space Black": "#1E293B",
-    "Solo Knit": "#E5E7EB",
-    "Standard": "#1E293B"
-};
-
-// Define product sub-model specs & image directories in MOBILES_DIR
 interface SubModelDef {
     name: string;
-    folderPath: string; // Relative to MOBILES_DIR
+    folderPath: string;
     price: number;
     originalPrice: number;
     discountLabel: string;
@@ -88,7 +140,7 @@ interface GroupedLineupDef {
     title: string;
     slug: string;
     description: string;
-    sizeType: 'clothing' | 'onesize';
+    sizeType: string;
     sizes: string[];
     models: SubModelDef[];
 }
@@ -127,12 +179,12 @@ const LINEUPS: GroupedLineupDef[] = [
                 description: "Vibrant color-infused glass back, dual camera system with 2x Telephoto, and all-day battery life."
             },
             {
-                name: "iPhone 17e",
-                folderPath: "Smartphones/Apple/iPhone 17e",
-                price: 49900,
-                originalPrice: 59900,
-                discountLabel: "17% OFF",
-                description: "Essential flagship performance with Apple Intelligence, A19 chip, and durable aluminium body."
+                name: "iPhone 17 Pro Max",
+                folderPath: "Smartphones/Apple/iPhone 17 Pro Max",
+                price: 144900,
+                originalPrice: 159900,
+                discountLabel: "9% OFF",
+                description: "The largest Pro display — 6.9-inch Super Retina XDR, A19 Pro chip, advanced 48MP camera system, and all-day battery life."
             }
         ]
     },
@@ -184,15 +236,15 @@ const LINEUPS: GroupedLineupDef[] = [
                 price: 84900,
                 originalPrice: 99900,
                 discountLabel: "15% OFF",
-                description: "Expansive 6.7-inch QHD+ Dynamic AMOLED 2X display with 4900mAh battery and Armor Aluminum frame."
+                description: "Dynamic AMOLED 2X QHD+ 120Hz display, Galaxy AI suite, 4900mAh battery, and Armor Aluminum 2.0."
             },
             {
                 name: "Galaxy S25",
                 folderPath: "Smartphones/Samsung/Galaxy S25",
-                price: 67900,
-                originalPrice: 79900,
-                discountLabel: "15% OFF",
-                description: "Compact flagship design with Galaxy AI live translate, Circle to Search, and pro-grade nightography."
+                price: 64900,
+                originalPrice: 74900,
+                discountLabel: "13% OFF",
+                description: "Compact flagship with Snapdragon 8 Elite, Circle to Search AI, 50MP triple camera system."
             }
         ]
     },
@@ -200,17 +252,17 @@ const LINEUPS: GroupedLineupDef[] = [
         id: "gadget-galaxy-z-fold-series",
         title: "Samsung Galaxy Z Fold Series",
         slug: "samsung-galaxy-z-fold-series",
-        description: "Ultra-thin foldable powerhouse with dual AMOLED displays, Flex Mode multi-tasking, Galaxy AI features, and reinforced Armor Aluminum hinge.",
+        description: "Next-generation foldable innovation featuring dual Dynamic AMOLED 2X displays, FlexMode multitasking, S-Pen support, and Armor Aluminum hinges.",
         sizeType: "clothing",
         sizes: ["256GB", "512GB", "1TB"],
         models: [
             {
                 name: "Galaxy Z Fold6",
                 folderPath: "Smartphones/Samsung/Galaxy Z Fold6",
-                price: 144900,
+                price: 139900,
                 originalPrice: 164900,
-                discountLabel: "12% OFF",
-                description: "Dual screen foldable design with 7.6-inch main screen, S-Pen compatibility, and IP48 water resistance."
+                discountLabel: "15% OFF",
+                description: "Ultra-slim foldable display with Ray Tracing gaming performance, Galaxy AI Note Assist, and 50MP FlexCam."
             }
         ]
     },
@@ -218,9 +270,9 @@ const LINEUPS: GroupedLineupDef[] = [
         id: "gadget-oneplus-12-series",
         title: "OnePlus 12 Series",
         slug: "oneplus-12-series",
-        description: "Smooth Beyond Belief flagship performance with 4th Gen Hasselblad Camera for Mobile, 100W SUPERVOOC fast charging, and 2K 120Hz ProXDR display.",
+        description: "Flagship performance powerhouse with Snapdragon 8 Gen 3, Hasselblad 4th Gen Camera for Mobile, 2K 120Hz ProXDR display, and 100W SUPERVOOC charging.",
         sizeType: "clothing",
-        sizes: ["256GB", "512GB", "1TB"],
+        sizes: ["256GB", "512GB"],
         models: [
             {
                 name: "OnePlus 12",
@@ -228,15 +280,15 @@ const LINEUPS: GroupedLineupDef[] = [
                 price: 54900,
                 originalPrice: 64900,
                 discountLabel: "15% OFF",
-                description: "Snapdragon 8 Gen 3, 50MP Sony LYT-808 main sensor, 64MP periscope telephoto, and 5400mAh battery."
+                description: "Hasselblad Camera system with 64MP Periscope Telephoto, Snapdragon 8 Gen 3, and Dual Cryo-velocity VC cooling."
             },
             {
                 name: "OnePlus 12R",
                 folderPath: "Smartphones/OnePlus/OnePlus 12R",
-                price: 33900,
-                originalPrice: 39900,
-                discountLabel: "15% OFF",
-                description: "Performance powerhouse with 4th-gen LTPO 120Hz display, Snapdragon 8 Gen 2, and 5500mAh battery."
+                price: 35900,
+                originalPrice: 42900,
+                discountLabel: "16% OFF",
+                description: "Performance king with 5500mAh largest OnePlus battery, 4th Gen LTPO 120Hz display, and 50MP Sony IMX890 camera."
             }
         ]
     },
@@ -244,17 +296,17 @@ const LINEUPS: GroupedLineupDef[] = [
         id: "gadget-xiaomi-14-ultra-series",
         title: "Xiaomi 14 Ultra",
         slug: "xiaomi-14-ultra",
-        description: "Co-engineered with Leica. Quad 50MP camera array with stepless variable aperture, 1-inch sensor, 8K video, and Snapdragon 8 Gen 3 performance.",
+        description: "Professional photography flagship with Leica Quad Camera system, 1-inch Sony LYT-900 sensor, All-Around Liquid Display, and Xiaomi Guardian Structure.",
         sizeType: "clothing",
         sizes: ["256GB", "512GB"],
         models: [
             {
                 name: "Xiaomi 14 Ultra",
                 folderPath: "Smartphones/Xiaomi/Xiaomi 14 Ultra",
-                price: 79900,
+                price: 89900,
                 originalPrice: 99900,
-                discountLabel: "20% OFF",
-                description: "Leica Summilux optical lens, 1-inch LYT-900 sensor, 90W HyperCharge, and WQHD+ AMOLED screen."
+                discountLabel: "10% OFF",
+                description: "Leica Summilux optical lens, stepless variable aperture f/1.63-f/4.0, Snapdragon 8 Gen 3, and 90W HyperCharge."
             }
         ]
     },
@@ -262,7 +314,7 @@ const LINEUPS: GroupedLineupDef[] = [
         id: "gadget-mac-lineup",
         title: "Apple Mac Lineup",
         slug: "apple-mac-lineup",
-        description: "High-performance Apple Silicon workstations and laptops powered by M3/M4 chips, Liquid Retina XDR displays, silent fanless thermal design, and all-day battery life.",
+        description: "Ultimate workstation lineup powered by Apple M3, M3 Pro, M3 Max & M4 silicon, Liquid Retina XDR displays, and up to 22-hour battery life.",
         sizeType: "clothing",
         sizes: ["256GB Unified", "512GB Unified", "1TB Unified", "2TB Unified"],
         models: [
@@ -272,15 +324,15 @@ const LINEUPS: GroupedLineupDef[] = [
                 price: 149900,
                 originalPrice: 169900,
                 discountLabel: "12% OFF",
-                description: "Liquid Retina XDR display, up to 22 hours battery life, HDMI, SDXC, and MagSafe 3 connectivity."
+                description: "M3 Pro/Max chip performance, Liquid Retina XDR screen, 6-speaker sound system, and Studio-quality mics."
             },
             {
                 name: "MacBook Air",
                 folderPath: "Other Electronic Devices/Apple Computers/MacBook Air",
                 price: 94900,
-                originalPrice: 114900,
-                discountLabel: "17% OFF",
-                description: "Ultra-thin 11.3mm fanless aluminium design, M3 chip speed, Liquid Retina display, and 18-hour battery."
+                originalPrice: 104900,
+                discountLabel: "10% OFF",
+                description: "Incredibly thin fanless design with M3 chip, 13.6-inch or 15.3-inch Liquid Retina display, and MagSafe charging."
             },
             {
                 name: "iMac 24\"",
@@ -288,7 +340,7 @@ const LINEUPS: GroupedLineupDef[] = [
                 price: 119900,
                 originalPrice: 134900,
                 discountLabel: "11% OFF",
-                description: "All-in-one desktop featuring 4.5K Retina display, 1080p FaceTime HD camera, and 6-speaker sound system."
+                description: "Striking 24-inch 4.5K Retina display all-in-one desktop with M3 chip and matching Magic Keyboard/Mouse."
             },
             {
                 name: "Mac Studio",
@@ -296,15 +348,15 @@ const LINEUPS: GroupedLineupDef[] = [
                 price: 189900,
                 originalPrice: 209900,
                 discountLabel: "10% OFF",
-                description: "Compact desktop workstation with massive thermal headroom, Thunderbolt 4 ports, and M2 Max/Ultra power."
+                description: "Extremely compact pro desktop with M2 Max / M2 Ultra chip, extensive connectivity, and whisper-quiet cooling."
             },
             {
                 name: "Mac mini",
                 folderPath: "Other Electronic Devices/Apple Computers/Mac mini",
-                price: 49900,
+                price: 54900,
                 originalPrice: 59900,
-                discountLabel: "17% OFF",
-                description: "Ultra-compact 5x5 inch desktop design with front USB-C ports, HDMI, and M4 processing power."
+                discountLabel: "8% OFF",
+                description: "Versatile mini desktop powered by M4 silicon, Thunderbolt 5 ports, and compact square footprint."
             }
         ]
     },
@@ -312,17 +364,17 @@ const LINEUPS: GroupedLineupDef[] = [
         id: "gadget-ipad-lineup",
         title: "Apple iPad Lineup",
         slug: "apple-ipad-lineup",
-        description: "Versatile iPad ecosystem featuring Ultra Retina XDR Tandem OLED screens, M2/M4 chip performance, Apple Pencil Pro support, and thin lightweight unibody enclosure.",
+        description: "Versatile iPad tablet lineup featuring Ultra Retina XDR Tandem OLED, M4 performance, Apple Pencil Pro support, and thin aluminum unibody.",
         sizeType: "clothing",
         sizes: ["128GB", "256GB", "512GB", "1TB"],
         models: [
             {
                 name: "iPad Pro",
                 folderPath: "Other Electronic Devices/Apple Tablets/iPad Pro",
-                price: 87900,
+                price: 89900,
                 originalPrice: 99900,
-                discountLabel: "12% OFF",
-                description: "Thinnest Apple product ever with Ultra Retina XDR OLED screen, M4 chip, and Apple Pencil Pro support."
+                discountLabel: "10% OFF",
+                description: "Breakthrough M4 processor, Ultra Retina XDR Tandem OLED screen, thin 5.1mm chassis, and Thunderbolt USB 4."
             },
             {
                 name: "iPad Air",
@@ -409,11 +461,45 @@ const LINEUPS: GroupedLineupDef[] = [
                 description: "Fitness tracking, heart rate notifications, Crash Detection, and Retina display in a lightweight aluminum case."
             }
         ]
+    },
+    {
+        id: "gadget-apple-accessories",
+        title: "Apple & Smartphone Accessories",
+        slug: "apple-smartphone-accessories",
+        description: "Official fast charging adapters, MagSafe wireless chargers, and premium protective cases for your smartphone and Apple devices.",
+        sizeType: "onesize",
+        sizes: [],
+        models: [
+            {
+                name: "Apple 30W USB-C Power Adapter & Cable",
+                folderPath: "Smartphones/Apple/iPhone 16 & 16 Pro",
+                price: 1900,
+                originalPrice: 2490,
+                discountLabel: "24% OFF",
+                description: "Fast charge your iPhone, iPad, or Mac up to 50% in 30 minutes with official Apple USB-C power delivery."
+            },
+            {
+                name: "Apple MagSafe 15W Wireless Charger",
+                folderPath: "Smartphones/Apple/iPhone 17 Air",
+                price: 2900,
+                originalPrice: 3900,
+                discountLabel: "26% OFF",
+                description: "Perfectly aligned magnetic wireless charging for iPhone with up to 15W fast power transfer."
+            },
+            {
+                name: "Ultra TechWoven MagSafe Protective Case",
+                folderPath: "Smartphones/Apple/iPhone 17 Pro",
+                price: 1490,
+                originalPrice: 2490,
+                discountLabel: "40% OFF",
+                description: "Durable microtwill woven fabric case with built-in MagSafe magnets and tactile aluminum buttons."
+            }
+        ]
     }
 ];
 
 async function main() {
-    console.log('🚀 Starting Grouped Gadgets Catalog Refresher...');
+    console.log('🚀 Starting Grouped Gadgets Catalog Refresher with Transparent 3:4 Studio Images & Wide Banners...');
 
     // 1. Wipe current gadgets in Sanity
     console.log('🧹 Wiping old gadgets from Sanity...');
@@ -433,7 +519,7 @@ async function main() {
 
         const sanityGadgetModels = [];
         const lineupVariantsMap = new Map<string, { colorName: string; colorHex: string; images: string[] }>();
-        let mainFallbackImageId: string | null = null;
+        const lineupFeatureImageIds: string[] = [];
 
         for (const sub of lineup.models) {
             console.log(`  -> Processing sub-model: "${sub.name}" (${sub.folderPath})`);
@@ -441,10 +527,45 @@ async function main() {
             const colorsPath = path.join(subFullPath, 'Colors');
             const genPath = path.join(subFullPath, 'General & Features');
 
-            // Find sub-model option image
+            // Find sub-model option image (prioritize multi-color / full-device lineup images)
             let subModelImageId: string | null = null;
+            let heroImageCandidate: string | null = null;
 
-            // Process Sub-Model Color Variants
+            if (fs.existsSync(genPath)) {
+                const genFiles = fs.readdirSync(genPath)
+                    .filter(f => !f.startsWith('.') && /\.(webp|png|jpg|jpeg|svg)$/i.test(f))
+                    .filter(f => !shouldExcludeImage(f))   // ← EXCLUDE exchange/trade-in/case images
+                    .map(f => path.join(genPath, f));
+
+                // Find image showing full device or all colors together
+                const multiColorImg = genFiles.find(f => {
+                    const l = path.basename(f).toLowerCase();
+                    return l.includes('colors') || l.includes('all-colors') || l.includes('lineup') || l.includes('overview') || l.includes('kv') || l.includes('hero');
+                });
+
+                if (multiColorImg) {
+                    heroImageCandidate = multiColorImg;
+                } else if (genFiles.length > 0) {
+                    heroImageCandidate = genFiles[0];
+                }
+
+                if (heroImageCandidate) {
+                    subModelImageId = await uploadImageToSanity(heroImageCandidate);
+                }
+
+                // Process wide feature & description banners (exclude small images)
+                const bannerFiles = genFiles
+                    .filter(f => !path.basename(f).includes('_small'))
+                    .slice(0, 8);
+                const uploadedBanners: string[] = [];
+                for (const p of bannerFiles) {
+                    const id = await uploadImageToSanity(p);
+                    if (id) uploadedBanners.push(id);
+                }
+                lineupFeatureImageIds.push(...uploadedBanners);
+            }
+
+            // Process Sub-Model Color Variants (3:4 Transparent Studio Cutouts)
             const subVariants = [];
             if (fs.existsSync(colorsPath)) {
                 const cEntries = fs.readdirSync(colorsPath, { withFileTypes: true });
@@ -454,13 +575,32 @@ async function main() {
                     if (cEntry.isDirectory()) {
                         const imgs = fs.readdirSync(cFullPath)
                             .filter(f => !f.startsWith('.') && /\.(webp|png|jpg|jpeg|svg)$/i.test(f))
+                            .filter(f => !shouldExcludeImage(f))   // ← EXCLUDE exchange/trade-in/case images
+                            .sort((a, b) => {
+                                // Prioritize good product photos: front hero → three-quarter → finish-select → flat-back → gallery
+                                const priority = (name: string) => {
+                                    const l = name.toLowerCase();
+                                    if (l.includes('hero_banner') || l.includes('front-hero') || l.includes('01-front')) return 0;
+                                    if (l.includes('three-quarter') || l.includes('05-three') || l.includes('hero_3x4')) return 1;
+                                    if (l.includes('finish-select') && !l.includes('_av')) return 2;
+                                    if (l.includes('flat_back')) return 3;
+                                    if (l.includes('color_static') || l.includes('colors_')) return 4;
+                                    if (l.includes('feature_description') && (l.includes('side') || l.includes('back'))) return 5;
+                                    if (l.includes('product_gallery')) return 6;
+                                    return 10;
+                                };
+                                return priority(a) - priority(b);
+                            })
                             .map(f => path.join(cFullPath, f));
 
                         const selectedImgs = imgs.slice(0, 4);
-                        const uploadedIds = (await Promise.all(selectedImgs.map(p => uploadImageToSanity(p)))).filter((id): id is string => id !== null);
-                        for (const id of uploadedIds) {
-                            if (!subModelImageId) subModelImageId = id;
-                            if (!mainFallbackImageId) mainFallbackImageId = id;
+                        const uploadedIds: string[] = [];
+                        for (const p of selectedImgs) {
+                            const id = await uploadImageToSanity(p);
+                            if (id) uploadedIds.push(id);
+                        }
+                        if (!subModelImageId && uploadedIds.length > 0) {
+                            subModelImageId = uploadedIds[0];
                         }
 
                         if (uploadedIds.length > 0) {
@@ -476,34 +616,6 @@ async function main() {
                             }
                         }
                     }
-                }
-            }
-
-            // Feature images for sub-model fallback
-            const featureIds: string[] = [];
-            if (fs.existsSync(genPath)) {
-                const genFiles = fs.readdirSync(genPath)
-                    .filter(f => !f.startsWith('.') && /\.(webp|png|jpg|jpeg|svg)$/i.test(f))
-                    .map(f => path.join(genPath, f));
-                const cleanGenFiles = genFiles.filter(f => !f.includes('-mo.') && !f.includes('-tb.') && !f.includes('_small')).slice(0, 5);
-                const toUpload = cleanGenFiles.length > 0 ? cleanGenFiles : genFiles.slice(0, 5);
-
-                const featureIds = (await Promise.all(toUpload.map(p => uploadImageToSanity(p)))).filter((id): id is string => id !== null);
-                for (const id of featureIds) {
-                    if (!subModelImageId) subModelImageId = id;
-                    if (!mainFallbackImageId) mainFallbackImageId = id;
-                }
-            }
-
-            // Fallback variant if no colors found
-            if (subVariants.length === 0 && featureIds.length > 0) {
-                subVariants.push({
-                    colorName: "Standard",
-                    colorHex: { _type: 'color', hex: "#1E293B" },
-                    images: featureIds.slice(0, 4).map(id => ({ _type: 'image', _key: Math.random().toString(36).substring(2, 9), asset: { _type: 'reference', _ref: id } }))
-                });
-                if (!lineupVariantsMap.has("Standard")) {
-                    lineupVariantsMap.set("Standard", { colorName: "Standard", colorHex: "#1E293B", images: featureIds });
                 }
             }
 
@@ -527,6 +639,7 @@ async function main() {
         }));
 
         const primaryModel = lineup.models[0];
+        const uniqueFeatureIds = Array.from(new Set(lineupFeatureImageIds)).slice(0, 8);
 
         const doc = {
             _id: lineup.id,
@@ -545,21 +658,19 @@ async function main() {
             sizeType: lineup.sizeType,
             sizes: lineup.sizes,
             variants: lineupVariants,
-            gadgetModels: sanityGadgetModels
+            gadgetModels: sanityGadgetModels,
+            featureImages: uniqueFeatureIds.map(id => ({ _type: 'image', _key: Math.random().toString(36).substring(2, 9), asset: { _type: 'reference', _ref: id } }))
         };
 
         try {
             await client.createOrReplace(doc);
-            console.log(`  ✅ Successfully published Lineup: "${lineup.title}" (${sanityGadgetModels.length} models)`);
-        } catch (e: any) {
-            console.error(`  ❌ Failed to save lineup ${lineup.title}:`, e.message || e);
+            console.log(`  ✅ Successfully published Lineup: "${lineup.title}" (${sanityGadgetModels.length} models, ${uniqueFeatureIds.length} feature banners)`);
+        } catch (err: any) {
+            console.error(`  ❌ Failed to publish Lineup "${lineup.title}":`, err.message || err);
         }
     }
 
-    console.log('\n🎉 ALL GROUPED GADGET LINEUPS PUBLISHED TO SANITY!');
+    console.log('\n🎉 ALL GROUPED GADGET LINEUPS PUBLISHED TO SANITY WITH TRANSPARENT 3:4 STUDIO IMAGES!');
 }
 
-main().catch(err => {
-    console.error('Fatal error:', err);
-    process.exit(1);
-});
+main().catch(console.error);

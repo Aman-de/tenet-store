@@ -263,15 +263,15 @@ const SOCIAL_PROOF_TAGS = [
     },
     {
         type: 'quality',
-        icon: <ShieldCheck className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" />,
-        bgIcon: 'bg-indigo-50 dark:bg-indigo-950/20 border border-indigo-100 dark:border-indigo-900/30',
+        icon: <ShieldCheck className="w-3.5 h-3.5 text-neutral-700 dark:text-neutral-300" />,
+        bgIcon: 'bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700',
         title: 'Premium Quality',
         subtitle: 'Hand-finished detailing'
     },
     {
         type: 'exclusive',
-        icon: <Sparkles className="w-3.5 h-3.5 text-purple-500 dark:text-purple-400" />,
-        bgIcon: 'bg-purple-50 dark:bg-purple-950/20 border border-purple-100 dark:border-purple-900/30',
+        icon: <Sparkles className="w-3.5 h-3.5 text-neutral-700 dark:text-neutral-300" />,
+        bgIcon: 'bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700',
         title: 'Limited Edition',
         subtitle: 'Exclusively crafted'
     }
@@ -442,13 +442,13 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
     const [selectedGadgetModelIndex, setSelectedGadgetModelIndex] = useState(0);
     const activeGadgetModel = hasGadgetModels ? product.gadgetModels![selectedGadgetModelIndex] || product.gadgetModels![0] : null;
 
-    // Active Variants (from active sub-model or fallback to product.variants)
+    // Active Variants (from active sub-model, never fallback to product.variants for gadgets)
     const activeVariants = useMemo(() => {
-        if (activeGadgetModel && activeGadgetModel.variants && activeGadgetModel.variants.length > 0) {
-            return activeGadgetModel.variants;
+        if (hasGadgetModels) {
+            return activeGadgetModel?.variants || [];
         }
         return product.variants || [];
-    }, [activeGadgetModel, product.variants]);
+    }, [hasGadgetModels, activeGadgetModel, product.variants]);
 
     // Variant Logic
     const hasVariants = activeVariants.length > 0;
@@ -457,6 +457,8 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
     useEffect(() => {
         if (activeVariants.length > 0) {
             setSelectedVariant(activeVariants[0]);
+        } else {
+            setSelectedVariant(undefined);
         }
     }, [selectedGadgetModelIndex, activeVariants]);
 
@@ -476,7 +478,16 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
         }
     }, [selectedVariant, selectedPiece]);
 
+    // Category & Type Helpers
+    const catLower = (product.category || "").toLowerCase();
+    const isGadget = catLower === 'gadgets' || catLower === 'electronics';
+    const isAccessory = catLower === 'accessories' || catLower === 'footwear';
+
     const availableVariants = useMemo(() => {
+        if (hasGadgetModels) {
+            // Strictly return ONLY the colors of the currently selected model variant
+            return activeGadgetModel?.variants || [];
+        }
         if (!activeVariants || activeVariants.length === 0) return [];
         return activeVariants.filter((variant, index, self) => {
             if (selectedPiece !== 'set' && variant.onlyAvailableAsSet) return false;
@@ -501,7 +512,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
             
             return index === firstIndex;
         });
-    }, [activeVariants, selectedPiece, selectedVariant]);
+    }, [hasGadgetModels, activeGadgetModel, activeVariants, selectedPiece, selectedVariant]);
 
     useEffect(() => {
         if (availableVariants.length > 0) {
@@ -528,13 +539,8 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
 
     // Fallback: If variant has no images, use product default images
     const rawImages = currentImages && currentImages.length > 0 ? currentImages : product.images.filter(Boolean);
-    const baseImages = [...rawImages].reverse();
+    const baseImages = [...rawImages];
     const displayImages = [...baseImages].slice(0, 8);
-
-    // Category & Type Helpers
-    const catLower = (product.category || "").toLowerCase();
-    const isGadget = catLower === 'gadgets' || catLower === 'electronics';
-    const isAccessory = catLower === 'accessories' || catLower === 'footwear';
 
     // Dynamic Storage Price Adjustments
     const sizes = product.sizes && product.sizes.length > 0 ? product.sizes : ["S", "M", "L", "XL"];
@@ -568,7 +574,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
     }
 
     let displayPrice = basePrice + storageOffset;
-    let displayOriginalPrice: number = Math.round(baseOriginalPrice * (1 + storageOffset / basePrice));
+    let displayOriginalPrice: number = baseOriginalPrice + storageOffset;
     let displayTitle = activeGadgetModel ? activeGadgetModel.name : product.title;
 
     if (product.enableSetComponents) {
@@ -991,7 +997,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                         alt={`${product.title} - View ${idx + 1}`}
                                         fill
                                         sizes="100vw"
-                                        className="object-cover"
+                                        className={cn("transition-all duration-500", isGadget ? "object-contain p-4" : "object-cover")}
                                         priority={idx === 0}
                                         loading={idx === 0 ? "eager" : "lazy"}
                                         quality={idx === 0 ? 85 : 75}
@@ -1068,20 +1074,20 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                             key={idx}
                             onClick={() => scrollToIndex(idx)}
                             className={cn(
-                                "relative w-20 h-28 lg:w-28 lg:h-36 xl:w-32 xl:h-44 2xl:w-36 2xl:h-48 shrink-0 border transition-all",
-                                selectedImageIndex === idx ? "border-[#1A1A1A] opacity-100 ring-1 ring-[#1A1A1A] ring-offset-1" : "border-transparent opacity-60 hover:opacity-100"
+                                "relative w-20 h-28 lg:w-28 lg:h-36 xl:w-32 xl:h-44 2xl:w-36 2xl:h-48 shrink-0 border transition-all rounded-xl overflow-hidden bg-neutral-100/70 dark:bg-neutral-900/70",
+                                selectedImageIndex === idx ? "border-[#1A1A1A] dark:border-white opacity-100 ring-1 ring-[#1A1A1A] dark:ring-white ring-offset-1" : "border-transparent opacity-60 hover:opacity-100"
                             )}
                         >
                             {img ? (
-                                <div className={cn("w-full h-full relative bg-neutral-100 dark:bg-[#141414]", !loadedThumbnails[idx] && "animate-pulse bg-neutral-200 dark:bg-neutral-800")}>
+                                <div className={cn("w-full h-full relative bg-neutral-100/80 dark:bg-neutral-900/80", !loadedThumbnails[idx] && "animate-pulse bg-neutral-200 dark:bg-neutral-800")}>
                                     <Image
                                         src={img}
                                         alt={`Product View ${idx}`}
                                         fill
                                         sizes="144px"
-                                        className="object-cover"
+                                        className={cn("transition-transform duration-500", isGadget ? "object-contain p-2" : "object-cover")}
                                         loading="lazy"
-                                        quality={60}
+                                        quality={65}
                                         unoptimized={img.startsWith("http")}
                                         onLoad={() => setLoadedThumbnails(prev => ({ ...prev, [idx]: true }))}
                                     />
@@ -1094,16 +1100,18 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 </div>
 
                 {/* Main Image */}
-                <div className="relative flex-1 aspect-[3/4] bg-neutral-100 dark:bg-[#141414] overflow-hidden">
+                <div className="w-[420px] h-[560px] lg:w-[500px] lg:h-[660px] xl:w-[560px] xl:h-[740px] 2xl:w-[640px] 2xl:h-[840px] relative rounded-2xl overflow-hidden bg-neutral-100/80 dark:bg-neutral-900/80 border border-neutral-200/50 dark:border-neutral-800/50 shadow-sm flex items-center justify-center">
                     {isMainImgLoading && (
-                        <div className="absolute inset-0 bg-neutral-200 dark:bg-neutral-800 animate-pulse z-10" />
+                        <div className="absolute inset-0 bg-neutral-100/90 dark:bg-[#111111]/90 backdrop-blur-md flex items-center justify-center z-10 transition-opacity duration-300">
+                            <Loader2 className="w-8 h-8 animate-spin text-[#1A1A1A] dark:text-[#F4F1ED] opacity-60" />
+                        </div>
                     )}
                     <motion.div
                         key={`${selectedVariant?.colorName}-${selectedImageIndex}`} // Force re-render on variant change
                         initial={false}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.3 }}
-                        className="w-full h-full relative"
+                        className="w-full h-full relative flex items-center justify-center"
                     >
                         {displayImages[selectedImageIndex] ? (
                             <Image
@@ -1111,7 +1119,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                 alt={product.title}
                                 fill
                                 sizes="(max-width: 1280px) 50vw, 40vw"
-                                className="object-cover transition-transform duration-700 hover:scale-[1.08] cursor-zoom-in"
+                                className={cn("transition-transform duration-700 hover:scale-[1.05] cursor-zoom-in", isGadget ? "object-contain p-6" : "object-cover")}
                                 priority
                                 quality={85}
                                 unoptimized={displayImages[selectedImageIndex].startsWith("http")}
@@ -1195,23 +1203,20 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
  
                 </div>
 
-                {/* Gadget Model Options Selector */}
+                {/* Gadget Model Options Selector (Balanced Luxury Cards with Unclipped Text & Crisp Cutouts) */}
                 {hasGadgetModels && (
-                    <div className="mb-4 mt-1">
-                        <div className="flex justify-between items-center mb-2">
+                    <div className="mb-5 mt-1">
+                        <div className="flex justify-between items-center mb-2.5">
                             <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED]">
-                                Choose Model Option
+                                Choose Model
                             </span>
                             <span className="text-xs font-serif font-bold text-[#1A1A1A] dark:text-[#F4F1ED]">
                                 {activeGadgetModel?.name}
                             </span>
                         </div>
                         <div className={cn(
-                            "grid gap-2.5 w-full pb-1",
-                            product.gadgetModels!.length === 2 ? "grid-cols-2" :
-                            product.gadgetModels!.length === 3 ? "grid-cols-3" :
-                            product.gadgetModels!.length === 4 ? "grid-cols-2 sm:grid-cols-4" :
-                            "grid-cols-2 sm:grid-cols-3 md:grid-cols-5"
+                            "grid gap-2.5 w-full pb-0.5",
+                            product.gadgetModels!.length === 1 ? "grid-cols-1" : "grid-cols-2"
                         )}>
                             {product.gadgetModels!.map((gModel, idx) => {
                                 const isSelected = selectedGadgetModelIndex === idx;
@@ -1226,32 +1231,49 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                             }
                                         }}
                                         className={cn(
-                                            "group flex flex-col gap-1.5 p-2 rounded-2xl transition-all cursor-pointer w-full items-center text-center relative",
+                                            "flex items-center gap-2.5 p-2.5 rounded-2xl transition-all cursor-pointer w-full text-left relative overflow-hidden group border",
                                             isSelected
-                                                ? "ring-[1.5px] ring-[#1A1A1A] dark:ring-white bg-white/80 dark:bg-white/10 shadow-[0_8px_20px_rgba(0,0,0,0.06)]"
-                                                : "border border-neutral-200/60 dark:border-white/5 opacity-80 hover:opacity-100 bg-white/30 dark:bg-black/10 hover:bg-white/50 dark:hover:bg-black/25"
+                                                ? "ring-[2px] ring-[#1A1A1A] dark:ring-white bg-white dark:bg-white/10 border-transparent shadow-md"
+                                                : "border-neutral-200/80 dark:border-white/10 opacity-80 hover:opacity-100 bg-neutral-50/50 dark:bg-black/20 hover:bg-white dark:hover:bg-white/5"
                                         )}
                                     >
-                                        <div className="relative w-full aspect-[3/4] rounded-xl overflow-hidden bg-neutral-100 dark:bg-[#111] shrink-0 border border-neutral-100 dark:border-white/5">
+                                        {/* Crisp Balanced Device Cutout Box */}
+                                        <div className="relative w-12 h-16 sm:w-14 sm:h-18 rounded-xl overflow-hidden bg-neutral-100 dark:bg-[#111] shrink-0 border border-neutral-200/50 dark:border-white/5 flex items-center justify-center shadow-xs">
                                             {modelImg ? (
-                                                <Image src={modelImg} alt={gModel.name} fill sizes="120px" loading="lazy" quality={75} unoptimized={modelImg.startsWith("http")} className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                                                <Image 
+                                                    src={modelImg} 
+                                                    alt={gModel.name} 
+                                                    fill 
+                                                    sizes="80px" 
+                                                    loading="lazy" 
+                                                    quality={90} 
+                                                    unoptimized={modelImg.startsWith("http")} 
+                                                    className="object-contain p-1 transition-transform duration-500 group-hover:scale-105" 
+                                                />
                                             ) : (
                                                 <div className="w-full h-full bg-neutral-200 dark:bg-neutral-800 animate-pulse" />
                                             )}
-                                            {isSelected && (
-                                                <div className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-[#1A1A1A] dark:bg-[#F4F1ED] text-white dark:text-black flex items-center justify-center shadow-md z-10">
-                                                    <Check className="w-2.5 h-2.5 stroke-[3.5]" />
-                                                </div>
-                                            )}
                                         </div>
-                                        <div className="flex flex-col w-full px-0.5 pb-0.5">
-                                            <span className={cn("text-[10px] sm:text-[11px] leading-tight truncate transition-all uppercase tracking-wider font-bold", isSelected ? "text-[#1A1A1A] dark:text-[#F4F1ED]" : "text-neutral-500 dark:text-neutral-400")}>
+
+                                        {/* Unclipped Model Name & Price */}
+                                        <div className="flex flex-col flex-1 min-w-0 pr-0.5">
+                                            <span className={cn(
+                                                "text-xs sm:text-[13px] font-bold tracking-tight leading-snug whitespace-normal break-words",
+                                                isSelected ? "text-[#1A1A1A] dark:text-[#F4F1ED]" : "text-neutral-700 dark:text-neutral-300"
+                                            )}>
                                                 {gModel.name}
                                             </span>
-                                            <span className="text-[10px] sm:text-[11px] font-sans font-bold text-neutral-800 dark:text-[#F4F1ED] mt-0.5">
+                                            <span className="text-[11px] sm:text-xs font-sans font-extrabold text-neutral-900 dark:text-[#F4F1ED] mt-1">
                                                 ₹{gModel.price.toLocaleString('en-IN')}
                                             </span>
                                         </div>
+
+                                        {/* Active Indicator Checkmark */}
+                                        {isSelected && (
+                                            <div className="w-4 h-4 rounded-full bg-[#1A1A1A] dark:bg-[#F4F1ED] text-white dark:text-black flex items-center justify-center shrink-0 shadow-sm self-start mt-0.5">
+                                                <Check className="w-2.5 h-2.5 stroke-[3.5]" />
+                                            </div>
+                                        )}
                                     </button>
                                 );
                             })}
@@ -1333,40 +1355,71 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 )}
 
                 {/* Color Selector (Variants) */}
+                {/* High-Converting Concise Color / Finish Swatches */}
                 {hasVariants ? (
                     <div className="mb-4">
-                        <div className="flex justify-between items-center mb-2">
-                            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Selected Color</span>
-                            <span className="text-xs font-serif text-[#1A1A1A] dark:text-[#F4F1ED]">{selectedVariant?.colorName}</span>
+                        <div className="flex justify-between items-center mb-2.5">
+                            <span className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED] flex items-center gap-1.5">
+                                {isGadget ? "Finish" : "Selected Color"}
+                                {selectedVariant?.colorName && (
+                                    <span className="text-neutral-400 font-normal font-sans text-xs lowercase">
+                                        — <span className="capitalize font-bold text-[#1A1A1A] dark:text-[#F4F1ED]">{selectedVariant.colorName}</span>
+                                    </span>
+                                )}
+                            </span>
                         </div>
-                        <div className="flex gap-3">
-                            {availableVariants.map((variant) => (
-                                <button
-                                    key={variant.colorName}
-                                    onClick={() => {
-                                        setSelectedVariant(variant);
-                                        // Reset selected piece back to 'set' if the new variant doesn't support the currently selected piece
-                                        if (selectedPiece === 'top' && variant.topImages && variant.topImages.length === 0) {
-                                            setSelectedPiece('set');
-                                        }
-                                        if (selectedPiece === 'bottom' && variant.bottomImages && variant.bottomImages.length === 0) {
-                                            setSelectedPiece('set');
-                                        }
-                                    }}
-                                    className="w-8 h-8 rounded-full border border-neutral-200/50 transition-all relative hover:scale-105 active:scale-95 cursor-pointer"
-                                    style={{ 
-                                        background: (variant.secondaryColorHex && selectedPiece === 'set') 
-                                            ? `linear-gradient(135deg, ${variant.colorHex} 50%, ${variant.secondaryColorHex} 50%)`
-                                            : (selectedPiece === 'bottom' && variant.secondaryColorHex)
-                                                ? variant.secondaryColorHex
-                                                : variant.colorHex,
-                                        boxShadow: selectedVariant?.colorName === variant.colorName 
-                                            ? `0 0 0 2px #FDFBF7, 0 0 0 3.5px ${accentColor}` 
-                                            : undefined 
-                                    }}
-                                    title={variant.colorName}
-                                />
-                            ))}
+                        <div className="flex flex-wrap gap-3 items-center pt-0.5">
+                            {availableVariants.map((variant) => {
+                                const isSelected = selectedVariant?.colorName === variant.colorName;
+                                const isWhiteish = variant.colorHex?.toLowerCase() === "#ffffff" || variant.colorHex?.toLowerCase() === "#f4f1ed" || variant.colorHex?.toLowerCase() === "#f2f1ed" || variant.colorName?.toLowerCase().includes("white");
+                                return (
+                                    <button
+                                        key={variant.colorName}
+                                        onClick={() => {
+                                            setSelectedVariant(variant);
+                                            if (selectedPiece === 'top' && variant.topImages && variant.topImages.length === 0) {
+                                                setSelectedPiece('set');
+                                            }
+                                            if (selectedPiece === 'bottom' && variant.bottomImages && variant.bottomImages.length === 0) {
+                                                setSelectedPiece('set');
+                                            }
+                                        }}
+                                        className={cn(
+                                            "relative w-9 h-9 rounded-full transition-all duration-300 cursor-pointer flex items-center justify-center group focus:outline-none shrink-0",
+                                            isSelected
+                                                ? "scale-110 ring-2 ring-offset-2 ring-[#1A1A1A] dark:ring-white dark:ring-offset-neutral-950 shadow-md"
+                                                : "opacity-85 hover:opacity-100 hover:scale-105"
+                                        )}
+                                        style={{
+                                            boxShadow: isSelected ? undefined : "0 2px 8px rgba(0,0,0,0.12)"
+                                        }}
+                                        title={variant.colorName}
+                                        aria-label={variant.colorName}
+                                    >
+                                        {/* Inner Color Swatch Circle */}
+                                        <span 
+                                            className={cn(
+                                                "w-full h-full rounded-full transition-transform group-hover:scale-95 flex items-center justify-center overflow-hidden border",
+                                                isWhiteish ? "border-neutral-300 dark:border-white/30" : "border-black/10 dark:border-white/20"
+                                            )} 
+                                            style={{
+                                                background: (variant.secondaryColorHex && selectedPiece === 'set') 
+                                                    ? `linear-gradient(135deg, ${variant.colorHex} 50%, ${variant.secondaryColorHex} 50%)`
+                                                    : (selectedPiece === 'bottom' && variant.secondaryColorHex)
+                                                        ? variant.secondaryColorHex
+                                                        : variant.colorHex
+                                            }}
+                                        />
+
+                                        {/* Active Selection Icon */}
+                                        {isSelected && (
+                                            <div className="absolute inset-0 flex items-center justify-center text-white dark:text-black z-10 drop-shadow-sm">
+                                                <Check className={cn("w-3.5 h-3.5 stroke-[3.5]", isWhiteish ? "text-neutral-900" : "text-white")} />
+                                            </div>
+                                        )}
+                                    </button>
+                                );
+                            })}
                         </div>
                     </div>
                 ) : (
@@ -1657,44 +1710,92 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                     </div>
                 )}
 
+                {/* Feature Spotlight & Description Banners */}
+                {((activeGadgetModel?.featureImages && activeGadgetModel.featureImages.length > 0) || (product.featureImages && product.featureImages.length > 0)) && (
+                    <div className="py-8 border-t border-neutral-200/60 dark:border-white/10 my-6">
+                        <div className="flex items-center gap-2 mb-6">
+                            <Sparkles className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                            <h2 className="font-serif text-xl md:text-2xl text-[#1A1A1A] dark:text-[#F4F1ED] font-bold">
+                                Feature Spotlight & Overview
+                            </h2>
+                        </div>
+                        <div className="flex flex-col gap-6">
+                            {((activeGadgetModel?.featureImages && activeGadgetModel.featureImages.length > 0 ? activeGadgetModel.featureImages : product.featureImages) || []).map((imgUrl, idx) => (
+                                <div key={idx} className="relative w-full rounded-2xl overflow-hidden shadow-md border border-neutral-200/50 dark:border-white/10 group">
+                                    <img 
+                                        src={imgUrl} 
+                                        alt={`${displayTitle} Feature ${idx + 1}`} 
+                                        className="w-full h-auto object-cover rounded-2xl transition-transform duration-700 group-hover:scale-[1.01]"
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
                 {/* Frequently Bought Together / Bundle */}
                 <div className="py-6 border-t border-neutral-200/60 dark:border-white/10 mt-2">
                     <h2 className="font-serif text-lg md:text-xl text-[#1A1A1A] dark:text-[#F4F1ED] mb-4">Frequently Bought Together</h2>
                     <div className="flex flex-col gap-4">
                         <div className="flex items-center gap-2 xs:gap-3 bg-neutral-50 dark:bg-white/5 p-3 rounded-lg border border-neutral-100 dark:border-white/10">
                             <div className="flex gap-1.5 xs:gap-2 flex-1 items-center">
-                                <div className="relative w-10 h-14 xs:w-12 xs:h-16 rounded overflow-hidden shadow-sm shrink-0 border border-neutral-200/50 dark:border-white/10">
-                                    {product.images?.[0] && <Image src={product.images[0]} alt="Kurti Set" fill sizes="48px" loading="lazy" quality={60} unoptimized={product.images[0].startsWith("http")} className="object-cover" />}
+                                <div className="relative w-10 h-14 xs:w-12 xs:h-16 rounded overflow-hidden shadow-sm shrink-0 bg-neutral-100 dark:bg-neutral-900 border border-neutral-200/50 dark:border-white/10">
+                                    {displayImages?.[0] && <Image src={displayImages[0]} alt={displayTitle} fill sizes="48px" loading="lazy" quality={60} unoptimized={displayImages[0].startsWith("http")} className={isGadget ? "object-contain p-1" : "object-cover"} />}
                                 </div>
                                 <div className="text-neutral-400 font-bold text-[10px]">+</div>
-                                <div className="relative w-10 h-14 xs:w-12 xs:h-16 rounded overflow-hidden shadow-sm shrink-0 bg-white/40 dark:bg-black/20 border border-neutral-200/50 dark:border-white/10">
-                                    <Image src="/images/generated/pearl_drop_earrings.png" alt="Earrings" fill sizes="48px" loading="lazy" quality={60} unoptimized={true} className="object-cover" />
+                                <div className="relative w-10 h-14 xs:w-12 xs:h-16 rounded overflow-hidden shadow-sm shrink-0 bg-neutral-100 dark:bg-neutral-900 border border-neutral-200/50 dark:border-white/10">
+                                    <Image src={isGadget ? "/images/accessories/usbc_charger.webp" : "/images/generated/pearl_drop_earrings.png"} alt={isGadget ? "30W Fast Charger" : "Earrings"} fill sizes="48px" loading="lazy" quality={60} unoptimized={true} className="object-contain p-1" />
                                 </div>
                                 <div className="text-neutral-400 font-bold text-[10px]">+</div>
-                                <div className="relative w-10 h-14 xs:w-12 xs:h-16 rounded overflow-hidden shadow-sm shrink-0 bg-white/40 dark:bg-black/20 border border-neutral-200/50 dark:border-white/10">
-                                    <Image src="/images/generated/woven_leather_slides.png" alt="Slides" fill sizes="48px" loading="lazy" quality={60} unoptimized={true} className="object-cover" />
+                                <div className="relative w-10 h-14 xs:w-12 xs:h-16 rounded overflow-hidden shadow-sm shrink-0 bg-neutral-100 dark:bg-neutral-900 border border-neutral-200/50 dark:border-white/10">
+                                    <Image src={isGadget ? "/images/accessories/magsafe_charger.webp" : "/images/generated/woven_leather_slides.png"} alt={isGadget ? "MagSafe Charger" : "Slides"} fill sizes="48px" loading="lazy" quality={60} unoptimized={true} className="object-contain p-1" />
                                 </div>
                             </div>
                             <div className="flex flex-col items-end justify-center shrink-0">
-                                <span className="font-serif text-sm xs:text-base text-[#1A1A1A] dark:text-[#F4F1ED] font-bold leading-none">₹5,697</span>
-                                <span className="text-[10px] text-neutral-400 line-through mt-0.5">₹6,297</span>
+                                <span className="font-serif text-sm xs:text-base text-[#1A1A1A] dark:text-[#F4F1ED] font-bold leading-none">
+                                    ₹{(displayPrice + (isGadget ? 4200 : 4198)).toLocaleString('en-IN')}
+                                </span>
+                                <span className="text-[10px] text-neutral-400 line-through mt-0.5">
+                                    ₹{(displayPrice + (isGadget ? 4800 : 4798)).toLocaleString('en-IN')}
+                                </span>
                             </div>
                         </div>
                         <button 
                             onClick={() => {
-                                addToCart(product as any, selectedSize, selectedColor, selectedPiece);
-                                addToCart({
-                                    id: 'pearl-earrings',
-                                    title: 'Pearl Drop Earrings',
-                                    price: 1299,
-                                    images: ['/images/generated/pearl_drop_earrings.png']
-                                } as any, 'ONE SIZE', 'Gold');
-                                addToCart({
-                                    id: 'woven-slides',
-                                    title: 'Woven Leather Slides',
-                                    price: 3499,
-                                    images: ['/images/generated/woven_leather_slides.png']
-                                } as any, '8', 'Brown');
+                                handleAddToCart();
+                                if (isGadget) {
+                                    addToCart({
+                                        id: 'apple-30w-fast-charger',
+                                        title: 'Apple 30W USB-C Power Adapter & Cable',
+                                        price: 1900,
+                                        originalPrice: 2490,
+                                        images: ['/images/accessories/usbc_charger.webp'],
+                                        category: 'gadgets',
+                                        gender: 'unisex'
+                                    } as any, 'Standard', 'White');
+                                    addToCart({
+                                        id: 'magsafe-15w-wireless-charger',
+                                        title: 'Apple MagSafe 15W Wireless Charger',
+                                        price: 2900,
+                                        originalPrice: 3900,
+                                        images: ['/images/accessories/magsafe_charger.webp'],
+                                        category: 'gadgets',
+                                        gender: 'unisex'
+                                    } as any, 'Standard', 'Silver');
+                                } else {
+                                    addToCart({
+                                        id: 'pearl-earrings',
+                                        title: 'Pearl Drop Earrings',
+                                        price: 1299,
+                                        images: ['/images/generated/pearl_drop_earrings.png']
+                                    } as any, 'ONE SIZE', 'Gold');
+                                    addToCart({
+                                        id: 'woven-slides',
+                                        title: 'Woven Leather Slides',
+                                        price: 3499,
+                                        images: ['/images/generated/woven_leather_slides.png']
+                                    } as any, '8', 'Brown');
+                                }
                                 openCart();
                             }}
                             className="w-full bg-[#1A1A1A] dark:bg-white text-white dark:text-[#1A1A1A] py-3 text-[11px] font-bold uppercase tracking-[0.15em] rounded-md shadow-sm hover:opacity-90 transition-opacity">
@@ -1705,13 +1806,20 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
 
                 {/* Pair With Carousel */}
                 <div className="py-6 border-t border-neutral-200/60 dark:border-white/10 mt-2">
-                    <h2 className="font-serif text-lg md:text-xl text-[#1A1A1A] dark:text-[#F4F1ED] mb-4">Pair With</h2>
+                    <h2 className="font-serif text-lg md:text-xl text-[#1A1A1A] dark:text-[#F4F1ED] mb-4">
+                        {isGadget ? "Pairs Well With Essential Accessories" : "Pair With"}
+                    </h2>
                     <div className="flex gap-4 overflow-x-auto no-scrollbar pb-2">
-                        {[
+                        {(isGadget ? [
+                            { id: 'apple-30w-fast-charger', name: "Apple 30W USB-C Fast Charger", priceVal: 1900, price: "₹1,900", img: "/images/accessories/usbc_charger.webp", size: 'Standard', color: 'White' },
+                            { id: 'magsafe-15w-wireless-charger', name: "Apple MagSafe 15W Charger", priceVal: 2900, price: "₹2,900", img: "/images/accessories/magsafe_charger.webp", size: 'Standard', color: 'Silver' },
+                            { id: 'techwoven-magsafe-case', name: "Ultra TechWoven MagSafe Case", priceVal: 1490, price: "₹1,490", img: "/images/accessories/techwoven_case.webp", size: 'Standard', color: 'Cosmic Orange' },
+                            { id: 'airpods-pro-2nd-gen', name: "AirPods Pro (2nd Gen)", priceVal: 19900, price: "₹19,900", img: "/images/accessories/airpods_case.webp", size: 'Standard', color: 'White' }
+                        ] : [
                             { id: 'pearl-earrings', name: "Pearl Drop Earrings", priceVal: 1299, price: "₹1,299", img: "/images/generated/pearl_drop_earrings.png", size: 'ONE SIZE', color: 'Gold' },
                             { id: 'woven-slides', name: "Woven Leather Slides", priceVal: 3499, price: "₹3,499", img: "/images/generated/woven_leather_slides.png", size: '8', color: 'Brown' },
                             { id: 'silk-scarf', name: "Silk Blend Scarf", priceVal: 2199, price: "₹2,199", img: "/images/generated/silk_scarf_detail.png", size: 'ONE SIZE', color: 'Cream' }
-                        ].map((item, idx) => (
+                        ]).map((item, idx) => (
                             <div 
                                 key={idx} 
                                 onClick={() => {
@@ -1719,14 +1827,16 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                         id: item.id,
                                         title: item.name,
                                         price: item.priceVal,
-                                        images: [item.img]
+                                        images: [item.img],
+                                        category: isGadget ? 'gadgets' : 'fashion',
+                                        gender: 'unisex'
                                     } as any, item.size, item.color);
                                     openCart();
                                 }}
                                 className="w-[140px] shrink-0 group cursor-pointer"
                             >
                                 <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-neutral-100 dark:bg-[#141414] mb-2 border border-neutral-200/50 dark:border-white/5">
-                                    {item.img && <Image src={item.img} alt={item.name} fill sizes="140px" loading="lazy" quality={70} unoptimized={item.img.startsWith("http")} className="object-cover transition-transform duration-500 group-hover:scale-105" />}
+                                    {item.img && <Image src={item.img} alt={item.name} fill sizes="140px" loading="lazy" quality={70} unoptimized={item.img.startsWith("http")} className={isGadget ? "object-contain p-2 transition-transform duration-500 group-hover:scale-105" : "object-cover transition-transform duration-500 group-hover:scale-105"} />}
                                     <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors" />
                                     
                                     {/* Desktop Hover Add Overlay */}

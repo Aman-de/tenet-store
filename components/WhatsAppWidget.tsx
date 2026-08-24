@@ -1,37 +1,45 @@
 "use client";
 
-import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
-import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useSettings } from "@/context/SettingsContext";
 
 export default function WhatsAppWidget() {
     const settings = useSettings();
-    const whatsappUrl = `https://wa.me/${settings.whatsappNumber}?text=${encodeURIComponent(settings.whatsappMessage)}`;
+    const whatsappUrl = `https://wa.me/${settings.whatsappNumber || "919999999999"}?text=${encodeURIComponent(settings.whatsappMessage || "Hi Shreya, I'd like styling advice and assistance with an order on TENET.")}`;
 
     return (
         <AnimatePresence>
             <motion.div 
                 initial={{ opacity: 0, scale: 0.8, y: 20 }}
-                animate={{ opacity: 0.5, scale: 1, y: 0 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.8, y: 20 }}
-                    whileHover={{ opacity: 1 }}
-                    transition={{ duration: 0.3 }}
-                    className="fixed bottom-[72px] lg:bottom-6 right-4 lg:right-6 z-40 flex flex-col items-end"
+                transition={{ duration: 0.4 }}
+                className="fixed bottom-[68px] lg:bottom-7 right-4 lg:right-7 z-50 flex items-center gap-2.5"
+            >
+                {/* Desktop Tooltip Badge */}
+                <span className="hidden lg:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/85 backdrop-blur-md text-white text-[11px] font-sans font-semibold border border-white/10 shadow-lg pointer-events-none opacity-90">
+                    <span className="w-2 h-2 rounded-full bg-[#25D366] animate-pulse"></span>
+                    TENET Concierge
+                </span>
+
+                <a
+                    href={whatsappUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="relative w-[50px] h-[50px] lg:w-[58px] lg:h-[58px] rounded-full bg-[#25D366] flex items-center justify-center shadow-[0_8px_25px_rgba(37,211,102,0.5)] hover:shadow-[0_12px_30px_rgba(37,211,102,0.65)] hover:scale-105 active:scale-95 transition-all duration-300 group cursor-pointer border-2 border-white dark:border-neutral-900"
+                    aria-label="Contact concierge on WhatsApp"
                 >
-                    <a
-                        href={whatsappUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-[36px] h-[36px] lg:w-[42px] lg:h-[42px] flex items-center justify-center hover:scale-105 active:scale-95 transition-all duration-300 relative group cursor-pointer"
-                        aria-label="Contact support on WhatsApp"
-                    >
-                        <img 
-                            src="/whatsapp-logo.svg" 
-                            className="w-full h-full object-contain filter drop-shadow-md" 
-                            alt="WhatsApp" 
-                        />
-                    </a>
-                </motion.div>
+                    {/* Pulsing Outer Ping Ring */}
+                    <span className="absolute inset-0 rounded-full bg-[#25D366] opacity-30 animate-ping pointer-events-none"></span>
+
+                    {/* WhatsApp Icon */}
+                    <img 
+                        src="/whatsapp-logo.svg" 
+                        className="w-[28px] h-[28px] lg:w-[34px] lg:h-[34px] object-contain drop-shadow-sm transition-transform duration-300 group-hover:scale-110" 
+                        alt="WhatsApp Concierge" 
+                    />
+                </a>
+            </motion.div>
         </AnimatePresence>
     );
 }

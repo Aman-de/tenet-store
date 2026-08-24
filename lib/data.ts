@@ -25,6 +25,7 @@ export interface GadgetModelOption {
     discountLabel?: string;
     image?: string;
     description?: string;
+    featureImages?: string[];
     variants?: Variant[];
 }
 
@@ -38,6 +39,7 @@ export interface Product {
     category: string;
     images: string[];
     colors: string[];
+    featureImages?: string[];
 
     // New Fields
     isBestSeller?: boolean;

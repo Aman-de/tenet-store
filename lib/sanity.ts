@@ -505,6 +505,7 @@ export async function getProduct(slug: string) {
         "topImages": topImages[].asset->url,
         "bottomImages": bottomImages[].asset->url
     },
+    "featureImages": featureImages[].asset->url,
     gadgetModels[]{
         name,
         price,
@@ -512,6 +513,7 @@ export async function getProduct(slug: string) {
         discountLabel,
         "image": image.asset->url,
         description,
+        "featureImages": featureImages[].asset->url,
         variants[]{
             colorName,
             colorHex,
@@ -657,6 +659,7 @@ export async function getProduct(slug: string) {
         bottomName: product.bottomName,
         bottomImages: product.bottomImages,
         description: product.description,
+        featureImages: product.featureImages || [],
         gadgetModels: (product.gadgetModels || []).map((m: any) => ({
             name: m.name,
             price: m.price,
@@ -664,6 +667,7 @@ export async function getProduct(slug: string) {
             discountLabel: m.discountLabel,
             image: m.image,
             description: m.description,
+            featureImages: m.featureImages || [],
             variants: (m.variants || []).map((v: any) => ({
                 colorName: v.colorName,
                 colorHex: typeof v.colorHex === 'object' && v.colorHex?.hex ? v.colorHex.hex : v.colorHex,
@@ -907,7 +911,7 @@ export async function searchProducts(searchTerm: string, category?: string, gend
             results = results.filter(p => p.category?.toLowerCase() === "gadgets" || p.category?.toLowerCase() === "electronics");
         } else {
             results = results.filter(p => {
-                const g = p.gender ? p.gender.toLowerCase() : "man";
+                const g = p.gender ? p.gender.toLowerCase() : "woman";
                 const cat = p.category ? p.category.toLowerCase() : "";
                 return (g === gender.toLowerCase() || g === "unisex") && cat !== "gadgets" && cat !== "electronics";
             });

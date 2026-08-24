@@ -305,8 +305,13 @@ export default function CartDrawer() {
     const [couponError, setCouponError] = useState("");
 
     const VALID_COUPONS: Record<string, number> = {
+        'WELCOME30': 0.30,
+        'RAKHI30': 0.30,
+        'WELCOME15': 0.15,
         'CREATOR15': 0.15,
         'FIRST20': 0.20,
+        'TENET10': 0.10,
+        'CIRCLE15': 0.15,
     };
 
     const handleApplyCoupon = async () => {
@@ -1026,7 +1031,7 @@ export default function CartDrawer() {
                                     
                                     {/* Coupon Input Area */}
                                     {!appliedCoupon && !activeReferral && (
-                                        <div className="flex flex-col gap-1 mt-2 mb-2">
+                                        <div className="flex flex-col gap-1.5 mt-2 mb-2">
                                             <div className="flex gap-2">
                                                 <input 
                                                     type="text" 
@@ -1036,16 +1041,35 @@ export default function CartDrawer() {
                                                         setCouponInput(e.target.value);
                                                         setCouponError("");
                                                     }}
-                                                    className="flex-1 border border-neutral-300 dark:border-white/20 bg-transparent text-[#1A1A1A] dark:text-[#F4F1ED] rounded-sm px-3 py-2 text-xs font-sans outline-none focus:border-black dark:focus:border-white/50 uppercase placeholder:text-neutral-400 dark:placeholder:text-neutral-500"
+                                                    className="flex-1 border border-neutral-300 dark:border-white/20 bg-transparent text-[#1A1A1A] dark:text-[#F4F1ED] rounded-xl px-3.5 py-2 text-xs font-sans outline-none focus:border-black dark:focus:border-white/50 uppercase placeholder:text-neutral-400 dark:placeholder:text-neutral-500"
                                                 />
                                                 <button 
                                                     onClick={handleApplyCoupon}
                                                     disabled={!couponInput.trim()}
-                                                    className="bg-black dark:bg-[#F4F1ED] text-white dark:text-[#1A1A1A] px-4 text-xs font-bold tracking-widest uppercase rounded-sm disabled:opacity-50"
+                                                    className="bg-black dark:bg-[#F4F1ED] text-white dark:text-[#1A1A1A] px-4 text-xs font-bold tracking-widest uppercase rounded-xl disabled:opacity-50 hover:opacity-90 active:scale-95 transition-all cursor-pointer"
                                                 >
                                                     Apply
                                                 </button>
                                             </div>
+                                            
+                                            {/* Quick Apply Chips */}
+                                            <div className="flex items-center gap-1.5 flex-wrap pt-0.5">
+                                                <span className="text-[9px] text-neutral-400 font-medium">Offers:</span>
+                                                {['WELCOME30', 'WELCOME15'].map((chipCode) => (
+                                                    <button
+                                                        key={chipCode}
+                                                        type="button"
+                                                        onClick={() => {
+                                                            setAppliedCoupon({ code: chipCode, percent: VALID_COUPONS[chipCode] || 0.15 });
+                                                            setCouponError("");
+                                                        }}
+                                                        className="px-2 py-0.5 rounded-full text-[9px] font-mono font-bold bg-[#E0A96D]/15 text-[#E0A96D] border border-[#E0A96D]/30 hover:bg-[#E0A96D]/25 transition-all cursor-pointer"
+                                                    >
+                                                        + {chipCode}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                            
                                             {couponError && <span className="text-[10px] text-red-500 font-medium">{couponError}</span>}
                                         </div>
                                     )}
@@ -1061,7 +1085,7 @@ export default function CartDrawer() {
                                         <span>₹{totalBeforeWallet.toLocaleString('en-IN')}</span>
                                     </div>
                                     <button
-                                        className="w-full text-white py-4 font-sans text-[13px] font-bold uppercase tracking-widest hover:opacity-95 active:scale-[0.98] transition-all duration-300 disabled:opacity-50 rounded-full flex items-center justify-center gap-2"
+                                        className="w-full text-white py-4 font-sans text-[13px] font-bold uppercase tracking-widest hover:opacity-95 active:scale-[0.98] transition-all duration-300 disabled:opacity-50 rounded-full flex items-center justify-center gap-2 shadow-lg cursor-pointer"
                                         style={{ backgroundColor: accentColor }}
                                         disabled={cartItems.length === 0}
                                         onClick={() => {
@@ -1092,6 +1116,18 @@ export default function CartDrawer() {
                                             </>
                                         )}
                                     </button>
+
+                                    {/* Checkout Trust Guarantee Ribbon */}
+                                    <div className="flex items-center justify-center gap-3 pt-1 text-[9.5px] text-neutral-400 font-medium tracking-wide">
+                                        <span className="flex items-center gap-1">
+                                            <ShieldCheck className="w-3 h-3 text-emerald-500" />
+                                            256-Bit SSL
+                                        </span>
+                                        <span>•</span>
+                                        <span>UPI / Cards / NetBanking</span>
+                                        <span>•</span>
+                                        <span>7-Day Return</span>
+                                    </div>
                                 </div>
                             </>
                         ) : (

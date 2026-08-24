@@ -1,0 +1,64 @@
+================================================================================
+TENET RAKHI 2026: MASTER AI VIDEO AGENT PROMPT & PRODUCTION SPEC (9:16 VERTICAL)
+================================================================================
+
+[PROJECT OVERVIEW]
+Brand: TENET
+Campaign: Raksha Bandhan Viral Gift Drop
+Product: Women's Luxury Tassel Kurti & Wide-Leg Denim Set (5 Colorways)
+Format: 9:16 Vertical Video (1080x1920)
+Target Audience: Indian Gen Z & Millennials (Ages 18-35) looking for the perfect Rakhi gift for their sisters
+Tone: Relatable Indian brother comedy -> High-energy luxury fashion proof -> Urgent DM CTA
+Language: Natural Hinglish / Hindi
+
+--------------------------------------------------------------------------------
+1. MASTER AGENT PROMPT (Copy-Paste this into your Video Generation Agent)
+--------------------------------------------------------------------------------
+"Generate a high-converting 30-second 9:16 vertical Indian UGC comedy advertisement for TENET clothing.
+
+Plot Outline:
+- Scene 1 (0-5s): A stressed young 23-year-old Indian brother sitting on a modern living room couch, holding his head, hopelessly scrolling through his phone trying to figure out what to gift his sister for Rakhi.
+- Scene 2 (5-11s): His stylish friend walks in with a cold drink, teasers him asking if he had a breakup. The brother explains the Rakhi gifting dilemma ('Wahi boring chocolate ya ₹500 ka lifafa diya toh saal bhar taane sunne padenge!'). The friend laughs and introduces TENET's viral Tassel Kurti & Denim collection.
+- Scene 3 (11-22s): High-energy visual montage showcasing gorgeous modern Indian models wearing TENET's luxury side-slit tassel kurti in Chocolate Brown, Royal Navy, and Crimson Red with wide-leg denim and crystal heels. Soft luxury lighting, smooth turning angles, focusing on fabric texture and tassel beads.
+- Scene 4 (22-28s): Punchline scene where the friend says 'Ye gift karega na, toh behen agle 6 mahine bina maange chai bana ke degi!' Brother is hyped and asks where to order.
+- Scene 5 (28-35s): High-conversion outro displaying '🪢 RAKHI DROP LIVE' banner, all 5 colors fanned out, and an interactive floating button 'Comment RAKHI for DM Link'."
+
+--------------------------------------------------------------------------------
+2. SCENE-BY-SCENE PROMPTS FOR AI TOOLS (Google Veo 2 / Kling 1.5 / Runway Gen-3)
+--------------------------------------------------------------------------------
+
+[SCENE 1: THE STRESSED BROTHER HOOK]
+Prompt: "Cinematic 9:16 vertical video, an expressive 23-year-old young Indian man sitting on a modern living room sofa, looking frustrated and stressed while staring at his smartphone screen, scratching his head in confusion, soft warm indoor lighting, shallow depth of field, photorealistic, 4k resolution, shot on 35mm lens --ar 9:16"
+
+[SCENE 2: FRIEND ENTRANCE & BANTER]
+Prompt: "Cinematic 9:16 vertical video, handsome cheerful Indian guy in casual streetwear t-shirt walking into the living room smiling and teasing his friend, holding a coffee mug, natural expressive conversation, bright modern apartment lighting, smooth camera track-in, hyper-realistic, 8k --ar 9:16"
+
+[SCENE 3: LUXURY UNBOXING REVEAL]
+Prompt: "Overhead POV 9:16 vertical video, opening a luxury matte black gift box tied with golden ribbon, revealing a premium chocolate brown Indian designer kurti with delicate tassel beads and gold accents, aesthetic cinematic lighting, Pinterest luxury gift aesthetic, 4k UHD --ar 9:16"
+
+[SCENE 4: MODEL TRY-ON & SPIN]
+Prompt: "Full-body 9:16 vertical fashion reel, gorgeous modern Indian female model with long wavy hair gracefully turning and showcasing a rich chocolate brown side-slit tassel kurti with wide-leg light blue denim, minimalist editorial studio backdrop, warm soft spotlight, high-end luxury fashion aesthetic, ultra-fluid motion, 4k --ar 9:16"
+
+--------------------------------------------------------------------------------
+3. DIALOGUE SCRIPT (For ElevenLabs / AI Voiceover / Lip-Sync)
+--------------------------------------------------------------------------------
+[Aman - Confident Friend]:
+"Bhai kya hua? Itna tension mein kyu baitha hai? Breakup ho gaya kya? ... Toh tu abhi tak 2010 mein jee raha hai kya? Tu use TENET ka viral Tassel Kurti set de! Dekh bhai, pure luxury fabric, modern corset-tie slit aur flared bottom fit! Meri behen ne pichle hafte hi pehna tha... Ye gift karega na, toh behen agle 6 mahine tak bina maange garam chai bana ke degi! Abhi TENET pe Rakhi Special Drop live hai with fast delivery. Comment karo 'RAKHI' for direct link!"
+
+[Rahul - Stressed Brother]:
+"Arre breakup chhod bhai... 3 din mein Rakhi hai! Behen ko kya gift du samajh nahi aa raha! Wahi boring chocolates ya ₹500 ka lifafa diya na, toh poore saal taane sunne padenge! ... Sahi mein?! Kahan se order karu?"
+
+--------------------------------------------------------------------------------
+4. WHAT YOU NEED TO PROVIDE VS WHAT AI HANDLES
+--------------------------------------------------------------------------------
+1. What AI handles completely:
+   - Creating the 2 Indian characters (expressions, dialogue, mouth movements).
+   - Generating the voiceover audio with Indian Hinglish accents.
+   - Producing the living room environment and comedic timing.
+
+2. What you provide to your agent:
+   - Your product photos (available in `tenet-store/public/images/products/chocolate-set/`).
+   - Your brand name: "TENET".
+   - Your call to action: "Comment RAKHI for DM".
+
+================================================================================

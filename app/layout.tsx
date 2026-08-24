@@ -27,7 +27,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "TENET | Silent Luxury",
-  description: "Premium, Old Money aesthetic e-commerce store for men.",
+  description: "Premium, Old Money aesthetic quiet luxury store for women and men.",
   manifest: "/manifest.json",
   icons: {
     apple: "/apple-touch-icon.png",

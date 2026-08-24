@@ -7,7 +7,19 @@
     "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint",
-    "seed": "npx tsx scripts/seed-sanity.ts"
+    "seed": "npx tsx scripts/seed-sanity.ts",
+    "remotion:preview": "remotion preview remotion/index.ts",
+    "remotion:render": "remotion render remotion/index.ts MasterViralReel out/master-viral-reel.mp4",
+    "remotion:render:chocolate": "remotion render remotion/index.ts ChocolateAndDenimSet out/chocolate-denim-outfit.mp4",
+    "remotion:render:blue": "remotion render remotion/index.ts BlueAndDenimSet out/blue-denim-outfit.mp4",
+    "remotion:render:red": "remotion render remotion/index.ts RedAndDenimSet out/red-denim-outfit.mp4",
+    "remotion:render:yellow": "remotion render remotion/index.ts YellowAndDenimSet out/yellow-denim-viral.mp4",
+    "remotion:render:pink": "remotion render remotion/index.ts PinkAndDenimSet out/pink-denim-viral.mp4",
+    "remotion:render:all-outfits": "npm run remotion:render:chocolate && npm run remotion:render:blue && npm run remotion:render:red && npm run remotion:render:yellow && npm run remotion:render:pink",
+    "publish:youtube": "npx tsx scripts/publisher/index.ts --platform=youtube",
+    "publish:instagram": "npx tsx scripts/publisher/index.ts --platform=instagram",
+    "publish:all": "npx tsx scripts/publisher/index.ts --platform=all",
+    "remotion:still": "remotion still remotion/index.ts ChocolateAndDenimSet out/preview.png"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.37.0",
@@ -25,6 +37,7 @@
     "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
     "framer-motion": "^12.28.1",
+    "googleapis": "^176.0.0",
     "lucide-react": "^0.562.0",
     "next": "16.1.4",
     "next-sanity": "^11.6.12",
@@ -40,13 +53,19 @@
     "zustand": "^5.0.10"
   },
   "devDependencies": {
+    "@remotion/cli": "^4.0.513",
+    "@remotion/google-fonts": "^4.0.513",
+    "@remotion/player": "^4.0.513",
+    "@remotion/transitions": "^4.0.513",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/shortid": "^2.2.0",
+    "ajv": "^8.20.0",
     "eslint": "^9",
     "eslint-config-next": "16.1.4",
+    "remotion": "^4.0.513",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
