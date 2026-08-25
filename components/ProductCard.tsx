@@ -135,19 +135,18 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
                     )}
                 </div>
 
-                {/* Out of Stock / Discount Badge */}
+                {/* Out of Stock / Rakhi Festive Discount Badge */}
                 {product.isOutOfStock ? (
                     <div className="absolute top-3 left-3 bg-black/90 backdrop-blur-md text-white text-[9px] font-bold px-2.5 py-1 uppercase tracking-widest z-20 rounded-full">
                         Sold Out
                     </div>
                 ) : (
-                    hasDiscount && (
-                        <div 
-                            className="absolute top-3 left-3 text-white text-[9px] font-bold px-2.5 py-1 uppercase tracking-widest z-20 shadow-md rounded-full bg-[#110D0A]/90 backdrop-blur-md border border-[#E0A96D]/30"
-                        >
-                            <span className="text-[#E0A96D]">{discountPercentage}% OFF</span>
-                        </div>
-                    )
+                    <div 
+                        className="absolute top-2.5 left-2.5 text-white text-[8.5px] sm:text-[9.5px] font-black px-2.5 py-1 uppercase tracking-wider z-20 shadow-md rounded-full bg-gradient-to-r from-[#1E0D11] via-[#140C0E] to-[#1E0D11] backdrop-blur-md border border-[#E0A96D]/50 flex items-center gap-1"
+                    >
+                        <span className="text-xs leading-none">🪢</span>
+                        <span className="text-[#E0A96D]">RAKHI 30% OFF</span>
+                    </div>
                 )}
 
                 {/* Mobile Wishlist Button - Top Right */}
@@ -294,13 +293,18 @@ export default function ProductCard({ product, isRecommended = false }: ProductC
                     )}
                 </div>
 
-                {/* Rating & Review Count */}
-                <div className="flex items-center gap-1.5 text-[9.5px] text-neutral-500 dark:text-neutral-400 pt-0.5">
-                    <div className="flex items-center text-amber-500">
-                        <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+                {/* Rating & Review Count & Rakhi Delivery Tag */}
+                <div className="flex items-center justify-between w-full pt-0.5">
+                    <div className="flex items-center gap-1.5 text-[9.5px] text-neutral-500 dark:text-neutral-400">
+                        <div className="flex items-center text-amber-500">
+                            <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+                        </div>
+                        <span className="font-bold text-neutral-800 dark:text-neutral-200">{rating.toFixed(1)}</span>
+                        <span className="text-neutral-400">({reviewCount})</span>
                     </div>
-                    <span className="font-bold text-neutral-800 dark:text-neutral-200">{rating.toFixed(1)}</span>
-                    <span className="text-neutral-400">({reviewCount} reviews)</span>
+                    <span className="text-[8.5px] font-extrabold text-amber-800 dark:text-amber-300 uppercase tracking-wide">
+                        ⚡ Rakhi Express
+                    </span>
                 </div>
             </div>
         </div>

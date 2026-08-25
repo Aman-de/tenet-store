@@ -628,6 +628,8 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
     const [isLocating, setIsLocating] = useState(false);
     const [isEligibleForFirst20, setIsEligibleForFirst20] = useState(true);
     const [copied, setCopied] = useState(false);
+    const [giftBoxIncluded, setGiftBoxIncluded] = useState(true);
+    const [giftNote, setGiftNote] = useState("");
 
     useEffect(() => {
         if (!isLoaded) return;
@@ -1198,37 +1200,75 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         <TrustBar />
                     </div>
 
-                    {/* 🪢 Rakhi Celebration & Festive Offer Card */}
-                    <div className="bg-gradient-to-br from-amber-500/15 via-rose-500/10 to-amber-500/15 dark:from-amber-950/35 dark:via-rose-950/25 dark:to-amber-950/35 border-2 border-[#E0A96D]/50 dark:border-amber-600/50 rounded-2xl p-4 mb-4 shadow-sm relative overflow-hidden">
-                        <div className="flex items-center justify-between gap-2 mb-2.5 pb-2 border-b border-[#E0A96D]/30 dark:border-amber-700/30">
-                            <div className="flex items-center gap-2">
-                                <span className="text-lg leading-none">🪢</span>
-                                <span className="text-xs sm:text-[13px] font-serif font-extrabold text-amber-950 dark:text-amber-200">
-                                    Rakhi Festive Special
-                                </span>
+                    {/* 🪢 Royal Rakhi Celebration & Gifting Suite */}
+                    <div className="bg-gradient-to-br from-[#1E0E12] via-[#140C0E] to-[#1E0E12] text-white border-2 border-[#E0A96D]/60 rounded-3xl p-5 mb-5 shadow-[0_10px_35px_rgba(224,169,109,0.18)] relative overflow-hidden">
+                        {/* Shimmer accent */}
+                        <div className="absolute top-0 right-0 w-48 h-48 bg-radial from-[#E0A96D]/25 to-transparent blur-2xl pointer-events-none" />
+
+                        <div className="relative z-10 flex items-center justify-between gap-2 mb-3 pb-3 border-b border-[#E0A96D]/30">
+                            <div className="flex items-center gap-2.5">
+                                <span className="text-2xl leading-none">🪢</span>
+                                <div>
+                                    <span className="text-sm sm:text-base font-serif font-extrabold text-[#FFF6EE] block leading-tight">
+                                        Rakhi Festive Celebration
+                                    </span>
+                                    <span className="text-[10px] font-sans text-[#E0A96D] font-medium tracking-wide">
+                                        Curated Gifting & Bespoke Tailoring
+                                    </span>
+                                </div>
                             </div>
-                            <span className="px-2.5 py-0.5 rounded-full bg-amber-500/25 text-amber-950 dark:text-amber-200 border border-amber-500/40 text-[9.5px] font-mono font-extrabold uppercase tracking-wider">
-                                30% OFF • RAKHI30
-                            </span>
+                            <button
+                                onClick={handleCopyCode}
+                                className="px-3.5 py-1.5 rounded-full bg-gradient-to-r from-[#E0A96D] to-[#D9384E] text-[#120B0D] font-mono text-[10.5px] font-black uppercase tracking-wider shadow-sm hover:brightness-110 active:scale-95 transition-all cursor-pointer shrink-0"
+                            >
+                                {copied ? "COPIED RAKHI30 ✓" : "30% OFF • RAKHI30"}
+                            </button>
                         </div>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11.5px] font-semibold text-neutral-800 dark:text-neutral-200">
-                            <div className="flex items-center gap-2">
-                                <span className="text-emerald-600 dark:text-emerald-400 font-extrabold text-sm">⚡</span>
+                        <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-semibold text-neutral-200 mb-3.5">
+                            <div className="flex items-center gap-2 bg-white/5 p-2 rounded-xl border border-white/5">
+                                <span className="text-amber-400 font-extrabold text-sm">⚡</span>
                                 <span><strong>Guaranteed Delivery</strong> Before Rakhi</span>
                             </div>
-                            <div className="flex items-center gap-2">
-                                <span className="text-rose-600 dark:text-rose-400 font-extrabold text-sm">🎁</span>
-                                <span><strong>Free Rakhi Gift Box</strong> & Sibling Card</span>
+                            <div className="flex items-center gap-2 bg-white/5 p-2 rounded-xl border border-white/5">
+                                <span className="text-rose-400 font-extrabold text-sm">🎁</span>
+                                <span><strong>Free Luxury Gift Box</strong> & Sibling Note</span>
                             </div>
-                            <div className="flex items-center gap-2">
-                                <span className="text-amber-600 dark:text-amber-400 font-extrabold text-sm">🚚</span>
-                                <span><strong>Free Express Dispatch</strong> (24-48 hrs)</span>
+                            <div className="flex items-center gap-2 bg-white/5 p-2 rounded-xl border border-white/5">
+                                <span className="text-emerald-400 font-extrabold text-sm">🚚</span>
+                                <span><strong>Free Air Dispatch</strong> (24-48 Hours)</span>
                             </div>
-                            <div className="flex items-center gap-2">
-                                <span className="text-purple-600 dark:text-purple-400 font-extrabold text-sm">💎</span>
-                                <span><strong>100% Artisanal Fabric</strong> & 7-Day Trial</span>
+                            <div className="flex items-center gap-2 bg-white/5 p-2 rounded-xl border border-white/5">
+                                <span className="text-purple-400 font-extrabold text-sm">💎</span>
+                                <span><strong>100% Artisanal Quality</strong> & 7-Day Trial</span>
                             </div>
+                        </div>
+
+                        {/* Interactive Gift Wrap & Personal Sibling Message Toggle */}
+                        <div className="relative z-10 bg-black/40 border border-[#E0A96D]/30 rounded-2xl p-3 flex flex-col gap-2">
+                            <label className="flex items-center gap-2.5 cursor-pointer select-none">
+                                <input
+                                    type="checkbox"
+                                    checked={giftBoxIncluded}
+                                    onChange={(e) => setGiftBoxIncluded(e.target.checked)}
+                                    className="w-4 h-4 rounded accent-[#E0A96D] cursor-pointer"
+                                />
+                                <span className="text-[11.5px] font-sans font-bold text-[#FFF6EE]">
+                                    🎀 Include Free Rakhi Gift Wrap & Sibling Greeting Card
+                                </span>
+                            </label>
+
+                            {giftBoxIncluded && (
+                                <div className="mt-1">
+                                    <input
+                                        type="text"
+                                        value={giftNote}
+                                        onChange={(e) => setGiftNote(e.target.value)}
+                                        placeholder="Add a handwritten message for your sister / brother (optional)..."
+                                        className="w-full bg-white/10 border border-white/15 rounded-xl px-3 py-2 text-xs text-white placeholder:text-neutral-400 font-sans outline-none focus:border-[#E0A96D]"
+                                    />
+                                </div>
+                            )}
                         </div>
                     </div>
  

@@ -1055,22 +1055,34 @@ export default function CartDrawer() {
                                             {/* Quick Apply Chips */}
                                             <div className="flex items-center gap-1.5 flex-wrap pt-0.5">
                                                 <span className="text-[9px] text-neutral-400 font-medium">Offers:</span>
-                                                {['WELCOME30', 'WELCOME15'].map((chipCode) => (
+                                                {['RAKHI30', 'WELCOME30', 'WELCOME15'].map((chipCode) => (
                                                     <button
                                                         key={chipCode}
                                                         type="button"
                                                         onClick={() => {
-                                                            setAppliedCoupon({ code: chipCode, percent: VALID_COUPONS[chipCode] || 0.15 });
+                                                            setAppliedCoupon({ code: chipCode, percent: VALID_COUPONS[chipCode] || 0.30 });
                                                             setCouponError("");
                                                         }}
-                                                        className="px-2 py-0.5 rounded-full text-[9px] font-mono font-bold bg-[#E0A96D]/15 text-[#E0A96D] border border-[#E0A96D]/30 hover:bg-[#E0A96D]/25 transition-all cursor-pointer"
+                                                        className={`px-2.5 py-0.5 rounded-full text-[9.5px] font-mono font-bold transition-all cursor-pointer shadow-xs ${
+                                                            chipCode === 'RAKHI30'
+                                                                ? 'bg-gradient-to-r from-[#E0A96D]/30 to-[#D9384E]/30 text-[#D9384E] dark:text-[#E0A96D] border border-[#E0A96D]/60 hover:brightness-110'
+                                                                : 'bg-[#E0A96D]/15 text-[#E0A96D] border border-[#E0A96D]/30 hover:bg-[#E0A96D]/25'
+                                                        }`}
                                                     >
-                                                        + {chipCode}
+                                                        {chipCode === 'RAKHI30' ? '🪢 RAKHI30 (30% OFF)' : `+ ${chipCode}`}
                                                     </button>
                                                 ))}
                                             </div>
                                             
                                             {couponError && <span className="text-[10px] text-red-500 font-medium">{couponError}</span>}
+
+                                            {/* Free Rakhi Gift Wrapping Note */}
+                                            <div className="flex items-center gap-2 p-2 rounded-xl bg-amber-500/10 dark:bg-amber-950/20 border border-amber-500/20 text-[10.5px] text-amber-900 dark:text-amber-200 mt-1">
+                                                <span className="text-sm leading-none">🎁</span>
+                                                <span className="font-sans font-medium">
+                                                    <strong>Free Rakhi Gift Packaging</strong> & personalized sibling card included.
+                                                </span>
+                                            </div>
                                         </div>
                                     )}
 

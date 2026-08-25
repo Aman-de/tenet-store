@@ -7,6 +7,7 @@ import ProductCard from "@/components/ProductCard";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Truck, RefreshCw, ShieldCheck, Sparkles, CheckCircle2, Star } from "lucide-react";
+import RakhiFestiveBanner from "@/components/RakhiFestiveBanner";
 
 interface HomePageClientProps {
     products: any[];
@@ -105,6 +106,9 @@ export default function HomePageClient({ products, collections }: HomePageClient
         <div className="min-h-screen">
             {/* Unified Bento Box Hero & Categories */}
             <BentoHero spotlightProducts={spotlightProducts} collections={collections} />
+
+            {/* 🪢 Rakhi Festive Gifting Banner & Value Highlights */}
+            <RakhiFestiveBanner />
 
             {/* BESTSELLERS SLIDER */}
             <div className="w-full pt-2 pb-4 lg:py-14">
