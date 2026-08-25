@@ -390,28 +390,8 @@ export default function Navbar() {
                                     </span>
                                 </Link>
 
-                                {/* RIGHT SIDE: Permanent Top BUY NOW & Cart */}
+                                {/* RIGHT SIDE: Cart and Circle */}
                                 <div className="flex items-center gap-1.5 z-10 flex-1 justify-end">
-                                    {isProductPage && (
-                                        <button
-                                            onClick={() => {
-                                                const buyBtn = (document.getElementById('pdp-buy-now-btn') || document.querySelector('[data-buy-now="true"]')) as HTMLElement;
-                                                if (buyBtn) {
-                                                    buyBtn.click();
-                                                } else {
-                                                    openCart();
-                                                }
-                                            }}
-                                            className="px-3 py-1 rounded-full text-white font-sans text-[10px] font-extrabold uppercase tracking-wider shadow-sm hover:brightness-110 active:scale-95 transition-all flex items-center gap-1 cursor-pointer shrink-0"
-                                            style={{
-                                                background: `linear-gradient(135deg, ${accentColor}, #E03154)`,
-                                                boxShadow: `0 2px 10px -2px ${accentColor}80`
-                                            }}
-                                        >
-                                            <span>BUY NOW</span>
-                                        </button>
-                                    )}
-
                                     <button className={`relative w-[30px] h-[30px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center shrink-0`} aria-label="Open cart" onClick={openCart}>
                                         <ShoppingBag className={`w-3.5 h-3.5 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
                                         {cartCount > 0 && (
@@ -421,11 +401,9 @@ export default function Navbar() {
                                         )}
                                     </button>
                                     
-                                    {!isProductPage && (
-                                        <Link href="/circle" className={`w-[30px] h-[30px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center ml-0.5`} aria-label="Open circle">
-                                            <Crown className={`w-3.5 h-3.5 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
-                                        </Link>
-                                    )}
+                                    <Link href="/circle" className={`w-[30px] h-[30px] rounded-full transition-all hover:scale-105 active:scale-95 ${iconGlassBg} flex items-center justify-center ml-0.5`} aria-label="Open circle">
+                                        <Crown className={`w-3.5 h-3.5 transition-colors duration-500 ${textColor}`} strokeWidth={iconStroke} />
+                                    </Link>
                                 </div>
                             </div>
                         )}
@@ -523,27 +501,6 @@ export default function Navbar() {
                                 </div>
                                 <span className="text-[11px] font-semibold opacity-80 group-hover:opacity-100 transition-opacity duration-200">Cart</span>
                             </button>
-
-                            {/* Desktop Buy Now Button on Product Page */}
-                            {isProductPage && (
-                                <button
-                                    onClick={() => {
-                                        const buyBtn = (document.getElementById('pdp-buy-now-btn') || document.querySelector('[data-buy-now="true"]')) as HTMLElement;
-                                        if (buyBtn) {
-                                            buyBtn.click();
-                                        } else {
-                                            openCart();
-                                        }
-                                    }}
-                                    className="px-4 py-1.5 rounded-full text-white font-sans text-xs font-extrabold uppercase tracking-wider shadow-md hover:brightness-110 active:scale-95 transition-all flex items-center gap-1.5 cursor-pointer ml-1"
-                                    style={{
-                                        background: `linear-gradient(135deg, ${accentColor}, #E03154)`,
-                                        boxShadow: `0 2px 10px -2px ${accentColor}80`
-                                    }}
-                                >
-                                    <span>BUY NOW</span>
-                                </button>
-                            )}
                         </div>
                     </div>
                 </nav>

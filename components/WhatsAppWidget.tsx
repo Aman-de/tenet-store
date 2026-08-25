@@ -14,7 +14,7 @@ export default function WhatsAppWidget() {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.8, y: 20 }}
                 transition={{ duration: 0.4 }}
-                className="fixed bottom-[68px] lg:bottom-7 right-4 lg:right-7 z-50 flex items-center gap-2.5"
+                className="fixed bottom-[74px] sm:bottom-6 right-4 sm:right-6 z-50 flex items-center gap-2.5"
             >
                 {/* Desktop Tooltip Badge */}
                 <span className="hidden lg:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/85 backdrop-blur-md text-white text-[11px] font-sans font-semibold border border-white/10 shadow-lg pointer-events-none opacity-90">
