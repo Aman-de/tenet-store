@@ -1194,8 +1194,42 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                     </div>
 
 
-                    <div className="-mx-4 xs:-mx-5 sm:-mx-6 md:mx-0 mt-1 mb-1">
+                    <div className="-mx-4 xs:-mx-5 sm:-mx-6 md:mx-0 mt-1 mb-2">
                         <TrustBar />
+                    </div>
+
+                    {/* 🪢 Rakhi Celebration & Festive Offer Card */}
+                    <div className="bg-gradient-to-br from-amber-500/15 via-rose-500/10 to-amber-500/15 dark:from-amber-950/35 dark:via-rose-950/25 dark:to-amber-950/35 border-2 border-[#E0A96D]/50 dark:border-amber-600/50 rounded-2xl p-4 mb-4 shadow-sm relative overflow-hidden">
+                        <div className="flex items-center justify-between gap-2 mb-2.5 pb-2 border-b border-[#E0A96D]/30 dark:border-amber-700/30">
+                            <div className="flex items-center gap-2">
+                                <span className="text-lg leading-none">🪢</span>
+                                <span className="text-xs sm:text-[13px] font-serif font-extrabold text-amber-950 dark:text-amber-200">
+                                    Rakhi Festive Special
+                                </span>
+                            </div>
+                            <span className="px-2.5 py-0.5 rounded-full bg-amber-500/25 text-amber-950 dark:text-amber-200 border border-amber-500/40 text-[9.5px] font-mono font-extrabold uppercase tracking-wider">
+                                30% OFF • RAKHI30
+                            </span>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11.5px] font-semibold text-neutral-800 dark:text-neutral-200">
+                            <div className="flex items-center gap-2">
+                                <span className="text-emerald-600 dark:text-emerald-400 font-extrabold text-sm">⚡</span>
+                                <span><strong>Guaranteed Delivery</strong> Before Rakhi</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <span className="text-rose-600 dark:text-rose-400 font-extrabold text-sm">🎁</span>
+                                <span><strong>Free Rakhi Gift Box</strong> & Sibling Card</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <span className="text-amber-600 dark:text-amber-400 font-extrabold text-sm">🚚</span>
+                                <span><strong>Free Express Dispatch</strong> (24-48 hrs)</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <span className="text-purple-600 dark:text-purple-400 font-extrabold text-sm">💎</span>
+                                <span><strong>100% Artisanal Fabric</strong> & 7-Day Trial</span>
+                            </div>
+                        </div>
                     </div>
  
                 </div>
