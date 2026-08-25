@@ -2163,10 +2163,10 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                             )}
                         </div>
                     </div>
-
+                </div>
             </div>
 
-            {/* Mobile Sticky CTA */}
+            {/* Permanent Bottom Sticky Buy Now Bar */}
             <MobileStickyBar 
                 product={product} 
                 selectedVariant={selectedVariant} 
@@ -2174,7 +2174,6 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 onBuyNow={handleBuyNow}
                 displayPrice={displayPrice}
             />
-        </div>
         </>
     );
 }
