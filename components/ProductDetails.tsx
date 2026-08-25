@@ -30,12 +30,24 @@ const FAST_CITIES = [
 ];
 
 const getDeliveryDays = (city: string) => {
-    if (!city) return 4;
+    if (!city) return 2;
     const normalizedCity = city.trim().toLowerCase();
     if (FAST_CITIES.includes(normalizedCity)) {
         return 2;
     }
-    return 4;
+    return 3;
+};
+
+const getRakhiDeliveryFormatted = (city: string) => {
+    const days = getDeliveryDays(city);
+    const date = new Date();
+    date.setDate(date.getDate() + days);
+    const dayName = date.toLocaleDateString('en-IN', { weekday: 'short' });
+    const monthDay = date.toLocaleDateString('en-IN', { month: 'short', day: 'numeric' });
+    return {
+        formattedDate: `${dayName}, ${monthDay}`,
+        days: days
+    };
 };
 
 interface SignatureInfo {
@@ -690,7 +702,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                     const city = data[0].PostOffice[0].District || data[0].PostOffice[0].Block || "your location";
                     
                     setDeliveryInfo({ 
-                        date: `Get it in 10 days in ${city}`, 
+                        date: getRakhiDeliveryFormatted(city).formattedDate, 
                         free: true,
                         city: city
                     });
@@ -700,16 +712,11 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                     setPincodeError("Oops, we don't deliver to this pincode or it is invalid.");
                 }
             } catch (err) {
-                const prefix2 = code.slice(0, 2);
-                let dateText = "";
-                if (["11", "40", "56", "50", "60", "70"].includes(prefix2)) {
-                    dateText = `Get it by tomorrow, 6 PM`;
-                } else {
-                    dateText = `Get it in 3 days`;
-                }
+                const city = "your location";
                 setDeliveryInfo({ 
-                    date: dateText, 
-                    free: true 
+                    date: getRakhiDeliveryFormatted(city).formattedDate, 
+                    free: true,
+                    city: city
                 });
                 localStorage.setItem("checkoutPincode", code);
             }
@@ -1626,10 +1633,18 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         {deliveryInfo && (
                             <div className="flex flex-col gap-2 mt-2 pt-2">
                                 <div className="flex flex-col gap-2 text-xs font-bold text-[#1A1A1A] dark:text-[#F4F1ED]">
-                                    <span className="flex items-center gap-2"><span className="text-emerald-600 text-sm">✅</span> Delivered in {deliveryInfo.city || "your location"} in {getDeliveryDays(deliveryInfo.city || "")} days</span>
-                                    <span className="flex items-center gap-2"><span className="text-emerald-600 text-sm">✅</span> Easy 10-Day Returns</span>
-                                    <span className="flex items-center gap-2"><span className="text-emerald-600 text-sm">✅</span> FREE Shipping (Pay Online)</span>
-                                    <span className="flex items-center gap-2"><span className="text-emerald-600 text-sm">✅</span> COD Available (Prepaid shipping)</span>
+                                    <span className="flex items-center gap-2 text-emerald-700 dark:text-emerald-400 font-extrabold">
+                                        <span>⚡</span> Guaranteed Delivery by {getRakhiDeliveryFormatted(deliveryInfo.city || "").formattedDate} in {deliveryInfo.city || "your city"}
+                                    </span>
+                                    <span className="flex items-center gap-2">
+                                        <span className="text-rose-600 text-sm">🎁</span> Free Luxury Rakhi Gift Packaging & Sibling Greeting Card
+                                    </span>
+                                    <span className="flex items-center gap-2">
+                                        <span className="text-emerald-600 text-sm">✅</span> Free Express Air Shipping (All Online Orders)
+                                    </span>
+                                    <span className="flex items-center gap-2">
+                                        <span className="text-amber-600 text-sm">💳</span> Cash on Delivery (COD) Available on orders above ₹1,999
+                                    </span>
                                 </div>
                             </div>
                         )}

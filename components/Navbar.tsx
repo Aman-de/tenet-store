@@ -413,24 +413,8 @@ export default function Navbar() {
                     {/* DESKTOP LAYOUT (hidden lg:flex) */}
                     <div className="hidden lg:flex items-center justify-between gap-8 lg:gap-10 px-2">
                         
-                        {/* LEFT SIDE: Account, Circle, Gender Toggle */}
+                        {/* LEFT SIDE: Circle, Gender Toggle, Theme */}
                         <div className={`flex items-center gap-5 lg:gap-6 transition-colors duration-500 ${textColor} flex-1 justify-end`}>
-                            {/* Account */}
-                            <div className="flex flex-col items-center gap-1 group">
-                                {isSignedIn ? (
-                                    <div className="w-5 h-5 flex items-center justify-center scale-[0.8] origin-center opacity-90 group-hover:opacity-100 transition-opacity duration-200 cursor-pointer">
-                                        <UserButton afterSignOutUrl="/" />
-                                    </div>
-                                ) : (
-                                    <SignInButton mode="modal">
-                                        <button aria-label="Sign in" className="flex items-center justify-center">
-                                            <User className="w-5 h-5 opacity-80 group-hover:opacity-100 transition-opacity duration-200 animate-pulse" strokeWidth={2} />
-                                        </button>
-                                    </SignInButton>
-                                )}
-                                <span className="text-[11px] font-semibold opacity-80 group-hover:opacity-100 transition-opacity duration-200">Account</span>
-                            </div>
-
                             {/* Circle */}
                             <Link href="/circle" className="flex flex-col items-center gap-1 group">
                                 <Crown className="w-5 h-5 opacity-80 group-hover:opacity-100 transition-opacity duration-200" strokeWidth={2} />

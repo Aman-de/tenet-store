@@ -958,7 +958,7 @@ export default function CartDrawer() {
                                                 onClick={() => setPaymentMethod('razorpay')}
                                                 className={`flex items-center justify-between p-2 border rounded-lg transition-all text-left ${
                                                     paymentMethod === 'razorpay'
-                                                        ? 'border-black dark:border-white bg-black/5 dark:bg-white/5'
+                                                        ? 'border-black dark:border-white bg-black/5 dark:bg-white/5 shadow-xs'
                                                         : 'border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 bg-transparent'
                                                 }`}
                                             >
@@ -970,32 +970,43 @@ export default function CartDrawer() {
                                                     </div>
                                                     <div className="min-w-0 flex flex-col">
                                                         <span className="text-[11px] font-bold text-[#1A1A1A] dark:text-[#F4F1ED] truncate">Prepay</span>
-                                                        <span className="text-[9px] text-green-700 dark:text-green-400 font-medium truncate">Save ₹80</span>
+                                                        <span className="text-[9px] text-green-700 dark:text-green-400 font-bold truncate">Save ₹80</span>
                                                     </div>
                                                 </div>
                                                 {paymentMethod === 'razorpay' && <Check className="w-3.5 h-3.5 text-black dark:text-white shrink-0 ml-1" />}
                                             </button>
 
                                             <button
-                                                onClick={() => setPaymentMethod('cod')}
+                                                onClick={() => {
+                                                    if (subtotal >= 1999) {
+                                                        setPaymentMethod('cod');
+                                                    } else {
+                                                        alert("Cash on Delivery (COD) is only available for orders of ₹1,999 and above.\n\nPlease choose Prepay (Save ₹80 & Instant Dispatch) or add more items to your bag.");
+                                                    }
+                                                }}
                                                 className={`flex items-center justify-between p-2 border rounded-lg transition-all text-left ${
-                                                    paymentMethod === 'cod'
-                                                        ? 'border-black dark:border-white bg-black/5 dark:bg-white/5'
-                                                        : 'border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 bg-transparent'
+                                                    subtotal < 1999
+                                                        ? 'opacity-65 border-dashed border-neutral-300 dark:border-neutral-700 bg-neutral-100/50 dark:bg-neutral-900/20'
+                                                        : paymentMethod === 'cod'
+                                                            ? 'border-black dark:border-white bg-black/5 dark:bg-white/5 shadow-xs'
+                                                            : 'border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 bg-transparent'
                                                 }`}
+                                                title={subtotal < 1999 ? "COD available on orders above ₹1,999" : "Pay on delivery"}
                                             >
                                                 <div className="flex items-center gap-1.5 min-w-0">
                                                     <div className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center shrink-0 ${
-                                                        paymentMethod === 'cod' ? 'border-black dark:border-white' : 'border-neutral-300 dark:border-neutral-700'
+                                                        paymentMethod === 'cod' && subtotal >= 1999 ? 'border-black dark:border-white' : 'border-neutral-300 dark:border-neutral-700'
                                                     }`}>
-                                                        {paymentMethod === 'cod' && <div className="w-1.5 h-1.5 rounded-full bg-black dark:bg-white" />}
+                                                        {paymentMethod === 'cod' && subtotal >= 1999 && <div className="w-1.5 h-1.5 rounded-full bg-black dark:bg-white" />}
                                                     </div>
                                                     <div className="min-w-0 flex flex-col">
                                                         <span className="text-[11px] font-bold text-[#1A1A1A] dark:text-[#F4F1ED] truncate">COD</span>
-                                                        <span className="text-[9px] text-neutral-500 truncate">Standard Pay</span>
+                                                        <span className="text-[8.5px] text-neutral-500 font-medium truncate">
+                                                            {subtotal >= 1999 ? "Standard Pay" : "Min. ₹1,999"}
+                                                        </span>
                                                     </div>
                                                 </div>
-                                                {paymentMethod === 'cod' && <Check className="w-3.5 h-3.5 text-black dark:text-white shrink-0 ml-1" />}
+                                                {paymentMethod === 'cod' && subtotal >= 1999 && <Check className="w-3.5 h-3.5 text-black dark:text-white shrink-0 ml-1" />}
                                             </button>
                                         </div>
                                     </div>

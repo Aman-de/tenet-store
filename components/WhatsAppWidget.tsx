@@ -5,7 +5,7 @@ import { useSettings } from "@/context/SettingsContext";
 
 export default function WhatsAppWidget() {
     const settings = useSettings();
-    const whatsappUrl = `https://wa.me/${settings.whatsappNumber || "918590958131"}?text=${encodeURIComponent(settings.whatsappMessage || "Hi Shreya, I'd like styling advice and assistance with an order on TENET.")}`;
+    const whatsappUrl = `https://wa.me/${settings.whatsappNumber || "918590958131"}?text=${encodeURIComponent(settings.whatsappMessage || "Hi Shreya! I'd like to place an express Rakhi order directly. (I can also share a photo for personalized size & fit advice!)")}`;
 
     return (
         <AnimatePresence>
@@ -19,7 +19,7 @@ export default function WhatsAppWidget() {
                 {/* Desktop Tooltip Badge */}
                 <span className="hidden lg:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/85 backdrop-blur-md text-white text-[11px] font-sans font-semibold border border-white/10 shadow-lg pointer-events-none opacity-90">
                     <span className="w-2 h-2 rounded-full bg-[#25D366] animate-pulse"></span>
-                    TENET Concierge
+                    💬 Express Orders & Photo Sizing
                 </span>
 
                 <a
