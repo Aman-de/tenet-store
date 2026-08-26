@@ -1,6 +1,7 @@
 import React from "react";
 import { Composition } from "remotion";
 import { MasterViralReel } from "./compositions/MasterViralReel";
+import { RakhiCommercialPromoReel } from "./compositions/RakhiCommercialPromoReel";
 import { BottomBattleReel } from "./compositions/BottomBattleReel";
 import { AllColorsShowdownReel } from "./compositions/AllColorsShowdownReel";
 import { DayVsNightReel } from "./compositions/DayVsNightReel";
@@ -26,6 +27,18 @@ export const RemotionRoot: React.FC = () => {
             {/* ============================================================ */}
             {/* 👑 FLAGSHIP MASTER VIRAL REEL (295 frames / 9.83s @ 30fps)   */}
             {/* ============================================================ */}
+            {/* ============================================================ */}
+            {/* 🪢 RAKHI COMMERCIAL PROMO REEL (1195 frames / 39.83s @ 30fps) */}
+            {/* ============================================================ */}
+            <Composition
+                id="RakhiCommercialPromoReel"
+                component={RakhiCommercialPromoReel}
+                durationInFrames={1195}
+                fps={30}
+                width={1080}
+                height={1920}
+            />
+
             <Composition
                 id="MasterViralReel"
                 component={MasterViralReel}

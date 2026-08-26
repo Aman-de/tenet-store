@@ -17,7 +17,7 @@ export default function SupportPage() {
         },
         {
             question: "Do you offer Cash on Delivery (COD)?",
-            answer: "Yes, we support Cash on Delivery (COD) on all orders. For COD orders, the shipping fee (₹80 for Standard or ₹120 for Express) must be prepaid upfront as a shipping confirmation fee, while the product price is paid on delivery. Alternatively, you can pay online to get FREE Standard shipping (or upgrade to Express for just ₹40) and save ₹80 instantly!"
+            answer: "Yes, we support Cash on Delivery (COD) on orders of ₹1,999 and above. For COD orders, a ₹159 delivery charge is applied, while the product price is paid on delivery. Alternatively, you can pay online to get 100% FREE Express Air Shipping and save ₹159 instantly!"
         },
         {
             question: "What is your return and exchange policy?",

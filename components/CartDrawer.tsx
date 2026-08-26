@@ -567,8 +567,8 @@ export default function CartDrawer() {
     
     // Shipping Calculation based on payment method:
     // Online prepay = FREE
-    // COD = ₹92
-    const shippingAmount = paymentMethod === 'razorpay' ? 0 : 92;
+    // COD = ₹159
+    const shippingAmount = paymentMethod === 'razorpay' ? 0 : 159;
     
     const totalBeforeWallet = subtotal + shippingAmount;
     
@@ -970,7 +970,7 @@ export default function CartDrawer() {
                                                     </div>
                                                     <div className="min-w-0 flex flex-col">
                                                         <span className="text-[11px] font-bold text-[#1A1A1A] dark:text-[#F4F1ED] truncate">Prepay</span>
-                                                        <span className="text-[9px] text-green-700 dark:text-green-400 font-bold truncate">Save ₹80</span>
+                                                        <span className="text-[9px] text-green-700 dark:text-green-400 font-bold truncate">Save ₹159</span>
                                                     </div>
                                                 </div>
                                                 {paymentMethod === 'razorpay' && <Check className="w-3.5 h-3.5 text-black dark:text-white shrink-0 ml-1" />}
@@ -981,7 +981,7 @@ export default function CartDrawer() {
                                                     if (subtotal >= 1999) {
                                                         setPaymentMethod('cod');
                                                     } else {
-                                                        alert("Cash on Delivery (COD) is only available for orders of ₹1,999 and above.\n\nPlease choose Prepay (Save ₹80 & Instant Dispatch) or add more items to your bag.");
+                                                        alert("Cash on Delivery (COD) is only available for orders of ₹1,999 and above.\n\nPlease choose Prepay (Save ₹159 & Instant Dispatch) or add more items to your bag.");
                                                     }
                                                 }}
                                                 className={`flex items-center justify-between p-2 border rounded-lg transition-all text-left ${
@@ -1431,10 +1431,10 @@ export default function CartDrawer() {
                                                     </div>
                                                     <div className="flex flex-col">
                                                         <span className="text-sm font-medium text-[#1A1A1A] dark:text-[#F4F1ED]">Online Prepay</span>
-                                                        <span className="text-[10px] text-green-700 dark:text-green-400 mt-0.5 font-medium">Save ₹80 + Free Standard Delivery</span>
+                                                        <span className="text-[10px] text-green-700 dark:text-green-400 mt-0.5 font-medium">Save ₹159 + Free Standard Delivery</span>
                                                     </div>
                                                 </div>
-                                                <span className="text-[10px] font-bold uppercase tracking-widest text-green-700 bg-green-50 dark:bg-green-950/20 px-2 py-1 rounded-md">SAVE ₹80</span>
+                                                <span className="text-[10px] font-bold uppercase tracking-widest text-green-700 bg-green-50 dark:bg-green-950/20 px-2 py-1 rounded-md">SAVE ₹159</span>
                                             </div>
 
                                             {/* Cash On Delivery */}
@@ -1455,7 +1455,7 @@ export default function CartDrawer() {
                                                     </div>
                                                     <div className="flex flex-col">
                                                         <span className="text-sm font-medium text-[#1A1A1A] dark:text-[#F4F1ED]">Cash on Delivery (COD)</span>
-                                                        <span className="text-[10px] text-neutral-500 mt-0.5 font-sans">Prepay Shipping Confirmation Fee + Pay Product on Delivery</span>
+                                                        <span className="text-[10px] text-neutral-500 mt-0.5 font-sans">₹159 Delivery Charge (Paid Upfront) + Pay Product on Delivery</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1520,7 +1520,7 @@ export default function CartDrawer() {
                                             
                                             <div className="pt-3 mt-3 border-t border-neutral-200 dark:border-neutral-800 flex flex-col gap-2">
                                                 <span className="text-xs font-bold text-[#1A1A1A] dark:text-[#F4F1ED]">
-                                                    💡 Prepay your order to get FREE Shipping (Save ₹92)!
+                                                    💡 Prepay your order to get FREE Shipping (Save ₹159)!
                                                 </span>
                                                 <button
                                                     onClick={() => setPaymentMethod('razorpay')}
@@ -1537,7 +1537,7 @@ export default function CartDrawer() {
                                                 <span>FREE</span>
                                             </div>
                                             <div className="text-[10px] text-green-700 dark:text-green-400 font-medium">
-                                                🎉 You saved ₹92 by paying online!
+                                                🎉 You saved ₹159 by paying online!
                                             </div>
                                         </div>
                                     )}
