@@ -111,8 +111,8 @@ export default function HomePageClient({ products, collections }: HomePageClient
             <RakhiFestiveBanner />
 
             {/* BESTSELLERS SLIDER */}
-            <div className="w-full pt-2 pb-4 lg:py-14">
-                <div className="flex items-center justify-between mb-4 px-4 lg:px-12">
+            <div className="w-full pt-1 pb-4 lg:py-6">
+                <div className="flex items-center justify-between mb-3 px-4 lg:px-12">
                     <div className="flex flex-col">
                         <span className="text-[9px] font-bold uppercase tracking-[0.25em] text-[#E0A96D]">Curated Icons</span>
                         <h2 className="font-serif text-2xl lg:text-3xl font-bold tracking-tight text-neutral-900 dark:text-[#F4F1ED]">
