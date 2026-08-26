@@ -2,6 +2,7 @@ import React from "react";
 import { Composition } from "remotion";
 import { MasterViralReel } from "./compositions/MasterViralReel";
 import { RakhiCommercialPromoReel } from "./compositions/RakhiCommercialPromoReel";
+import { RakhiMasterMotionGraphicsReel } from "./compositions/RakhiMasterMotionGraphicsReel";
 import { BottomBattleReel } from "./compositions/BottomBattleReel";
 import { AllColorsShowdownReel } from "./compositions/AllColorsShowdownReel";
 import { DayVsNightReel } from "./compositions/DayVsNightReel";
@@ -25,8 +26,31 @@ export const RemotionRoot: React.FC = () => {
     return (
         <>
             {/* ============================================================ */}
-            {/* 👑 FLAGSHIP MASTER VIRAL REEL (295 frames / 9.83s @ 30fps)   */}
+            {/* 🌟 1. RAKHI MASTER MOTION GRAPHICS (SFX ONLY - NO VOICEOVER) */}
             {/* ============================================================ */}
+            <Composition
+                id="RakhiMotionGraphicsSFX"
+                component={RakhiMasterMotionGraphicsReel}
+                durationInFrames={552}
+                fps={30}
+                width={1080}
+                height={1920}
+                defaultProps={{ includeVoiceover: false }}
+            />
+
+            {/* ============================================================ */}
+            {/* 🎙️ 2. RAKHI MASTER MOTION GRAPHICS (WITH SYNCED VOICEOVER)   */}
+            {/* ============================================================ */}
+            <Composition
+                id="RakhiMotionGraphicsMaster"
+                component={RakhiMasterMotionGraphicsReel}
+                durationInFrames={552}
+                fps={30}
+                width={1080}
+                height={1920}
+                defaultProps={{ includeVoiceover: true }}
+            />
+
             {/* ============================================================ */}
             {/* 🪢 RAKHI COMMERCIAL PROMO REEL (1195 frames / 39.83s @ 30fps) */}
             {/* ============================================================ */}

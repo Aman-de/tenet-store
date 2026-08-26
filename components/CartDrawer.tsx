@@ -823,9 +823,9 @@ export default function CartDrawer() {
                                 <div className="p-4 bg-neutral-100/30 dark:bg-black/10 border-b border-neutral-200 dark:border-neutral-800">
                                     <div className="mb-2 text-xs font-medium text-center uppercase tracking-wide text-[#1A1A1A] dark:text-[#F4F1ED]">
                                         {isFreeShipping ? (
-                                            <span className="text-green-800 dark:text-green-400 font-bold">🎉 FREE Standard Shipping Unlocked (Pay Online)</span>
+                                            <span className="text-green-800 dark:text-green-400 font-bold">🎉 FREE Express Delivery (Pay Online)</span>
                                         ) : (
-                                            <span className="text-red-700 font-bold">₹{shippingAmount} Shipping Fee ({paymentMethod === 'cod' ? 'COD' : 'Express'} Mode)</span>
+                                            <span className="text-red-700 font-bold">₹{shippingAmount} Delivery Charge ({paymentMethod === 'cod' ? 'COD' : 'Express'} Mode)</span>
                                         )}
                                     </div>
                                     <div className="h-1.5 w-full bg-neutral-200 dark:bg-neutral-800 rounded-full overflow-hidden">
@@ -1002,7 +1002,7 @@ export default function CartDrawer() {
                                                     <div className="min-w-0 flex flex-col">
                                                         <span className="text-[11px] font-bold text-[#1A1A1A] dark:text-[#F4F1ED] truncate">COD</span>
                                                         <span className="text-[8.5px] text-neutral-500 font-medium truncate">
-                                                            {subtotal >= 1999 ? "Standard Pay" : "Min. ₹1,999"}
+                                                            {subtotal >= 1999 ? "Pay on Delivery" : "Min. ₹1,999"}
                                                         </span>
                                                     </div>
                                                 </div>
@@ -1179,23 +1179,6 @@ export default function CartDrawer() {
                                         </div>
                                     ) : (
                                         <div className="space-y-6">
-                                            {/* Google Express Login Promo */}
-                                            {!user && (
-                                                <div className={`p-4 border border-dashed border-purple-200 dark:border-purple-900 rounded-2xl bg-purple-500/5 flex flex-col gap-3 mb-4`}>
-                                                    <div className="flex flex-col gap-1">
-                                                        <span className="text-xs font-bold uppercase tracking-wider text-[#7C3AED] dark:text-[#A78BFA]">✨ Speed up your checkout</span>
-                                                        <span className="text-[11px] text-neutral-500 dark:text-neutral-400 font-sans">Login with Google to autofill your information and track orders.</span>
-                                                    </div>
-                                                    <button
-                                                        type="button"
-                                                        onClick={handleGoogleLogin}
-                                                        className="w-full py-2.5 bg-neutral-900 dark:bg-white text-white dark:text-black font-sans text-[11px] font-bold uppercase tracking-wider rounded-xl transition-all hover:opacity-90 active:scale-[0.98] cursor-pointer flex items-center justify-center gap-2"
-                                                    >
-                                                        <span>Express Google Login</span>
-                                                    </button>
-                                                </div>
-                                            )}
-
                                             {/* Full Name */}
                                         <div className="group">
                                             <label className={`block text-xs font-bold uppercase tracking-widest mb-2 transition-colors ${errors.name ? 'text-red-600' : 'text-[#1A1A1A] dark:text-[#F4F1ED]'}`}>
@@ -1431,7 +1414,7 @@ export default function CartDrawer() {
                                                     </div>
                                                     <div className="flex flex-col">
                                                         <span className="text-sm font-medium text-[#1A1A1A] dark:text-[#F4F1ED]">Online Prepay</span>
-                                                        <span className="text-[10px] text-green-700 dark:text-green-400 mt-0.5 font-medium">Save ₹159 + Free Standard Delivery</span>
+                                                        <span className="text-[10px] text-green-700 dark:text-green-400 mt-0.5 font-medium">Save ₹159 + Free Express Delivery</span>
                                                     </div>
                                                 </div>
                                                 <span className="text-[10px] font-bold uppercase tracking-widest text-green-700 bg-green-50 dark:bg-green-950/20 px-2 py-1 rounded-md">SAVE ₹159</span>
