@@ -494,6 +494,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
     const catLower = (product.category || "").toLowerCase();
     const isGadget = catLower === 'gadgets' || catLower === 'electronics';
     const isAccessory = catLower === 'accessories' || catLower === 'footwear';
+    const isKalankit = product.handle?.toLowerCase().includes('kalankit') || product.title?.toLowerCase().includes('kalankit');
 
     const availableVariants = useMemo(() => {
         if (hasGadgetModels) {
@@ -1432,74 +1433,133 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                     </div>
                 )}
 
-                {/* Color Selector (Variants) */}
-                {/* High-Converting Concise Color / Finish Swatches */}
+                {/* Color / Variant Selector */}
                 {hasVariants ? (
-                    <div className="mb-4">
-                        <div className="flex justify-between items-center mb-2.5">
-                            <span className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED] flex items-center gap-1.5">
-                                {isGadget ? "Finish" : "Selected Color"}
-                                {selectedVariant?.colorName && (
-                                    <span className="text-neutral-400 font-normal font-sans text-xs lowercase">
-                                        — <span className="capitalize font-bold text-[#1A1A1A] dark:text-[#F4F1ED]">{selectedVariant.colorName}</span>
-                                    </span>
-                                )}
-                            </span>
-                        </div>
-                        <div className="flex flex-wrap gap-3 items-center pt-0.5">
-                            {availableVariants.map((variant) => {
-                                const isSelected = selectedVariant?.colorName === variant.colorName;
-                                const isWhiteish = variant.colorHex?.toLowerCase() === "#ffffff" || variant.colorHex?.toLowerCase() === "#f4f1ed" || variant.colorHex?.toLowerCase() === "#f2f1ed" || variant.colorName?.toLowerCase().includes("white");
-                                return (
-                                    <button
-                                        key={variant.colorName}
-                                        onClick={() => {
-                                            setSelectedVariant(variant);
-                                            if (selectedPiece === 'top' && variant.topImages && variant.topImages.length === 0) {
-                                                setSelectedPiece('set');
-                                            }
-                                            if (selectedPiece === 'bottom' && variant.bottomImages && variant.bottomImages.length === 0) {
-                                                setSelectedPiece('set');
-                                            }
-                                        }}
-                                        className={cn(
-                                            "relative w-9 h-9 rounded-full transition-all duration-300 cursor-pointer flex items-center justify-center group focus:outline-none shrink-0",
-                                            isSelected
-                                                ? "scale-110 ring-2 ring-offset-2 ring-[#1A1A1A] dark:ring-white dark:ring-offset-neutral-950 shadow-md"
-                                                : "opacity-85 hover:opacity-100 hover:scale-105"
-                                        )}
-                                        style={{
-                                            boxShadow: isSelected ? undefined : "0 2px 8px rgba(0,0,0,0.12)"
-                                        }}
-                                        title={variant.colorName}
-                                        aria-label={variant.colorName}
-                                    >
-                                        {/* Inner Color Swatch Circle */}
-                                        <span 
-                                            className={cn(
-                                                "w-full h-full rounded-full transition-transform group-hover:scale-95 flex items-center justify-center overflow-hidden border",
-                                                isWhiteish ? "border-neutral-300 dark:border-white/30" : "border-black/10 dark:border-white/20"
-                                            )} 
-                                            style={{
-                                                background: (variant.secondaryColorHex && selectedPiece === 'set') 
-                                                    ? `linear-gradient(135deg, ${variant.colorHex} 50%, ${variant.secondaryColorHex} 50%)`
-                                                    : (selectedPiece === 'bottom' && variant.secondaryColorHex)
-                                                        ? variant.secondaryColorHex
-                                                        : variant.colorHex
+                    isKalankit ? (
+                        <div className="mb-5">
+                            <div className="flex justify-between items-center mb-2.5">
+                                <span className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED] flex items-center gap-1.5">
+                                    Select Edition / Variant
+                                    {selectedVariant?.colorName && (
+                                        <span className="text-neutral-400 font-normal font-sans text-xs lowercase">
+                                            — <span className="capitalize font-bold text-[#1A1A1A] dark:text-[#F4F1ED]">{selectedVariant.colorName}</span>
+                                        </span>
+                                    )}
+                                </span>
+                            </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-0.5">
+                                {availableVariants.map((variant, idx) => {
+                                    const isSelected = selectedVariant?.colorName === variant.colorName;
+                                    return (
+                                        <button
+                                            key={variant.colorName}
+                                            type="button"
+                                            onClick={() => {
+                                                setSelectedVariant(variant);
                                             }}
-                                        />
-
-                                        {/* Active Selection Icon */}
-                                        {isSelected && (
-                                            <div className="absolute inset-0 flex items-center justify-center text-white dark:text-black z-10 drop-shadow-sm">
-                                                <Check className={cn("w-3.5 h-3.5 stroke-[3.5]", isWhiteish ? "text-neutral-900" : "text-white")} />
+                                            className={cn(
+                                                "flex items-center gap-2.5 p-2 rounded-xl border text-left transition-all cursor-pointer relative overflow-hidden",
+                                                isSelected
+                                                    ? "border-black dark:border-white bg-black/5 dark:bg-white/5 ring-1 ring-black dark:ring-white shadow-xs"
+                                                    : "border-neutral-200 dark:border-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-600 bg-transparent"
+                                            )}
+                                        >
+                                            <div className="relative w-12 h-12 rounded-lg overflow-hidden shrink-0 bg-neutral-100 dark:bg-neutral-900 border border-neutral-200/60 dark:border-neutral-800">
+                                                {variant.images && variant.images[0] && (
+                                                    <Image
+                                                        src={variant.images[0]}
+                                                        alt={variant.colorName}
+                                                        fill
+                                                        sizes="48px"
+                                                        className="object-cover"
+                                                    />
+                                                )}
                                             </div>
-                                        )}
-                                    </button>
-                                );
-                            })}
+                                            <div className="min-w-0 flex-1 flex flex-col">
+                                                <span className="text-[11px] font-bold text-[#1A1A1A] dark:text-[#F4F1ED] leading-snug truncate">
+                                                    {variant.colorName}
+                                                </span>
+                                                <span className="text-[9.5px] text-neutral-500 font-sans mt-0.5">
+                                                    Edition {idx + 1} • In Stock
+                                                </span>
+                                            </div>
+                                            {isSelected && (
+                                                <div className="w-5 h-5 rounded-full bg-black dark:bg-white text-white dark:text-black flex items-center justify-center shrink-0 shadow-xs">
+                                                    <Check className="w-3 h-3 stroke-[3]" />
+                                                </div>
+                                            )}
+                                        </button>
+                                    );
+                                })}
+                            </div>
                         </div>
-                    </div>
+                    ) : (
+                        <div className="mb-4">
+                            <div className="flex justify-between items-center mb-2.5">
+                                <span className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED] flex items-center gap-1.5">
+                                    {isGadget ? "Finish" : "Selected Color"}
+                                    {selectedVariant?.colorName && (
+                                        <span className="text-neutral-400 font-normal font-sans text-xs lowercase">
+                                            — <span className="capitalize font-bold text-[#1A1A1A] dark:text-[#F4F1ED]">{selectedVariant.colorName}</span>
+                                        </span>
+                                    )}
+                                </span>
+                            </div>
+                            <div className="flex flex-wrap gap-3 items-center pt-0.5">
+                                {availableVariants.map((variant) => {
+                                    const isSelected = selectedVariant?.colorName === variant.colorName;
+                                    const isWhiteish = variant.colorHex?.toLowerCase() === "#ffffff" || variant.colorHex?.toLowerCase() === "#f4f1ed" || variant.colorHex?.toLowerCase() === "#f2f1ed" || variant.colorName?.toLowerCase().includes("white");
+                                    return (
+                                        <button
+                                            key={variant.colorName}
+                                            onClick={() => {
+                                                setSelectedVariant(variant);
+                                                if (selectedPiece === 'top' && variant.topImages && variant.topImages.length === 0) {
+                                                    setSelectedPiece('set');
+                                                }
+                                                if (selectedPiece === 'bottom' && variant.bottomImages && variant.bottomImages.length === 0) {
+                                                    setSelectedPiece('set');
+                                                }
+                                            }}
+                                            className={cn(
+                                                "relative w-9 h-9 rounded-full transition-all duration-300 cursor-pointer flex items-center justify-center group focus:outline-none shrink-0",
+                                                isSelected
+                                                    ? "scale-110 ring-2 ring-offset-2 ring-[#1A1A1A] dark:ring-white dark:ring-offset-neutral-950 shadow-md"
+                                                    : "opacity-85 hover:opacity-100 hover:scale-105"
+                                            )}
+                                            style={{
+                                                boxShadow: isSelected ? undefined : "0 2px 8px rgba(0,0,0,0.12)"
+                                            }}
+                                            title={variant.colorName}
+                                            aria-label={variant.colorName}
+                                        >
+                                            {/* Inner Color Swatch Circle */}
+                                            <span 
+                                                className={cn(
+                                                    "w-full h-full rounded-full transition-transform group-hover:scale-95 flex items-center justify-center overflow-hidden border",
+                                                    isWhiteish ? "border-neutral-300 dark:border-white/30" : "border-black/10 dark:border-white/20"
+                                                )} 
+                                                style={{
+                                                    background: (variant.secondaryColorHex && selectedPiece === 'set') 
+                                                        ? `linear-gradient(135deg, ${variant.colorHex} 50%, ${variant.secondaryColorHex} 50%)`
+                                                        : (selectedPiece === 'bottom' && variant.secondaryColorHex)
+                                                            ? variant.secondaryColorHex
+                                                            : variant.colorHex
+                                                }}
+                                            />
+
+                                            {/* Active Selection Icon */}
+                                            {isSelected && (
+                                                <div className="absolute inset-0 flex items-center justify-center text-white dark:text-black z-10 drop-shadow-sm">
+                                                    <Check className={cn("w-3.5 h-3.5 stroke-[3.5]", isWhiteish ? "text-neutral-900" : "text-white")} />
+                                                </div>
+                                            )}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    )
                 ) : (
                     /* Legacy Colors Fallback */
                     <div className="mb-4">
@@ -1918,7 +1978,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                             { id: 'techwoven-magsafe-case', name: "Ultra TechWoven MagSafe Case", priceVal: 1490, price: "₹1,490", img: "/images/accessories/techwoven_case.webp", size: 'Standard', color: 'Cosmic Orange' },
                             { id: 'airpods-pro-2nd-gen', name: "AirPods Pro (2nd Gen)", priceVal: 19900, price: "₹19,900", img: "/images/accessories/airpods_case.webp", size: 'Standard', color: 'White' }
                         ] : [
-                            { id: 'art-kalankit-crossbody', name: "Kalankit Artisanal Sling Bag", priceVal: 1090, price: "₹1,090", img: "/images/products/kalankit/variant-1/imgi_287_71amRsCJkOL._SL1500_.jpg", size: 'One Size', color: 'Ivory Floral' },
+                            { id: 'art-kalankit-crossbody', name: "Kalankit Artisanal Sling Bag", priceVal: 1090, price: "₹1,090", img: "/images/products/kalankit/variant-1/v1-img-8.webp", size: 'One Size', color: 'Ivory Floral' },
                             { id: 'pearl-earrings', name: "Pearl Drop Earrings", priceVal: 1299, price: "₹1,299", img: "/images/generated/pearl_drop_earrings.png", size: 'ONE SIZE', color: 'Gold' },
                             { id: 'woven-slides', name: "Woven Leather Slides", priceVal: 3499, price: "₹3,499", img: "/images/generated/woven_leather_slides.png", size: '8', color: 'Brown' },
                             { id: 'silk-scarf', name: "Silk Blend Scarf", priceVal: 2199, price: "₹2,199", img: "/images/generated/silk_scarf_detail.png", size: 'ONE SIZE', color: 'Cream' }
