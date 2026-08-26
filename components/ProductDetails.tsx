@@ -1729,6 +1729,21 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                             <ShoppingBag className="w-5 h-5 stroke-[1.5]" />
                         </button>
                     </div>
+
+                    {/* 1-Tap WhatsApp Direct Order Button */}
+                    {!product.isOutOfStock && (
+                        <a
+                            href={`https://wa.me/918590958131?text=${encodeURIComponent(
+                                `Hi Shreya! I want to order ${displayTitle} (Size: ${selectedSize || 'Selected Size'}, ₹${displayPrice.toLocaleString('en-IN')}).\n\nProduct Link: https://tenetarchives.com/product/${product.handle}\n\nPlease confirm express dispatch for guaranteed delivery before Rakhi! (I can also share a photo for size advice).`
+                            )}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-full h-[44px] flex items-center justify-center gap-2 rounded-xl bg-[#25D366]/10 hover:bg-[#25D366]/20 border border-[#25D366]/35 text-[#128C7E] dark:text-[#25D366] font-sans text-xs font-bold uppercase tracking-wider transition-all duration-300 hover:scale-[1.01] active:scale-[0.98] shadow-xs cursor-pointer"
+                        >
+                            <img src="/whatsapp-logo.svg" className="w-4 h-4 object-contain" alt="WhatsApp" />
+                            <span>⚡ Order on WhatsApp • Guaranteed Rakhi Delivery</span>
+                        </a>
+                    )}
                 </div>
 
                 {/* Core Trust Guarantees */}
