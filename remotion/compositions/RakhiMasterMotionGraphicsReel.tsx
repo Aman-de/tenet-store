@@ -18,18 +18,22 @@ interface RakhiMasterMotionGraphicsProps {
 }
 
 // =======================================================
-// SCENE 1: MINIMAL PHOTOREALISTIC GIFT BOX (0 - 105 frames / 3.5s)
+// SCENE 1: BESPOKE UNBOXING REVEAL (0 - 85 frames / 2.83s)
 // =======================================================
-const MinimalGiftBoxScene: React.FC = () => {
+const UnboxingRevealScene: React.FC = () => {
     const frame = useCurrentFrame();
     const { fps } = useVideoConfig();
 
-    const entrance = spring({ frame, fps, config: { damping: 15, stiffness: 120 } });
-    const scale = interpolate(frame, [0, 105], [1.04, 1.0], { extrapolateRight: "clamp" });
+    const entrance = spring({ frame, fps, config: { damping: 14, stiffness: 140 } });
+    const scale = interpolate(frame, [0, 85], [1.04, 1.0], { extrapolateRight: "clamp" });
+
+    // Morph or switch between closed minimal box (frames 0-35) and open reveal (frames 35-85)
+    const isRevealed = frame >= 35;
+    const revealSpring = spring({ frame: frame - 35, fps, config: { damping: 12, stiffness: 150 } });
 
     return (
-        <AbsoluteFill style={{ backgroundColor: "#0A0908", overflow: "hidden" }}>
-            {/* Soft Ambient Studio Lighting */}
+        <AbsoluteFill style={{ backgroundColor: "#080706", overflow: "hidden" }}>
+            {/* Soft Ambient Gold Spotlight */}
             <div
                 style={{
                     position: "absolute",
@@ -39,12 +43,12 @@ const MinimalGiftBoxScene: React.FC = () => {
                     width: 700,
                     height: 700,
                     borderRadius: "50%",
-                    background: "radial-gradient(circle, rgba(224,169,109,0.2) 0%, rgba(0,0,0,0) 70%)",
+                    background: "radial-gradient(circle, rgba(224,169,109,0.25) 0%, rgba(0,0,0,0) 70%)",
                     filter: "blur(50px)",
                 }}
             />
 
-            {/* Top Clean Editorial Badge */}
+            {/* Top Kinetic Badges */}
             <div
                 style={{
                     position: "absolute",
@@ -55,17 +59,17 @@ const MinimalGiftBoxScene: React.FC = () => {
                     flexDirection: "column",
                     alignItems: "center",
                     textAlign: "center",
-                    transform: `translateY(${(1 - entrance) * -16}px)`,
+                    transform: `translateY(${(1 - entrance) * -18}px)`,
                     opacity: entrance,
                     zIndex: 30,
                 }}
             >
                 <div
                     style={{
-                        padding: "6px 22px",
+                        padding: "6px 24px",
                         borderRadius: 99,
-                        background: "rgba(224, 169, 109, 0.15)",
-                        border: "1px solid rgba(224, 169, 109, 0.4)",
+                        background: "rgba(224, 169, 109, 0.18)",
+                        border: "1.5px solid rgba(224, 169, 109, 0.5)",
                         backdropFilter: "blur(12px)",
                         fontFamily: "'Plus Jakarta Sans', sans-serif",
                         fontSize: 13,
@@ -76,23 +80,23 @@ const MinimalGiftBoxScene: React.FC = () => {
                         textTransform: "uppercase",
                     }}
                 >
-                    🪢 RAKHI GIFT PACKAGING
+                    🪢 RAKHI SPECIAL DROP
                 </div>
                 <h1
                     style={{
                         fontFamily: "'Playfair Display', Georgia, serif",
-                        fontSize: 46,
+                        fontSize: 48,
                         fontWeight: 700,
                         color: "#FFFFFF",
                         margin: 0,
                         textShadow: "0 4px 25px rgba(0,0,0,0.9)",
                     }}
                 >
-                    The Sister-Proof Gift ✨
+                    {isRevealed ? "Luxury Unboxing Inside ✨" : "The Sister-Proof Gift 🎁"}
                 </h1>
             </div>
 
-            {/* Main Photorealistic Gift Box Card */}
+            {/* Main Visual Card */}
             <div
                 style={{
                     position: "absolute",
@@ -102,7 +106,7 @@ const MinimalGiftBoxScene: React.FC = () => {
                     height: 1260,
                     borderRadius: 36,
                     overflow: "hidden",
-                    border: "1px solid rgba(255, 255, 255, 0.12)",
+                    border: "1.5px solid rgba(224, 169, 109, 0.4)",
                     transform: `scale(${scale * entrance})`,
                     boxShadow: "0 25px 60px rgba(0,0,0,0.9)",
                     display: "flex",
@@ -112,11 +116,20 @@ const MinimalGiftBoxScene: React.FC = () => {
                 }}
             >
                 <Img
-                    src={staticFile("/images/products/tenet-collection/tenet-rakhi-luxury-gift-box.png")}
-                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                    src={
+                        isRevealed
+                            ? staticFile("/images/products/tenet-collection/luxury-rakhi-unboxing-open.png")
+                            : staticFile("/images/products/tenet-collection/tenet-rakhi-luxury-gift-box.png")
+                    }
+                    style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        transform: isRevealed ? `scale(${1 + (1 - revealSpring) * 0.05})` : "none",
+                    }}
                 />
 
-                {/* Bottom Minimal Feature Badge */}
+                {/* Bottom Glassmorphism Tag */}
                 <div
                     style={{
                         position: "absolute",
@@ -125,7 +138,7 @@ const MinimalGiftBoxScene: React.FC = () => {
                         right: 20,
                         padding: "14px 20px",
                         borderRadius: 20,
-                        background: "rgba(12, 10, 8, 0.85)",
+                        background: "rgba(10, 8, 6, 0.85)",
                         backdropFilter: "blur(14px)",
                         border: "1px solid rgba(224, 169, 109, 0.4)",
                         display: "flex",
@@ -134,10 +147,10 @@ const MinimalGiftBoxScene: React.FC = () => {
                     }}
                 >
                     <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 19, fontWeight: 700, color: "#FFFFFF" }}>
-                        Free Luxury Gift Box 🎁
+                        Free Luxury Box & Rakhi 🎁
                     </span>
                     <span style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12, fontWeight: 800, color: "#E0A96D", letterSpacing: "0.1em" }}>
-                        INCLUDED FREE
+                        FREE WITH ORDER
                     </span>
                 </div>
             </div>
@@ -148,18 +161,17 @@ const MinimalGiftBoxScene: React.FC = () => {
 };
 
 // =======================================================
-// SCENE 2: CLEAN FULL HERO SITTING MODEL (105 - 215 frames / 3.66s)
+// SCENE 2: VIRAL SITTING HERO & TASSEL DETAIL (85 - 175 frames / 3.0s)
 // =======================================================
 const HeroModelScene: React.FC = () => {
     const frame = useCurrentFrame();
     const { fps } = useVideoConfig();
 
-    const entrance = spring({ frame, fps, config: { damping: 15, stiffness: 120 } });
-    const scale = interpolate(frame, [0, 110], [1.03, 1.0], { extrapolateRight: "clamp" });
+    const entrance = spring({ frame, fps, config: { damping: 14, stiffness: 140 } });
+    const scale = interpolate(frame, [0, 90], [1.03, 1.0], { extrapolateRight: "clamp" });
 
     return (
-        <AbsoluteFill style={{ backgroundColor: "#0A0908", overflow: "hidden" }}>
-            {/* Top Badges */}
+        <AbsoluteFill style={{ backgroundColor: "#080706", overflow: "hidden" }}>
             <div
                 style={{
                     position: "absolute",
@@ -179,8 +191,8 @@ const HeroModelScene: React.FC = () => {
                     style={{
                         padding: "6px 22px",
                         borderRadius: 99,
-                        background: "rgba(224, 169, 109, 0.15)",
-                        border: "1px solid rgba(224, 169, 109, 0.4)",
+                        background: "rgba(224, 169, 109, 0.18)",
+                        border: "1.5px solid rgba(224, 169, 109, 0.5)",
                         backdropFilter: "blur(12px)",
                         fontFamily: "'Plus Jakarta Sans', sans-serif",
                         fontSize: 13,
@@ -196,7 +208,7 @@ const HeroModelScene: React.FC = () => {
                 <h1
                     style={{
                         fontFamily: "'Playfair Display', Georgia, serif",
-                        fontSize: 46,
+                        fontSize: 48,
                         fontWeight: 700,
                         color: "#FFFFFF",
                         margin: 0,
@@ -206,7 +218,6 @@ const HeroModelScene: React.FC = () => {
                 </h1>
             </div>
 
-            {/* Main Model Picture */}
             <div
                 style={{
                     position: "absolute",
@@ -216,7 +227,7 @@ const HeroModelScene: React.FC = () => {
                     height: 1260,
                     borderRadius: 36,
                     overflow: "hidden",
-                    border: "1px solid rgba(224, 169, 109, 0.45)",
+                    border: "1.5px solid rgba(224, 169, 109, 0.45)",
                     transform: `scale(${scale * entrance})`,
                     boxShadow: "0 25px 60px rgba(0,0,0,0.9)",
                     display: "flex",
@@ -230,7 +241,6 @@ const HeroModelScene: React.FC = () => {
                     style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
 
-                {/* Floating Feature Badges */}
                 <div
                     style={{
                         position: "absolute",
@@ -276,9 +286,9 @@ const HeroModelScene: React.FC = () => {
 };
 
 // =======================================================
-// SCENE 3: CLEAN SEQUENTIAL COLORWAYS SHOWCASE (215 - 330 frames / 3.83s)
+// SCENE 3: FAST 4-COLORWAY CLASH (175 - 315 frames / 4.66s)
 // =======================================================
-const ColorwaysSequentialScene: React.FC = () => {
+const FastColorwaysScene: React.FC = () => {
     const frame = useCurrentFrame();
 
     const colorItems = [
@@ -300,17 +310,23 @@ const ColorwaysSequentialScene: React.FC = () => {
             color: "#F3A6B2",
             image: staticFile("/images/products/tenet-collection/pink.webp"),
         },
+        {
+            name: "Pastel Blossom Pink",
+            badge: "🌷 Blossom Pink",
+            color: "#FFAAA6",
+            image: staticFile("/images/products/tenet-collection/l pink.webp"),
+        },
     ];
 
-    // Cycle smoothly through 3 colors (~38 frames per color)
-    const activeIndex = Math.min(Math.floor(frame / 38), colorItems.length - 1);
+    // Cycle through each of the 4 colors every 35 frames
+    const activeIndex = Math.min(Math.floor(frame / 35), colorItems.length - 1);
     const active = colorItems[activeIndex];
 
-    const subFrame = frame % 38;
-    const scale = interpolate(subFrame, [0, 38], [1.03, 1.0], { extrapolateRight: "clamp" });
+    const subFrame = frame % 35;
+    const scale = interpolate(subFrame, [0, 35], [1.03, 1.0], { extrapolateRight: "clamp" });
 
     return (
-        <AbsoluteFill style={{ backgroundColor: "#0A0908", overflow: "hidden" }}>
+        <AbsoluteFill style={{ backgroundColor: "#080706", overflow: "hidden" }}>
             <div
                 style={{
                     position: "absolute",
@@ -329,7 +345,7 @@ const ColorwaysSequentialScene: React.FC = () => {
                         padding: "6px 22px",
                         borderRadius: 99,
                         background: `${active.color}22`,
-                        border: `1px solid ${active.color}66`,
+                        border: `1.5px solid ${active.color}66`,
                         backdropFilter: "blur(12px)",
                         fontFamily: "'Plus Jakarta Sans', sans-serif",
                         fontSize: 13,
@@ -345,7 +361,7 @@ const ColorwaysSequentialScene: React.FC = () => {
                 <h1
                     style={{
                         fontFamily: "'Playfair Display', Georgia, serif",
-                        fontSize: 46,
+                        fontSize: 48,
                         fontWeight: 700,
                         color: "#FFFFFF",
                         margin: 0,
@@ -355,7 +371,6 @@ const ColorwaysSequentialScene: React.FC = () => {
                 </h1>
             </div>
 
-            {/* Clear Spotlight Card */}
             <div
                 style={{
                     position: "absolute",
@@ -383,18 +398,19 @@ const ColorwaysSequentialScene: React.FC = () => {
 };
 
 // =======================================================
-// SCENE 4: 3-PIECE COMPLETE LOOK (330 - 440 frames / 3.66s)
+// SCENE 4: 3-PIECE COMPLETE OUTFIT STACK (315 - 420 frames / 3.5s)
 // =======================================================
-const CompleteLookScene: React.FC = () => {
+const CompleteOutfitStackScene: React.FC = () => {
     const frame = useCurrentFrame();
     const { fps } = useVideoConfig();
 
-    const entrance = spring({ frame, fps, config: { damping: 15, stiffness: 120 } });
-    const card1 = spring({ frame, fps, config: { damping: 13, stiffness: 130 } });
-    const card2 = spring({ frame: frame - 4, fps, config: { damping: 13, stiffness: 130 } });
+    const entrance = spring({ frame, fps, config: { damping: 14, stiffness: 140 } });
+    const card1 = spring({ frame, fps, config: { damping: 13, stiffness: 140 } });
+    const card2 = spring({ frame: frame - 3, fps, config: { damping: 13, stiffness: 140 } });
+    const card3 = spring({ frame: frame - 6, fps, config: { damping: 13, stiffness: 140 } });
 
     return (
-        <AbsoluteFill style={{ backgroundColor: "#0A0908", overflow: "hidden" }}>
+        <AbsoluteFill style={{ backgroundColor: "#080706", overflow: "hidden" }}>
             <div
                 style={{
                     position: "absolute",
@@ -414,8 +430,8 @@ const CompleteLookScene: React.FC = () => {
                     style={{
                         padding: "6px 22px",
                         borderRadius: 99,
-                        background: "rgba(224, 169, 109, 0.15)",
-                        border: "1px solid rgba(224, 169, 109, 0.4)",
+                        background: "rgba(224, 169, 109, 0.18)",
+                        border: "1.5px solid rgba(224, 169, 109, 0.5)",
                         backdropFilter: "blur(12px)",
                         fontFamily: "'Plus Jakarta Sans', sans-serif",
                         fontSize: 13,
@@ -426,12 +442,12 @@ const CompleteLookScene: React.FC = () => {
                         textTransform: "uppercase",
                     }}
                 >
-                    👗 COMPLETE 3-PIECE STYLING
+                    👗 3-PIECE COMPLETE FIT
                 </div>
                 <h1
                     style={{
                         fontFamily: "'Playfair Display', Georgia, serif",
-                        fontSize: 46,
+                        fontSize: 48,
                         fontWeight: 700,
                         color: "#FFFFFF",
                         margin: 0,
@@ -441,7 +457,7 @@ const CompleteLookScene: React.FC = () => {
                 </h1>
             </div>
 
-            {/* Clear 2-Column Showcase */}
+            {/* 3 Grid Cards */}
             <div
                 style={{
                     position: "absolute",
@@ -450,15 +466,15 @@ const CompleteLookScene: React.FC = () => {
                     right: 45,
                     height: 1260,
                     display: "flex",
-                    gap: 16,
+                    gap: 14,
                     zIndex: 10,
                 }}
             >
-                {/* 1. Kurti Top Card */}
+                {/* 1. Kurti Top */}
                 <div
                     style={{
                         flex: 1,
-                        borderRadius: 32,
+                        borderRadius: 28,
                         overflow: "hidden",
                         position: "relative",
                         border: "1.5px solid rgba(224, 169, 109, 0.5)",
@@ -468,16 +484,16 @@ const CompleteLookScene: React.FC = () => {
                     }}
                 >
                     <Img src={staticFile("/images/products/tenet-collection/cho.jpg")} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                    <div style={{ position: "absolute", bottom: 16, left: 16, padding: "6px 14px", borderRadius: 99, background: "#E0A96D", color: "#000", fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, fontWeight: 900 }}>
+                    <div style={{ position: "absolute", bottom: 14, left: 10, padding: "6px 12px", borderRadius: 99, background: "#E0A96D", color: "#000", fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 11, fontWeight: 900 }}>
                         1. Tassel Top
                     </div>
                 </div>
 
-                {/* 2. Flared Ivory Pants Card */}
+                {/* 2. Flared Ivory Pants */}
                 <div
                     style={{
                         flex: 1,
-                        borderRadius: 32,
+                        borderRadius: 28,
                         overflow: "hidden",
                         position: "relative",
                         border: "1.5px solid rgba(224, 169, 109, 0.5)",
@@ -487,8 +503,27 @@ const CompleteLookScene: React.FC = () => {
                     }}
                 >
                     <Img src={staticFile("/images/products/tenet-collection/baige.webp")} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                    <div style={{ position: "absolute", bottom: 16, left: 16, padding: "6px 14px", borderRadius: 99, background: "#E0A96D", color: "#000", fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, fontWeight: 900 }}>
+                    <div style={{ position: "absolute", bottom: 14, left: 10, padding: "6px 12px", borderRadius: 99, background: "#E0A96D", color: "#000", fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 11, fontWeight: 900 }}>
                         2. Ivory Pants
+                    </div>
+                </div>
+
+                {/* 3. Crystal Slide Heels */}
+                <div
+                    style={{
+                        flex: 1,
+                        borderRadius: 28,
+                        overflow: "hidden",
+                        position: "relative",
+                        border: "1.5px solid rgba(224, 169, 109, 0.5)",
+                        transform: `scale(${card3})`,
+                        boxShadow: "0 25px 60px rgba(0,0,0,0.85)",
+                        backgroundColor: "#12100E",
+                    }}
+                >
+                    <Img src={staticFile("/images/products/tenet-collection/heel.webp")} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    <div style={{ position: "absolute", bottom: 14, left: 10, padding: "6px 12px", borderRadius: 99, background: "#E0A96D", color: "#000", fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 11, fontWeight: 900 }}>
+                        3. Slide Heels
                     </div>
                 </div>
             </div>
@@ -499,18 +534,17 @@ const CompleteLookScene: React.FC = () => {
 };
 
 // =======================================================
-// SCENE 5: EDITORIAL CLIMAX & CTA (440 - 552 frames / 3.73s)
+// SCENE 5: HIGH-CONVERTING CLIMAX & CTA (420 - 552 frames / 4.4s)
 // =======================================================
 const FestiveClimaxScene: React.FC = () => {
     const frame = useCurrentFrame();
     const { fps } = useVideoConfig();
 
-    const entrance = spring({ frame, fps, config: { damping: 14, stiffness: 130 } });
+    const entrance = spring({ frame, fps, config: { damping: 14, stiffness: 140 } });
     const buttonPulse = interpolate(Math.sin(frame / 6), [-1, 1], [0.98, 1.03]);
 
     return (
-        <AbsoluteFill style={{ backgroundColor: "#0A0908", overflow: "hidden" }}>
-            {/* Top Heading */}
+        <AbsoluteFill style={{ backgroundColor: "#080706", overflow: "hidden" }}>
             <div
                 style={{
                     position: "absolute",
@@ -555,7 +589,7 @@ const FestiveClimaxScene: React.FC = () => {
                 </h1>
             </div>
 
-            {/* Clean Side-by-Side Gift Box & Model */}
+            {/* Side-by-Side: Open Luxury Box + Model */}
             <div
                 style={{
                     position: "absolute",
@@ -579,7 +613,7 @@ const FestiveClimaxScene: React.FC = () => {
                     }}
                 >
                     <Img
-                        src={staticFile("/images/products/tenet-collection/tenet-rakhi-luxury-gift-box.png")}
+                        src={staticFile("/images/products/tenet-collection/luxury-rakhi-unboxing-open.png")}
                         style={{ width: "100%", height: "100%", objectFit: "cover" }}
                     />
                 </div>
@@ -601,7 +635,7 @@ const FestiveClimaxScene: React.FC = () => {
                 </div>
             </div>
 
-            {/* Pulsing CTA Overlay */}
+            {/* Bottom High-Converting Action Banner */}
             <div
                 style={{
                     position: "absolute",
@@ -657,7 +691,7 @@ export const RakhiMasterMotionGraphicsReel: React.FC<RakhiMasterMotionGraphicsPr
     includeVoiceover = false,
 }) => {
     return (
-        <AbsoluteFill style={{ backgroundColor: "#0A0908" }}>
+        <AbsoluteFill style={{ backgroundColor: "#080706" }}>
             {/* 1. Subtle Luxury Music (Volume 0.18) */}
             <Audio
                 src={staticFile("/audio/music/music-showdown-hype.mp3")}
@@ -668,22 +702,28 @@ export const RakhiMasterMotionGraphicsReel: React.FC<RakhiMasterMotionGraphicsPr
             <Sequence from={0} durationInFrames={20}>
                 <Audio src={staticFile("/audio/sfx/sparkle.wav")} volume={0.4} />
             </Sequence>
-            <Sequence from={105} durationInFrames={15}>
+            <Sequence from={35} durationInFrames={15}>
+                <Audio src={staticFile("/audio/sfx/whoosh.wav")} volume={0.35} />
+            </Sequence>
+            <Sequence from={85} durationInFrames={15}>
                 <Audio src={staticFile("/audio/sfx/shutter.wav")} volume={0.4} />
             </Sequence>
-            <Sequence from={215} durationInFrames={15}>
+            <Sequence from={175} durationInFrames={15}>
                 <Audio src={staticFile("/audio/sfx/whoosh.wav")} volume={0.35} />
             </Sequence>
-            <Sequence from={253} durationInFrames={15}>
+            <Sequence from={210} durationInFrames={15}>
                 <Audio src={staticFile("/audio/sfx/whoosh.wav")} volume={0.35} />
             </Sequence>
-            <Sequence from={291} durationInFrames={15}>
+            <Sequence from={245} durationInFrames={15}>
                 <Audio src={staticFile("/audio/sfx/whoosh.wav")} volume={0.35} />
             </Sequence>
-            <Sequence from={330} durationInFrames={20}>
+            <Sequence from={280} durationInFrames={15}>
+                <Audio src={staticFile("/audio/sfx/whoosh.wav")} volume={0.35} />
+            </Sequence>
+            <Sequence from={315} durationInFrames={20}>
                 <Audio src={staticFile("/audio/sfx/sparkle.wav")} volume={0.4} />
             </Sequence>
-            <Sequence from={440} durationInFrames={20}>
+            <Sequence from={420} durationInFrames={20}>
                 <Audio src={staticFile("/audio/sfx/sparkle.wav")} volume={0.45} />
             </Sequence>
 
@@ -698,19 +738,19 @@ export const RakhiMasterMotionGraphicsReel: React.FC<RakhiMasterMotionGraphicsPr
             )}
 
             {/* 4. Motion Graphic Timeline Sequences */}
-            <Sequence from={0} durationInFrames={105}>
-                <MinimalGiftBoxScene />
+            <Sequence from={0} durationInFrames={85}>
+                <UnboxingRevealScene />
             </Sequence>
-            <Sequence from={105} durationInFrames={110}>
+            <Sequence from={85} durationInFrames={90}>
                 <HeroModelScene />
             </Sequence>
-            <Sequence from={215} durationInFrames={115}>
-                <ColorwaysSequentialScene />
+            <Sequence from={175} durationInFrames={140}>
+                <FastColorwaysScene />
             </Sequence>
-            <Sequence from={330} durationInFrames={110}>
-                <CompleteLookScene />
+            <Sequence from={315} durationInFrames={105}>
+                <CompleteOutfitStackScene />
             </Sequence>
-            <Sequence from={440} durationInFrames={112}>
+            <Sequence from={420} durationInFrames={132}>
                 <FestiveClimaxScene />
             </Sequence>
         </AbsoluteFill>

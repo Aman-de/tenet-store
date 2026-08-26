@@ -244,6 +244,80 @@ const ARTIFICIAL_PRODUCTS = [
         gender: "men",
         isOutOfStock: false,
         variants: [{ colorName: "Blue Stripe", colorHex: "#4682B4", stock: 10, images: ["/images/generated/the_amalfi_stripe_alt_1779785859994.webp"] }]
+    },
+    {
+        id: "art-kalankit-crossbody",
+        title: "The Kalankit Artisanal Crossbody Sling Bag",
+        handle: "the-kalankit-artisanal-sling-bag",
+        price: 1090,
+        originalPrice: 1899,
+        discountLabel: "SAVE ₹809",
+        category: "accessories",
+        gender: "woman",
+        isBestSeller: true,
+        bestSellerRank: 2,
+        isOutOfStock: false,
+        sizeType: "onesize",
+        sizes: ["One Size"],
+        description: "Handcrafted bohemian crossbody sling bag with artisanal printed motifs, premium canvas jacquard weave, heavy-duty antique brass zippers, and adjustable shoulder strap. Includes complimentary luxury Rakhi gift box, satin ribbon, and custom sibling card.",
+        colors: ["#F5EBE1", "#2E4A62", "#1C1B1A"],
+        images: [
+            "/images/products/kalankit/variant-1/imgi_287_71amRsCJkOL._SL1500_.jpg",
+            "/images/products/kalankit/variant-1/imgi_277_71vyBzSugGL._SL1119_.jpg",
+            "/images/products/kalankit/variant-1/imgi_265_615We9eZvcL._SL1149_.jpg",
+            "/images/products/kalankit/variant-1/imgi_258_61SgCKc4KBL._SL1029_.jpg",
+            "/images/products/kalankit/variant-1/imgi_251_61Ng-dQSpbL._SL1149_.jpg",
+            "/images/products/kalankit/variant-1/imgi_244_61Qtj1p3aiL._SL1024_.jpg",
+            "/images/products/kalankit/variant-1/imgi_237_61OsK+wA0BL._SL1149_.jpg",
+            "/images/products/kalankit/variant-1/imgi_230_61CObBm1iYL._SL1149_.jpg",
+            "/images/products/kalankit/variant-1/imgi_419_A1tuTxDbnwL.jpg"
+        ],
+        variants: [
+            {
+                colorName: "Ivory Bohemian Floral",
+                colorHex: "#F5EBE1",
+                stock: 15,
+                images: [
+                    "/images/products/kalankit/variant-1/imgi_287_71amRsCJkOL._SL1500_.jpg",
+                    "/images/products/kalankit/variant-1/imgi_277_71vyBzSugGL._SL1119_.jpg",
+                    "/images/products/kalankit/variant-1/imgi_265_615We9eZvcL._SL1149_.jpg",
+                    "/images/products/kalankit/variant-1/imgi_258_61SgCKc4KBL._SL1029_.jpg",
+                    "/images/products/kalankit/variant-1/imgi_251_61Ng-dQSpbL._SL1149_.jpg",
+                    "/images/products/kalankit/variant-1/imgi_244_61Qtj1p3aiL._SL1024_.jpg",
+                    "/images/products/kalankit/variant-1/imgi_237_61OsK+wA0BL._SL1149_.jpg",
+                    "/images/products/kalankit/variant-1/imgi_230_61CObBm1iYL._SL1149_.jpg",
+                    "/images/products/kalankit/variant-1/imgi_419_A1tuTxDbnwL.jpg"
+                ]
+            },
+            {
+                colorName: "Indigo Mosaic Geometric",
+                colorHex: "#2E4A62",
+                stock: 12,
+                images: [
+                    "/images/products/kalankit/variant-2/imgi_267_713X1YypoqL._SL1500_.jpg",
+                    "/images/products/kalankit/variant-2/imgi_239_71F5eo-8OnL._SL1500_.jpg",
+                    "/images/products/kalankit/variant-2/imgi_246_71M6ikI+cqL._SL1360_.jpg",
+                    "/images/products/kalankit/variant-2/imgi_253_51oMgYw3AeL._SL1080_.jpg",
+                    "/images/products/kalankit/variant-2/imgi_134_61+y3cF4AwL.jpg"
+                ]
+            },
+            {
+                colorName: "Noir Botanical Embroidered",
+                colorHex: "#1C1B1A",
+                stock: 14,
+                images: [
+                    "/images/products/kalankit/variant-3/imgi_283_814I8UkUL-L._SL1500_.jpg",
+                    "/images/products/kalankit/variant-3/imgi_275_712ImkQ823L._SL1500_.jpg",
+                    "/images/products/kalankit/variant-3/imgi_267_71o2BUTXIKL._SL1500_.jpg",
+                    "/images/products/kalankit/variant-3/imgi_259_71eBmBo3kQL._SL1500_.jpg",
+                    "/images/products/kalankit/variant-3/imgi_251_71Rm+CklLEL._SL1500_.jpg",
+                    "/images/products/kalankit/variant-3/imgi_113_71GRQ8XE3lL.jpg",
+                    "/images/products/kalankit/variant-3/imgi_119_71zWL30E1ML.jpg",
+                    "/images/products/kalankit/variant-3/imgi_120_61ZYgTlob9L.jpg",
+                    "/images/products/kalankit/variant-3/imgi_121_61ZE-BhK00L.jpg"
+                ]
+            }
+        ]
     }
 ];
 
@@ -726,6 +800,67 @@ export async function getRecommendedProducts(category: string, currentSlug: stri
 }
 
 export async function getReviews(productId: string) {
+    if (productId === "art-kalankit-crossbody" || productId === "the-kalankit-artisanal-sling-bag" || productId?.toLowerCase().includes("kalankit")) {
+        return [
+            {
+                id: "kal-rev-1",
+                name: "Pooja Varma, New Delhi",
+                rating: 5,
+                comment: "Meri younger sister ko gift kiya Rakhi ke liye, packaging was so aesthetic and print quality is top notch! Bahut khush hui ❤️",
+                date: "2026-08-22T10:30:00.000Z",
+                images: ["/images/products/kalankit/variant-3/imgi_113_71GRQ8XE3lL.jpg"]
+            },
+            {
+                id: "kal-rev-2",
+                name: "Simran Gill, Chandigarh",
+                rating: 5,
+                comment: "Honestly strap quality is very sturdy and bag me phone, lipstick aur keys aaram se fit ho jate hain. Totally worth ₹1090 with 30% discount!",
+                date: "2026-08-20T14:15:00.000Z",
+                images: ["/images/products/kalankit/variant-3/imgi_119_71zWL30E1ML.jpg"]
+            },
+            {
+                id: "kal-rev-3",
+                name: "Ananya Roy, Kolkata",
+                rating: 5,
+                comment: "Bahut sundar bag hai yaar! Colors exact photos jaise hain. Free Rakhi gift box aur greeting card bhi sath me mila.",
+                date: "2026-08-18T12:00:00.000Z",
+                images: ["/images/products/kalankit/variant-3/imgi_120_61ZYgTlob9L.jpg"]
+            },
+            {
+                id: "kal-rev-4",
+                name: "Rhea Menon, Bangalore",
+                rating: 5,
+                comment: "Delivery took only 2 days. The canvas weave and brass zipper look super high-end with ethnic kurtis and denim co-ords.",
+                date: "2026-08-16T09:20:00.000Z",
+                images: ["/images/products/kalankit/variant-3/imgi_121_61ZE-BhK00L.jpg"]
+            },
+            {
+                id: "kal-rev-5",
+                name: "Tanvi Sharma, Pune",
+                rating: 4,
+                comment: "Overall quality is really solid, stitching clean hai. Size thoda compact hai for tablets, but daily essentials ke liye ekdum perfect.",
+                date: "2026-08-14T16:45:00.000Z",
+                images: []
+            },
+            {
+                id: "kal-rev-6",
+                name: "Ishita Gupta, Mumbai",
+                rating: 5,
+                comment: "Ordered the Indigo Mosaic variant, looks stunning in real life. Super lightweight and easy to carry around.",
+                date: "2026-08-12T11:10:00.000Z",
+                images: ["/images/products/kalankit/variant-2/imgi_134_61+y3cF4AwL.jpg"]
+            },
+            {
+                id: "kal-rev-7",
+                name: "Kritika Nair, Hyderabad",
+                rating: 4,
+                comment: "Bag quality is good but delivery was delayed by 1 day because of rain. Customer support was helpful though.",
+                date: "2026-08-10T18:00:00.000Z",
+                images: []
+            }
+        ];
+    }
+
     // Only fetch Approved reviews
     const query = `*[_type == "review" && product._ref == $productId && status == "Approved"] | order(_createdAt desc){
     _id,

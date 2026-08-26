@@ -1918,6 +1918,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                             { id: 'techwoven-magsafe-case', name: "Ultra TechWoven MagSafe Case", priceVal: 1490, price: "₹1,490", img: "/images/accessories/techwoven_case.webp", size: 'Standard', color: 'Cosmic Orange' },
                             { id: 'airpods-pro-2nd-gen', name: "AirPods Pro (2nd Gen)", priceVal: 19900, price: "₹19,900", img: "/images/accessories/airpods_case.webp", size: 'Standard', color: 'White' }
                         ] : [
+                            { id: 'art-kalankit-crossbody', name: "Kalankit Artisanal Sling Bag", priceVal: 1090, price: "₹1,090", img: "/images/products/kalankit/variant-1/imgi_287_71amRsCJkOL._SL1500_.jpg", size: 'One Size', color: 'Ivory Floral' },
                             { id: 'pearl-earrings', name: "Pearl Drop Earrings", priceVal: 1299, price: "₹1,299", img: "/images/generated/pearl_drop_earrings.png", size: 'ONE SIZE', color: 'Gold' },
                             { id: 'woven-slides', name: "Woven Leather Slides", priceVal: 3499, price: "₹3,499", img: "/images/generated/woven_leather_slides.png", size: '8', color: 'Brown' },
                             { id: 'silk-scarf', name: "Silk Blend Scarf", priceVal: 2199, price: "₹2,199", img: "/images/generated/silk_scarf_detail.png", size: 'ONE SIZE', color: 'Cream' }
