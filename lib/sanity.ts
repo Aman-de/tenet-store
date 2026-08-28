@@ -326,11 +326,12 @@ const ARTIFICIAL_PRODUCTS = [
         isOutOfStock: false,
         sizeType: "onesize",
         sizes: ["One Size"],
-        description: "Handcrafted German silver oxidised jhumkas and chandbalis presented inside an ultra-luxury four-fold hardcover keepsake gift box with woven linen lining. Pre-packed and sealed for immediate 15-Minute Doorstep Delivery Guarantee with 100% full refund policy if late.",
+        description: "Handcrafted German silver oxidised jhumkas and chandbalis presented inside an ultra-luxury 'Pyari Behna' four-fold hardcover keepsake gift box with woven linen lining. Pre-packed and sealed for immediate 15-Minute Doorstep Delivery Guarantee with 100% full refund policy if late.",
         colors: ["#C0C0C0", "#A8A8A8"],
         images: [
             "/images/products/personalised-oxidised-earring-gift-box/variant-1/v1-inside-main.webp",
             "/images/products/personalised-oxidised-earring-gift-box/variant-2/v2-inside-main.webp",
+            "/images/products/personalised-oxidised-earring-gift-box/pyari-behna-box-cover.webp",
             "/images/products/personalised-oxidised-earring-gift-box/variant-1/v1-detail-edge.webp",
             "/images/products/personalised-oxidised-earring-gift-box/variant-2/v2-open-fourfold.webp",
             "/images/products/personalised-oxidised-earring-gift-box/variant-1/v1-lifestyle-open.webp"
@@ -342,6 +343,7 @@ const ARTIFICIAL_PRODUCTS = [
                 stock: 25,
                 images: [
                     "/images/products/personalised-oxidised-earring-gift-box/variant-1/v1-inside-main.webp",
+                    "/images/products/personalised-oxidised-earring-gift-box/pyari-behna-box-cover.webp",
                     "/images/products/personalised-oxidised-earring-gift-box/variant-1/v1-detail-edge.webp",
                     "/images/products/personalised-oxidised-earring-gift-box/variant-1/v1-lifestyle-open.webp"
                 ]
@@ -352,6 +354,7 @@ const ARTIFICIAL_PRODUCTS = [
                 stock: 20,
                 images: [
                     "/images/products/personalised-oxidised-earring-gift-box/variant-2/v2-inside-main.webp",
+                    "/images/products/personalised-oxidised-earring-gift-box/pyari-behna-box-cover.webp",
                     "/images/products/personalised-oxidised-earring-gift-box/variant-2/v2-open-fourfold.webp",
                     "/images/products/personalised-oxidised-earring-gift-box/variant-1/v1-detail-edge.webp"
                 ]

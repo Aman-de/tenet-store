@@ -496,6 +496,22 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
     const isAccessory = catLower === 'accessories' || catLower === 'footwear';
     const isKalankit = product.handle?.toLowerCase().includes('kalankit') || product.title?.toLowerCase().includes('kalankit');
     const isEarringBox = product.handle?.toLowerCase().includes('earring') || product.title?.toLowerCase().includes('earring') || product.handle?.toLowerCase().includes('personalised');
+    const [isRadarTimerStarted, setIsRadarTimerStarted] = useState(false);
+    const activeVideoId = isEarringBox
+        ? (selectedVariant?.colorName?.includes("Set 2") || selectedVariant?.colorName?.includes("Heritage") ? "1kU4GB271cs" : "Wnx9X2WP6HY")
+        : null;
+
+    const handleStartRadarTimer = () => {
+        setIsRadarTimerStarted(true);
+        const buyBtn = document.getElementById("pdp-buy-now-btn");
+        if (buyBtn) {
+            buyBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            buyBtn.classList.add('ring-4', 'ring-emerald-400', 'scale-[1.03]');
+            setTimeout(() => {
+                buyBtn.classList.remove('ring-4', 'ring-emerald-400', 'scale-[1.03]');
+            }, 1800);
+        }
+    };
 
     const availableVariants = useMemo(() => {
         if (hasGadgetModels) {
@@ -1040,6 +1056,24 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                             )}
                         </div>
                     ))}
+                    {isEarringBox && activeVideoId && (
+                        <div 
+                            key="earring-video-slide" 
+                            className="flex-[0_0_100%] h-full relative bg-black flex items-center justify-center overflow-hidden"
+                        >
+                            <iframe
+                                src={`https://www.youtube-nocookie.com/embed/${activeVideoId}?autoplay=0&controls=1&modestbranding=1&rel=0&loop=1`}
+                                title="Unboxing Reel"
+                                className="w-full h-full object-cover"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                            />
+                            <div className="absolute top-4 right-4 z-20 bg-black/80 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/20 text-white font-mono text-[9px] uppercase tracking-wider font-bold pointer-events-none flex items-center gap-1">
+                                <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping" />
+                                Reel
+                            </div>
+                        </div>
+                    )}
                 </div>
 
                 {/* Mobile Gradient Overlay for better contrast */}
@@ -1127,11 +1161,32 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                             )}
                         </button>
                     ))}
+
+                    {/* Desktop Video Thumbnail */}
+                    {isEarringBox && activeVideoId && (
+                        <button
+                            type="button"
+                            onClick={() => setSelectedImageIndex(displayImages.length)}
+                            className={cn(
+                                "relative w-20 h-28 lg:w-28 lg:h-36 xl:w-32 xl:h-44 2xl:w-36 2xl:h-48 shrink-0 border transition-all rounded-xl overflow-hidden bg-black text-white flex flex-col items-center justify-center cursor-pointer group",
+                                selectedImageIndex === displayImages.length
+                                    ? "border-red-500 ring-2 ring-red-500 opacity-100 scale-105 shadow-lg"
+                                    : "border-neutral-800 opacity-80 hover:opacity-100"
+                            )}
+                        >
+                            <div className="w-9 h-9 rounded-full bg-red-600 group-hover:scale-110 transition-transform flex items-center justify-center shadow-lg mb-1.5 text-white text-xs font-bold pl-0.5">
+                                ▶
+                            </div>
+                            <span className="text-[9.5px] font-mono font-bold uppercase tracking-wider text-neutral-200">
+                                Video Reel
+                            </span>
+                        </button>
+                    )}
                 </div>
 
                 {/* Main Image */}
                 <div className="w-[420px] h-[560px] lg:w-[500px] lg:h-[660px] xl:w-[560px] xl:h-[740px] 2xl:w-[640px] 2xl:h-[840px] relative rounded-2xl overflow-hidden bg-neutral-100/80 dark:bg-neutral-900/80 border border-neutral-200/50 dark:border-neutral-800/50 shadow-sm flex items-center justify-center">
-                    {isMainImgLoading && (
+                    {isMainImgLoading && selectedImageIndex !== displayImages.length && (
                         <div className="absolute inset-0 bg-neutral-100/90 dark:bg-[#111111]/90 backdrop-blur-md flex items-center justify-center z-10 transition-opacity duration-300">
                             <Loader2 className="w-8 h-8 animate-spin text-[#1A1A1A] dark:text-[#F4F1ED] opacity-60" />
                         </div>
@@ -1143,7 +1198,17 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         transition={{ duration: 0.3 }}
                         className="w-full h-full relative flex items-center justify-center"
                     >
-                        {displayImages[selectedImageIndex] ? (
+                        {selectedImageIndex === displayImages.length && isEarringBox && activeVideoId ? (
+                            <div className="w-full h-full bg-black relative flex items-center justify-center">
+                                <iframe
+                                    src={`https://www.youtube-nocookie.com/embed/${activeVideoId}?autoplay=1&controls=1&modestbranding=1&rel=0&loop=1`}
+                                    title="Unboxing Reel"
+                                    className="w-full h-full object-cover"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                />
+                            </div>
+                        ) : displayImages[selectedImageIndex] ? (
                             <Image
                                 src={displayImages[selectedImageIndex]}
                                 alt={product.title}
@@ -1233,52 +1298,82 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
 
                     {/* 🪢 Royal Rakhi Celebration or ⚡ 15-Min Hyper-Delivery Suite */}
                     {isEarringBox ? (
-                        <div className="bg-[#07140E] text-white border border-emerald-500/40 rounded-2xl p-3.5 sm:p-4 mb-5 shadow-[0_8px_30px_rgba(16,185,129,0.14)] relative overflow-hidden">
+                        <div className="bg-[#07140E] text-white border border-emerald-500/50 rounded-3xl p-4 sm:p-5 mb-5 shadow-[0_10px_35px_rgba(16,185,129,0.18)] relative overflow-hidden">
                             {/* Subtle radial ambient */}
-                            <div className="absolute top-0 right-0 w-40 h-40 bg-radial from-emerald-500/15 to-transparent blur-2xl pointer-events-none" />
+                            <div className="absolute top-0 right-0 w-48 h-48 bg-radial from-emerald-500/15 to-transparent blur-2xl pointer-events-none" />
 
-                            <div className="relative z-10 flex items-center justify-between gap-3">
-                                <div className="flex items-center gap-3 min-w-0">
-                                    <div className="w-9 h-9 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center font-bold text-base shrink-0">
-                                        ⚡
-                                    </div>
-                                    <div className="min-w-0">
-                                        <div className="flex items-center gap-2">
-                                            <span className="text-xs sm:text-sm font-bold text-white tracking-wide uppercase font-sans truncate">
-                                                15-Minute Guaranteed Delivery
-                                            </span>
-                                            <span className="relative flex h-2 w-2 shrink-0">
-                                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                                                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                                            </span>
-                                        </div>
-                                        <p className="text-[11px] text-emerald-300 font-sans mt-0.5 truncate">
-                                            Dark-store stationed 0.8 km away • Pre-sealed keepsake box
-                                        </p>
+                            {/* Top Header */}
+                            <div className="relative z-10 flex items-center justify-between gap-2 pb-3 mb-3 border-b border-emerald-500/25">
+                                <div className="flex items-center gap-2.5">
+                                    <span className="relative flex h-3 w-3">
+                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                        <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                                    </span>
+                                    <div>
+                                        <span className="text-sm sm:text-base font-serif font-bold text-white block leading-tight flex items-center gap-1.5">
+                                            ⚡ 15-Minute Guaranteed Doorstep Delivery
+                                        </span>
+                                        <span className="text-[10.5px] font-sans text-emerald-400 font-medium">
+                                            Local Dark-Store Stationed (0.8 km) • 100% Refund SLA
+                                        </span>
                                     </div>
                                 </div>
 
-                                {/* Live Countdown & Radar Trigger */}
+                                {/* Countdown Badge / Status */}
+                                <div className={cn(
+                                    "px-3 py-1 rounded-xl flex items-center gap-1.5 font-mono text-xs font-bold transition-all shrink-0",
+                                    isRadarTimerStarted 
+                                        ? "bg-emerald-500 text-black shadow-lg animate-pulse" 
+                                        : "bg-white/10 text-emerald-300 border border-emerald-500/30"
+                                )}>
+                                    <span>⏱️</span>
+                                    <span>{isRadarTimerStarted ? `${String(liveMinutes).padStart(2, '0')}:${String(liveSeconds).padStart(2, '0')}` : "15:00 MIN"}</span>
+                                </div>
+                            </div>
+
+                            {/* Persuasive Copywriting & Value Propositions */}
+                            <div className="relative z-10 space-y-2 mb-4 text-xs font-sans text-neutral-200">
+                                <div className="flex items-start gap-2 text-[11.5px] leading-snug">
+                                    <span className="text-emerald-400 font-bold shrink-0">🛵</span>
+                                    <span><strong>Instant Micro-Hub Dispatch:</strong> Pre-sealed 'Pyari Behna' four-fold keepsake box departs within 2 minutes of your order.</span>
+                                </div>
+                                <div className="flex items-start gap-2 text-[11.5px] leading-snug">
+                                    <span className="text-amber-400 font-bold shrink-0">🛡️</span>
+                                    <span><strong>Zero-Risk SLA:</strong> If your courier arrives after 15 mins, <strong>100% money is refunded instantly</strong> and you keep the complete gift hamper for <strong>FREE</strong>.</span>
+                                </div>
+                            </div>
+
+                            {/* Action Bar: Start Timer & Lock Slot Button */}
+                            <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+                                {!isRadarTimerStarted ? (
+                                    <button
+                                        type="button"
+                                        onClick={handleStartRadarTimer}
+                                        className="w-full py-3 px-4 bg-emerald-500 hover:bg-emerald-400 active:scale-98 text-black font-sans font-black text-xs uppercase tracking-wider rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer"
+                                    >
+                                        <span>⚡</span>
+                                        <span>Start 15-Min Timer & Lock Slot</span>
+                                        <ArrowRight className="w-3.5 h-3.5 stroke-[3]" />
+                                    </button>
+                                ) : (
+                                    <button
+                                        type="button"
+                                        onClick={handleBuyNow}
+                                        className="w-full py-3 px-4 bg-gradient-to-r from-emerald-400 to-emerald-500 hover:brightness-110 active:scale-98 text-black font-sans font-black text-xs uppercase tracking-wider rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer animate-pulse"
+                                    >
+                                        <span>🛵</span>
+                                        <span>Slot Locked! Order Now ({String(liveMinutes).padStart(2, '0')}:{String(liveSeconds).padStart(2, '0')})</span>
+                                    </button>
+                                )}
+
                                 <button
                                     type="button"
                                     onClick={() => setIs15MinModalOpen(true)}
-                                    className="px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-sans font-bold text-[11px] tracking-wider uppercase transition-all shadow-sm shrink-0 flex items-center gap-1.5 cursor-pointer active:scale-95"
+                                    className="w-full py-3 px-4 bg-white/10 hover:bg-white/20 active:scale-98 text-white border border-white/20 font-sans font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer"
                                 >
-                                    <span>Live Radar</span>
-                                    <span className="font-mono text-[10.5px] font-black bg-black/20 px-1.5 py-0.5 rounded">
-                                        {String(liveMinutes).padStart(2, '0')}:{String(liveSeconds).padStart(2, '0')}
-                                    </span>
+                                    <span>🗺️</span>
+                                    <span>Track Live Dark-Store Radar</span>
                                 </button>
-                            </div>
-
-                            {/* SLA Guarantee Strip */}
-                            <div className="relative z-10 mt-2.5 pt-2 border-t border-white/10 flex items-center justify-between text-[10.5px] text-neutral-300">
-                                <span className="flex items-center gap-1 text-emerald-300 font-semibold">
-                                    🛡️ 100% Full Refund if late by 1+ min
-                                </span>
-                                <span className="text-neutral-400 font-sans hidden xs:inline">
-                                    🎁 Four-Fold Velvet Box & Card Included
-                                </span>
                             </div>
                         </div>
                     ) : (
@@ -1510,9 +1605,9 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 {/* Color / Variant Selector */}
                 {hasVariants ? (
                     isEarringBox ? (
-                        <div className="mb-5">
+                        <div className="mb-6">
                             <div className="flex justify-between items-center mb-2.5">
-                                <span className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED] flex items-center gap-1.5">
+                                <span className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED] flex items-center gap-1.5">
                                     Select Gift Box Set
                                     {selectedVariant?.colorName && (
                                         <span className="text-neutral-400 font-normal font-sans text-xs lowercase">
@@ -1520,10 +1615,14 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                         </span>
                                     )}
                                 </span>
+                                <span className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 font-bold bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded border border-emerald-200 dark:border-emerald-800/40">
+                                    ⚡ 15-Min Ready
+                                </span>
                             </div>
-                            <div className="grid grid-cols-2 gap-3 pt-0.5">
-                                {availableVariants.map((variant) => {
+                            <div className="grid grid-cols-2 gap-3.5 pt-0.5">
+                                {availableVariants.map((variant, idx) => {
                                     const isSelected = selectedVariant?.colorName === variant.colorName;
+                                    const isSet1 = idx === 0;
                                     return (
                                         <button
                                             key={variant.colorName}
@@ -1532,43 +1631,58 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                                 setSelectedVariant(variant);
                                             }}
                                             className={cn(
-                                                "flex flex-col p-2.5 rounded-2xl border text-left transition-all cursor-pointer relative overflow-hidden group",
+                                                "flex flex-col p-2 sm:p-2.5 rounded-2xl border text-left transition-all cursor-pointer relative overflow-hidden group",
                                                 isSelected
-                                                    ? "border-black dark:border-white bg-black/5 dark:bg-white/10 ring-2 ring-black dark:ring-white shadow-md scale-[1.01]"
-                                                    : "border-neutral-200 dark:border-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-600 bg-neutral-50/50 dark:bg-neutral-900/50"
+                                                    ? "border-black dark:border-white bg-black/5 dark:bg-white/10 ring-2 ring-black dark:ring-white shadow-lg scale-[1.01]"
+                                                    : "border-neutral-200 dark:border-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-600 bg-neutral-50/60 dark:bg-neutral-900/60"
                                             )}
                                         >
-                                            {/* Big Inside-the-Box Hero Photo */}
-                                            <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden bg-neutral-100 dark:bg-neutral-900 border border-neutral-200/60 dark:border-neutral-800 shadow-inner">
+                                            {/* 3:4 Ratio Big Cover Photo Showing Full Set */}
+                                            <div className="relative w-full aspect-[3/4] rounded-xl overflow-hidden bg-neutral-100 dark:bg-neutral-900 border border-neutral-200/60 dark:border-neutral-800 shadow-inner">
                                                 {variant.images && variant.images[0] && (
                                                     <Image
                                                         src={variant.images[0]}
                                                         alt={variant.colorName}
                                                         fill
-                                                        sizes="(max-width: 768px) 50vw, 320px"
-                                                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                                                        sizes="(max-width: 768px) 50vw, 360px"
+                                                        className="object-cover group-hover:scale-105 transition-transform duration-500"
                                                     />
                                                 )}
-                                                {/* Checkmark Badge */}
+                                                
+                                                {/* Selected Checkmark Badge */}
                                                 {isSelected && (
-                                                    <div className="absolute top-2 right-2 w-5 h-5 rounded-full bg-black dark:bg-white text-white dark:text-black flex items-center justify-center shrink-0 shadow-md z-10">
-                                                        <Check className="w-3 h-3 stroke-[3]" />
+                                                    <div className="absolute top-2.5 right-2.5 w-6 h-6 rounded-full bg-black dark:bg-white text-white dark:text-black flex items-center justify-center shrink-0 shadow-lg z-10">
+                                                        <Check className="w-3.5 h-3.5 stroke-[3]" />
                                                     </div>
                                                 )}
-                                                <span className="absolute bottom-1.5 left-1.5 bg-black/75 backdrop-blur-xs text-white text-[9px] font-mono px-2 py-0.5 rounded-md border border-white/10 font-bold">
-                                                    Inside View
+
+                                                {/* Set Label Pill on Photo */}
+                                                <span className="absolute top-2.5 left-2.5 bg-black/80 backdrop-blur-md text-white text-[9.5px] font-mono px-2 py-0.5 rounded-md border border-white/15 font-bold uppercase tracking-wider">
+                                                    {isSet1 ? "Set 1 • Bestseller" : "Set 2 • Trending"}
+                                                </span>
+
+                                                <span className="absolute bottom-2 left-2.5 bg-black/80 backdrop-blur-md text-emerald-300 text-[9px] font-mono px-2 py-0.5 rounded-md border border-emerald-500/30 font-bold flex items-center gap-1">
+                                                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                                                    Full Set View
                                                 </span>
                                             </div>
 
-                                            {/* Clean, Concise Typography */}
-                                            <div className="flex flex-col w-full pt-2 px-0.5">
-                                                <span className="text-xs font-bold text-[#1A1A1A] dark:text-[#F4F1ED] leading-tight truncate">
+                                            {/* High-Converting Typography */}
+                                            <div className="flex flex-col w-full pt-2.5 px-0.5">
+                                                <span className="text-xs sm:text-[13px] font-bold text-[#1A1A1A] dark:text-[#F4F1ED] leading-tight truncate">
                                                     {variant.colorName}
                                                 </span>
-                                                <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-sans font-medium mt-0.5 flex items-center gap-1">
-                                                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                                                    In Stock • 15-Min Delivery
+                                                <span className="text-[10px] text-neutral-500 dark:text-neutral-400 font-sans mt-1 flex items-center gap-1">
+                                                    🎁 Includes 'Pyari Behna' Box
                                                 </span>
+                                                <div className="flex items-center justify-between mt-1.5 pt-1.5 border-t border-neutral-200/60 dark:border-white/10">
+                                                    <span className="text-xs font-black font-serif text-[#1A1A1A] dark:text-[#F4F1ED]">
+                                                        ₹499 <span className="text-[10px] text-neutral-400 line-through font-sans font-normal">₹1,499</span>
+                                                    </span>
+                                                    <span className="text-[9px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-100/70 dark:bg-emerald-950/40 px-1.5 py-0.5 rounded">
+                                                        67% OFF
+                                                    </span>
+                                                </div>
                                             </div>
                                         </button>
                                     );
@@ -2141,7 +2255,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                             { id: 'techwoven-magsafe-case', name: "Ultra TechWoven MagSafe Case", priceVal: 1490, price: "₹1,490", img: "/images/accessories/techwoven_case.webp", size: 'Standard', color: 'Cosmic Orange' },
                             { id: 'airpods-pro-2nd-gen', name: "AirPods Pro (2nd Gen)", priceVal: 19900, price: "₹19,900", img: "/images/accessories/airpods_case.webp", size: 'Standard', color: 'White' }
                         ] : [
-                            { id: 'art-personalised-earring-box', name: "Personalised Earring Gift Box", priceVal: 499, price: "₹499", img: "/images/products/personalised-oxidised-earring-gift-box/03-gallery-main-open-fourfold.webp", size: 'One Size', color: 'Antique Silver' },
+                            { id: 'art-personalised-earring-box', name: "Personalised Earring Gift Box", priceVal: 499, price: "₹499", img: "/images/products/personalised-oxidised-earring-gift-box/variant-1/v1-inside-main.webp", size: 'One Size', color: 'Antique Silver' },
                             { id: 'art-kalankit-crossbody', name: "Kalankit Artisanal Sling Bag", priceVal: 1090, price: "₹1,090", img: "/images/products/kalankit/variant-1/v1-img-8.webp", size: 'One Size', color: 'Ivory Floral' },
                             { id: 'pearl-earrings', name: "Pearl Drop Earrings", priceVal: 1299, price: "₹1,299", img: "/images/generated/pearl_drop_earrings.png", size: 'ONE SIZE', color: 'Gold' },
                             { id: 'woven-slides', name: "Woven Leather Slides", priceVal: 3499, price: "₹3,499", img: "/images/generated/woven_leather_slides.png", size: '8', color: 'Brown' },
@@ -2150,6 +2264,10 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                             <div 
                                 key={idx} 
                                 onClick={() => {
+                                    if (item.id === 'art-personalised-earring-box') {
+                                        window.location.href = '/product/personalised-oxidised-earring-gift-box';
+                                        return;
+                                    }
                                     addToCart({
                                         id: item.id,
                                         title: item.name,
@@ -2160,7 +2278,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                     } as any, item.size, item.color);
                                     openCart();
                                 }}
-                                className="w-[140px] shrink-0 group cursor-pointer"
+                                className="min-w-[140px] max-w-[140px] flex-shrink-0 group cursor-pointer"
                             >
                                 <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-neutral-100 dark:bg-[#141414] mb-2 border border-neutral-200/50 dark:border-white/5">
                                     {item.img && <Image src={item.img} alt={item.name} fill sizes="140px" loading="lazy" quality={70} unoptimized={item.img.startsWith("http")} className={isGadget ? "object-contain p-2 transition-transform duration-500 group-hover:scale-105" : "object-cover transition-transform duration-500 group-hover:scale-105"} />}
@@ -2192,7 +2310,9 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                 Live Reel Preview
                             </span>
                             <h2 className="font-serif text-lg md:text-xl text-[#1A1A1A] dark:text-[#F4F1ED] font-bold">
-                                {isEarringBox ? "Watch 15s Unboxing & Four-Fold Craft" : "Featured Unboxing & Craft Reel"}
+                                {isEarringBox 
+                                    ? `Watch 15s Unboxing • ${selectedVariant?.colorName || "Four-Fold Keepsake Set"}` 
+                                    : "Featured Unboxing & Craft Reel"}
                             </h2>
                         </div>
                         <span className="px-3 py-1 rounded-full bg-red-600/10 text-red-600 text-[10px] font-bold uppercase tracking-wider flex items-center gap-1.5 border border-red-600/20">
@@ -2203,7 +2323,8 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
 
                     <div className="relative w-full max-w-[340px] sm:max-w-[380px] mx-auto aspect-[9/16] rounded-[28px] overflow-hidden shadow-2xl border border-neutral-200 dark:border-neutral-800 bg-black">
                         <iframe
-                            src="https://www.youtube-nocookie.com/embed/Wnx9X2WP6HY?autoplay=0&controls=1&modestbranding=1&rel=0&loop=1"
+                            key={activeVideoId || 'default-reel'}
+                            src={`https://www.youtube-nocookie.com/embed/${activeVideoId || "Wnx9X2WP6HY"}?autoplay=0&controls=1&modestbranding=1&rel=0&loop=1`}
                             title="Personalised Oxidised Earring Gift Box Unboxing Reel"
                             className="w-full h-full object-cover"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
