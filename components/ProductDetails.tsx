@@ -719,7 +719,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                     const city = data[0].PostOffice[0].District || data[0].PostOffice[0].Block || "your location";
                     
                     setDeliveryInfo({ 
-                        date: getRakhiDeliveryFormatted(city).formattedDate, 
+                        date: isEarringBox ? "15 Minutes Guaranteed" : getRakhiDeliveryFormatted(city).formattedDate, 
                         free: true,
                         city: city
                     });
@@ -731,7 +731,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
             } catch (err) {
                 const city = "your location";
                 setDeliveryInfo({ 
-                    date: getRakhiDeliveryFormatted(city).formattedDate, 
+                    date: isEarringBox ? "15 Minutes Guaranteed" : getRakhiDeliveryFormatted(city).formattedDate, 
                     free: true,
                     city: city
                 });
@@ -1233,85 +1233,52 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
 
                     {/* 🪢 Royal Rakhi Celebration or ⚡ 15-Min Hyper-Delivery Suite */}
                     {isEarringBox ? (
-                        <div className="bg-gradient-to-br from-[#07130E] via-[#050D0A] to-[#0A1A13] text-white border border-emerald-500/50 rounded-3xl p-5 mb-5 shadow-[0_12px_40px_rgba(16,185,129,0.18)] relative overflow-hidden">
-                            {/* Radar sweep glow */}
-                            <div className="absolute top-0 right-0 w-48 h-48 bg-radial from-emerald-500/20 to-transparent blur-2xl pointer-events-none" />
+                        <div className="bg-[#07140E] text-white border border-emerald-500/40 rounded-2xl p-3.5 sm:p-4 mb-5 shadow-[0_8px_30px_rgba(16,185,129,0.14)] relative overflow-hidden">
+                            {/* Subtle radial ambient */}
+                            <div className="absolute top-0 right-0 w-40 h-40 bg-radial from-emerald-500/15 to-transparent blur-2xl pointer-events-none" />
 
-                            {/* Top Header & 15-Min Badge */}
-                            <div className="relative z-10 flex items-center justify-between gap-2 mb-3.5 pb-3 border-b border-emerald-500/20">
-                                <div className="flex items-center gap-2.5">
-                                    <span className="relative flex h-3 w-3">
-                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                                        <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
-                                    </span>
-                                    <div>
-                                        <span className="text-sm sm:text-base font-serif font-bold text-[#F0FDF4] block leading-tight flex items-center gap-1.5">
-                                            ⚡ 15-Minute Hyper-Express Delivery
-                                        </span>
-                                        <span className="text-[10.5px] font-sans text-emerald-400 font-medium tracking-wide">
-                                            Local Dark-Store Stationed • 100% Refund Guarantee
-                                        </span>
+                            <div className="relative z-10 flex items-center justify-between gap-3">
+                                <div className="flex items-center gap-3 min-w-0">
+                                    <div className="w-9 h-9 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center font-bold text-base shrink-0">
+                                        ⚡
+                                    </div>
+                                    <div className="min-w-0">
+                                        <div className="flex items-center gap-2">
+                                            <span className="text-xs sm:text-sm font-bold text-white tracking-wide uppercase font-sans truncate">
+                                                15-Minute Guaranteed Delivery
+                                            </span>
+                                            <span className="relative flex h-2 w-2 shrink-0">
+                                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                                            </span>
+                                        </div>
+                                        <p className="text-[11px] text-emerald-300 font-sans mt-0.5 truncate">
+                                            Dark-store stationed 0.8 km away • Pre-sealed keepsake box
+                                        </p>
                                     </div>
                                 </div>
-                                
-                                {/* Live Countdown Timer */}
-                                <div className="bg-emerald-950/60 border border-emerald-500/40 rounded-2xl px-3 py-1.5 flex flex-col items-center">
-                                    <span className="text-[8px] uppercase tracking-widest text-emerald-300 font-bold">Doorstep Timer</span>
-                                    <span className="font-mono text-sm sm:text-base font-black text-white tracking-wider">
-                                        {String(liveMinutes).padStart(2, '0')}:{String(liveSeconds).padStart(2, '0')}
-                                    </span>
-                                </div>
-                            </div>
 
-                            {/* Value Proposition Pills */}
-                            <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-semibold text-neutral-200 mb-4">
-                                <div className="flex items-center gap-2.5 bg-white/5 p-2.5 rounded-xl border border-white/5">
-                                    <span className="text-emerald-400 text-sm">🛵</span>
-                                    <span><strong>15-Min Guaranteed</strong> or 100% Full Refund</span>
-                                </div>
-                                <div className="flex items-center gap-2.5 bg-white/5 p-2.5 rounded-xl border border-white/5">
-                                    <span className="text-amber-400 text-sm">🎁</span>
-                                    <span><strong>Four-Fold Keepsake Box</strong> & Velvet Linen</span>
-                                </div>
-                                <div className="flex items-center gap-2.5 bg-white/5 p-2.5 rounded-xl border border-white/5">
-                                    <span className="text-rose-400 text-sm">💌</span>
-                                    <span><strong>Sibling Message Card</strong> & Ribbon Included</span>
-                                </div>
-                                <div className="flex items-center gap-2.5 bg-white/5 p-2.5 rounded-xl border border-white/5">
-                                    <span className="text-cyan-400 text-sm">📍</span>
-                                    <span><strong>Live GPS Dispatch</strong> & Courier Beacon</span>
-                                </div>
-                            </div>
-
-                            {/* Dispatch Guarantee Banner */}
-                            <div className="relative z-10 p-3 rounded-2xl bg-emerald-950/40 border border-emerald-500/30 flex items-center justify-between gap-3 text-xs mb-3">
-                                <div className="flex items-center gap-2">
-                                    <span className="text-base">🛡️</span>
-                                    <p className="text-[11.5px] text-emerald-200 leading-snug">
-                                        <strong>Zero-Risk SLA:</strong> If rider arrives after 15 mins, enjoy 100% instant refund & keep the hamper free.
-                                    </p>
-                                </div>
-                            </div>
-
-                            {/* Action Bar: Auto-Detect Address & Live Radar Trigger */}
-                            <div className="relative z-10 grid grid-cols-2 gap-2">
-                                <button
-                                    type="button"
-                                    onClick={handleAutoLocate}
-                                    disabled={isLocating}
-                                    className="flex items-center justify-center gap-1.5 py-2.5 px-3 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white rounded-xl text-[11px] font-bold transition-all shadow-sm cursor-pointer"
-                                >
-                                    {isLocating ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <span>📍</span>}
-                                    <span>{isLocating ? "Locating..." : "Auto-Detect Address"}</span>
-                                </button>
+                                {/* Live Countdown & Radar Trigger */}
                                 <button
                                     type="button"
                                     onClick={() => setIs15MinModalOpen(true)}
-                                    className="flex items-center justify-center gap-1.5 py-2.5 px-3 bg-white/10 hover:bg-white/20 active:scale-95 text-emerald-300 border border-emerald-500/40 rounded-xl text-[11px] font-bold transition-all shadow-sm cursor-pointer"
+                                    className="px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-sans font-bold text-[11px] tracking-wider uppercase transition-all shadow-sm shrink-0 flex items-center gap-1.5 cursor-pointer active:scale-95"
                                 >
-                                    <span>🗺️</span>
-                                    <span>Live GPS Radar</span>
+                                    <span>Live Radar</span>
+                                    <span className="font-mono text-[10.5px] font-black bg-black/20 px-1.5 py-0.5 rounded">
+                                        {String(liveMinutes).padStart(2, '0')}:{String(liveSeconds).padStart(2, '0')}
+                                    </span>
                                 </button>
+                            </div>
+
+                            {/* SLA Guarantee Strip */}
+                            <div className="relative z-10 mt-2.5 pt-2 border-t border-white/10 flex items-center justify-between text-[10.5px] text-neutral-300">
+                                <span className="flex items-center gap-1 text-emerald-300 font-semibold">
+                                    🛡️ 100% Full Refund if late by 1+ min
+                                </span>
+                                <span className="text-neutral-400 font-sans hidden xs:inline">
+                                    🎁 Four-Fold Velvet Box & Card Included
+                                </span>
                             </div>
                         </div>
                     ) : (
@@ -1542,11 +1509,11 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
 
                 {/* Color / Variant Selector */}
                 {hasVariants ? (
-                    (isKalankit || isEarringBox) ? (
+                    isEarringBox ? (
                         <div className="mb-5">
                             <div className="flex justify-between items-center mb-2.5">
                                 <span className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED] flex items-center gap-1.5">
-                                    {isEarringBox ? "Select Gift Box Set" : "Select Edition / Variant"}
+                                    Select Gift Box Set
                                     {selectedVariant?.colorName && (
                                         <span className="text-neutral-400 font-normal font-sans text-xs lowercase">
                                             — <span className="capitalize font-bold text-[#1A1A1A] dark:text-[#F4F1ED]">{selectedVariant.colorName}</span>
@@ -1554,10 +1521,73 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                     )}
                                 </span>
                             </div>
-                            <div className={cn(
-                                "grid gap-2.5 pt-0.5",
-                                isEarringBox ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-1 sm:grid-cols-3"
-                            )}>
+                            <div className="grid grid-cols-2 gap-3 pt-0.5">
+                                {availableVariants.map((variant) => {
+                                    const isSelected = selectedVariant?.colorName === variant.colorName;
+                                    return (
+                                        <button
+                                            key={variant.colorName}
+                                            type="button"
+                                            onClick={() => {
+                                                setSelectedVariant(variant);
+                                            }}
+                                            className={cn(
+                                                "flex flex-col p-2.5 rounded-2xl border text-left transition-all cursor-pointer relative overflow-hidden group",
+                                                isSelected
+                                                    ? "border-black dark:border-white bg-black/5 dark:bg-white/10 ring-2 ring-black dark:ring-white shadow-md scale-[1.01]"
+                                                    : "border-neutral-200 dark:border-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-600 bg-neutral-50/50 dark:bg-neutral-900/50"
+                                            )}
+                                        >
+                                            {/* Big Inside-the-Box Hero Photo */}
+                                            <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden bg-neutral-100 dark:bg-neutral-900 border border-neutral-200/60 dark:border-neutral-800 shadow-inner">
+                                                {variant.images && variant.images[0] && (
+                                                    <Image
+                                                        src={variant.images[0]}
+                                                        alt={variant.colorName}
+                                                        fill
+                                                        sizes="(max-width: 768px) 50vw, 320px"
+                                                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                                                    />
+                                                )}
+                                                {/* Checkmark Badge */}
+                                                {isSelected && (
+                                                    <div className="absolute top-2 right-2 w-5 h-5 rounded-full bg-black dark:bg-white text-white dark:text-black flex items-center justify-center shrink-0 shadow-md z-10">
+                                                        <Check className="w-3 h-3 stroke-[3]" />
+                                                    </div>
+                                                )}
+                                                <span className="absolute bottom-1.5 left-1.5 bg-black/75 backdrop-blur-xs text-white text-[9px] font-mono px-2 py-0.5 rounded-md border border-white/10 font-bold">
+                                                    Inside View
+                                                </span>
+                                            </div>
+
+                                            {/* Clean, Concise Typography */}
+                                            <div className="flex flex-col w-full pt-2 px-0.5">
+                                                <span className="text-xs font-bold text-[#1A1A1A] dark:text-[#F4F1ED] leading-tight truncate">
+                                                    {variant.colorName}
+                                                </span>
+                                                <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-sans font-medium mt-0.5 flex items-center gap-1">
+                                                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                                    In Stock • 15-Min Delivery
+                                                </span>
+                                            </div>
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    ) : isKalankit ? (
+                        <div className="mb-5">
+                            <div className="flex justify-between items-center mb-2.5">
+                                <span className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED] flex items-center gap-1.5">
+                                    Select Edition / Variant
+                                    {selectedVariant?.colorName && (
+                                        <span className="text-neutral-400 font-normal font-sans text-xs lowercase">
+                                            — <span className="capitalize font-bold text-[#1A1A1A] dark:text-[#F4F1ED]">{selectedVariant.colorName}</span>
+                                        </span>
+                                    )}
+                                </span>
+                            </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-0.5">
                                 {availableVariants.map((variant, idx) => {
                                     const isSelected = selectedVariant?.colorName === variant.colorName;
                                     return (
@@ -1568,30 +1598,29 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                                 setSelectedVariant(variant);
                                             }}
                                             className={cn(
-                                                "flex items-center gap-3 p-2.5 rounded-2xl border text-left transition-all cursor-pointer relative overflow-hidden",
+                                                "flex items-center gap-2.5 p-2 rounded-xl border text-left transition-all cursor-pointer relative overflow-hidden",
                                                 isSelected
-                                                    ? "border-black dark:border-white bg-black/5 dark:bg-white/10 ring-1 ring-black dark:ring-white shadow-xs"
+                                                    ? "border-black dark:border-white bg-black/5 dark:bg-white/5 ring-1 ring-black dark:ring-white shadow-xs"
                                                     : "border-neutral-200 dark:border-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-600 bg-transparent"
                                             )}
                                         >
-                                            <div className="relative w-14 h-14 rounded-xl overflow-hidden shrink-0 bg-neutral-100 dark:bg-neutral-900 border border-neutral-200/60 dark:border-neutral-800">
+                                            <div className="relative w-12 h-12 rounded-lg overflow-hidden shrink-0 bg-neutral-100 dark:bg-neutral-900 border border-neutral-200/60 dark:border-neutral-800">
                                                 {variant.images && variant.images[0] && (
                                                     <Image
                                                         src={variant.images[0]}
                                                         alt={variant.colorName}
                                                         fill
-                                                        sizes="60px"
+                                                        sizes="48px"
                                                         className="object-cover"
                                                     />
                                                 )}
                                             </div>
                                             <div className="min-w-0 flex-1 flex flex-col">
-                                                <span className="text-[11.5px] font-bold text-[#1A1A1A] dark:text-[#F4F1ED] leading-snug truncate">
+                                                <span className="text-[11px] font-bold text-[#1A1A1A] dark:text-[#F4F1ED] leading-snug truncate">
                                                     {variant.colorName}
                                                 </span>
-                                                <span className="text-[10px] text-neutral-500 font-sans mt-0.5 flex items-center gap-1">
-                                                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                                                    {isEarringBox ? "Inside View • In Stock" : `Edition ${idx + 1} • In Stock`}
+                                                <span className="text-[9.5px] text-neutral-500 font-sans mt-0.5">
+                                                    Edition {idx + 1} • In Stock
                                                 </span>
                                             </div>
                                             {isSelected && (
@@ -1804,18 +1833,37 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         {deliveryInfo && (
                             <div className="flex flex-col gap-2 mt-2 pt-2">
                                 <div className="flex flex-col gap-2 text-xs font-bold text-[#1A1A1A] dark:text-[#F4F1ED]">
-                                    <span className="flex items-center gap-2 text-emerald-700 dark:text-emerald-400 font-extrabold">
-                                        <span>⚡</span> Guaranteed Delivery by {getRakhiDeliveryFormatted(deliveryInfo.city || "").formattedDate} in {deliveryInfo.city || "your city"}
-                                    </span>
-                                    <span className="flex items-center gap-2">
-                                        <span className="text-rose-600 text-sm">🎁</span> Free Luxury Rakhi Gift Packaging & Sibling Greeting Card
-                                    </span>
-                                    <span className="flex items-center gap-2">
-                                        <span className="text-emerald-600 text-sm">✅</span> Free Express Air Shipping (All Online Orders)
-                                    </span>
-                                    <span className="flex items-center gap-2">
-                                        <span className="text-amber-600 text-sm">💳</span> Cash on Delivery (COD) Available on orders above ₹1,999
-                                    </span>
+                                    {isEarringBox ? (
+                                        <>
+                                            <span className="flex items-center gap-2 text-emerald-700 dark:text-emerald-400 font-extrabold text-[13px]">
+                                                <span>⚡</span> 15-Minute Guaranteed Doorstep Delivery in {deliveryInfo.city || "your area"}
+                                            </span>
+                                            <span className="flex items-center gap-2 text-[11.5px] text-neutral-600 dark:text-neutral-300 font-medium">
+                                                <span className="text-emerald-600 text-sm">🛵</span> Local Dark-Store Hub Stationed • Rider assigned in 2 mins
+                                            </span>
+                                            <span className="flex items-center gap-2 text-[11.5px] text-neutral-600 dark:text-neutral-300 font-medium">
+                                                <span className="text-amber-600 text-sm">🛡️</span> 100% Instant Refund Policy if delivery exceeds 15 mins
+                                            </span>
+                                            <span className="flex items-center gap-2 text-[11.5px] text-neutral-600 dark:text-neutral-300 font-medium">
+                                                <span className="text-rose-600 text-sm">🎁</span> Pre-sealed Four-Fold Hardcover Keepsake Box & Sibling Note Included
+                                            </span>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <span className="flex items-center gap-2 text-emerald-700 dark:text-emerald-400 font-extrabold">
+                                                <span>⚡</span> Guaranteed Delivery by {getRakhiDeliveryFormatted(deliveryInfo.city || "").formattedDate} in {deliveryInfo.city || "your city"}
+                                            </span>
+                                            <span className="flex items-center gap-2">
+                                                <span className="text-rose-600 text-sm">🎁</span> Free Luxury Rakhi Gift Packaging & Sibling Greeting Card
+                                            </span>
+                                            <span className="flex items-center gap-2">
+                                                <span className="text-emerald-600 text-sm">✅</span> Free Express Air Shipping (All Online Orders)
+                                            </span>
+                                            <span className="flex items-center gap-2">
+                                                <span className="text-amber-600 text-sm">💳</span> Cash on Delivery (COD) Available on orders above ₹1,999
+                                            </span>
+                                        </>
+                                    )}
                                 </div>
                             </div>
                         )}
@@ -1878,7 +1926,9 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                 <>
                                     <span className="text-[14px] tracking-widest flex items-center gap-1.5 relative z-10">BUY NOW</span>
                                     <span className="text-[9px] uppercase tracking-widest font-medium opacity-95 mt-0.5 relative z-10">
-                                        {deliveryInfo ? `Order Today • ${deliveryInfo.date}` : "🪢 Guaranteed Delivery In Time For Rakhi"}
+                                        {isEarringBox 
+                                            ? "⚡ 15-Minute Guaranteed Doorstep Delivery" 
+                                            : (deliveryInfo ? `Order Today • ${deliveryInfo.date}` : "🪢 Guaranteed Delivery In Time For Rakhi")}
                                     </span>
                                 </>
                             )}

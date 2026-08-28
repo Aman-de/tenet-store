@@ -61,7 +61,9 @@ export default function MobileStickyBar({ product, selectedVariant, onAddToCart,
                             <span className="text-amber-800 dark:text-amber-300 text-[8.5px] sm:text-[9.5px] font-extrabold tracking-wide uppercase flex items-center gap-0.5">
                                 <span>🪢</span> RAKHI30 (-30%)
                             </span>
-                            <span className="text-neutral-400 text-[8px] hidden sm:inline">• Guaranteed Delivery</span>
+                            <span className="text-neutral-400 text-[8px] hidden sm:inline">
+                                {product.handle === 'personalised-oxidised-earring-gift-box' || product.id?.includes('earring') ? '• ⚡ 15-Min Delivery' : '• Guaranteed Delivery'}
+                            </span>
                         </div>
                     </div>
                 </div>

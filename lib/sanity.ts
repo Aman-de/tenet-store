@@ -329,12 +329,11 @@ const ARTIFICIAL_PRODUCTS = [
         description: "Handcrafted German silver oxidised jhumkas and chandbalis presented inside an ultra-luxury four-fold hardcover keepsake gift box with woven linen lining. Pre-packed and sealed for immediate 15-Minute Doorstep Delivery Guarantee with 100% full refund policy if late.",
         colors: ["#C0C0C0", "#A8A8A8"],
         images: [
-            "/images/products/personalised-oxidised-earring-gift-box/03-gallery-main-open-fourfold.webp",
-            "/images/products/personalised-oxidised-earring-gift-box/01-set2-main-open.webp",
-            "/images/products/personalised-oxidised-earring-gift-box/08-lifestyle-portrait-wearing.webp",
-            "/images/products/personalised-oxidised-earring-gift-box/09-lifestyle-holding-box.webp",
-            "/images/products/personalised-oxidised-earring-gift-box/05-gallery-detail-fourfold-edge.webp",
-            "/images/products/personalised-oxidised-earring-gift-box/06-gallery-lifestyle-open-box.webp"
+            "/images/products/personalised-oxidised-earring-gift-box/variant-1/v1-inside-main.webp",
+            "/images/products/personalised-oxidised-earring-gift-box/variant-2/v2-inside-main.webp",
+            "/images/products/personalised-oxidised-earring-gift-box/variant-1/v1-detail-edge.webp",
+            "/images/products/personalised-oxidised-earring-gift-box/variant-2/v2-open-fourfold.webp",
+            "/images/products/personalised-oxidised-earring-gift-box/variant-1/v1-lifestyle-open.webp"
         ],
         variants: [
             {
@@ -342,11 +341,9 @@ const ARTIFICIAL_PRODUCTS = [
                 colorHex: "#C0C0C0",
                 stock: 25,
                 images: [
-                    "/images/products/personalised-oxidised-earring-gift-box/03-gallery-main-open-fourfold.webp",
-                    "/images/products/personalised-oxidised-earring-gift-box/08-lifestyle-portrait-wearing.webp",
-                    "/images/products/personalised-oxidised-earring-gift-box/09-lifestyle-holding-box.webp",
-                    "/images/products/personalised-oxidised-earring-gift-box/05-gallery-detail-fourfold-edge.webp",
-                    "/images/products/personalised-oxidised-earring-gift-box/06-gallery-lifestyle-open-box.webp"
+                    "/images/products/personalised-oxidised-earring-gift-box/variant-1/v1-inside-main.webp",
+                    "/images/products/personalised-oxidised-earring-gift-box/variant-1/v1-detail-edge.webp",
+                    "/images/products/personalised-oxidised-earring-gift-box/variant-1/v1-lifestyle-open.webp"
                 ]
             },
             {
@@ -354,11 +351,9 @@ const ARTIFICIAL_PRODUCTS = [
                 colorHex: "#A8A8A8",
                 stock: 20,
                 images: [
-                    "/images/products/personalised-oxidised-earring-gift-box/01-set2-main-open.webp",
-                    "/images/products/personalised-oxidised-earring-gift-box/09-lifestyle-holding-box.webp",
-                    "/images/products/personalised-oxidised-earring-gift-box/08-lifestyle-portrait-wearing.webp",
-                    "/images/products/personalised-oxidised-earring-gift-box/05-gallery-detail-fourfold-edge.webp",
-                    "/images/products/personalised-oxidised-earring-gift-box/06-gallery-lifestyle-open-box.webp"
+                    "/images/products/personalised-oxidised-earring-gift-box/variant-2/v2-inside-main.webp",
+                    "/images/products/personalised-oxidised-earring-gift-box/variant-2/v2-open-fourfold.webp",
+                    "/images/products/personalised-oxidised-earring-gift-box/variant-1/v1-detail-edge.webp"
                 ]
             }
         ]
@@ -852,7 +847,7 @@ export async function getReviews(productId: string) {
                 rating: 5,
                 comment: "Literally the best gift for my sister! The rider arrived at our doorstep in 12 minutes flat. The four-fold box opening felt so luxurious, and the antique oxidised jhumkas have such an exquisite finish and luster.",
                 date: "2026-08-25T11:20:00.000Z",
-                images: ["/images/products/personalised-oxidised-earring-gift-box/reviews/10-customer-photo-style-ananya.webp"]
+                images: ["/images/products/personalised-oxidised-earring-gift-box/reviews/review-photo-1.webp"]
             },
             {
                 id: "earring-rev-2",
@@ -860,7 +855,7 @@ export async function getReviews(productId: string) {
                 rating: 5,
                 comment: "The unboxing experience was truly breathtaking. The linen texture on the box and intricate handcrafted jhumkas look like a luxury heirloom. Instant 15-min delivery worked flawlessly in Mumbai.",
                 date: "2026-08-24T15:40:00.000Z",
-                images: ["/images/products/personalised-oxidised-earring-gift-box/reviews/12-customer-unboxing-clean-hands.webp"]
+                images: ["/images/products/personalised-oxidised-earring-gift-box/reviews/review-photo-2.webp"]
             },
             {
                 id: "earring-rev-3",
@@ -868,19 +863,19 @@ export async function getReviews(productId: string) {
                 rating: 5,
                 comment: "Ordered Set 2 on an urgent whim and it arrived in 14 minutes sharp. The four-fold hardcover presentation is so aesthetic and my sister was overjoyed. Live courier tracking was spot on.",
                 date: "2026-08-23T18:10:00.000Z",
-                images: ["/images/products/personalised-oxidised-earring-gift-box/reviews/04-customer-unboxing.webp"]
+                images: ["/images/products/personalised-oxidised-earring-gift-box/reviews/review-photo-4.webp"]
             },
             {
                 id: "earring-rev-4",
-                name: "Natasha Sen, Kolkata",
+                name: "Pooja Hegde, Hyderabad",
                 rating: 5,
-                comment: "Hands down the most thoughtful gift under ₹500! Lightweight on the ears, completely hypoallergenic, and pairs so effortlessly with traditional and modern kurtas.",
+                comment: "Pyari Behn message card inside made her smile so big! Beautiful packaging, fast delivery, and authentic German silver shine.",
                 date: "2026-08-21T09:30:00.000Z",
-                images: []
+                images: ["/images/products/personalised-oxidised-earring-gift-box/reviews/review-photo-3.webp"]
             },
             {
                 id: "earring-rev-5",
-                name: "Divya Hegde, Hyderabad",
+                name: "Natasha Sen, Kolkata",
                 rating: 5,
                 comment: "Top-notch craftsmanship and lightning fast 15-minute dispatch. Sibling greeting card inside added such a sweet touch. 10/10 recommendation for Rakhi gifting.",
                 date: "2026-08-19T14:15:00.000Z",

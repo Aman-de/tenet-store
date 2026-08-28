@@ -4,6 +4,8 @@ import { MasterViralReel } from "./compositions/MasterViralReel";
 import { RakhiCommercialPromoReel } from "./compositions/RakhiCommercialPromoReel";
 import { RakhiMasterMotionGraphicsReel } from "./compositions/RakhiMasterMotionGraphicsReel";
 import { RakhiOfferOutroReel } from "./compositions/RakhiOfferOutroReel";
+import { JhumkaUltraQuickCTA, JhumkaExpressPromoCTA } from "./compositions/JhumkaQuickCTAReel";
+import { TenetJhumkaPoster } from "./compositions/TenetJhumkaPoster";
 import { BottomBattleReel } from "./compositions/BottomBattleReel";
 import { AllColorsShowdownReel } from "./compositions/AllColorsShowdownReel";
 import { DayVsNightReel } from "./compositions/DayVsNightReel";
@@ -26,6 +28,44 @@ import { ProductSetVideoProps } from "./types";
 export const RemotionRoot: React.FC = () => {
     return (
         <>
+            {/* ============================================================ */}
+            {/* 📸 000. TENET JHUMKA 15-MIN AD POSTER (HIGH-RES STILL IMAGE)  */}
+            {/* ============================================================ */}
+            <Composition
+                id="TenetJhumkaPoster"
+                component={TenetJhumkaPoster}
+                durationInFrames={1}
+                fps={30}
+                width={1080}
+                height={1920}
+            />
+
+            {/* ============================================================ */}
+            {/* ⚡ 00. JHUMKA 3-SECOND ULTRA QUICK CTA (BEST HIGHEST SALES)   */}
+            {/* ============================================================ */}
+            <Composition
+                id="JhumkaUltraQuickCTA"
+                component={JhumkaUltraQuickCTA}
+                durationInFrames={100}
+                fps={30}
+                width={1080}
+                height={1920}
+                defaultProps={{ includeVoiceover: false }}
+            />
+
+            {/* ============================================================ */}
+            {/* 🎙️ 00B. JHUMKA FULL EXPRESS PROMO CTA (WITH VOICE & SFX)     */}
+            {/* ============================================================ */}
+            <Composition
+                id="JhumkaExpressPromoCTA"
+                component={JhumkaExpressPromoCTA}
+                durationInFrames={249}
+                fps={30}
+                width={1080}
+                height={1920}
+                defaultProps={{ includeVoiceover: true }}
+            />
+
             {/* ============================================================ */}
             {/* 🎁 0. RAKHI 30% OFF OUTRO REEL (SFX ONLY - NO VOICEOVER)     */}
             {/* ============================================================ */}
