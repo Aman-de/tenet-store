@@ -3,6 +3,7 @@ import { Composition } from "remotion";
 import { MasterViralReel } from "./compositions/MasterViralReel";
 import { RakhiCommercialPromoReel } from "./compositions/RakhiCommercialPromoReel";
 import { RakhiMasterMotionGraphicsReel } from "./compositions/RakhiMasterMotionGraphicsReel";
+import { RakhiOfferOutroReel } from "./compositions/RakhiOfferOutroReel";
 import { BottomBattleReel } from "./compositions/BottomBattleReel";
 import { AllColorsShowdownReel } from "./compositions/AllColorsShowdownReel";
 import { DayVsNightReel } from "./compositions/DayVsNightReel";
@@ -25,6 +26,32 @@ import { ProductSetVideoProps } from "./types";
 export const RemotionRoot: React.FC = () => {
     return (
         <>
+            {/* ============================================================ */}
+            {/* 🎁 0. RAKHI 30% OFF OUTRO REEL (SFX ONLY - NO VOICEOVER)     */}
+            {/* ============================================================ */}
+            <Composition
+                id="RakhiOfferOutroSFX"
+                component={RakhiOfferOutroReel}
+                durationInFrames={426}
+                fps={30}
+                width={1080}
+                height={1920}
+                defaultProps={{ includeVoiceover: false }}
+            />
+
+            {/* ============================================================ */}
+            {/* 🎙️ 0B. RAKHI 30% OFF OUTRO REEL (WITH SYNCED VOICEOVER)      */}
+            {/* ============================================================ */}
+            <Composition
+                id="RakhiOfferOutroMaster"
+                component={RakhiOfferOutroReel}
+                durationInFrames={426}
+                fps={30}
+                width={1080}
+                height={1920}
+                defaultProps={{ includeVoiceover: true }}
+            />
+
             {/* ============================================================ */}
             {/* 🌟 1. RAKHI MASTER MOTION GRAPHICS (SFX ONLY - NO VOICEOVER) */}
             {/* ============================================================ */}

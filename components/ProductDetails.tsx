@@ -4,7 +4,7 @@ import { useStore } from "@/lib/store";
 import { useState, useEffect, useRef, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
-import { ChevronDown, ChevronUp, AlertCircle, Heart, Ruler, Star, Loader2, Truck, ShieldCheck, RefreshCw, ShoppingBag, Check, Copy, MapPin, Tag, Sparkles, CreditCard, Plus, Locate, ArrowRight } from "lucide-react";
+import { ChevronDown, ChevronUp, AlertCircle, Heart, Ruler, Star, Loader2, Truck, ShieldCheck, RefreshCw, ShoppingBag, Check, Copy, MapPin, Tag, Sparkles, CreditCard, Plus, Locate, ArrowRight, X } from "lucide-react";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 const SizeGuide = dynamic(() => import("./SizeGuide"), { ssr: false });
@@ -495,6 +495,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
     const isGadget = catLower === 'gadgets' || catLower === 'electronics';
     const isAccessory = catLower === 'accessories' || catLower === 'footwear';
     const isKalankit = product.handle?.toLowerCase().includes('kalankit') || product.title?.toLowerCase().includes('kalankit');
+    const isEarringBox = product.handle?.toLowerCase().includes('earring') || product.title?.toLowerCase().includes('earring') || product.handle?.toLowerCase().includes('personalised');
 
     const availableVariants = useMemo(() => {
         if (hasGadgetModels) {
@@ -643,6 +644,21 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
     const [copied, setCopied] = useState(false);
     const [giftBoxIncluded, setGiftBoxIncluded] = useState(true);
     const [giftNote, setGiftNote] = useState("");
+    const [customName, setCustomName] = useState("");
+    const [is15MinModalOpen, setIs15MinModalOpen] = useState(false);
+    const [liveMinutes, setLiveMinutes] = useState(14);
+    const [liveSeconds, setLiveSeconds] = useState(48);
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setLiveSeconds(prev => {
+                if (prev > 0) return prev - 1;
+                setLiveMinutes(m => (m > 0 ? m - 1 : 14));
+                return 59;
+            });
+        }, 1000);
+        return () => clearInterval(timer);
+    }, []);
 
     useEffect(() => {
         if (!isLoaded) return;
@@ -913,17 +929,10 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
         };
     };
 
-    const handleAddToCart = () => {
-        if (product.isOutOfStock) return;
-        const selection = validateSelection();
-        if (selection) {
-            addToCart(product, selection.size, selection.color, selectedPiece);
-            trackAddToCart(product, 1, selection.size, selection.color);
-            openCart();
-        }
-    }
-
     let finalTitle = product.title;
+    if (isEarringBox && customName.trim()) {
+        finalTitle = `${product.title} (Custom Name: "${customName.trim()}")`;
+    }
     let itemPrice = product.price;
     let itemOriginalPrice = product.originalPrice;
 
@@ -940,6 +949,20 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
             finalTitle = `${product.title} (Set)`;
             itemPrice = product.setPrice ?? product.price;
             itemOriginalPrice = product.setOriginalPrice ?? product.originalPrice;
+        }
+    }
+
+    const handleAddToCart = () => {
+        if (product.isOutOfStock) return;
+        const selection = validateSelection();
+        if (selection) {
+            const productWithCustomization = {
+                ...product,
+                title: finalTitle
+            };
+            addToCart(productWithCustomization as any, selection.size, selection.color, selectedPiece);
+            trackAddToCart(productWithCustomization, 1, selection.size, selection.color);
+            openCart();
         }
     }
 
@@ -1208,77 +1231,196 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         <TrustBar />
                     </div>
 
-                    {/* 🪢 Royal Rakhi Celebration & Gifting Suite */}
-                    <div className="bg-gradient-to-br from-[#1E0E12] via-[#140C0E] to-[#1E0E12] text-white border-2 border-[#E0A96D]/60 rounded-3xl p-5 mb-5 shadow-[0_10px_35px_rgba(224,169,109,0.18)] relative overflow-hidden">
-                        {/* Shimmer accent */}
-                        <div className="absolute top-0 right-0 w-48 h-48 bg-radial from-[#E0A96D]/25 to-transparent blur-2xl pointer-events-none" />
+                    {/* 🪢 Royal Rakhi Celebration or ⚡ 15-Min Hyper-Delivery Suite */}
+                    {isEarringBox ? (
+                        <div className="bg-gradient-to-br from-[#0D1F17] via-[#091510] to-[#122A1E] text-white border-2 border-emerald-500/70 rounded-3xl p-5 mb-5 shadow-[0_10px_35px_rgba(16,185,129,0.22)] relative overflow-hidden">
+                            {/* Radar wave effect */}
+                            <div className="absolute top-0 right-0 w-52 h-52 bg-radial from-emerald-500/20 to-transparent blur-2xl pointer-events-none" />
 
-                        <div className="relative z-10 flex items-center justify-between gap-2 mb-3 pb-3 border-b border-[#E0A96D]/30">
-                            <div className="flex items-center gap-2.5">
-                                <span className="text-2xl leading-none">🪢</span>
-                                <div>
-                                    <span className="text-sm sm:text-base font-serif font-extrabold text-[#FFF6EE] block leading-tight">
-                                        Rakhi Festive Celebration
+                            {/* Top Header & 15-Min Badge */}
+                            <div className="relative z-10 flex items-center justify-between gap-2 mb-3 pb-3 border-b border-emerald-500/30">
+                                <div className="flex items-center gap-2.5">
+                                    <span className="relative flex h-3 w-3">
+                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                        <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
                                     </span>
-                                    <span className="text-[10px] font-sans text-[#E0A96D] font-medium tracking-wide">
-                                        Curated Gifting & Bespoke Tailoring
+                                    <div>
+                                        <span className="text-sm sm:text-base font-serif font-black text-[#F0FDF4] block leading-tight flex items-center gap-1.5">
+                                            ⚡ 15-Min Hyper-Delivery Active
+                                        </span>
+                                        <span className="text-[10px] font-sans text-emerald-300 font-medium tracking-wide">
+                                            Dark Store Stationed • 100% Refund If Late
+                                        </span>
+                                    </div>
+                                </div>
+                                
+                                {/* Live Countdown Badge */}
+                                <div className="bg-black/60 border border-emerald-500/40 rounded-2xl px-3 py-1.5 flex flex-col items-center">
+                                    <span className="text-[8px] uppercase tracking-widest text-emerald-400 font-bold">Doorstep Timer</span>
+                                    <span className="font-mono text-sm sm:text-base font-extrabold text-white tracking-wider">
+                                        {String(liveMinutes).padStart(2, '0')}:{String(liveSeconds).padStart(2, '0')}
                                     </span>
                                 </div>
                             </div>
-                            <button
-                                onClick={handleCopyCode}
-                                className="px-3.5 py-1.5 rounded-full bg-gradient-to-r from-[#E0A96D] to-[#D9384E] text-[#120B0D] font-mono text-[10.5px] font-black uppercase tracking-wider shadow-sm hover:brightness-110 active:scale-95 transition-all cursor-pointer shrink-0"
-                            >
-                                {copied ? "COPIED RAKHI30 ✓" : "30% OFF • RAKHI30"}
-                            </button>
-                        </div>
 
-                        <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-semibold text-neutral-200 mb-3.5">
-                            <div className="flex items-center gap-2 bg-white/5 p-2 rounded-xl border border-white/5">
-                                <span className="text-amber-400 font-extrabold text-sm">⚡</span>
-                                <span><strong>Guaranteed Delivery</strong> Before Rakhi</span>
+                            {/* Value Prop Bullets */}
+                            <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-semibold text-neutral-200 mb-3.5">
+                                <div className="flex items-center gap-2 bg-white/5 p-2 rounded-xl border border-white/10">
+                                    <span className="text-emerald-400 font-extrabold text-sm">🛵</span>
+                                    <span><strong>15-Min Guaranteed</strong> or 100% Refund</span>
+                                </div>
+                                <div className="flex items-center gap-2 bg-white/5 p-2 rounded-xl border border-white/10">
+                                    <span className="text-amber-400 font-extrabold text-sm">✨</span>
+                                    <span><strong>Free Gold Foil</strong> Name Printing</span>
+                                </div>
+                                <div className="flex items-center gap-2 bg-white/5 p-2 rounded-xl border border-white/10">
+                                    <span className="text-rose-400 font-extrabold text-sm">🎁</span>
+                                    <span><strong>Four-Fold Velvet Box</strong> & Sibling Card</span>
+                                </div>
+                                <div className="flex items-center gap-2 bg-white/5 p-2 rounded-xl border border-white/10">
+                                    <span className="text-cyan-400 font-extrabold text-sm">📍</span>
+                                    <span><strong>Live GPS Radar</strong> Tracking</span>
+                                </div>
                             </div>
-                            <div className="flex items-center gap-2 bg-white/5 p-2 rounded-xl border border-white/5">
-                                <span className="text-rose-400 font-extrabold text-sm">🎁</span>
-                                <span><strong>Free Luxury Gift Box</strong> & Sibling Note</span>
-                            </div>
-                            <div className="flex items-center gap-2 bg-white/5 p-2 rounded-xl border border-white/5">
-                                <span className="text-emerald-400 font-extrabold text-sm">🚚</span>
-                                <span><strong>Free Air Dispatch</strong> (24-48 Hours)</span>
-                            </div>
-                            <div className="flex items-center gap-2 bg-white/5 p-2 rounded-xl border border-white/5">
-                                <span className="text-purple-400 font-extrabold text-sm">💎</span>
-                                <span><strong>100% Artisanal Quality</strong> & 7-Day Trial</span>
-                            </div>
-                        </div>
 
-                        {/* Interactive Gift Wrap & Personal Sibling Message Toggle */}
-                        <div className="relative z-10 bg-black/40 border border-[#E0A96D]/30 rounded-2xl p-3 flex flex-col gap-2">
-                            <label className="flex items-center gap-2.5 cursor-pointer select-none">
+                            {/* Interactive Custom Name Box Personalizer */}
+                            <div className="relative z-10 bg-black/60 border border-amber-400/40 rounded-2xl p-3.5 flex flex-col gap-2.5 shadow-inner">
+                                <div className="flex items-center justify-between">
+                                    <span className="text-[11px] font-sans font-bold text-amber-300 flex items-center gap-1.5 uppercase tracking-wider">
+                                        ✨ Type Name For Gold-Foil Box Printing (Free)
+                                    </span>
+                                    <span className="text-[9px] font-mono text-neutral-400">{customName.length}/18 chars</span>
+                                </div>
+
+                                {/* Live Gold Foil Box Lid Simulation Preview */}
+                                <div className="relative w-full h-14 bg-gradient-to-r from-[#18181B] via-[#27272A] to-[#18181B] border border-amber-500/50 rounded-xl flex items-center justify-center overflow-hidden shadow-md">
+                                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-500/10 via-transparent to-transparent pointer-events-none" />
+                                    <div className="flex flex-col items-center justify-center text-center px-4">
+                                        <span className="text-[8px] uppercase tracking-[0.3em] text-amber-200/60 font-serif">Handcrafted For</span>
+                                        <span className="font-serif italic font-black text-sm sm:text-base text-transparent bg-clip-text bg-gradient-to-r from-[#FFE29F] via-[#FFAE34] to-[#FFE29F] drop-shadow-[0_2px_8px_rgba(251,191,36,0.5)]">
+                                            {customName.trim() ? customName : "Sister's Name"}
+                                        </span>
+                                    </div>
+                                </div>
+
                                 <input
-                                    type="checkbox"
-                                    checked={giftBoxIncluded}
-                                    onChange={(e) => setGiftBoxIncluded(e.target.checked)}
-                                    className="w-4 h-4 rounded accent-[#E0A96D] cursor-pointer"
+                                    type="text"
+                                    maxLength={18}
+                                    value={customName}
+                                    onChange={(e) => setCustomName(e.target.value)}
+                                    placeholder="Enter Recipient's Name (e.g. Ananya, Priya, Didi)..."
+                                    className="w-full bg-white/10 border border-white/20 rounded-xl px-3.5 py-2 text-xs text-white placeholder:text-neutral-400 font-sans outline-none focus:border-amber-400 transition-colors"
                                 />
-                                <span className="text-[11.5px] font-sans font-bold text-[#FFF6EE]">
-                                    🎀 Include Free Rakhi Gift Wrap & Sibling Greeting Card
-                                </span>
-                            </label>
 
-                            {giftBoxIncluded && (
-                                <div className="mt-1">
-                                    <input
-                                        type="text"
-                                        value={giftNote}
-                                        onChange={(e) => setGiftNote(e.target.value)}
-                                        placeholder="Add a handwritten message for your sister / brother (optional)..."
-                                        className="w-full bg-white/10 border border-white/15 rounded-xl px-3 py-2 text-xs text-white placeholder:text-neutral-400 font-sans outline-none focus:border-[#E0A96D]"
-                                    />
+                                {/* Quick Name Chips */}
+                                <div className="flex flex-wrap gap-1.5 pt-0.5">
+                                    <span className="text-[9.5px] text-neutral-400 self-center mr-1">Suggestions:</span>
+                                    {["Priya", "Ananya", "Didi", "Pyari Behn", "Best Sister", "My World"].map((nameOption) => (
+                                        <button
+                                            key={nameOption}
+                                            type="button"
+                                            onClick={() => setCustomName(nameOption)}
+                                            className="px-2 py-0.5 rounded-lg bg-white/10 hover:bg-amber-400/20 hover:text-amber-300 text-[10px] text-neutral-300 font-medium transition-all cursor-pointer border border-white/5 active:scale-95"
+                                        >
+                                            +{nameOption}
+                                        </button>
+                                    ))}
                                 </div>
-                            )}
+                            </div>
+
+                            {/* Action Bar: Auto-Detect Address & Live Radar Trigger */}
+                            <div className="relative z-10 grid grid-cols-2 gap-2 mt-3 pt-2 border-t border-emerald-500/20">
+                                <button
+                                    type="button"
+                                    onClick={handleAutoLocate}
+                                    disabled={isLocating}
+                                    className="flex items-center justify-center gap-1.5 py-2 px-3 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white rounded-xl text-[11px] font-bold transition-all shadow-sm cursor-pointer"
+                                >
+                                    {isLocating ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <span>📍</span>}
+                                    <span>{isLocating ? "Locating..." : "Auto-Detect Address"}</span>
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setIs15MinModalOpen(true)}
+                                    className="flex items-center justify-center gap-1.5 py-2 px-3 bg-white/10 hover:bg-white/20 active:scale-95 text-emerald-300 border border-emerald-500/40 rounded-xl text-[11px] font-bold transition-all shadow-sm cursor-pointer"
+                                >
+                                    <span>🗺️</span>
+                                    <span>Live GPS Radar</span>
+                                </button>
+                            </div>
                         </div>
-                    </div>
+                    ) : (
+                        <div className="bg-gradient-to-br from-[#1E0E12] via-[#140C0E] to-[#1E0E12] text-white border-2 border-[#E0A96D]/60 rounded-3xl p-5 mb-5 shadow-[0_10px_35px_rgba(224,169,109,0.18)] relative overflow-hidden">
+                            {/* Shimmer accent */}
+                            <div className="absolute top-0 right-0 w-48 h-48 bg-radial from-[#E0A96D]/25 to-transparent blur-2xl pointer-events-none" />
+
+                            <div className="relative z-10 flex items-center justify-between gap-2 mb-3 pb-3 border-b border-[#E0A96D]/30">
+                                <div className="flex items-center gap-2.5">
+                                    <span className="text-2xl leading-none">🪢</span>
+                                    <div>
+                                        <span className="text-sm sm:text-base font-serif font-extrabold text-[#FFF6EE] block leading-tight">
+                                            Rakhi Festive Celebration
+                                        </span>
+                                        <span className="text-[10px] font-sans text-[#E0A96D] font-medium tracking-wide">
+                                            Curated Gifting & Bespoke Tailoring
+                                        </span>
+                                    </div>
+                                </div>
+                                <button
+                                    onClick={handleCopyCode}
+                                    className="px-3.5 py-1.5 rounded-full bg-gradient-to-r from-[#E0A96D] to-[#D9384E] text-[#120B0D] font-mono text-[10.5px] font-black uppercase tracking-wider shadow-sm hover:brightness-110 active:scale-95 transition-all cursor-pointer shrink-0"
+                                >
+                                    {copied ? "COPIED RAKHI30 ✓" : "30% OFF • RAKHI30"}
+                                </button>
+                            </div>
+
+                            <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-semibold text-neutral-200 mb-3.5">
+                                <div className="flex items-center gap-2 bg-white/5 p-2 rounded-xl border border-white/5">
+                                    <span className="text-amber-400 font-extrabold text-sm">⚡</span>
+                                    <span><strong>Guaranteed Delivery</strong> Before Rakhi</span>
+                                </div>
+                                <div className="flex items-center gap-2 bg-white/5 p-2 rounded-xl border border-white/5">
+                                    <span className="text-rose-400 font-extrabold text-sm">🎁</span>
+                                    <span><strong>Free Luxury Gift Box</strong> & Sibling Note</span>
+                                </div>
+                                <div className="flex items-center gap-2 bg-white/5 p-2 rounded-xl border border-white/5">
+                                    <span className="text-emerald-400 font-extrabold text-sm">🚚</span>
+                                    <span><strong>Free Air Dispatch</strong> (24-48 Hours)</span>
+                                </div>
+                                <div className="flex items-center gap-2 bg-white/5 p-2 rounded-xl border border-white/5">
+                                    <span className="text-purple-400 font-extrabold text-sm">💎</span>
+                                    <span><strong>100% Artisanal Quality</strong> & 7-Day Trial</span>
+                                </div>
+                            </div>
+
+                            {/* Interactive Gift Wrap & Personal Sibling Message Toggle */}
+                            <div className="relative z-10 bg-black/40 border border-[#E0A96D]/30 rounded-2xl p-3 flex flex-col gap-2">
+                                <label className="flex items-center gap-2.5 cursor-pointer select-none">
+                                    <input
+                                        type="checkbox"
+                                        checked={giftBoxIncluded}
+                                        onChange={(e) => setGiftBoxIncluded(e.target.checked)}
+                                        className="w-4 h-4 rounded accent-[#E0A96D] cursor-pointer"
+                                    />
+                                    <span className="text-[11.5px] font-sans font-bold text-[#FFF6EE]">
+                                        🎀 Include Free Rakhi Gift Wrap & Sibling Greeting Card
+                                    </span>
+                                </label>
+
+                                {giftBoxIncluded && (
+                                    <div className="mt-1">
+                                        <input
+                                            type="text"
+                                            value={giftNote}
+                                            onChange={(e) => setGiftNote(e.target.value)}
+                                            placeholder="Add a handwritten message for your sister / brother (optional)..."
+                                            className="w-full bg-white/10 border border-white/15 rounded-xl px-3 py-2 text-xs text-white placeholder:text-neutral-400 font-sans outline-none focus:border-[#E0A96D]"
+                                        />
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    )}
  
                 </div>
 
@@ -1794,14 +1936,16 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                     {!product.isOutOfStock && (
                         <a
                             href={`https://wa.me/918590958131?text=${encodeURIComponent(
-                                `Hi Shreya! I want to order ${displayTitle} (Size: ${selectedSize || 'Selected Size'}, ₹${displayPrice.toLocaleString('en-IN')}).\n\nProduct Link: https://tenetarchives.com/product/${product.handle}\n\nPlease confirm express dispatch for guaranteed delivery before Rakhi! (I can also share a photo for size advice).`
+                                isEarringBox
+                                    ? `Hi Shreya! I want to order the Personalised Oxidised Earring Gift Box${customName.trim() ? ` with custom name "${customName.trim()}"` : ''} (₹${displayPrice.toLocaleString('en-IN')}) with 15-Minute Guaranteed Delivery!\n\nProduct Link: https://tenetarchives.com/product/${product.handle}\n\nPlease confirm hyper-express dark-store dispatch immediately!`
+                                    : `Hi Shreya! I want to order ${displayTitle} (Size: ${selectedSize || 'Selected Size'}, ₹${displayPrice.toLocaleString('en-IN')}).\n\nProduct Link: https://tenetarchives.com/product/${product.handle}\n\nPlease confirm express dispatch for guaranteed delivery before Rakhi! (I can also share a photo for size advice).`
                             )}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="w-full h-[44px] flex items-center justify-center gap-2 rounded-xl bg-[#25D366]/10 hover:bg-[#25D366]/20 border border-[#25D366]/35 text-[#128C7E] dark:text-[#25D366] font-sans text-xs font-bold uppercase tracking-wider transition-all duration-300 hover:scale-[1.01] active:scale-[0.98] shadow-xs cursor-pointer"
                         >
                             <img src="/whatsapp-logo.svg" className="w-4 h-4 object-contain" alt="WhatsApp" />
-                            <span>⚡ Order on WhatsApp • Guaranteed Rakhi Delivery</span>
+                            <span>{isEarringBox ? "⚡ Order on WhatsApp • 15-Min Delivery Guarantee" : "⚡ Order on WhatsApp • Guaranteed Rakhi Delivery"}</span>
                         </a>
                     )}
                 </div>
@@ -1978,6 +2122,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                             { id: 'techwoven-magsafe-case', name: "Ultra TechWoven MagSafe Case", priceVal: 1490, price: "₹1,490", img: "/images/accessories/techwoven_case.webp", size: 'Standard', color: 'Cosmic Orange' },
                             { id: 'airpods-pro-2nd-gen', name: "AirPods Pro (2nd Gen)", priceVal: 19900, price: "₹19,900", img: "/images/accessories/airpods_case.webp", size: 'Standard', color: 'White' }
                         ] : [
+                            { id: 'art-personalised-earring-box', name: "Personalised Earring Gift Box", priceVal: 499, price: "₹499", img: "/images/products/personalised-oxidised-earring-gift-box/03-gallery-main-open-fourfold.webp", size: 'One Size', color: 'Antique Silver' },
                             { id: 'art-kalankit-crossbody', name: "Kalankit Artisanal Sling Bag", priceVal: 1090, price: "₹1,090", img: "/images/products/kalankit/variant-1/v1-img-8.webp", size: 'One Size', color: 'Ivory Floral' },
                             { id: 'pearl-earrings', name: "Pearl Drop Earrings", priceVal: 1299, price: "₹1,299", img: "/images/generated/pearl_drop_earrings.png", size: 'ONE SIZE', color: 'Gold' },
                             { id: 'woven-slides', name: "Woven Leather Slides", priceVal: 3499, price: "₹3,499", img: "/images/generated/woven_leather_slides.png", size: '8', color: 'Brown' },
@@ -2017,6 +2162,34 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                 <span className="text-[11px] text-neutral-500">{item.price}</span>
                             </div>
                         ))}
+                    </div>
+                </div>
+
+                {/* YouTube Shorts Video Showcase Section (Unboxing & Craft Reel) */}
+                <div className="py-6 border-t border-neutral-200/60 dark:border-white/10 mt-2">
+                    <div className="flex items-center justify-between mb-4">
+                        <div>
+                            <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-emerald-600 dark:text-emerald-400 block">
+                                Live Reel Preview
+                            </span>
+                            <h2 className="font-serif text-lg md:text-xl text-[#1A1A1A] dark:text-[#F4F1ED] font-bold">
+                                {isEarringBox ? "Watch 15s Unboxing & Four-Fold Craft" : "Featured Unboxing & Craft Reel"}
+                            </h2>
+                        </div>
+                        <span className="px-3 py-1 rounded-full bg-red-600/10 text-red-600 text-[10px] font-bold uppercase tracking-wider flex items-center gap-1.5 border border-red-600/20">
+                            <span className="w-2 h-2 rounded-full bg-red-600 animate-ping" />
+                            YouTube Short
+                        </span>
+                    </div>
+
+                    <div className="relative w-full max-w-[340px] sm:max-w-[380px] mx-auto aspect-[9/16] rounded-[28px] overflow-hidden shadow-2xl border border-neutral-200 dark:border-neutral-800 bg-black">
+                        <iframe
+                            src="https://www.youtube-nocookie.com/embed/Wnx9X2WP6HY?autoplay=0&controls=1&modestbranding=1&rel=0&loop=1"
+                            title="Personalised Oxidised Earring Gift Box Unboxing Reel"
+                            className="w-full h-full object-cover"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                        />
                     </div>
                 </div>
 
@@ -2331,12 +2504,143 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                 </div>
             </div>
 
+            {/* 15-Minute Live GPS Delivery Radar & Refund Guarantee Modal */}
+            <AnimatePresence>
+                {is15MinModalOpen && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95, y: 15 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.95, y: 15 }}
+                            className="relative w-full max-w-lg bg-[#0A120E] border border-emerald-500/40 text-white rounded-3xl p-6 shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto no-scrollbar"
+                        >
+                            {/* Ambient Glow */}
+                            <div className="absolute -top-12 -right-12 w-48 h-48 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none" />
+
+                            {/* Header */}
+                            <div className="flex items-center justify-between pb-4 border-b border-white/10 mb-5">
+                                <div className="flex items-center gap-2.5">
+                                    <span className="relative flex h-3.5 w-3.5">
+                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                        <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-500"></span>
+                                    </span>
+                                    <div>
+                                        <h3 className="font-serif text-lg font-bold text-white flex items-center gap-2">
+                                            15-Min Live GPS Dispatch Radar
+                                        </h3>
+                                        <p className="text-[11px] text-emerald-300 font-sans">
+                                            Dark-Store Network Active • 100% Refund Guarantee SLA
+                                        </p>
+                                    </div>
+                                </div>
+                                <button
+                                    onClick={() => setIs15MinModalOpen(false)}
+                                    className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors cursor-pointer"
+                                >
+                                    <X className="w-4 h-4" />
+                                </button>
+                            </div>
+
+                            {/* Live Radar Visual Animation */}
+                            <div className="relative w-full h-44 bg-gradient-to-b from-[#060F0A] to-[#0B1A12] rounded-2xl border border-emerald-500/30 overflow-hidden flex items-center justify-center mb-5 shadow-inner">
+                                {/* Grid Circles */}
+                                <div className="absolute w-36 h-36 rounded-full border border-emerald-500/20" />
+                                <div className="absolute w-24 h-24 rounded-full border border-emerald-500/30" />
+                                <div className="absolute w-12 h-12 rounded-full border border-emerald-500/40" />
+
+                                {/* Radar Sweep Cone */}
+                                <div className="absolute inset-0 bg-[conic-gradient(from_0deg,transparent_0deg,transparent_270deg,rgba(16,185,129,0.35)_360deg)] animate-spin [animation-duration:3s]" />
+
+                                {/* Stationed Dark-Store Node */}
+                                <div className="absolute z-10 flex flex-col items-center">
+                                    <div className="w-8 h-8 rounded-full bg-emerald-500 text-black flex items-center justify-center font-bold text-xs shadow-lg shadow-emerald-500/50">
+                                        🛵
+                                    </div>
+                                    <span className="text-[9px] font-mono font-bold text-emerald-200 mt-1 bg-black/70 px-2 py-0.5 rounded-full border border-emerald-500/30">
+                                        Rider Stationed (0.8 km)
+                                    </span>
+                                </div>
+
+                                {/* Destination Pin */}
+                                <div className="absolute top-4 right-8 z-10 flex flex-col items-center">
+                                    <div className="w-6 h-6 rounded-full bg-amber-400 text-black flex items-center justify-center font-bold text-[10px] shadow-lg">
+                                        📍
+                                    </div>
+                                    <span className="text-[8px] font-mono text-amber-200 mt-0.5 bg-black/70 px-1.5 rounded">
+                                        Your Doorstep
+                                    </span>
+                                </div>
+                            </div>
+
+                            {/* Dispatch SLA Step-by-Step Breakdown */}
+                            <div className="space-y-2.5 mb-5">
+                                <div className="flex items-start gap-3 p-3 rounded-xl bg-white/5 border border-white/10">
+                                    <div className="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-mono font-bold text-[10px] shrink-0 mt-0.5">
+                                        01
+                                    </div>
+                                    <div>
+                                        <h4 className="text-xs font-bold text-white">00:00 - Instant Order Routing</h4>
+                                        <p className="text-[11px] text-neutral-300 font-sans">Order assigned automatically to the nearest hyper-local micro hub.</p>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-start gap-3 p-3 rounded-xl bg-white/5 border border-white/10">
+                                    <div className="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center font-mono font-bold text-[10px] shrink-0 mt-0.5">
+                                        02
+                                    </div>
+                                    <div>
+                                        <h4 className="text-xs font-bold text-white">02:30 - Bespoke Gold Foil Imprinting</h4>
+                                        <p className="text-[11px] text-neutral-300 font-sans">Recipient name personalized in gold foil on the four-fold box lid.</p>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-start gap-3 p-3 rounded-xl bg-white/5 border border-white/10">
+                                    <div className="w-6 h-6 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-mono font-bold text-[10px] shrink-0 mt-0.5">
+                                        03
+                                    </div>
+                                    <div>
+                                        <h4 className="text-xs font-bold text-white">06:00 - Dark-Store Courier En Route</h4>
+                                        <p className="text-[11px] text-neutral-300 font-sans">Rider departs via fast green-corridor route to your exact location.</p>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-start gap-3 p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
+                                    <div className="w-6 h-6 rounded-full bg-emerald-500 text-black flex items-center justify-center font-mono font-bold text-[10px] shrink-0 mt-0.5">
+                                        04
+                                    </div>
+                                    <div>
+                                        <h4 className="text-xs font-bold text-emerald-300">12:00–14:59 - Guaranteed Doorstep Handover</h4>
+                                        <p className="text-[11px] text-emerald-100 font-sans">Delivered directly to your hands in premium gift wrap.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* 100% Full Refund Guarantee Terms */}
+                            <div className="p-4 rounded-2xl bg-gradient-to-r from-red-950/40 via-amber-950/30 to-red-950/40 border border-amber-500/40 text-amber-200 text-xs leading-relaxed">
+                                <div className="flex items-center gap-2 font-bold text-white mb-1">
+                                    <span>🛡️</span>
+                                    <span>100% Instant Refund Policy Guarantee:</span>
+                                </div>
+                                If your delivery rider arrives at minute 16 or later, <strong>100% of your payment is refunded immediately</strong> to your bank/UPI account with zero questions asked, and you keep the complete luxury earring gift hamper for <strong>FREE</strong>.
+                            </div>
+
+                            <button
+                                onClick={() => setIs15MinModalOpen(false)}
+                                className="w-full mt-4 py-3 bg-emerald-500 hover:bg-emerald-600 active:scale-98 text-black font-sans font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-lg cursor-pointer"
+                            >
+                                Got It • Continue Ordering
+                            </button>
+                        </motion.div>
+                    </div>
+                )}
+            </AnimatePresence>
+
             {/* Permanent Bottom Sticky Buy Now Bar */}
             <MobileStickyBar 
                 product={product} 
                 selectedVariant={selectedVariant} 
                 onAddToCart={handleAddToCart} 
-                onBuyNow={handleBuyNow}
+                onBuyNow={handleBuyNow} 
                 displayPrice={displayPrice}
             />
         </>

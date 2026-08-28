@@ -13,31 +13,31 @@ import {
 import { ConversionOverlay } from "../components/ConversionOverlay";
 import "../styles/remotion.css";
 
-interface RakhiMasterMotionGraphicsProps {
+interface RakhiOfferOutroProps {
     includeVoiceover?: boolean;
 }
 
 // =======================================================
-// SCENE 1: DECORATIVE KEEPSAKE HAMPER BOX (0 - 80 frames / 2.66s)
+// BEAT 1: MINIMAL IVORY GIFT BOX & 30% OFF (0 - 110 frames / 3.66s)
 // =======================================================
-const DecorativeHamperScene: React.FC = () => {
+const MinimalIvoryBoxBeat: React.FC = () => {
     const frame = useCurrentFrame();
     const { fps } = useVideoConfig();
 
-    const entrance = spring({ frame, fps, config: { damping: 14, stiffness: 140 } });
-    const scale = interpolate(frame, [0, 80], [1.04, 1.0], { extrapolateRight: "clamp" });
+    const entrance = spring({ frame, fps, config: { damping: 14, stiffness: 130 } });
+    const scale = interpolate(frame, [0, 110], [1.04, 1.0], { extrapolateRight: "clamp" });
 
     return (
-        <AbsoluteFill style={{ backgroundColor: "#080706", overflow: "hidden" }}>
-            {/* Ambient Warm Golden Glow */}
+        <AbsoluteFill style={{ backgroundColor: "#0C0A09", overflow: "hidden" }}>
+            {/* Soft Ambient Warm Sunlight */}
             <div
                 style={{
                     position: "absolute",
                     top: "35%",
                     left: "50%",
                     transform: "translate(-50%, -50%)",
-                    width: 700,
-                    height: 700,
+                    width: 750,
+                    height: 750,
                     borderRadius: "50%",
                     background: "radial-gradient(circle, rgba(224,169,109,0.3) 0%, rgba(0,0,0,0) 70%)",
                     filter: "blur(50px)",
@@ -62,21 +62,20 @@ const DecorativeHamperScene: React.FC = () => {
             >
                 <div
                     style={{
-                        padding: "6px 24px",
+                        padding: "7px 26px",
                         borderRadius: 99,
-                        background: "rgba(224, 169, 109, 0.2)",
-                        border: "1.5px solid rgba(224, 169, 109, 0.6)",
-                        backdropFilter: "blur(12px)",
+                        background: "#E0A96D",
+                        color: "#080706",
                         fontFamily: "'Plus Jakarta Sans', sans-serif",
-                        fontSize: 13,
-                        fontWeight: 800,
-                        letterSpacing: "0.2em",
-                        color: "#E0A96D",
+                        fontSize: 14,
+                        fontWeight: 900,
+                        letterSpacing: "0.12em",
+                        boxShadow: "0 0 25px rgba(224, 169, 109, 0.5)",
                         marginBottom: 8,
                         textTransform: "uppercase",
                     }}
                 >
-                    🪢 RAKHI KEEPSAKE HAMPER BOX
+                    🔥 FLAT 30% OFF • RAKHI SPECIAL
                 </div>
                 <h1
                     style={{
@@ -88,11 +87,11 @@ const DecorativeHamperScene: React.FC = () => {
                         textShadow: "0 4px 25px rgba(0,0,0,0.9)",
                     }}
                 >
-                    The Ultimate Gifting Box 🎁
+                    Free Luxury Gift Box 🎁
                 </h1>
             </div>
 
-            {/* Main Decorative Hamper Card */}
+            {/* Light Ivory Gift Box Showcase */}
             <div
                 style={{
                     position: "absolute",
@@ -102,17 +101,17 @@ const DecorativeHamperScene: React.FC = () => {
                     height: 1260,
                     borderRadius: 36,
                     overflow: "hidden",
-                    border: "1.5px solid rgba(224, 169, 109, 0.5)",
+                    border: "1.5px solid rgba(224, 169, 109, 0.45)",
                     transform: `scale(${scale * entrance})`,
-                    boxShadow: "0 25px 60px rgba(0,0,0,0.9), 0 0 35px rgba(224,169,109,0.25)",
+                    boxShadow: "0 25px 60px rgba(0,0,0,0.9), 0 0 35px rgba(224,169,109,0.2)",
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-                    backgroundColor: "#12100E",
+                    backgroundColor: "#161310",
                 }}
             >
                 <Img
-                    src={staticFile("/images/products/tenet-collection/decorative-rakhi-keepsake-hamper.png")}
+                    src={staticFile("/images/products/tenet-collection/minimal-ivory-rakhi-gift-box.png")}
                     style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
 
@@ -125,41 +124,41 @@ const DecorativeHamperScene: React.FC = () => {
                         right: 20,
                         padding: "14px 20px",
                         borderRadius: 20,
-                        background: "rgba(10, 8, 6, 0.88)",
+                        background: "rgba(12, 10, 8, 0.88)",
                         backdropFilter: "blur(14px)",
-                        border: "1px solid rgba(224, 169, 109, 0.5)",
+                        border: "1px solid rgba(224, 169, 109, 0.4)",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "space-between",
                     }}
                 >
                     <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, fontWeight: 700, color: "#FFFFFF" }}>
-                        Artisan Bag + Kurti + Gold Rakhi ✨
+                        Kurti + Gold Rakhi + Box ✨
                     </span>
                     <span style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12, fontWeight: 800, color: "#E0A96D", letterSpacing: "0.1em" }}>
-                        FREE HAMPER
+                        WORTH ₹799 (FREE)
                     </span>
                 </div>
             </div>
 
-            <ConversionOverlay accentColor="#E0A96D" ctaPillText='Comment "RAKHI" for DM ✨' />
+            <ConversionOverlay accentColor="#E0A96D" ctaPillText='Use Code: RAKHI30 ✨' />
         </AbsoluteFill>
     );
 };
 
 // =======================================================
-// SCENE 2: ARTISAN BAG & TASSEL KURTI HERO (80 - 165 frames / 2.83s)
+// BEAT 2: GUARANTEED FAST DISPATCH & STOCK (110 - 220 frames / 3.66s)
 // =======================================================
-const ArtisanBagAndKurtiScene: React.FC = () => {
+const FastDispatchBeat: React.FC = () => {
     const frame = useCurrentFrame();
     const { fps } = useVideoConfig();
 
     const entrance = spring({ frame, fps, config: { damping: 14, stiffness: 140 } });
-    const card1Spring = spring({ frame, fps, config: { damping: 13, stiffness: 140 } });
-    const card2Spring = spring({ frame: frame - 4, fps, config: { damping: 13, stiffness: 140 } });
+    const card1 = spring({ frame, fps, config: { damping: 13, stiffness: 140 } });
+    const card2 = spring({ frame: frame - 4, fps, config: { damping: 13, stiffness: 140 } });
 
     return (
-        <AbsoluteFill style={{ backgroundColor: "#080706", overflow: "hidden" }}>
+        <AbsoluteFill style={{ backgroundColor: "#0C0A09", overflow: "hidden" }}>
             <div
                 style={{
                     position: "absolute",
@@ -177,7 +176,7 @@ const ArtisanBagAndKurtiScene: React.FC = () => {
             >
                 <div
                     style={{
-                        padding: "6px 22px",
+                        padding: "6px 24px",
                         borderRadius: 99,
                         background: "rgba(224, 169, 109, 0.18)",
                         border: "1.5px solid rgba(224, 169, 109, 0.5)",
@@ -191,7 +190,7 @@ const ArtisanBagAndKurtiScene: React.FC = () => {
                         textTransform: "uppercase",
                     }}
                 >
-                    🎨 ARTISAN BAG & TASSEL KURTI
+                    ⚡ GUARANTEED FAST DISPATCH
                 </div>
                 <h1
                     style={{
@@ -202,11 +201,11 @@ const ArtisanBagAndKurtiScene: React.FC = () => {
                         margin: 0,
                     }}
                 >
-                    Handcrafted Festive Luxury 🎀
+                    Pre-Rakhi Delivery 🚀
                 </h1>
             </div>
 
-            {/* 2-Column Split: Artisan Bag + Sitting Kurti Model */}
+            {/* 2-Column Split: Model + Handcrafted Bag */}
             <div
                 style={{
                     position: "absolute",
@@ -219,7 +218,6 @@ const ArtisanBagAndKurtiScene: React.FC = () => {
                     zIndex: 10,
                 }}
             >
-                {/* 1. Artisan Bag */}
                 <div
                     style={{
                         flex: 1,
@@ -227,199 +225,59 @@ const ArtisanBagAndKurtiScene: React.FC = () => {
                         overflow: "hidden",
                         position: "relative",
                         border: "1.5px solid rgba(224, 169, 109, 0.5)",
-                        transform: `scale(${card1Spring})`,
+                        transform: `scale(${card1})`,
                         boxShadow: "0 25px 60px rgba(0,0,0,0.85)",
-                        backgroundColor: "#12100E",
-                    }}
-                >
-                    <Img
-                        src={staticFile("/images/products/tenet-collection/artisan-round-bag.jpg")}
-                        style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                    />
-                    <div
-                        style={{
-                            position: "absolute",
-                            bottom: 16,
-                            left: 14,
-                            padding: "6px 14px",
-                            borderRadius: 99,
-                            background: "#E0A96D",
-                            color: "#000",
-                            fontFamily: "'Plus Jakarta Sans', sans-serif",
-                            fontSize: 12,
-                            fontWeight: 900,
-                        }}
-                    >
-                        Handcrafted Art Bag
-                    </div>
-                </div>
-
-                {/* 2. Sitting Tassel Kurti Model */}
-                <div
-                    style={{
-                        flex: 1,
-                        borderRadius: 32,
-                        overflow: "hidden",
-                        position: "relative",
-                        border: "1.5px solid rgba(224, 169, 109, 0.5)",
-                        transform: `scale(${card2Spring})`,
-                        boxShadow: "0 25px 60px rgba(0,0,0,0.85)",
-                        backgroundColor: "#12100E",
+                        backgroundColor: "#161310",
                     }}
                 >
                     <Img
                         src={staticFile("/images/products/tenet-collection/model-chocolate-ivory-sitting.png")}
                         style={{ width: "100%", height: "100%", objectFit: "cover" }}
                     />
-                    <div
-                        style={{
-                            position: "absolute",
-                            bottom: 16,
-                            left: 14,
-                            padding: "6px 14px",
-                            borderRadius: 99,
-                            background: "#E0A96D",
-                            color: "#000",
-                            fontFamily: "'Plus Jakarta Sans', sans-serif",
-                            fontSize: 12,
-                            fontWeight: 900,
-                        }}
-                    >
-                        Corset-Tie Kurti
+                    <div style={{ position: "absolute", bottom: 16, left: 14, padding: "6px 14px", borderRadius: 99, background: "#E0A96D", color: "#000", fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12, fontWeight: 900 }}>
+                        Tassel Kurti Set
+                    </div>
+                </div>
+
+                <div
+                    style={{
+                        flex: 1,
+                        borderRadius: 32,
+                        overflow: "hidden",
+                        position: "relative",
+                        border: "1.5px solid rgba(224, 169, 109, 0.5)",
+                        transform: `scale(${card2})`,
+                        boxShadow: "0 25px 60px rgba(0,0,0,0.85)",
+                        backgroundColor: "#161310",
+                    }}
+                >
+                    <Img
+                        src={staticFile("/images/products/tenet-collection/artisan-round-bag.jpg")}
+                        style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                    />
+                    <div style={{ position: "absolute", bottom: 16, left: 14, padding: "6px 14px", borderRadius: 99, background: "#E0A96D", color: "#000", fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12, fontWeight: 900 }}>
+                        Artisan Bag
                     </div>
                 </div>
             </div>
 
-            <ConversionOverlay accentColor="#E0A96D" ctaPillText='Comment "RAKHI" for DM ✨' />
+            <ConversionOverlay accentColor="#E0A96D" ctaPillText='⏳ Limited Festive Stock' />
         </AbsoluteFill>
     );
 };
 
 // =======================================================
-// SCENE 3: FAST 4-COLORWAY CLASH (165 - 305 frames / 4.66s)
+// BEAT 3: INTERACTIVE COMMENT "RAKHI" CALLOUT (220 - 320 frames / 3.33s)
 // =======================================================
-const FastColorwaysScene: React.FC = () => {
-    const frame = useCurrentFrame();
-
-    const colorItems = [
-        {
-            name: "Royal Navy Blue",
-            badge: "💙 Royal Navy",
-            color: "#6BA4E8",
-            image: staticFile("/images/products/tenet-collection/bue.webp"),
-        },
-        {
-            name: "Sunset Gold",
-            badge: "💛 Sunset Gold",
-            color: "#F4B860",
-            image: staticFile("/images/products/tenet-collection/orange.webp"),
-        },
-        {
-            name: "Blush Rose Pink",
-            badge: "🌸 Blush Pink",
-            color: "#F3A6B2",
-            image: staticFile("/images/products/tenet-collection/pink.webp"),
-        },
-        {
-            name: "Pastel Blossom Pink",
-            badge: "🌷 Blossom Pink",
-            color: "#FFAAA6",
-            image: staticFile("/images/products/tenet-collection/l pink.webp"),
-        },
-    ];
-
-    const activeIndex = Math.min(Math.floor(frame / 35), colorItems.length - 1);
-    const active = colorItems[activeIndex];
-
-    const subFrame = frame % 35;
-    const scale = interpolate(subFrame, [0, 35], [1.03, 1.0], { extrapolateRight: "clamp" });
-
-    return (
-        <AbsoluteFill style={{ backgroundColor: "#080706", overflow: "hidden" }}>
-            <div
-                style={{
-                    position: "absolute",
-                    top: 105,
-                    left: 24,
-                    right: 24,
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    textAlign: "center",
-                    zIndex: 30,
-                }}
-            >
-                <div
-                    style={{
-                        padding: "6px 22px",
-                        borderRadius: 99,
-                        background: `${active.color}22`,
-                        border: `1.5px solid ${active.color}66`,
-                        backdropFilter: "blur(12px)",
-                        fontFamily: "'Plus Jakarta Sans', sans-serif",
-                        fontSize: 13,
-                        fontWeight: 800,
-                        letterSpacing: "0.18em",
-                        color: active.color,
-                        marginBottom: 8,
-                        textTransform: "uppercase",
-                    }}
-                >
-                    {active.badge}
-                </div>
-                <h1
-                    style={{
-                        fontFamily: "'Playfair Display', Georgia, serif",
-                        fontSize: 48,
-                        fontWeight: 700,
-                        color: "#FFFFFF",
-                        margin: 0,
-                    }}
-                >
-                    5 Viral Colorways 💖
-                </h1>
-            </div>
-
-            <div
-                style={{
-                    position: "absolute",
-                    top: 230,
-                    left: 55,
-                    right: 55,
-                    height: 1260,
-                    borderRadius: 36,
-                    overflow: "hidden",
-                    border: `2px solid ${active.color}55`,
-                    transform: `scale(${scale})`,
-                    boxShadow: `0 25px 60px rgba(0,0,0,0.9), 0 0 30px ${active.color}22`,
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    backgroundColor: "#12100E",
-                }}
-            >
-                <Img src={active.image} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-            </div>
-
-            <ConversionOverlay accentColor={active.color} ctaPillText='Comment "RAKHI" for DM ✨' />
-        </AbsoluteFill>
-    );
-};
-
-// =======================================================
-// SCENE 4: 3-PIECE COMPLETE OUTFIT STACK (305 - 415 frames / 3.66s)
-// =======================================================
-const CompleteOutfitStackScene: React.FC = () => {
+const CommentCalloutBeat: React.FC = () => {
     const frame = useCurrentFrame();
     const { fps } = useVideoConfig();
 
     const entrance = spring({ frame, fps, config: { damping: 14, stiffness: 140 } });
-    const card1 = spring({ frame, fps, config: { damping: 13, stiffness: 140 } });
-    const card2 = spring({ frame: frame - 3, fps, config: { damping: 13, stiffness: 140 } });
-    const card3 = spring({ frame: frame - 6, fps, config: { damping: 13, stiffness: 140 } });
+    const pulse = interpolate(Math.sin(frame / 6), [-1, 1], [0.97, 1.03]);
 
     return (
-        <AbsoluteFill style={{ backgroundColor: "#080706", overflow: "hidden" }}>
+        <AbsoluteFill style={{ backgroundColor: "#0C0A09", overflow: "hidden" }}>
             <div
                 style={{
                     position: "absolute",
@@ -437,21 +295,19 @@ const CompleteOutfitStackScene: React.FC = () => {
             >
                 <div
                     style={{
-                        padding: "6px 22px",
+                        padding: "6px 24px",
                         borderRadius: 99,
-                        background: "rgba(224, 169, 109, 0.18)",
-                        border: "1.5px solid rgba(224, 169, 109, 0.5)",
-                        backdropFilter: "blur(12px)",
+                        background: "#E0A96D",
+                        color: "#080706",
                         fontFamily: "'Plus Jakarta Sans', sans-serif",
-                        fontSize: 13,
-                        fontWeight: 800,
-                        letterSpacing: "0.18em",
-                        color: "#E0A96D",
+                        fontSize: 14,
+                        fontWeight: 900,
+                        letterSpacing: "0.12em",
                         marginBottom: 8,
                         textTransform: "uppercase",
                     }}
                 >
-                    👗 3-PIECE COMPLETE FIT
+                    💬 INSTANT DM LINK
                 </div>
                 <h1
                     style={{
@@ -462,78 +318,56 @@ const CompleteOutfitStackScene: React.FC = () => {
                         margin: 0,
                     }}
                 >
-                    Top + Pants + Heels ✨
+                    Comment "RAKHI" Below 👇
                 </h1>
             </div>
 
-            {/* 3 Grid Cards */}
+            {/* Central Light Box Showcase */}
             <div
                 style={{
                     position: "absolute",
                     top: 230,
-                    left: 45,
-                    right: 45,
+                    left: 55,
+                    right: 55,
                     height: 1260,
+                    borderRadius: 36,
+                    overflow: "hidden",
+                    border: "1.5px solid rgba(224, 169, 109, 0.45)",
+                    transform: `scale(${entrance})`,
+                    boxShadow: "0 25px 60px rgba(0,0,0,0.9)",
                     display: "flex",
-                    gap: 14,
-                    zIndex: 10,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    backgroundColor: "#161310",
                 }}
             >
-                {/* 1. Kurti Top */}
-                <div
-                    style={{
-                        flex: 1,
-                        borderRadius: 28,
-                        overflow: "hidden",
-                        position: "relative",
-                        border: "1.5px solid rgba(224, 169, 109, 0.5)",
-                        transform: `scale(${card1})`,
-                        boxShadow: "0 25px 60px rgba(0,0,0,0.85)",
-                        backgroundColor: "#12100E",
-                    }}
-                >
-                    <Img src={staticFile("/images/products/tenet-collection/cho.jpg")} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                    <div style={{ position: "absolute", bottom: 14, left: 10, padding: "6px 12px", borderRadius: 99, background: "#E0A96D", color: "#000", fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 11, fontWeight: 900 }}>
-                        1. Tassel Top
-                    </div>
-                </div>
+                <Img
+                    src={staticFile("/images/products/tenet-collection/minimal-ivory-rakhi-gift-box.png")}
+                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                />
 
-                {/* 2. Flared Ivory Pants */}
+                {/* Simulated Comment Bubble Overlay */}
                 <div
                     style={{
-                        flex: 1,
-                        borderRadius: 28,
-                        overflow: "hidden",
-                        position: "relative",
-                        border: "1.5px solid rgba(224, 169, 109, 0.5)",
-                        transform: `scale(${card2})`,
-                        boxShadow: "0 25px 60px rgba(0,0,0,0.85)",
-                        backgroundColor: "#12100E",
+                        position: "absolute",
+                        bottom: 30,
+                        left: 20,
+                        right: 20,
+                        padding: "16px 24px",
+                        borderRadius: 24,
+                        background: "rgba(10, 8, 6, 0.92)",
+                        backdropFilter: "blur(16px)",
+                        border: "1.5px solid rgba(224, 169, 109, 0.6)",
+                        transform: `scale(${pulse})`,
+                        textAlign: "center",
                     }}
                 >
-                    <Img src={staticFile("/images/products/tenet-collection/baige.webp")} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                    <div style={{ position: "absolute", bottom: 14, left: 10, padding: "6px 12px", borderRadius: 99, background: "#E0A96D", color: "#000", fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 11, fontWeight: 900 }}>
-                        2. Ivory Pants
-                    </div>
-                </div>
-
-                {/* 3. Crystal Slide Heels */}
-                <div
-                    style={{
-                        flex: 1,
-                        borderRadius: 28,
-                        overflow: "hidden",
-                        position: "relative",
-                        border: "1.5px solid rgba(224, 169, 109, 0.5)",
-                        transform: `scale(${card3})`,
-                        boxShadow: "0 25px 60px rgba(0,0,0,0.85)",
-                        backgroundColor: "#12100E",
-                    }}
-                >
-                    <Img src={staticFile("/images/products/tenet-collection/heel.webp")} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                    <div style={{ position: "absolute", bottom: 14, left: 10, padding: "6px 12px", borderRadius: 99, background: "#E0A96D", color: "#000", fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 11, fontWeight: 900 }}>
-                        3. Slide Heels
-                    </div>
+                    <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 20, fontWeight: 900, color: "#E0A96D", margin: "0 0 4px 0" }}>
+                        Type "RAKHI" in comments ✨
+                    </p>
+                    <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.75)", margin: 0 }}>
+                        Direct discount link will be sent to your DM in 3 seconds!
+                    </p>
                 </div>
             </div>
 
@@ -543,9 +377,9 @@ const CompleteOutfitStackScene: React.FC = () => {
 };
 
 // =======================================================
-// SCENE 5: HIGH-CONVERTING CLIMAX & CTA (415 - 552 frames / 4.56s)
+// BEAT 4: FINAL HIGH-CONVERTING CLIMAX (320 - 426 frames / 3.53s)
 // =======================================================
-const FestiveClimaxScene: React.FC = () => {
+const ClimaxOutroBeat: React.FC = () => {
     const frame = useCurrentFrame();
     const { fps } = useVideoConfig();
 
@@ -553,7 +387,7 @@ const FestiveClimaxScene: React.FC = () => {
     const buttonPulse = interpolate(Math.sin(frame / 6), [-1, 1], [0.98, 1.03]);
 
     return (
-        <AbsoluteFill style={{ backgroundColor: "#080706", overflow: "hidden" }}>
+        <AbsoluteFill style={{ backgroundColor: "#0C0A09", overflow: "hidden" }}>
             <div
                 style={{
                     position: "absolute",
@@ -583,7 +417,7 @@ const FestiveClimaxScene: React.FC = () => {
                         textTransform: "uppercase",
                     }}
                 >
-                    🔥 RAKHI SPECIAL: FLAT 30% OFF
+                    🔥 FLAT 30% OFF • LIMITED STOCK
                 </div>
                 <h1
                     style={{
@@ -598,7 +432,7 @@ const FestiveClimaxScene: React.FC = () => {
                 </h1>
             </div>
 
-            {/* Side-by-Side: Decorative Keepsake Hamper + Model */}
+            {/* Side-by-Side: Ivory Gift Box + Sitting Kurti Model */}
             <div
                 style={{
                     position: "absolute",
@@ -618,11 +452,11 @@ const FestiveClimaxScene: React.FC = () => {
                         overflow: "hidden",
                         border: "1.5px solid rgba(224, 169, 109, 0.5)",
                         boxShadow: "0 25px 60px rgba(0,0,0,0.85)",
-                        backgroundColor: "#12100E",
+                        backgroundColor: "#161310",
                     }}
                 >
                     <Img
-                        src={staticFile("/images/products/tenet-collection/decorative-rakhi-keepsake-hamper.png")}
+                        src={staticFile("/images/products/tenet-collection/minimal-ivory-rakhi-gift-box.png")}
                         style={{ width: "100%", height: "100%", objectFit: "cover" }}
                     />
                 </div>
@@ -634,7 +468,7 @@ const FestiveClimaxScene: React.FC = () => {
                         overflow: "hidden",
                         border: "1.5px solid rgba(224, 169, 109, 0.5)",
                         boxShadow: "0 25px 60px rgba(0,0,0,0.85)",
-                        backgroundColor: "#12100E",
+                        backgroundColor: "#161310",
                     }}
                 >
                     <Img
@@ -644,7 +478,7 @@ const FestiveClimaxScene: React.FC = () => {
                 </div>
             </div>
 
-            {/* Bottom High-Converting Action Banner */}
+            {/* Bottom High-Converting Action Button */}
             <div
                 style={{
                     position: "absolute",
@@ -694,70 +528,55 @@ const FestiveClimaxScene: React.FC = () => {
 };
 
 // =======================================================
-// MASTER RAKHI MOTION GRAPHICS REEL (552 frames / 18.40s)
+// MASTER RAKHI OFFER OUTRO COMPOSITION (426 frames / 14.20s)
 // =======================================================
-export const RakhiMasterMotionGraphicsReel: React.FC<RakhiMasterMotionGraphicsProps> = ({
+export const RakhiOfferOutroReel: React.FC<RakhiOfferOutroProps> = ({
     includeVoiceover = false,
 }) => {
     return (
-        <AbsoluteFill style={{ backgroundColor: "#080706" }}>
-            {/* 1. Subtle Luxury Music (Volume 0.18) */}
+        <AbsoluteFill style={{ backgroundColor: "#0C0A09" }}>
+            {/* Subtle Luxury Music (Volume 0.18) */}
             <Audio
                 src={staticFile("/audio/music/music-showdown-hype.mp3")}
                 volume={0.18}
             />
 
-            {/* 2. Synced Sound Effects */}
+            {/* Synced SFX Transitions */}
             <Sequence from={0} durationInFrames={20}>
                 <Audio src={staticFile("/audio/sfx/sparkle.wav")} volume={0.4} />
             </Sequence>
-            <Sequence from={80} durationInFrames={15}>
+            <Sequence from={110} durationInFrames={15}>
                 <Audio src={staticFile("/audio/sfx/shutter.wav")} volume={0.4} />
             </Sequence>
-            <Sequence from={165} durationInFrames={15}>
+            <Sequence from={220} durationInFrames={15}>
                 <Audio src={staticFile("/audio/sfx/whoosh.wav")} volume={0.35} />
             </Sequence>
-            <Sequence from={200} durationInFrames={15}>
-                <Audio src={staticFile("/audio/sfx/whoosh.wav")} volume={0.35} />
-            </Sequence>
-            <Sequence from={235} durationInFrames={15}>
-                <Audio src={staticFile("/audio/sfx/whoosh.wav")} volume={0.35} />
-            </Sequence>
-            <Sequence from={270} durationInFrames={15}>
-                <Audio src={staticFile("/audio/sfx/whoosh.wav")} volume={0.35} />
-            </Sequence>
-            <Sequence from={305} durationInFrames={20}>
-                <Audio src={staticFile("/audio/sfx/sparkle.wav")} volume={0.4} />
-            </Sequence>
-            <Sequence from={415} durationInFrames={20}>
+            <Sequence from={320} durationInFrames={20}>
                 <Audio src={staticFile("/audio/sfx/sparkle.wav")} volume={0.45} />
             </Sequence>
 
-            {/* 3. Optional Voiceover Layer */}
+            {/* Optional Voiceover Layer */}
             {includeVoiceover && (
                 <Sequence from={0}>
                     <Audio
-                        src={staticFile("/audio/voiceovers/vo-female-rakhi-promo.wav")}
+                        src={staticFile("/audio/voiceovers/vo-rakhi-offer-outro.mp3")}
                         volume={1.0}
                     />
                 </Sequence>
             )}
 
-            {/* 4. Motion Graphic Timeline Sequences */}
-            <Sequence from={0} durationInFrames={80}>
-                <DecorativeHamperScene />
+            {/* Motion Graphics Timeline */}
+            <Sequence from={0} durationInFrames={110}>
+                <MinimalIvoryBoxBeat />
             </Sequence>
-            <Sequence from={80} durationInFrames={85}>
-                <ArtisanBagAndKurtiScene />
+            <Sequence from={110} durationInFrames={110}>
+                <FastDispatchBeat />
             </Sequence>
-            <Sequence from={165} durationInFrames={140}>
-                <FastColorwaysScene />
+            <Sequence from={220} durationInFrames={100}>
+                <CommentCalloutBeat />
             </Sequence>
-            <Sequence from={305} durationInFrames={110}>
-                <CompleteOutfitStackScene />
-            </Sequence>
-            <Sequence from={415} durationInFrames={137}>
-                <FestiveClimaxScene />
+            <Sequence from={320} durationInFrames={106}>
+                <ClimaxOutroBeat />
             </Sequence>
         </AbsoluteFill>
     );
