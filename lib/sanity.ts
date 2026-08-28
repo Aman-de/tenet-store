@@ -314,7 +314,7 @@ const ARTIFICIAL_PRODUCTS = [
     },
     {
         id: "art-personalised-earring-box",
-        title: "Personalised Oxidised Earring Luxury Four-Fold Gift Box",
+        title: "The Artisanal Oxidised Earring Luxury Four-Fold Gift Box",
         handle: "personalised-oxidised-earring-gift-box",
         price: 499,
         originalPrice: 1499,
@@ -326,20 +326,37 @@ const ARTIFICIAL_PRODUCTS = [
         isOutOfStock: false,
         sizeType: "onesize",
         sizes: ["One Size"],
-        description: "Bespoke handcrafted German Silver oxidised floral jhumkas presented inside a luxury four-fold hardbound keepsake gift box. Features complimentary customized name foil personalization, sibling message inscription, and ultra-fast 15-Minute Doorstep Delivery Guarantee with 100% full refund policy if late.",
-        colors: ["#C0C0C0"],
+        description: "Handcrafted German silver oxidised jhumkas and chandbalis presented inside an ultra-luxury four-fold hardcover keepsake gift box with woven linen lining. Pre-packed and sealed for immediate 15-Minute Doorstep Delivery Guarantee with 100% full refund policy if late.",
+        colors: ["#C0C0C0", "#A8A8A8"],
         images: [
             "/images/products/personalised-oxidised-earring-gift-box/03-gallery-main-open-fourfold.webp",
+            "/images/products/personalised-oxidised-earring-gift-box/01-set2-main-open.webp",
+            "/images/products/personalised-oxidised-earring-gift-box/08-lifestyle-portrait-wearing.webp",
+            "/images/products/personalised-oxidised-earring-gift-box/09-lifestyle-holding-box.webp",
             "/images/products/personalised-oxidised-earring-gift-box/05-gallery-detail-fourfold-edge.webp",
             "/images/products/personalised-oxidised-earring-gift-box/06-gallery-lifestyle-open-box.webp"
         ],
         variants: [
             {
-                colorName: "Antique Oxidised Silver",
+                colorName: "Set 1 • Royal Peacock Jhumkas",
                 colorHex: "#C0C0C0",
                 stock: 25,
                 images: [
                     "/images/products/personalised-oxidised-earring-gift-box/03-gallery-main-open-fourfold.webp",
+                    "/images/products/personalised-oxidised-earring-gift-box/08-lifestyle-portrait-wearing.webp",
+                    "/images/products/personalised-oxidised-earring-gift-box/09-lifestyle-holding-box.webp",
+                    "/images/products/personalised-oxidised-earring-gift-box/05-gallery-detail-fourfold-edge.webp",
+                    "/images/products/personalised-oxidised-earring-gift-box/06-gallery-lifestyle-open-box.webp"
+                ]
+            },
+            {
+                colorName: "Set 2 • Heritage Floral Chandbalis",
+                colorHex: "#A8A8A8",
+                stock: 20,
+                images: [
+                    "/images/products/personalised-oxidised-earring-gift-box/01-set2-main-open.webp",
+                    "/images/products/personalised-oxidised-earring-gift-box/09-lifestyle-holding-box.webp",
+                    "/images/products/personalised-oxidised-earring-gift-box/08-lifestyle-portrait-wearing.webp",
                     "/images/products/personalised-oxidised-earring-gift-box/05-gallery-detail-fourfold-edge.webp",
                     "/images/products/personalised-oxidised-earring-gift-box/06-gallery-lifestyle-open-box.webp"
                 ]
@@ -833,7 +850,7 @@ export async function getReviews(productId: string) {
                 id: "earring-rev-1",
                 name: "Ananya Deshmukh, New Delhi",
                 rating: 5,
-                comment: "Bhai literally 14 mins me deliver ho gaya! Name print quality on the box is so crisp and gold foil shine looks luxury. Meri sister bohot khush hui ❤️",
+                comment: "Literally the best gift for my sister! The rider arrived at our doorstep in 12 minutes flat. The four-fold box opening felt so luxurious, and the antique oxidised jhumkas have such an exquisite finish and luster.",
                 date: "2026-08-25T11:20:00.000Z",
                 images: ["/images/products/personalised-oxidised-earring-gift-box/reviews/10-customer-photo-style-ananya.webp"]
             },
@@ -841,7 +858,7 @@ export async function getReviews(productId: string) {
                 id: "earring-rev-2",
                 name: "Sneha Kulkarni, Mumbai",
                 rating: 5,
-                comment: "Unboxing experience was magical! Earring oxidised finishing is premium and the personalised name card made it super special.",
+                comment: "The unboxing experience was truly breathtaking. The linen texture on the box and intricate handcrafted jhumkas look like a luxury heirloom. Instant 15-min delivery worked flawlessly in Mumbai.",
                 date: "2026-08-24T15:40:00.000Z",
                 images: ["/images/products/personalised-oxidised-earring-gift-box/reviews/12-customer-unboxing-clean-hands.webp"]
             },
@@ -849,23 +866,23 @@ export async function getReviews(productId: string) {
                 id: "earring-rev-3",
                 name: "Rahul Verma, Bengaluru",
                 rating: 5,
-                comment: "Was skeptical about 15-min delivery but rider arrived at my doorstep in 13 minutes sharp. Live GPS tracking was smooth.",
+                comment: "Ordered Set 2 on an urgent whim and it arrived in 14 minutes sharp. The four-fold hardcover presentation is so aesthetic and my sister was overjoyed. Live courier tracking was spot on.",
                 date: "2026-08-23T18:10:00.000Z",
-                images: []
+                images: ["/images/products/personalised-oxidised-earring-gift-box/reviews/04-customer-unboxing.webp"]
             },
             {
                 id: "earring-rev-4",
-                name: "Meera Sen, Kolkata",
-                rating: 4,
-                comment: "Earrings are lightweight and easy to wear all day. Four-fold box packaging 10/10.",
+                name: "Natasha Sen, Kolkata",
+                rating: 5,
+                comment: "Hands down the most thoughtful gift under ₹500! Lightweight on the ears, completely hypoallergenic, and pairs so effortlessly with traditional and modern kurtas.",
                 date: "2026-08-21T09:30:00.000Z",
                 images: []
             },
             {
                 id: "earring-rev-5",
-                name: "Pooja Hegde, Hyderabad",
+                name: "Divya Hegde, Hyderabad",
                 rating: 5,
-                comment: "Best Rakhi gift under ₹500! Sibling note already included tha and custom name looked fantastic.",
+                comment: "Top-notch craftsmanship and lightning fast 15-minute dispatch. Sibling greeting card inside added such a sweet touch. 10/10 recommendation for Rakhi gifting.",
                 date: "2026-08-19T14:15:00.000Z",
                 images: []
             }

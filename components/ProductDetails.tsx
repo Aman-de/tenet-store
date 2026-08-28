@@ -930,8 +930,8 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
     };
 
     let finalTitle = product.title;
-    if (isEarringBox && customName.trim()) {
-        finalTitle = `${product.title} (Custom Name: "${customName.trim()}")`;
+    if (isEarringBox && selectedVariant) {
+        finalTitle = `${product.title} (${selectedVariant.colorName})`;
     }
     let itemPrice = product.price;
     let itemOriginalPrice = product.originalPrice;
@@ -1233,108 +1233,73 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
 
                     {/* 🪢 Royal Rakhi Celebration or ⚡ 15-Min Hyper-Delivery Suite */}
                     {isEarringBox ? (
-                        <div className="bg-gradient-to-br from-[#0D1F17] via-[#091510] to-[#122A1E] text-white border-2 border-emerald-500/70 rounded-3xl p-5 mb-5 shadow-[0_10px_35px_rgba(16,185,129,0.22)] relative overflow-hidden">
-                            {/* Radar wave effect */}
-                            <div className="absolute top-0 right-0 w-52 h-52 bg-radial from-emerald-500/20 to-transparent blur-2xl pointer-events-none" />
+                        <div className="bg-gradient-to-br from-[#07130E] via-[#050D0A] to-[#0A1A13] text-white border border-emerald-500/50 rounded-3xl p-5 mb-5 shadow-[0_12px_40px_rgba(16,185,129,0.18)] relative overflow-hidden">
+                            {/* Radar sweep glow */}
+                            <div className="absolute top-0 right-0 w-48 h-48 bg-radial from-emerald-500/20 to-transparent blur-2xl pointer-events-none" />
 
                             {/* Top Header & 15-Min Badge */}
-                            <div className="relative z-10 flex items-center justify-between gap-2 mb-3 pb-3 border-b border-emerald-500/30">
+                            <div className="relative z-10 flex items-center justify-between gap-2 mb-3.5 pb-3 border-b border-emerald-500/20">
                                 <div className="flex items-center gap-2.5">
                                     <span className="relative flex h-3 w-3">
                                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                                         <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
                                     </span>
                                     <div>
-                                        <span className="text-sm sm:text-base font-serif font-black text-[#F0FDF4] block leading-tight flex items-center gap-1.5">
-                                            ⚡ 15-Min Hyper-Delivery Active
+                                        <span className="text-sm sm:text-base font-serif font-bold text-[#F0FDF4] block leading-tight flex items-center gap-1.5">
+                                            ⚡ 15-Minute Hyper-Express Delivery
                                         </span>
-                                        <span className="text-[10px] font-sans text-emerald-300 font-medium tracking-wide">
-                                            Dark Store Stationed • 100% Refund If Late
+                                        <span className="text-[10.5px] font-sans text-emerald-400 font-medium tracking-wide">
+                                            Local Dark-Store Stationed • 100% Refund Guarantee
                                         </span>
                                     </div>
                                 </div>
                                 
-                                {/* Live Countdown Badge */}
-                                <div className="bg-black/60 border border-emerald-500/40 rounded-2xl px-3 py-1.5 flex flex-col items-center">
-                                    <span className="text-[8px] uppercase tracking-widest text-emerald-400 font-bold">Doorstep Timer</span>
-                                    <span className="font-mono text-sm sm:text-base font-extrabold text-white tracking-wider">
+                                {/* Live Countdown Timer */}
+                                <div className="bg-emerald-950/60 border border-emerald-500/40 rounded-2xl px-3 py-1.5 flex flex-col items-center">
+                                    <span className="text-[8px] uppercase tracking-widest text-emerald-300 font-bold">Doorstep Timer</span>
+                                    <span className="font-mono text-sm sm:text-base font-black text-white tracking-wider">
                                         {String(liveMinutes).padStart(2, '0')}:{String(liveSeconds).padStart(2, '0')}
                                     </span>
                                 </div>
                             </div>
 
-                            {/* Value Prop Bullets */}
-                            <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-semibold text-neutral-200 mb-3.5">
-                                <div className="flex items-center gap-2 bg-white/5 p-2 rounded-xl border border-white/10">
-                                    <span className="text-emerald-400 font-extrabold text-sm">🛵</span>
-                                    <span><strong>15-Min Guaranteed</strong> or 100% Refund</span>
+                            {/* Value Proposition Pills */}
+                            <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-semibold text-neutral-200 mb-4">
+                                <div className="flex items-center gap-2.5 bg-white/5 p-2.5 rounded-xl border border-white/5">
+                                    <span className="text-emerald-400 text-sm">🛵</span>
+                                    <span><strong>15-Min Guaranteed</strong> or 100% Full Refund</span>
                                 </div>
-                                <div className="flex items-center gap-2 bg-white/5 p-2 rounded-xl border border-white/10">
-                                    <span className="text-amber-400 font-extrabold text-sm">✨</span>
-                                    <span><strong>Free Gold Foil</strong> Name Printing</span>
+                                <div className="flex items-center gap-2.5 bg-white/5 p-2.5 rounded-xl border border-white/5">
+                                    <span className="text-amber-400 text-sm">🎁</span>
+                                    <span><strong>Four-Fold Keepsake Box</strong> & Velvet Linen</span>
                                 </div>
-                                <div className="flex items-center gap-2 bg-white/5 p-2 rounded-xl border border-white/10">
-                                    <span className="text-rose-400 font-extrabold text-sm">🎁</span>
-                                    <span><strong>Four-Fold Velvet Box</strong> & Sibling Card</span>
+                                <div className="flex items-center gap-2.5 bg-white/5 p-2.5 rounded-xl border border-white/5">
+                                    <span className="text-rose-400 text-sm">💌</span>
+                                    <span><strong>Sibling Message Card</strong> & Ribbon Included</span>
                                 </div>
-                                <div className="flex items-center gap-2 bg-white/5 p-2 rounded-xl border border-white/10">
-                                    <span className="text-cyan-400 font-extrabold text-sm">📍</span>
-                                    <span><strong>Live GPS Radar</strong> Tracking</span>
+                                <div className="flex items-center gap-2.5 bg-white/5 p-2.5 rounded-xl border border-white/5">
+                                    <span className="text-cyan-400 text-sm">📍</span>
+                                    <span><strong>Live GPS Dispatch</strong> & Courier Beacon</span>
                                 </div>
                             </div>
 
-                            {/* Interactive Custom Name Box Personalizer */}
-                            <div className="relative z-10 bg-black/60 border border-amber-400/40 rounded-2xl p-3.5 flex flex-col gap-2.5 shadow-inner">
-                                <div className="flex items-center justify-between">
-                                    <span className="text-[11px] font-sans font-bold text-amber-300 flex items-center gap-1.5 uppercase tracking-wider">
-                                        ✨ Type Name For Gold-Foil Box Printing (Free)
-                                    </span>
-                                    <span className="text-[9px] font-mono text-neutral-400">{customName.length}/18 chars</span>
-                                </div>
-
-                                {/* Live Gold Foil Box Lid Simulation Preview */}
-                                <div className="relative w-full h-14 bg-gradient-to-r from-[#18181B] via-[#27272A] to-[#18181B] border border-amber-500/50 rounded-xl flex items-center justify-center overflow-hidden shadow-md">
-                                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-500/10 via-transparent to-transparent pointer-events-none" />
-                                    <div className="flex flex-col items-center justify-center text-center px-4">
-                                        <span className="text-[8px] uppercase tracking-[0.3em] text-amber-200/60 font-serif">Handcrafted For</span>
-                                        <span className="font-serif italic font-black text-sm sm:text-base text-transparent bg-clip-text bg-gradient-to-r from-[#FFE29F] via-[#FFAE34] to-[#FFE29F] drop-shadow-[0_2px_8px_rgba(251,191,36,0.5)]">
-                                            {customName.trim() ? customName : "Sister's Name"}
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <input
-                                    type="text"
-                                    maxLength={18}
-                                    value={customName}
-                                    onChange={(e) => setCustomName(e.target.value)}
-                                    placeholder="Enter Recipient's Name (e.g. Ananya, Priya, Didi)..."
-                                    className="w-full bg-white/10 border border-white/20 rounded-xl px-3.5 py-2 text-xs text-white placeholder:text-neutral-400 font-sans outline-none focus:border-amber-400 transition-colors"
-                                />
-
-                                {/* Quick Name Chips */}
-                                <div className="flex flex-wrap gap-1.5 pt-0.5">
-                                    <span className="text-[9.5px] text-neutral-400 self-center mr-1">Suggestions:</span>
-                                    {["Priya", "Ananya", "Didi", "Pyari Behn", "Best Sister", "My World"].map((nameOption) => (
-                                        <button
-                                            key={nameOption}
-                                            type="button"
-                                            onClick={() => setCustomName(nameOption)}
-                                            className="px-2 py-0.5 rounded-lg bg-white/10 hover:bg-amber-400/20 hover:text-amber-300 text-[10px] text-neutral-300 font-medium transition-all cursor-pointer border border-white/5 active:scale-95"
-                                        >
-                                            +{nameOption}
-                                        </button>
-                                    ))}
+                            {/* Dispatch Guarantee Banner */}
+                            <div className="relative z-10 p-3 rounded-2xl bg-emerald-950/40 border border-emerald-500/30 flex items-center justify-between gap-3 text-xs mb-3">
+                                <div className="flex items-center gap-2">
+                                    <span className="text-base">🛡️</span>
+                                    <p className="text-[11.5px] text-emerald-200 leading-snug">
+                                        <strong>Zero-Risk SLA:</strong> If rider arrives after 15 mins, enjoy 100% instant refund & keep the hamper free.
+                                    </p>
                                 </div>
                             </div>
 
                             {/* Action Bar: Auto-Detect Address & Live Radar Trigger */}
-                            <div className="relative z-10 grid grid-cols-2 gap-2 mt-3 pt-2 border-t border-emerald-500/20">
+                            <div className="relative z-10 grid grid-cols-2 gap-2">
                                 <button
                                     type="button"
                                     onClick={handleAutoLocate}
                                     disabled={isLocating}
-                                    className="flex items-center justify-center gap-1.5 py-2 px-3 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white rounded-xl text-[11px] font-bold transition-all shadow-sm cursor-pointer"
+                                    className="flex items-center justify-center gap-1.5 py-2.5 px-3 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white rounded-xl text-[11px] font-bold transition-all shadow-sm cursor-pointer"
                                 >
                                     {isLocating ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <span>📍</span>}
                                     <span>{isLocating ? "Locating..." : "Auto-Detect Address"}</span>
@@ -1342,7 +1307,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                 <button
                                     type="button"
                                     onClick={() => setIs15MinModalOpen(true)}
-                                    className="flex items-center justify-center gap-1.5 py-2 px-3 bg-white/10 hover:bg-white/20 active:scale-95 text-emerald-300 border border-emerald-500/40 rounded-xl text-[11px] font-bold transition-all shadow-sm cursor-pointer"
+                                    className="flex items-center justify-center gap-1.5 py-2.5 px-3 bg-white/10 hover:bg-white/20 active:scale-95 text-emerald-300 border border-emerald-500/40 rounded-xl text-[11px] font-bold transition-all shadow-sm cursor-pointer"
                                 >
                                     <span>🗺️</span>
                                     <span>Live GPS Radar</span>
@@ -1577,11 +1542,11 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
 
                 {/* Color / Variant Selector */}
                 {hasVariants ? (
-                    isKalankit ? (
+                    (isKalankit || isEarringBox) ? (
                         <div className="mb-5">
                             <div className="flex justify-between items-center mb-2.5">
                                 <span className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#1A1A1A] dark:text-[#F4F1ED] flex items-center gap-1.5">
-                                    Select Edition / Variant
+                                    {isEarringBox ? "Select Gift Box Set" : "Select Edition / Variant"}
                                     {selectedVariant?.colorName && (
                                         <span className="text-neutral-400 font-normal font-sans text-xs lowercase">
                                             — <span className="capitalize font-bold text-[#1A1A1A] dark:text-[#F4F1ED]">{selectedVariant.colorName}</span>
@@ -1589,7 +1554,10 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                     )}
                                 </span>
                             </div>
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-0.5">
+                            <div className={cn(
+                                "grid gap-2.5 pt-0.5",
+                                isEarringBox ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-1 sm:grid-cols-3"
+                            )}>
                                 {availableVariants.map((variant, idx) => {
                                     const isSelected = selectedVariant?.colorName === variant.colorName;
                                     return (
@@ -1600,29 +1568,30 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                                 setSelectedVariant(variant);
                                             }}
                                             className={cn(
-                                                "flex items-center gap-2.5 p-2 rounded-xl border text-left transition-all cursor-pointer relative overflow-hidden",
+                                                "flex items-center gap-3 p-2.5 rounded-2xl border text-left transition-all cursor-pointer relative overflow-hidden",
                                                 isSelected
-                                                    ? "border-black dark:border-white bg-black/5 dark:bg-white/5 ring-1 ring-black dark:ring-white shadow-xs"
+                                                    ? "border-black dark:border-white bg-black/5 dark:bg-white/10 ring-1 ring-black dark:ring-white shadow-xs"
                                                     : "border-neutral-200 dark:border-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-600 bg-transparent"
                                             )}
                                         >
-                                            <div className="relative w-12 h-12 rounded-lg overflow-hidden shrink-0 bg-neutral-100 dark:bg-neutral-900 border border-neutral-200/60 dark:border-neutral-800">
+                                            <div className="relative w-14 h-14 rounded-xl overflow-hidden shrink-0 bg-neutral-100 dark:bg-neutral-900 border border-neutral-200/60 dark:border-neutral-800">
                                                 {variant.images && variant.images[0] && (
                                                     <Image
                                                         src={variant.images[0]}
                                                         alt={variant.colorName}
                                                         fill
-                                                        sizes="48px"
+                                                        sizes="60px"
                                                         className="object-cover"
                                                     />
                                                 )}
                                             </div>
                                             <div className="min-w-0 flex-1 flex flex-col">
-                                                <span className="text-[11px] font-bold text-[#1A1A1A] dark:text-[#F4F1ED] leading-snug truncate">
+                                                <span className="text-[11.5px] font-bold text-[#1A1A1A] dark:text-[#F4F1ED] leading-snug truncate">
                                                     {variant.colorName}
                                                 </span>
-                                                <span className="text-[9.5px] text-neutral-500 font-sans mt-0.5">
-                                                    Edition {idx + 1} • In Stock
+                                                <span className="text-[10px] text-neutral-500 font-sans mt-0.5 flex items-center gap-1">
+                                                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                                    {isEarringBox ? "Inside View • In Stock" : `Edition ${idx + 1} • In Stock`}
                                                 </span>
                                             </div>
                                             {isSelected && (
@@ -1937,7 +1906,7 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                         <a
                             href={`https://wa.me/918590958131?text=${encodeURIComponent(
                                 isEarringBox
-                                    ? `Hi Shreya! I want to order the Personalised Oxidised Earring Gift Box${customName.trim() ? ` with custom name "${customName.trim()}"` : ''} (₹${displayPrice.toLocaleString('en-IN')}) with 15-Minute Guaranteed Delivery!\n\nProduct Link: https://tenetarchives.com/product/${product.handle}\n\nPlease confirm hyper-express dark-store dispatch immediately!`
+                                    ? `Hi Shreya! I want to order ${displayTitle} - ${selectedVariant?.colorName || 'Set 1'} (₹${displayPrice.toLocaleString('en-IN')}) with 15-Minute Guaranteed Delivery!\n\nProduct Link: https://tenetarchives.com/product/${product.handle}\n\nPlease confirm hyper-express dark-store dispatch immediately!`
                                     : `Hi Shreya! I want to order ${displayTitle} (Size: ${selectedSize || 'Selected Size'}, ₹${displayPrice.toLocaleString('en-IN')}).\n\nProduct Link: https://tenetarchives.com/product/${product.handle}\n\nPlease confirm express dispatch for guaranteed delivery before Rakhi! (I can also share a photo for size advice).`
                             )}`}
                             target="_blank"
@@ -2572,51 +2541,67 @@ export default function ProductDetails({ product, reviews = [] }: ProductDetails
                                 </div>
                             </div>
 
+                            {/* Assigned Courier Profile Card */}
+                            <div className="flex items-center gap-3 p-3 rounded-2xl bg-white/5 border border-white/10 mb-4">
+                                <div className="w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-base shrink-0 border border-emerald-500/30">
+                                    🛵
+                                </div>
+                                <div className="min-w-0 flex-1">
+                                    <div className="flex items-center justify-between">
+                                        <h4 className="text-xs font-bold text-white truncate">Karan V. • Express Courier</h4>
+                                        <span className="text-[10px] font-mono text-emerald-400 font-bold bg-emerald-950/80 px-2 py-0.5 rounded-full border border-emerald-500/30">4.9 ★ (1,240+ trips)</span>
+                                    </div>
+                                    <p className="text-[10.5px] text-neutral-400 font-sans mt-0.5">
+                                        Hero Electric Flash • Dark-Store Hub (0.8 km away)
+                                    </p>
+                                </div>
+                            </div>
+
                             {/* Dispatch SLA Step-by-Step Breakdown */}
-                            <div className="space-y-2.5 mb-5">
-                                <div className="flex items-start gap-3 p-3 rounded-xl bg-white/5 border border-white/10">
-                                    <div className="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-mono font-bold text-[10px] shrink-0 mt-0.5">
+                            <div className="space-y-2 mb-5">
+                                <div className="flex items-start gap-3 p-2.5 rounded-xl bg-white/5 border border-white/10">
+                                    <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-mono font-bold text-[9px] shrink-0 mt-0.5">
                                         01
                                     </div>
                                     <div>
-                                        <h4 className="text-xs font-bold text-white">00:00 - Instant Order Routing</h4>
-                                        <p className="text-[11px] text-neutral-300 font-sans">Order assigned automatically to the nearest hyper-local micro hub.</p>
+                                        <h4 className="text-xs font-bold text-white">00:00 - Instant Route Assignment</h4>
+                                        <p className="text-[10.5px] text-neutral-300 font-sans">Order received and routed to nearest hyper-local micro hub.</p>
                                     </div>
                                 </div>
 
-                                <div className="flex items-start gap-3 p-3 rounded-xl bg-white/5 border border-white/10">
-                                    <div className="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center font-mono font-bold text-[10px] shrink-0 mt-0.5">
+                                <div className="flex items-start gap-3 p-2.5 rounded-xl bg-white/5 border border-white/10">
+                                    <div className="w-5 h-5 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center font-mono font-bold text-[9px] shrink-0 mt-0.5">
                                         02
                                     </div>
                                     <div>
-                                        <h4 className="text-xs font-bold text-white">02:30 - Bespoke Gold Foil Imprinting</h4>
-                                        <p className="text-[11px] text-neutral-300 font-sans">Recipient name personalized in gold foil on the four-fold box lid.</p>
+                                        <h4 className="text-xs font-bold text-white">02:00 - Pre-Sealed Keepsake Hamper Picked</h4>
+                                        <p className="text-[10.5px] text-neutral-300 font-sans">Four-fold box, earrings, and sibling card verified by quality team.</p>
                                     </div>
                                 </div>
 
-                                <div className="flex items-start gap-3 p-3 rounded-xl bg-white/5 border border-white/10">
-                                    <div className="w-6 h-6 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-mono font-bold text-[10px] shrink-0 mt-0.5">
+                                <div className="flex items-start gap-3 p-2.5 rounded-xl bg-white/5 border border-white/10">
+                                    <div className="w-5 h-5 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-mono font-bold text-[9px] shrink-0 mt-0.5">
                                         03
                                     </div>
                                     <div>
-                                        <h4 className="text-xs font-bold text-white">06:00 - Dark-Store Courier En Route</h4>
-                                        <p className="text-[11px] text-neutral-300 font-sans">Rider departs via fast green-corridor route to your exact location.</p>
+                                        <h4 className="text-xs font-bold text-white">05:00 - Courier Out for Delivery</h4>
+                                        <p className="text-[10.5px] text-neutral-300 font-sans">Rider departs via fast green-corridor route to your exact location.</p>
                                     </div>
                                 </div>
 
-                                <div className="flex items-start gap-3 p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
-                                    <div className="w-6 h-6 rounded-full bg-emerald-500 text-black flex items-center justify-center font-mono font-bold text-[10px] shrink-0 mt-0.5">
+                                <div className="flex items-start gap-3 p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
+                                    <div className="w-5 h-5 rounded-full bg-emerald-500 text-black flex items-center justify-center font-mono font-bold text-[9px] shrink-0 mt-0.5">
                                         04
                                     </div>
                                     <div>
-                                        <h4 className="text-xs font-bold text-emerald-300">12:00–14:59 - Guaranteed Doorstep Handover</h4>
-                                        <p className="text-[11px] text-emerald-100 font-sans">Delivered directly to your hands in premium gift wrap.</p>
+                                        <h4 className="text-xs font-bold text-emerald-300">12:00–14:59 - Doorstep Handover</h4>
+                                        <p className="text-[10.5px] text-emerald-100 font-sans">Delivered directly to your hands in premium gift wrap.</p>
                                     </div>
                                 </div>
                             </div>
 
                             {/* 100% Full Refund Guarantee Terms */}
-                            <div className="p-4 rounded-2xl bg-gradient-to-r from-red-950/40 via-amber-950/30 to-red-950/40 border border-amber-500/40 text-amber-200 text-xs leading-relaxed">
+                            <div className="p-3.5 rounded-2xl bg-gradient-to-r from-red-950/40 via-amber-950/30 to-red-950/40 border border-amber-500/40 text-amber-200 text-xs leading-relaxed">
                                 <div className="flex items-center gap-2 font-bold text-white mb-1">
                                     <span>🛡️</span>
                                     <span>100% Instant Refund Policy Guarantee:</span>
